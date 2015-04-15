@@ -1,4 +1,4 @@
-package com.mobify.myapplication;
+package com.mobify.astro.scaffold;
 
 import android.app.Application;
 import android.test.ApplicationTestCase;
