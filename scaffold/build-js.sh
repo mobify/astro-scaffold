@@ -13,7 +13,7 @@ source ~/.bash_profile
 set -e
 
 # Build app.js.
-pushd
+pushd .
 npm install
 grunt build
 popd
