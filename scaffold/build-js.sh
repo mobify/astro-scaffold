@@ -12,15 +12,8 @@ source ~/.bash_profile
 
 set -e
 
-# The CWD when invoked by Gradle ends up as `scaffold`.
-pushd ..
-
-# Install root package.json.
-npm install
-
 # Build app.js.
-cd app
+pushd
 npm install
 grunt build
-
 popd
