@@ -18,4 +18,4 @@
 # org.gradle.parallel=true
 
 # Set this to the path where node and npm binaries live
-nodePath=/usr/local/bin
+NODE_PATH=/usr/local/bin

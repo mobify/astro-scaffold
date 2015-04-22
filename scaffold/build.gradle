@@ -25,7 +25,11 @@ android {
 }
 
 task buildJS(type:Exec) {
-    environment 'PATH', System.getenv('PATH') + ':' + nodePath
+    // Default node path to "/usr/local/bin". If your node is in a different directory you can
+    // explicitly set its location by setting `NODE_PATH` inside of `gradle.properties`. See
+    // `gradle.properties.example` for an example.
+    String NODE_PATH = project.hasProperty('NODE_PATH') ? project.NODE_PATH : "/usr/local/bin"
+    environment 'PATH', System.getenv('PATH') + ':' + NODE_PATH
     commandLine "./build-js.sh"
 }
 
