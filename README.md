@@ -4,7 +4,7 @@
 - The app automatically builds app.js. If node.js isn't installed to /usr/local/bin, run:
 
 ```
-cp gradle.properties.local gradle.properties
+cp gradle.properties.example gradle.properties
 ```
 
 Then change NODE_PATH to point to the path of your node.js installation.
