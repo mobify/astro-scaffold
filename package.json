@@ -3,6 +3,6 @@
   "version": "0.0.1",
   "author": "Mobify",
   "dependencies": {
-    "astro-sdk": "*"
+    "astro-sdk": "0.0.1-test7"
   }
 }
