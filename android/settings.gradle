@@ -1,1 +1,2 @@
-include ':scaffold'
+include ':scaffold', ':astro'
+project(':astro').projectDir = new File(settingsDir, '../astro/android')

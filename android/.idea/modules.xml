@@ -3,6 +3,7 @@
   <component name="ProjectModuleManager">
     <modules>
       <module fileurl="file://$PROJECT_DIR$/android.iml" filepath="$PROJECT_DIR$/android.iml" />
+      <module fileurl="file://$PROJECT_DIR$/../astro/android/astro.iml" filepath="$PROJECT_DIR$/../astro/android/astro.iml" />
       <module fileurl="file://$PROJECT_DIR$/scaffold/scaffold.iml" filepath="$PROJECT_DIR$/scaffold/scaffold.iml" />
     </modules>
   </component>
