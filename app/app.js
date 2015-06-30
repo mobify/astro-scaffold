@@ -1,14 +1,14 @@
 require([
     'astro',
     'bluebird',
-    'plugins/applicationPlugin',
+    'application',
     'plugins/webViewPlugin',
     'plugins/anchoredLayoutPlugin'
 ],
 function(
     Astro,
     Promise,
-    ApplicationPlugin,
+    Application,
     WebViewPlugin,
     AnchoredLayoutPlugin
 ) {
@@ -17,7 +17,6 @@ function(
     var baseUrl = 'http://www.google.com/';
 
     // Initialize plugins
-    var applicationPromise = ApplicationPlugin.init();
     var mainWebViewPromise = WebViewPlugin.init();
     var layoutPromise = AnchoredLayoutPlugin.init();
 
@@ -28,16 +27,16 @@ function(
 
     // Use the mainWebView as the main content view for our layout
     Promise.join(layoutPromise, mainWebViewPromise, function(layout, mainWebView) {
-        layout.setContentView(mainWebView.address);
+        layout.setContentView(mainWebView);
     });
 
     // Route all unhandled key presses to the mainWebView
-    Promise.join(applicationPromise, mainWebViewPromise, function(application, mainWebView){
-        application.setMainInputPlugin(mainWebView.address);
+    Promise.join(mainWebViewPromise, function(mainWebView){
+        Application.setMainInputPlugin(mainWebView);
     });
 
-    Promise.join(applicationPromise, layoutPromise, function(application, layout) {
-        application.setMainViewPlugin(layout.address);
+    Promise.join(layoutPromise, function(layout) {
+        Application.setMainViewPlugin(layout);
     });
 
 }, undefined, true);
