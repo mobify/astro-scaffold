@@ -19,18 +19,13 @@ android {
     }
     repositories {
         flatDir {
-            dirs '../node_modules/astro-sdk'
+            dirs '../../node_modules/astro-sdk'
         }
     }
 }
 
 task buildJS(type:Exec) {
-    // Default node path to "/usr/local/bin". If your node is in a different directory you can
-    // explicitly set its location by setting `NODE_PATH` inside of `gradle.properties`. See
-    // `gradle.properties.example` for an example.
-    String NODE_PATH = project.hasProperty('NODE_PATH') ? project.NODE_PATH : "/usr/local/bin"
-    environment 'PATH', System.getenv('PATH') + ':' + NODE_PATH
-    commandLine "./build-js.sh"
+    commandLine "../../app/build-js.sh"
 }
 
 preBuild.dependsOn buildJS
