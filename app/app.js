@@ -31,11 +31,11 @@ function(
     });
 
     // Route all unhandled key presses to the mainWebView
-    Promise.join(mainWebViewPromise, function(mainWebView){
+    mainWebViewPromise.then(function(mainWebView) {
         Application.setMainInputPlugin(mainWebView);
     });
 
-    Promise.join(layoutPromise, function(layout) {
+    layoutPromise.then(function(layout) {
         Application.setMainViewPlugin(layout);
     });
 
