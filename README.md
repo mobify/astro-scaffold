@@ -1,13 +1,17 @@
 # Setup
 
-- Run `npm install` in the root.
-- The app automatically builds app.js. If node.js isn't installed to /usr/local/bin, run:
+- The app automatically builds app.js.
+- If node.js isn't installed to /usr/local/bin, run:
 
 ```
-cp gradle.properties.example gradle.properties
+cp app/user-env.sh.example app/user-env.sh && which npm | pbcopy
 ```
 
-Then change NODE_PATH to point to the path of your node.js installation.
+Then paste the npm path from your clipboard onto the end of the path inside of the user-env.sh file.
+
+# Android
 
 - Import the scaffold into Android Studio using the Import Project option and by selecting the `astro-scaffold` directory.
 - Hit run, celebrate with a delicious beer!
+
+# iOS
