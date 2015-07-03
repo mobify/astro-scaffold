@@ -1,1 +1,0 @@
-../../../../app/build/app.js

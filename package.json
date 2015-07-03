@@ -1,8 +1,6 @@
 {
   "name": "astro-scaffold",
-  "version": "0.0.1",
+  "version": "0.2.0",
   "author": "Mobify",
-  "dependencies": {
-    "astro-sdk": "0.0.1-test7"
-  }
+  "dependencies": {}
 }
