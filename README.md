@@ -61,5 +61,5 @@ To run the tests, execute the following command from the root directory of the r
 npm test
 ```
 
-### Test on Different Version
+### Specify Test Device Version
 To specify the version you want to test against, edit the `scripts/ios-appium.sh` script and change the `-destination` argument to point at the desired device and version. You must also update the `nightwatch-config.js` file inside of `app/tests/system`. Make sure the desired capabilities of the nightwatch config file match the device version you specify in the bash script.
