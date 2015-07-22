@@ -3,7 +3,7 @@
     "profiles": {
         "default": {
             "bundleUrl": "http://localhost:8080/adaptive.js",
-            "siteUrl": "http://https.www.rbauction.com.tag.mobifyproxy.com"
+            "siteUrl": "http://www.google.ca"
         }
     }
 }

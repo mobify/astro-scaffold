@@ -33,11 +33,11 @@ module.exports = {
                 "path": ""
             },
             "desiredCapabilities": {
-                "app": "com.mobify.builds.RitchieBrothers",
+                "fullReset": false,
+                "app": appPath,
                 "platformName": "iOS",
                 "platformVersion": "8.4",
-                "deviceName": "Dinah",
-                "udid": "2d34635acb263fce25892ecae9c02eacab302eff"
+                "deviceName": "iPhone 6"
             }
         },
 
