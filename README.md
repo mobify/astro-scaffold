@@ -41,3 +41,10 @@ open ios/scaffold/scaffold.xcworkspace
   * `cd ..`
   * `git add astro`
   * `git commit -m "Updating Astro submodule to latest on 'develop' branch."`
+
+## Running Tests
+The scaffold comes with an example appium test located in app/tests/system/
+To run them, execute the following command from the root directory of the repo:
+```
+npm test
+```
