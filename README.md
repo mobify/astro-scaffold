@@ -44,7 +44,19 @@ open ios/scaffold/scaffold.xcworkspace
 
 ## Running Tests
 The scaffold comes with an example appium test located in app/tests/system/
-To run them, execute the following command from the root directory of the repo:
+The tests depend on appium. Install it:
+
+```
+npm install -g appium
+```
+
+You may also have to authorize the ios simulator to run your application using appium:
+
+```
+sudo authorize_ios
+```
+
+To run the tests, execute the following command from the root directory of the repo:
 ```
 npm test
 ```
