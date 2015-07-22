@@ -13,12 +13,17 @@ import UIKit
 class AppDelegate: UIResponder, UIApplicationDelegate {
 
     var window: UIWindow?
-
+    var astroViewController: AstroViewController?
 
     func application(application: UIApplication, didFinishLaunchingWithOptions launchOptions: [NSObject: AnyObject]?) -> Bool {
         // TODO: make it difficult for an Astro developer to delay return from this function.
         
-        let astroViewController = AstroViewController(appJsUrl: NSURL(string: "app.js")!,
+        var deeplinkUri: NSURL?
+        if let options = launchOptions {
+            deeplinkUri = options[UIApplicationLaunchOptionsURLKey] as? NSURL
+        }
+
+        astroViewController = AstroViewController(appJsUrl: NSURL(string: "app.js")!, launchUri: deeplinkUri,
             pluginRegistrations: { pluginRegistrar in
         })
         
@@ -31,6 +36,16 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         // is dismissed (at the end of didFinishLaunchingWithOptions).
         NSRunLoop.mainRunLoop().runUntilDate(NSDate().dateByAddingTimeInterval(1.0))
         
+        // Return false to avoid calling openURL. The deeplink url has already been handled.
+        return false
+    }
+    
+    // Called on receiving deep links unless prevented by didFinish/willFinish
+    // didFinish/willFinish are only called if the appplication is not already running
+    func application(application: UIApplication, openURL url: NSURL, sourceApplication: String?, annotation: AnyObject?) -> Bool {
+        if let astroViewController = astroViewController {
+            astroViewController.receivedDeeplink(url)
+        }
         return true
     }
 
