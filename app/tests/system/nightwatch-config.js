@@ -38,7 +38,8 @@ module.exports = {
                 "platformName": "iOS",
                 "platformVersion": "8.4",
                 "deviceName": "iPhone 6"
-            }
+            },
+            "exclude": "nightwatch-config.js"
         },
 
         "ios-sim": {
