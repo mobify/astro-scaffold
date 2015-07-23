@@ -18,8 +18,6 @@
 		87C6A8931B43044D001876CE /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 87C6A8921B43044D001876CE /* Images.xcassets */; };
 		87C6A8961B43044D001876CE /* LaunchScreen.xib in Resources */ = {isa = PBXBuildFile; fileRef = 87C6A8941B43044D001876CE /* LaunchScreen.xib */; };
 		87C6A8A21B43044D001876CE /* scaffoldTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 87C6A8A11B43044D001876CE /* scaffoldTests.swift */; };
-		87C6A8B51B430AE6001876CE /* Astro.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 87C6A8B41B430AE6001876CE /* Astro.framework */; };
-		87C6A8B71B430AED001876CE /* Cordova.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 87C6A8B61B430AED001876CE /* Cordova.framework */; };
 		87C6A8E91B430E15001876CE /* config.xml in Resources */ = {isa = PBXBuildFile; fileRef = 87C6A8D71B430E15001876CE /* config.xml */; };
 		87C6A8F61B430EDD001876CE /* www in Resources */ = {isa = PBXBuildFile; fileRef = 87C6A8F51B430EDD001876CE /* www */; };
 /* End PBXBuildFile section */
@@ -63,8 +61,6 @@
 		87C6A89B1B43044D001876CE /* scaffoldTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = scaffoldTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		87C6A8A01B43044D001876CE /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		87C6A8A11B43044D001876CE /* scaffoldTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = scaffoldTests.swift; sourceTree = "<group>"; };
-		87C6A8B41B430AE6001876CE /* Astro.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Astro.framework; path = "../../astro/ios/build/Debug-iphoneos/Astro.framework"; sourceTree = "<group>"; };
-		87C6A8B61B430AED001876CE /* Cordova.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Cordova.framework; path = "../../astro/ios/vendor/CordovaLib/build/Debug-iphoneos/Cordova.framework"; sourceTree = "<group>"; };
 		87C6A8D71B430E15001876CE /* config.xml */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xml; path = config.xml; sourceTree = "<group>"; };
 		87C6A8F51B430EDD001876CE /* www */ = {isa = PBXFileReference; lastKnownFileType = folder; path = www; sourceTree = "<group>"; };
 		87C6A8F71B430FA2001876CE /* app.js */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.javascript; name = app.js; path = ../../../app/app.js; sourceTree = "<group>"; };
@@ -77,8 +73,6 @@
 			buildActionMask = 2147483647;
 			files = (
 				87132A201B6016FF00FC74A4 /* Astro.framework in Frameworks */,
-				87C6A8B71B430AED001876CE /* Cordova.framework in Frameworks */,
-				87C6A8B51B430AE6001876CE /* Astro.framework in Frameworks */,
 				87132A221B6016FF00FC74A4 /* Cordova.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -99,8 +93,6 @@
 				87132A1E1B6016FF00FC74A4 /* Astro.framework */,
 				87132A1F1B6016FF00FC74A4 /* Cordova.framework */,
 				87132A1C1B60073400FC74A4 /* app.js */,
-				87C6A8B61B430AED001876CE /* Cordova.framework */,
-				87C6A8B41B430AE6001876CE /* Astro.framework */,
 				87C6A8D61B430E15001876CE /* Cordova */,
 				87C6A8881B43044D001876CE /* scaffold */,
 				87C6A89E1B43044D001876CE /* scaffoldTests */,
@@ -428,7 +420,7 @@
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
-                    "$(CONFIGURATION_BUILD_DIR)",
+					"$(CONFIGURATION_BUILD_DIR)",
 				);
 				INFOPLIST_FILE = scaffold/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
@@ -442,7 +434,7 @@
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
-                    "$(CONFIGURATION_BUILD_DIR)",
+					"$(CONFIGURATION_BUILD_DIR)",
 				);
 				INFOPLIST_FILE = scaffold/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
