@@ -1,65 +1,59 @@
 # Setup
 
-```
-mkdir your-project-name && cd your-project-name
-git init
-git pull git@github.com:mobify/astro-scaffold.git --depth 1
-git submodule update --init
-```
+To get up and running with scaffold, ensure your submodules are up to date:
 
-- The app/build-js.sh script automatically builds app.js.
-- If node.js isn't installed to /usr/local/bin, run:
+    git submodule update --init
 
-```
-cp app/user-env.sh.example app/user-env.sh && which npm | pbcopy
-```
+**Note**: The app/build-js.sh script automatically builds app.js.
+If node.js isn't installed to /usr/local/bin, run:
+
+    cp app/user-env.sh.example app/user-env.sh && which npm | pbcopy
 
 Then paste the npm path from your clipboard onto the end of the path inside of the user-env.sh file.
 
 # Android
 
-- Import the scaffold into Android Studio using the Import Project option and by selecting the `astro-scaffold` directory.
-- Hit run, celebrate with a delicious beer!
+Import the scaffold into Android Studio using the Import Project option and by selecting the
+`astro-scaffold` directory, and then hit "Run".
 
 # iOS
-- run the following command to open the iOS scaffold in Xcode:
 
-```
-open ios/scaffold/scaffold.xcworkspace
-```
+Run the following command to open the iOS scaffold in Xcode:
 
-## Customizing the project
-* Change the app target name from "scaffold" to "ios-app"
-* Change the app test target name from "scaffoldTest" to "ios-appTest"
-* Change Bundle Identifier prefix from "com.mobify.astro" to your client company's reverse domain name (ie. `com.thinkgeek`).  The full Bundle Identifier should now be “com.thinkgeek.ios-app”.
-* Open `app.js` and change the `baseUrl` variable to be your client company’s “homepage” for the app (ie. `www.thinkgeek.com`)
-* Change the "Product Name" under the "Packaging" section in Build Settings to what you want the app to be named on the iOS home screen (ie. `ThinkGeek`).
-* Update the Astro submodule to point to correct commit (ie. latest ‘develop’)
-  * `cd astro`
-  * `git checkout develop`
-  * `git pull`
-  * `cd ..`
-  * `git add astro`
-  * `git commit -m "Updating Astro submodule to latest on 'develop' branch."`
+    open ios/scaffold/scaffold.xcworkspace
 
-## Running Tests
+# Updating to the latest Astro
+
+Astro is brought in as a submodule. To update the Astro submodule to point to correct commit (ie. latest ‘develop’)
+- `cd astro`
+- `git checkout develop`
+- `git pull`
+- `cd ..`
+- `git add astro`
+- `git commit -m "Updating Astro submodule to latest on 'develop' branch."`
+
+# Getting Started
+
+Open `app/app.js` to get started with development on this project!
+
+# Running Tests
+
 The scaffold comes with an example appium test located in app/tests/system/
 The tests depend on appium. Install it:
 
-```
-npm install -g appium
-```
+    npm install -g appium
 
 You may also have to authorize the ios simulator to run your application using appium:
 
-```
-sudo authorize_ios
-```
+    sudo authorize_ios
 
 To run the tests, execute the following command from the root directory of the repo:
-```
-npm test
-```
+
+    npm test
 
 ### Specify Test Device Version
-To specify the version you want to test against, edit the `scripts/ios-appium.sh` script and change the `-destination` argument to point at the desired device and version. You must also update the `nightwatch-config.js` file inside of `app/tests/system`. Make sure the desired capabilities of the nightwatch config file match the device version you specify in the bash script.
+
+To specify the version you want to test against, edit the `scripts/ios-appium.sh` script and
+change the `-destination` argument to point at the desired device and version. You must also
+update the `nightwatch-config.js` file inside of `app/tests/system`. Make sure the desired capabilities
+of the nightwatch config file match the device version you specify in the bash script.
