@@ -16,13 +16,13 @@
 		<string>github.com:mobify/astro.git</string>
 	</dict>
 	<key>IDESourceControlProjectPath</key>
-	<string>ios/scaffold/scaffold.xcworkspace</string>
+	<string>ios/scaffold.xcworkspace</string>
 	<key>IDESourceControlProjectRelativeInstallPathDictionary</key>
 	<dict>
 		<key>6C46D1FA93C60FABFCFE02DBE07609B16046FB5C</key>
-		<string>../../..</string>
+		<string>../..</string>
 		<key>C8599756400699B8844918406DF3A9460F6598AB</key>
-		<string>../../..astro/</string>
+		<string>../../../astro</string>
 	</dict>
 	<key>IDESourceControlProjectURL</key>
 	<string>github.com:mobify/astro-scaffold.git</string>

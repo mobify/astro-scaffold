@@ -1,0 +1,9 @@
+{
+    "activeProfile": "default",
+    "profiles": {
+        "default": {
+            "bundleUrl": "http://localhost:8080/adaptive.js",
+            "siteUrl": "http://www.google.ca"
+        }
+    }
+}

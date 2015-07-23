@@ -1,3 +1,11 @@
+.DS_Store
+node_modules
+npm-debug.log
+/app/build
+/app/reports
+/app/user-env.sh
+
+
 android/.gradle
 android/local.properties
 android/.idea/workspace.xml
@@ -5,9 +13,5 @@ android/.idea/libraries
 android/build
 android/gradle.properties
 
-node_modules
-/app/build
-/app/user-env.sh
+ios/build
 
-.DS_Store
-npm-debug.log
