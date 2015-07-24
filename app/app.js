@@ -25,13 +25,19 @@ function(
     mainWebViewPromise.then(function(mainWebView) {
         startUriPromise.then(function(uri) {
             if (uri != null) {
-                try {
-                    mainWebView.navigate(uri.replace(/^.+?:\/\/*/, ''));
-                } catch (err) {
-                    mainWebView.navigate(baseUrl);
-                }
+                mainWebView.navigate(uri.replace(/^.+?:\/\/*/, ''));
             } else {
                 mainWebView.navigate(baseUrl);
+            }
+        });
+    });
+
+    // Listen for deep link events once app is running
+    Application.on('receivedDeepLink', function(params){
+        mainWebViewPromise.then(function(mainWebView) {
+            var uri = params.uri;
+            if (uri != null) {
+                mainWebView.navigate(uri.replace(/^.+?:\/\/*/, ''));
             }
         });
     });
