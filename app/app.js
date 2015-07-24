@@ -1,5 +1,5 @@
 require([
-    'astro',
+    'astro-full',
     'bluebird',
     'application',
     'plugins/webViewPlugin',
