@@ -1,7 +1,8 @@
 require.config({
     baseUrl: '.',
     paths: {
-    	'astro': '../astro/js/src/astro',
+        'astro-base': '../astro/js/src/astro-base',
+    	'astro-full': '../astro/js/src/astro-full',
         'application': '../astro/js/src/application',
         'bluebird': 'node_modules/bluebird/js/browser/bluebird',
     	'plugins': '../astro/js/src/plugins',
