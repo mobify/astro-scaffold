@@ -15,14 +15,25 @@ function(
 
     // Enter your site url here
     var baseUrl = 'http://www.google.com/';
+    var startUriPromise = Application.getStartUri();
 
     // Initialize plugins
     var mainWebViewPromise = WebViewPlugin.init();
     var layoutPromise = AnchoredLayoutPlugin.init();
 
-    // Start the app at the base url
+    // Start the app at the base url or provided start uri (deep link launch)
     mainWebViewPromise.then(function(mainWebView) {
-        mainWebView.navigate(baseUrl);
+        startUriPromise.then(function(uri) {
+            if (uri != null) {
+                try {
+                    mainWebView.navigate(uri.replace(/^.+?:\/\/*/, ''));
+                } catch (err) {
+                    mainWebView.navigate(baseUrl);
+                }
+            } else {
+                mainWebView.navigate(baseUrl);
+            }
+        });
     });
 
     // Use the mainWebView as the main content view for our layout
