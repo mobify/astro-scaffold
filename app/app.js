@@ -22,14 +22,12 @@ function(
     var layoutPromise = AnchoredLayoutPlugin.init();
 
     // Start the app at the base url or provided start uri (deep link launch)
-    mainWebViewPromise.then(function(mainWebView) {
-        startUriPromise.then(function(uri) {
-            if (uri != null) {
-                mainWebView.navigate(uri);
-            } else {
-                mainWebView.navigate(baseUrl);
-            }
-        });
+    Promise.join(mainWebViewPromise, startUriPromise, function(mainWebView, uri) {
+        if (uri != null) {
+            mainWebView.navigate(uri);
+        } else {
+            mainWebView.navigate(baseUrl);
+        }
     });
 
     // Listen for deep link events once app is running
