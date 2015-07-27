@@ -25,7 +25,7 @@ function(
     mainWebViewPromise.then(function(mainWebView) {
         startUriPromise.then(function(uri) {
             if (uri != null) {
-                mainWebView.navigate(uri.replace(/^.+?:\/\/*/, ''));
+                mainWebView.navigate(uri);
             } else {
                 mainWebView.navigate(baseUrl);
             }
@@ -37,7 +37,7 @@ function(
         mainWebViewPromise.then(function(mainWebView) {
             var uri = params.uri;
             if (uri != null) {
-                mainWebView.navigate(uri.replace(/^.+?:\/\/*/, ''));
+                mainWebView.navigate(uri);
             }
         });
     });
