@@ -14,5 +14,5 @@ android/build
 android/gradle.properties
 
 ios/build
-ios/scaffold.xcodeproj/xcuserdata/jason.xcuserdatad/
-ios/scaffold.xcworkspace/xcuserdata/jason.xcuserdatad/
+ios/scaffold.xcodeproj/xcuserdata/*.xcuserdatad/
+ios/scaffold.xcworkspace/xcuserdata/*.xcuserdatad/
