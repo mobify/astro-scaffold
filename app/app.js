@@ -15,14 +15,29 @@ function(
 
     // Enter your site url here
     var baseUrl = 'http://www.google.com/';
+    var startUriPromise = Application.getStartUri();
 
     // Initialize plugins
     var mainWebViewPromise = WebViewPlugin.init();
     var layoutPromise = AnchoredLayoutPlugin.init();
 
-    // Start the app at the base url
-    mainWebViewPromise.then(function(mainWebView) {
-        mainWebView.navigate(baseUrl);
+    // Start the app at the base url or provided start uri (deep link launch)
+    Promise.join(mainWebViewPromise, startUriPromise, function(mainWebView, uri) {
+        if (uri != null) {
+            mainWebView.navigate(uri);
+        } else {
+            mainWebView.navigate(baseUrl);
+        }
+    });
+
+    // Listen for deep link events once app is running
+    Application.on('receivedDeepLink', function(params){
+        mainWebViewPromise.then(function(mainWebView) {
+            var uri = params.uri;
+            if (uri != null) {
+                mainWebView.navigate(uri);
+            }
+        });
     });
 
     // Use the mainWebView as the main content view for our layout
