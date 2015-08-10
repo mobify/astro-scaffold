@@ -47,6 +47,10 @@ You may also have to authorize the ios simulator to run your application using a
 
     sudo authorize_ios
 
+(Optional) Install xcpretty to format the output from xcodebuild
+
+    gem install xcpretty    
+
 To run the tests, execute the following command from the root directory of the repo:
 
     npm test
