@@ -1,2 +1,4 @@
 PROJECT_PATH=scaffold
-APKFILENAME='scaffold-release-unsigned'
+APKFILENAME='scaffold-release'
+HOCKEYAPP_RELEASE_TYPE=0 #beta [default]
+BUNDLE_VERSION=CI$CIRCLE_BUILD_NUM

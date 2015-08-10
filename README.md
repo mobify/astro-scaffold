@@ -57,3 +57,29 @@ To specify the version you want to test against, edit the `scripts/ios-appium.sh
 change the `-destination` argument to point at the desired device and version. You must also
 update the `nightwatch-config.js` file inside of `app/tests/system`. Make sure the desired capabilities
 of the nightwatch config file match the device version you specify in the bash script.
+
+# iOS CI support
+
+### CircleCI Setup:
+- Update the files in `circle/certificates` and `circle/provisioning-profiles` as required
+- Update the config files in `circle/config` based on the updates made in the previous step
+- **Follow** GitHub repo in CircleCI
+- In **Experimental Settings** enable **Build iOS Project**
+- In **Environment Variables** make sure to set:
+    - HOCKEYAPP_TOKEN - See HockeyApp Setup below to get this
+    - KEY_PASSWORD - See `circle/README.md`
+
+### HockeyApp Setup
+- Make sure there is an iOS project created with matching bundle identifier
+- In Account Settings->API Tokens, make sure there is an active `Upload & Release` API token for your app. Copy & Paste the token into the HOCKEYAPP_TOKEN environment variable in CircleCI described in the above section CircleCI Setup
+
+# Android CI support
+- **Follow** GitHub repo in CircleCI
+- In **Experimental Settings** enable **Build iOS Project** (this is currently required)
+- In **Environment Variables** make sure to set:
+    - HOCKEYAPP_TOKEN - See HockeyApp Setup below to get this
+    - KEY_PASSWORD - See `circle/README.md`
+
+### HockeyApp Setup
+- Make sure there is an Android project created with matching bundle identifier
+- In Account Settings->API Tokens, make sure there is an active `Upload & Release` API token for your app. Copy & Paste the token into the HOCKEYAPP_TOKEN environment variable in CircleCI described in the above section CircleCI Setup

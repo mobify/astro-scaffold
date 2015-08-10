@@ -1,5 +1,8 @@
+IS_APP_STORE_BUILD=0
 XCODE_CONFIGURATION=Release
 CODE_SIGN_IDENTITY='iPhone Distribution: Mobify Research and Development Inc. (KS9S3B73SG)'
 PROVISIONING_PROFILE_NAME=Mobify_DevQA_Circle_CI_Provisioning_Profile.mobileprovision
-ARCHIVE_PATH="$PWD/mobify-qa.xcarchive"
 BUNDLE_VERSION=CI$CIRCLE_BUILD_NUM
+BUNDLE_ID=com.mobify.astro.scaffold
+HOCKEYAPP_RELEASE_TYPE=0 #beta [default]
+CONFIG_NAME="mobify-qa-ios"

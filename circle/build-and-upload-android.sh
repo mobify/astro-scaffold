@@ -1,18 +1,24 @@
 #!/bin/bash -eu
 
-MYDIR=$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )
-ROOT=$MYDIR/..
+set -o pipefail
 
-if [ $# -ne 1 ]; then
-    echo usage: "$(basename "$0")" config
+if [ $# -lt 1 ]; then
+    echo "usage: $(basename "$0") build_config [additional_signing_configs ...]"
     exit 1
 fi
 
-CONFIG=$1
+MYPATH=$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )
+ROOT=$MYPATH/..
 
-source "$ROOT/circle/config/$CONFIG"
+# Process first config specified
+CONFIG=$1
+source "$ROOT/$CONFIG"
+shift
 
 RELEASE_DATE=$(date '+%Y-%m-%d %H:%M:%S')
+RELEASE_NOTES="Build: $BUNDLE_VERSION
+Uploaded: $RELEASE_DATE
+Branch: $CIRCLE_BRANCH"
 APP_DIR="$ROOT/$ANDROID_ROOT_FOLDER/$PROJECT_PATH/build/outputs/apk"
 
 echo "********************"
@@ -22,7 +28,7 @@ pushd $ANDROID_ROOT_FOLDER
 ./gradlew assembleRelease
 popd
 
-RELEASE_NOTES="Build: Android  Uploaded: $RELEASE_DATE"
+RELEASE_NOTES="Build: $CI$CIRCLE_BUILD_NUM Branch: $CIRCLE_BRANCH Uploaded: $RELEASE_DATE"
 
 echo "********************"
 echo "*    Uploading     *"
@@ -44,5 +50,5 @@ curl https://rink.hockeyapp.net/api/2/apps/upload -v \
     -F notify=1                                      \
     -F status=2                                      \
     -F mandatory=0                                   \
-    -F release_type=0                                \
+    -F release_type=$HOCKEYAPP_RELEASE_TYPE          \
     -F commit_sha="$CIRCLE_SHA1"
