@@ -70,7 +70,7 @@ of the nightwatch config file match the device version you specify in the bash s
     - KEY_PASSWORD - See `circle/README.md`
 
 ### HockeyApp Setup
-- Make sure there is an iOS project created with matching bundle identifier
+- Make sure there is an iOS project created with bundle identifier: `com.astro.scaffold`
 - In Account Settings->API Tokens, make sure there is an active `Upload & Release` API token for your app. Copy & Paste the token into the HOCKEYAPP_TOKEN environment variable in CircleCI described in the above section CircleCI Setup
 
 # Android CI support
@@ -81,5 +81,5 @@ of the nightwatch config file match the device version you specify in the bash s
     - KEY_PASSWORD - See `circle/README.md`
 
 ### HockeyApp Setup
-- Make sure there is an Android project created with matching bundle identifier
+- Make sure there is an Android project created with bundle identifier: `com.astro.scaffold`
 - In Account Settings->API Tokens, make sure there is an active `Upload & Release` API token for your app. Copy & Paste the token into the HOCKEYAPP_TOKEN environment variable in CircleCI described in the above section CircleCI Setup
