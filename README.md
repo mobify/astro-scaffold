@@ -20,7 +20,7 @@ Import the scaffold into Android Studio using the Import Project option and by s
 
 Run the following command to open the iOS scaffold in Xcode:
 
-    open ios/scaffold/scaffold.xcworkspace
+    open ios/scaffold.xcworkspace
 
 # Updating to the latest Astro
 
