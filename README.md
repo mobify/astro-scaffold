@@ -43,6 +43,10 @@ The tests depend on appium. Install it:
 
     npm install -g appium
 
+By default, the tests run on the iOS 8.3 simulator. Make sure this is installed by going to Xcode > Preferences > Downloads.    
+
+!(https://s3.amazonaws.com/uploads.hipchat.com/15359/58433/YSrQpl7NyZEown6/2015-08-12%2011.59.00%20am.png) 
+
 You may also have to authorize the ios simulator to run your application using appium:
 
     sudo authorize_ios
@@ -61,3 +65,9 @@ To specify the version you want to test against, edit the `scripts/ios-appium.sh
 change the `-destination` argument to point at the desired device and version. You must also
 update the `nightwatch-config.js` file inside of `app/tests/system`. Make sure the desired capabilities
 of the nightwatch config file match the device version you specify in the bash script.
+
+### Troubleshooting
+
+!(https://s3.amazonaws.com/uploads.hipchat.com/15359/58433/ACnytly3S1nHHkb/2015-08-12%2011.59.25%20am.png)
+
+You need to install the correct OS version of the iOS simulator. See "Running tests" above. 
