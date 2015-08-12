@@ -47,7 +47,7 @@ module.exports = {
                 "fullReset": false,
                 "app": appPath,
                 "platformName": "iOS",
-                "platformVersion": "8.4",
+                "platformVersion": "8.3",
                 "deviceName": "iPhone 6"
             }
         }
