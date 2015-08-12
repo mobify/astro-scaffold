@@ -1,5 +1,10 @@
 #!/bin/bash -eu
 
+set -o pipefail
+ 
+MYPATH=$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd ) 
+ROOT=$MYPATH/..
+
 # Kill background processes when this script exits.
 trap 'kill $(jobs -p)' EXIT
 
@@ -14,7 +19,7 @@ function prettifyOutput() {
 
 appium --log-level error &
 
-pushd ios/
+pushd $ROOT/ios/
 xcodebuild \
     -workspace "scaffold.xcworkspace/" \
     -scheme "scaffold" \
@@ -23,5 +28,5 @@ xcodebuild \
     build | prettifyOutput
 popd
 
-pushd app/
+pushd $ROOT/app/
 grunt nightwatch -e ios-sim
