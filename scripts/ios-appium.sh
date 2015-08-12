@@ -12,7 +12,7 @@ function prettifyOutput() {
     fi
 }
 
-appium &
+appium --log-level error &
 
 pushd ios/
 xcodebuild \
