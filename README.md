@@ -45,7 +45,7 @@ The tests depend on appium. Install it:
 
 By default, the tests run on the iOS 8.3 simulator. Make sure this is installed by going to Xcode > Preferences > Downloads.    
 
-!(https://s3.amazonaws.com/uploads.hipchat.com/15359/58433/YSrQpl7NyZEown6/2015-08-12%2011.59.00%20am.png) 
+![Screenshot of Xcode Downloads](https://s3.amazonaws.com/uploads.hipchat.com/15359/58433/YSrQpl7NyZEown6/2015-08-12%2011.59.00%20am.png) 
 
 You may also have to authorize the ios simulator to run your application using appium:
 
@@ -68,6 +68,6 @@ of the nightwatch config file match the device version you specify in the bash s
 
 ### Troubleshooting
 
-!(https://s3.amazonaws.com/uploads.hipchat.com/15359/58433/ACnytly3S1nHHkb/2015-08-12%2011.59.25%20am.png)
+![Screenshot of no available devices error](https://s3.amazonaws.com/uploads.hipchat.com/15359/58433/ACnytly3S1nHHkb/2015-08-12%2011.59.25%20am.png)
 
 You need to install the correct OS version of the iOS simulator. See "Running tests" above. 
