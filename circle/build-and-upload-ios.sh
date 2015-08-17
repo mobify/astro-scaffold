@@ -98,7 +98,7 @@ function uploadToHockeyApp() {
         -F dsym="@$DSYM_DIR/$APPNAME.app.dSYM.zip"       \
         -F notes="$RELEASE_NOTES"                        \
         -F notes_type=1                                  \
-        -F notify=1                                      \
+        -F notify=0                                      \
         -F status=2                                      \
         -F mandatory=0                                   \
         -F release_type=$HOCKEYAPP_RELEASE_TYPE          \

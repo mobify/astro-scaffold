@@ -37,7 +37,7 @@ echo "********************"
 # See http://support.hockeyapp.net/kb/api/api-apps for parameter details
 
 # notes_type=1      Markdown
-# notify=1          Notify testers
+# notify=1          Do not notify testers
 # status=2          Make the version available for download
 # mandatory=0       Not mandatory
 # release_type=0    Beta
@@ -47,7 +47,7 @@ curl https://rink.hockeyapp.net/api/2/apps/upload -v \
     -F ipa="@$APP_DIR/$APKFILENAME.apk"              \
     -F notes="$RELEASE_NOTES"                        \
     -F notes_type=1                                  \
-    -F notify=1                                      \
+    -F notify=0                                      \
     -F status=2                                      \
     -F mandatory=0                                   \
     -F release_type=$HOCKEYAPP_RELEASE_TYPE          \
