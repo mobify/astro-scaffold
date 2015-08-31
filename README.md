@@ -69,13 +69,13 @@ of the nightwatch config file match the device version you specify in the bash s
 # iOS CI support
 
 ### CircleCI Setup:
-- Update the files in `circle/certificates` and `circle/provisioning-profiles` as required
+- Update the files in `circle/certificates` and `circle/provisioning-profiles` if you have non-Mobify certificates and provision profiles. 
 - Update the config files in `circle/config` based on the updates made in the previous step
 - **Follow** GitHub repo in CircleCI
 - In **Experimental Settings** enable **Build iOS Project**
 - In **Environment Variables** make sure to set:
     - HOCKEYAPP_TOKEN - See HockeyApp Setup below to get this
-    - KEY_PASSWORD - See `circle/README.md`
+    - KEY_PASSWORD - Passwords for the .p12 files are in the "Shared-App Credentials" folder in LastPass.
 
 ### HockeyApp Setup
 - Make sure there is an iOS project created with bundle identifier: `com.astro.scaffold`
