@@ -31,7 +31,7 @@ function(
     });
 
     // Listen for deep link events once app is running
-    Application.on('receivedDeepLink', function(params){
+    Application.on('receivedDeepLink', function(params) {
         mainWebViewPromise.then(function(mainWebView) {
             var uri = params.uri;
             if (uri != null) {
