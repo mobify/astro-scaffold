@@ -32,6 +32,16 @@ Astro is brought in as a submodule. To update the Astro submodule to point to co
 - `git add astro`
 - `git commit -m "Updating Astro submodule to latest on 'develop' branch."`
 
+# Switching between Debug and Release mode
+
+## iOS
+
+Xcode - Product > Scheme > Edit Scheme ... In the Run scheme, change Build Configuration to Release
+
+## Android
+
+Android Studio - View > Tool Windows > Build Variants ... In the Build Variants panel, switch scaffold and astro to release.
+
 # Getting Started
 
 Open `app/app.js` to get started with development on this project!
