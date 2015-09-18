@@ -31,7 +31,7 @@ function(
     });
 
     // Listen for deep link events once app is running
-    Application.on('receivedDeepLink', function(params){
+    Application.on('receivedDeepLink', function(params) {
         mainNavigationViewPromise.then(function(mainNavigationView) {
             var uri = params.uri;
             if (uri != null) {
