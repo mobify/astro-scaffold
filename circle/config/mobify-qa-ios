@@ -1,5 +1,5 @@
 IS_APP_STORE_BUILD=0
-XCODE_CONFIGURATION=Release
+BUILD_CONFIGURATION=Release
 CODE_SIGN_IDENTITY='iPhone Distribution: Mobify Research and Development Inc. (KS9S3B73SG)'
 PROVISIONING_PROFILE_NAME=Mobify_DevQA_Circle_CI_Provisioning_Profile.mobileprovision
 BUNDLE_VERSION=CI$CIRCLE_BUILD_NUM

@@ -20,22 +20,24 @@ RELEASE_NOTES="Build: $BUNDLE_VERSION
 Uploaded: $RELEASE_DATE
 Branch: $CIRCLE_BRANCH"
 
-ARCHIVE_PATH="$ROOT/build/Astro-Sandbox.xcarchive"
+XCODE_CONFIGURATION="$BUILD_CONFIGURATION"
+ARCHIVE_PATH="$ROOT/build/scaffold.xcarchive"
 SOURCE_INFO_PLIST="$ARCHIVE_PATH/Info.plist"
 APP_DIR="$ARCHIVE_PATH/Products/Applications"
 DSYM_DIR="$ARCHIVE_PATH/dSYMs"
 
 function makeWorkingDirectory() {
-    WORKING_DIR=$(mktemp -d /tmp/astro-sandbox-ios.XXXXX)
-    #trap 'rm -rf $WORKING_DIR' EXIT
+    WORKING_DIR=$(mktemp -d /tmp/scaffold-ios.XXXXX)
+    trap 'rm -rf $WORKING_DIR' EXIT
 }
 
 function updatePaths() {
-    if [ ! -d $ROOT/build/$CONFIG_NAME ]; then
+    CONFIG_NAME=$(basename "$CONFIG")
+    if [ ! -d "$ROOT/build/$CONFIG_NAME" ]; then
         mkdir -p "$ROOT/build/$CONFIG_NAME/"
     fi
-    IPA_PATH="$ROOT/build/$CONFIG_NAME/Astro-Sandbox.ipa"
     PROVISIONING_PROFILE="$HOME/Library/MobileDevice/Provisioning Profiles/$PROVISIONING_PROFILE_NAME"
+    IPA_PATH="$ROOT/build/$CONFIG_NAME/scaffold.ipa"
 }
 
 function prettifyOutput() {
@@ -48,7 +50,6 @@ function prettifyOutput() {
 }
 
 function buildAndArchive() {
-
     echo "**********************************$(seq -f "*" -s "" ${#ARCHIVE_PATH})"
     echo "*     Build and Archive to $ARCHIVE_PATH      *"
     echo "**********************************$(seq -f "*" -s "" ${#ARCHIVE_PATH})"
@@ -106,7 +107,6 @@ function uploadToHockeyApp() {
 }
 
 function resignApp() {
-
     echo "**************************$(seq -f "*" -s "" ${#ARCHIVE_PATH})"
     echo "*    Resigning app in $ARCHIVE_PATH    *"
     echo "**************************$(seq -f "*" -s "" ${#ARCHIVE_PATH})"
@@ -125,7 +125,7 @@ function resignApp() {
     if [ "$BUNDLE_ID" != "" ]; then
         /usr/libexec/PlistBuddy "$PAYLOAD_APP_PATH/Info.plist" -c "Set :CFBundleIdentifier $BUNDLE_ID"
 
-        if [ -f $PAYLOAD_DIR/iTunesMetadata.plist ]; then
+        if [ -f "$PAYLOAD_DIR/iTunesMetadata.plist" ]; then
             /usr/libexec/PlistBuddy "$PAYLOAD_DIR/iTunesMetadata.plist" -c "Set :CFBundleIdentifier $BUNDLE_ID"
         fi
     fi
@@ -136,22 +136,37 @@ function resignApp() {
 
     # Fix entitlements
     ENTITLEMENTS_FILE="$WORKING_DIR/entitlements.plist"
-    NEW_ENTITLEMENTS_FILE=$(mktemp -t entitlementsXXXX.plist)
+    NEW_ENTITLEMENTS_FILE=$(mktemp -t entitlements.plist)
 
     /usr/bin/security cms -D -i "$PROVISIONING_PROFILE" > "$NEW_ENTITLEMENTS_FILE"
-    /usr/libexec/PlistBuddy "$NEW_ENTITLEMENTS_FILE" -x -c "Print :Entitlements" > $ENTITLEMENTS_FILE
+    # shellcheck disable=SC2064
+    trap "rm -f $NEW_ENTITLEMENTS_FILE" EXIT
+    /usr/libexec/PlistBuddy "$NEW_ENTITLEMENTS_FILE" -x -c "Print :Entitlements" > "$ENTITLEMENTS_FILE"
+
+    TEAM_IDENTIFIER=$(/usr/libexec/PlistBuddy "$ENTITLEMENTS_FILE" -c "Print :application-identifier")
+    TEAM_IDENTIFIER=$(echo "$TEAM_IDENTIFIER" | cut -d "." -f 1)
+    APPLICATION_IDENTIFIER="$TEAM_IDENTIFIER.$BUNDLE_ID"
+
+    # fix archived-expanded-entitlements.xcent if it exists and codesign all packaged frameworks/libraries
+    if [ -f "$PAYLOAD_APP_PATH/archived-expanded-entitlements.xcent" ]; then
+        /usr/libexec/PlistBuddy "$PAYLOAD_APP_PATH/archived-expanded-entitlements.xcent" -c "Set :application-identifier $APPLICATION_IDENTIFIER"
+
+        # Right now we completely obliterate the keychain-access-groups.
+        # In the future, if an app actually uses keychain sharing with another app we'll have to fix this.
+        /usr/libexec/PlistBuddy "$PAYLOAD_APP_PATH/archived-expanded-entitlements.xcent" -c "Delete :keychain-access-groups"
+        /usr/libexec/PlistBuddy "$PAYLOAD_APP_PATH/archived-expanded-entitlements.xcent" -c "Add :keychain-access-groups array" || true
+        /usr/libexec/PlistBuddy "$PAYLOAD_APP_PATH/archived-expanded-entitlements.xcent" -c "Add :keychain-access-groups:0 string $TEAM_IDENTIFIER.*" || true
+    fi
 
     if [ "$IS_APP_STORE_BUILD" == "1" ]; then
         echo "***** APP STORE BUILD *****"
 
         # Modify entitlements for App Store release
-        TEAM_IDENTIFIER=$(/usr/libexec/PlistBuddy $ENTITLEMENTS_FILE -c "Print :application-identifier")
-        TEAM_IDENTIFIER=$(echo $TEAM_IDENTIFIER | cut -d "." -f 1)
         /usr/libexec/PlistBuddy "$ENTITLEMENTS_FILE" -c "Delete :beta-reports-active" || true
         /usr/libexec/PlistBuddy "$ENTITLEMENTS_FILE" -c "Delete :com.apple.developer.team-identifier" || true
         /usr/libexec/PlistBuddy "$ENTITLEMENTS_FILE" -c "Delete :keychain-access-groups" || true
         /usr/libexec/PlistBuddy "$ENTITLEMENTS_FILE" -c "Add :keychain-access-groups array" || true
-        /usr/libexec/PlistBuddy "$ENTITLEMENTS_FILE" -c "Add :keychain-access-groups:0 string $TEAM_IDENTIFIER.$BUNDLE_ID" || true
+        /usr/libexec/PlistBuddy "$ENTITLEMENTS_FILE" -c "Add :keychain-access-groups:0 string $TEAM_IDENTIFIER.*" || true
     fi
 
     # For OSX 10.9 and later, code signing requires a version 2 signature.
@@ -160,31 +175,33 @@ function resignApp() {
     # The "|| true" on the end prevents the script from existing if :CFBundleResourceSpecification doesn't exist in the file.
     /usr/libexec/PlistBuddy "$PAYLOAD_APP_PATH/Info.plist" -c "Delete :CFBundleResourceSpecification" || true
 
+    # Sign all frameworks we package
+    for framework in "$PAYLOAD_APP_PATH"/Frameworks/*; do
+        /usr/bin/codesign -fs "$CODE_SIGN_IDENTITY" --preserve-metadata=identifier,entitlements "$framework"
+    done
+
     # Now sign, then verify, the bundle
     CODE_SIGN_RESULT=$(/usr/bin/codesign -fs "$CODE_SIGN_IDENTITY" --no-strict --deep --entitlements="$ENTITLEMENTS_FILE" "$PAYLOAD_APP_PATH")
-    CODE_SIGN_VERIFY=$(/usr/bin/codesign -v "$PAYLOAD_APP_PATH")
+    CODE_SIGN_VERIFY=$(/usr/bin/codesign --verify -vvvv "$PAYLOAD_APP_PATH")
 
-    if [ "$CODE_SIGN_VERIFY" != "" ]; then
+    if [ "$?" -ne "0" ]; then
         echo "Code sign result: $CODE_SIGN_RESULT"
         echo "Verify output: $CODE_SIGN_VERIFY"
-        exit
+        exit 1
     fi
 
     ##
     ## Re-zip to create new .IPA
     ##
-    pushd $WORKING_DIR
+    pushd "$WORKING_DIR"
     /usr/bin/zip -qry "$IPA_PATH" Payload iTunesArtwork
     popd
 }
 
 # Now the actual work...
 updatePaths
-makeWorkingDirectory
 buildAndArchive
-packageApp
-# We still re-sign the app because the Xcode project might
-# not be configured with the bundle ID of the current config.
+makeWorkingDirectory
 resignApp
 uploadToHockeyApp
 
@@ -193,6 +210,7 @@ for CONFIG in "$@"
 do
     source "$ROOT/$CONFIG"
 
+    makeWorkingDirectory
     updatePaths
     resignApp
     uploadToHockeyApp
