@@ -88,7 +88,7 @@ of the nightwatch config file match the device version you specify in the bash s
     - KEY_PASSWORD - Passwords for the .p12 files are in the "Shared-App Credentials" folder in LastPass.
 
 ### HockeyApp Setup
-- Make sure there is an iOS project created with bundle identifier: `com.astro.scaffold`
+- Make sure there is an iOS project created with bundle identifier: `com.mobify.astro.scaffold`
 - In Account Settings->API Tokens, make sure there is an active `Upload & Release` API token for your app. Copy & Paste the token into the HOCKEYAPP_TOKEN environment variable in CircleCI described in the above section CircleCI Setup
 
 # Android CI support
@@ -96,10 +96,10 @@ of the nightwatch config file match the device version you specify in the bash s
 - In **Experimental Settings** enable **Build iOS Project** (this is currently required)
 - In **Environment Variables** make sure to set:
     - HOCKEYAPP_TOKEN - See HockeyApp Setup below to get this
-    - KEY_PASSWORD - See `circle/README.md`
+    - KEY_PASSWORD - Passwords for the .p12 files are in the "Shared-App Credentials" folder in LastPass.
 
 ### HockeyApp Setup
-- Make sure there is an Android project created with bundle identifier: `com.astro.scaffold`
+- Make sure there is an Android project created with bundle identifier: `com.mobify.astro.scaffold`
 - In Account Settings->API Tokens, make sure there is an active `Upload & Release` API token for your app. Copy & Paste the token into the HOCKEYAPP_TOKEN environment variable in CircleCI described in the above section CircleCI Setup
 
 ### Troubleshooting
