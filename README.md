@@ -82,13 +82,17 @@ of the nightwatch config file match the device version you specify in the bash s
 - **Follow** GitHub repo in CircleCI
 - In **Experimental Settings** enable **Build iOS Project**
 - In **Environment Variables** make sure to set:
-    - HOCKEYAPP_TOKEN - See HockeyApp Setup below to get this
+    - `HOCKEYAPP_TOKEN` and `HOCKEYAPP_TOKEN_ANDROID` - See HockeyApp Setup below to get this
     - KEY_PASSWORD - Passwords for the .p12 files are in "CI Development Key" of the "Shared-App Credentials" folder in LastPass.
 - You will need to make sure CircleCI can access the Astro repo (for Mobify projects, follow [these instructions](https://mobify.atlassian.net/wiki/display/LT/questions/79528346/i-am-creating-a-new-cst-mobile-build-ios-or-android-that-has-linked-in-astro-as-a-git-submodule.-how-do-grant-circleci-access-to-both-repos)).
 
 # HockeyApp Setup
 - Make sure there is an iOS project created with bundle identifier: `com.mobify.astro.scaffold`
-- In Account Settings->API Tokens, make sure there is an active `Upload & Release` API token for your app. Copy & Paste the token into the HOCKEYAPP_TOKEN environment variable in CircleCI described in the above section CircleCI Setup
+- Make sure there is an Android project created with package name: `com.mobify.astro.scaffold`
+- For iOS, create a `HOCKEYAPP_TOKEN` key in Account Settings -> API Tokens. Copy & Paste the token into the `HOCKEYAPP_TOKEN` environment variable in CircleCI described in   
+- For Android, create a `HOCKEYAPP_TOKEN_ANDROID` key in Account Settings -> API Tokens. Copy & Paste the token into the `HOCKEYAPP_TOKEN_ANDROID` environment variable in CircleCI described in   
+ the above section CircleCI Setup
+
 
 
 # Troubleshooting
