@@ -83,7 +83,7 @@ of the nightwatch config file match the device version you specify in the bash s
 - In **Experimental Settings** enable **Build iOS Project**
 - In **Environment Variables** make sure to set:
     - HOCKEYAPP_TOKEN - See HockeyApp Setup below to get this
-    - KEY_PASSWORD - Passwords for the .p12 files are in the "Shared-App Credentials" folder in LastPass.
+    - KEY_PASSWORD - Passwords for the .p12 files are in "CI Development Key" of the "Shared-App Credentials" folder in LastPass.
 - You will need to make sure CircleCI can access the Astro repo (for Mobify projects, follow [these instructions](https://mobify.atlassian.net/wiki/display/LT/questions/79528346/i-am-creating-a-new-cst-mobile-build-ios-or-android-that-has-linked-in-astro-as-a-git-submodule.-how-do-grant-circleci-access-to-both-repos)).
 
 # HockeyApp Setup
