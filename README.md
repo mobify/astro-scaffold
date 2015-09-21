@@ -76,33 +76,22 @@ change the `-destination` argument to point at the desired device and version. Y
 update the `nightwatch-config.js` file inside of `app/tests/system`. Make sure the desired capabilities
 of the nightwatch config file match the device version you specify in the bash script.
 
-# iOS CI support
-
-### CircleCI Setup:
-- Update the files in `circle/certificates` and `circle/provisioning-profiles` if you have non-Mobify certificates and provision profiles. 
-- Update the config files in `circle/config` based on the updates made in the previous step
+# CircleCI Setup:
+- (iOS only) Update the files in `circle/certificates` and `circle/provisioning-profiles` if you have non-Mobify certificates and provision profiles. 
+- (iOS only) Update the config files in `circle/config` based on the updates made in the previous step
 - **Follow** GitHub repo in CircleCI
 - In **Experimental Settings** enable **Build iOS Project**
 - In **Environment Variables** make sure to set:
     - HOCKEYAPP_TOKEN - See HockeyApp Setup below to get this
     - KEY_PASSWORD - Passwords for the .p12 files are in the "Shared-App Credentials" folder in LastPass.
+- You will need to make sure CircleCI can access the Astro repo (for Mobify projects, follow [these instructions](https://mobify.atlassian.net/wiki/display/LT/questions/79528346/i-am-creating-a-new-cst-mobile-build-ios-or-android-that-has-linked-in-astro-as-a-git-submodule.-how-do-grant-circleci-access-to-both-repos)).
 
-### HockeyApp Setup
+# HockeyApp Setup
 - Make sure there is an iOS project created with bundle identifier: `com.mobify.astro.scaffold`
 - In Account Settings->API Tokens, make sure there is an active `Upload & Release` API token for your app. Copy & Paste the token into the HOCKEYAPP_TOKEN environment variable in CircleCI described in the above section CircleCI Setup
 
-# Android CI support
-- **Follow** GitHub repo in CircleCI
-- In **Experimental Settings** enable **Build iOS Project** (this is currently required)
-- In **Environment Variables** make sure to set:
-    - HOCKEYAPP_TOKEN - See HockeyApp Setup below to get this
-    - KEY_PASSWORD - Passwords for the .p12 files are in the "Shared-App Credentials" folder in LastPass.
 
-### HockeyApp Setup
-- Make sure there is an Android project created with bundle identifier: `com.mobify.astro.scaffold`
-- In Account Settings->API Tokens, make sure there is an active `Upload & Release` API token for your app. Copy & Paste the token into the HOCKEYAPP_TOKEN environment variable in CircleCI described in the above section CircleCI Setup
-
-### Troubleshooting
+# Troubleshooting
 
 ![Screenshot of no available devices error](https://s3.amazonaws.com/uploads.hipchat.com/15359/58433/ACnytly3S1nHHkb/2015-08-12%2011.59.25%20am.png)
 

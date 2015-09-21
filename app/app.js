@@ -45,11 +45,7 @@ function(
         layout.setContentView(mainNavigationView);
     });
 
-    // Route all unhandled key presses to the mainNavigationView
-    mainNavigationViewPromise.then(function(mainNavigationView) {
-        Application.setMainInputPlugin(mainNavigationView);
-    });
-
+    // Set the main view as the layout
     layoutPromise.then(function(layout) {
         Application.setMainViewPlugin(layout);
     });

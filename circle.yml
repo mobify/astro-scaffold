@@ -36,7 +36,6 @@ deployment:
       - circle/remove-ios-keys.sh
 ## IOS_END
 ## ANDROID_BEGIN
-      - circle/install-android-dependencies.sh
       - pushd $ANDROID_ROOT_FOLDER && ./gradlew dependencies && popd
       - $ANDROID_HOME/tools/emulator -avd testing -no-window -no-audio:
           background: true
