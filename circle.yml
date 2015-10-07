@@ -1,0 +1,47 @@
+machine:
+  environment:
+    XCODE_SCHEME: scaffold
+    XCODE_WORKSPACE: ios/scaffold.xcworkspace
+    ANDROID_ROOT_FOLDER: android
+    APPNAME: scaffold
+    ANDROID_HOME: /usr/local/opt/android-sdk
+  xcode:
+    version: "6.3.1"
+checkout:
+  post:
+    - git submodule sync
+    - git submodule update --init
+dependencies:
+  pre:
+    - brew install npm
+    - npm install -g grunt-cli
+## ANDROID_BEGIN
+    - circle/install-android-dependencies.sh
+    - $ANDROID_ROOT_FOLDER/gradlew dependencies
+## ANDROID_END
+    - sudo chown -R `whoami` /usr/local
+    - npm install -g appium
+## IOS_BEGIN
+test:
+  override:
+    - ./scripts/ios-appium.sh
+## IOS_END
+deployment:
+  hockeyapp_mobifyqa:
+    branch: ["develop"]
+    commands:
+## IOS_BEGIN
+      - circle/add-ios-keys.sh
+      - circle/build-and-upload-ios.sh circle/config/mobify-qa-ios
+      - circle/remove-ios-keys.sh
+## IOS_END
+## ANDROID_BEGIN
+      - pushd $ANDROID_ROOT_FOLDER && ./gradlew dependencies && popd
+      - $ANDROID_HOME/tools/emulator -avd testing -no-window -no-audio:
+          background: true
+          timeout: 1200
+      - circle/wait-for-emulator-android.sh
+      - pushd $ANDROID_ROOT_FOLDER && ./gradlew createDebugCoverageReport coveralls && popd
+      - npm test
+      - circle/build-and-upload-android.sh circle/config/mobify-qa-android
+## ANDROID_END

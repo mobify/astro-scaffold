@@ -2,14 +2,14 @@ require([
     'astro-full',
     'bluebird',
     'application',
-    'plugins/webViewPlugin',
+    'plugins/navigationPlugin',
     'plugins/anchoredLayoutPlugin'
 ],
 function(
     Astro,
     Promise,
     Application,
-    WebViewPlugin,
+    NavigationPlugin,
     AnchoredLayoutPlugin
 ) {
 
@@ -18,38 +18,34 @@ function(
     var startUriPromise = Application.getStartUri();
 
     // Initialize plugins
-    var mainWebViewPromise = WebViewPlugin.init();
+    var mainNavigationViewPromise = NavigationPlugin.init();
     var layoutPromise = AnchoredLayoutPlugin.init();
 
     // Start the app at the base url or provided start uri (deep link launch)
-    Promise.join(mainWebViewPromise, startUriPromise, function(mainWebView, uri) {
+    Promise.join(mainNavigationViewPromise, startUriPromise, function(mainNavigationView, uri) {
         if (uri != null) {
-            mainWebView.navigate(uri);
+            mainNavigationView.navigate(uri);
         } else {
-            mainWebView.navigate(baseUrl);
+            mainNavigationView.navigate(baseUrl);
         }
     });
 
     // Listen for deep link events once app is running
-    Application.on('receivedDeepLink', function(params){
-        mainWebViewPromise.then(function(mainWebView) {
+    Application.on('receivedDeepLink', function(params) {
+        mainNavigationViewPromise.then(function(mainNavigationView) {
             var uri = params.uri;
             if (uri != null) {
-                mainWebView.navigate(uri);
+                mainNavigationView.navigate(uri);
             }
         });
     });
 
-    // Use the mainWebView as the main content view for our layout
-    Promise.join(layoutPromise, mainWebViewPromise, function(layout, mainWebView) {
-        layout.setContentView(mainWebView);
+    // Use the mainNavigationView as the main content view for our layout
+    Promise.join(layoutPromise, mainNavigationViewPromise, function(layout, mainNavigationView) {
+        layout.setContentView(mainNavigationView);
     });
 
-    // Route all unhandled key presses to the mainWebView
-    mainWebViewPromise.then(function(mainWebView) {
-        Application.setMainInputPlugin(mainWebView);
-    });
-
+    // Set the main view as the layout
     layoutPromise.then(function(layout) {
         Application.setMainViewPlugin(layout);
     });

@@ -32,6 +32,16 @@ Astro is brought in as a submodule. To update the Astro submodule to point to co
 - `git add astro`
 - `git commit -m "Updating Astro submodule to latest on 'develop' branch."`
 
+# Switching between Debug and Release mode
+
+## iOS
+
+Xcode - Product > Scheme > Edit Scheme ... In the Run scheme, change Build Configuration to Release
+
+## Android
+
+Android Studio - View > Tool Windows > Build Variants ... In the Build Variants panel, switch scaffold and astro to release.
+
 # Getting Started
 
 Open `app/app.js` to get started with development on this project!
@@ -66,7 +76,26 @@ change the `-destination` argument to point at the desired device and version. Y
 update the `nightwatch-config.js` file inside of `app/tests/system`. Make sure the desired capabilities
 of the nightwatch config file match the device version you specify in the bash script.
 
-### Troubleshooting
+# CircleCI Setup:
+- (iOS only) Update the files in `circle/certificates` and `circle/provisioning-profiles` if you have non-Mobify certificates and provision profiles. 
+- (iOS only) Update the config files in `circle/config` based on the updates made in the previous step
+- **Follow** GitHub repo in CircleCI
+- In **Experimental Settings** enable **Build iOS Project**
+- In **Environment Variables** make sure to set:
+    - `HOCKEYAPP_TOKEN` and `HOCKEYAPP_TOKEN_ANDROID` - See HockeyApp Setup below to get this
+    - KEY_PASSWORD - Passwords for the .p12 files are in "CI Development Key" of the "Shared-App Credentials" folder in LastPass.
+- You will need to make sure CircleCI can access the Astro repo (for Mobify projects, follow [these instructions](https://mobify.atlassian.net/wiki/display/LT/questions/79528346/i-am-creating-a-new-cst-mobile-build-ios-or-android-that-has-linked-in-astro-as-a-git-submodule.-how-do-grant-circleci-access-to-both-repos)).
+
+# HockeyApp Setup
+- Make sure there is an iOS project created with bundle identifier: `com.mobify.astro.scaffold`
+- Make sure there is an Android project created with package name: `com.mobify.astro.scaffold`
+- For iOS, create a `HOCKEYAPP_TOKEN` key in Account Settings -> API Tokens. Copy & Paste the token into the `HOCKEYAPP_TOKEN` environment variable in CircleCI described in   
+- For Android, create a `HOCKEYAPP_TOKEN_ANDROID` key in Account Settings -> API Tokens. Copy & Paste the token into the `HOCKEYAPP_TOKEN_ANDROID` environment variable in CircleCI described in   
+ the above section CircleCI Setup
+
+
+
+# Troubleshooting
 
 ![Screenshot of no available devices error](https://s3.amazonaws.com/uploads.hipchat.com/15359/58433/ACnytly3S1nHHkb/2015-08-12%2011.59.25%20am.png)
 
