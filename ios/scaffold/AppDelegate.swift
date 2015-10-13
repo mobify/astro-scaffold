@@ -18,6 +18,11 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     func application(application: UIApplication, didFinishLaunchingWithOptions launchOptions: [NSObject: AnyObject]?) -> Bool {
         // TODO: make it difficult for an Astro developer to delay return from this function.
 
+        // For UAT and DEBUG builds, allow untrusted HTTPS certs
+        #if !RELEASE
+            AstroConfig.allowUntrustedHTTPSCertificate = true
+        #endif
+
         astroViewController = AstroViewController(appJsUrl: NSURL(string: "app.js")!, launchOptions: launchOptions,
             pluginRegistrations: { pluginRegistrar in
         })
