@@ -78,7 +78,7 @@ function(
     };
 
     TabHeaderController.prototype.setTitle = function() {
-        this.viewPlugin.setCenterTitle('Scaffold App', 'header_id');
+        this.viewPlugin.setCenterTitle('Velo', 'header_id');
     };
 
     return TabHeaderController;

@@ -12,7 +12,7 @@ function(
     HeaderController
 ) {
 /* eslint-enable */
-    var baseUrl = 'https://www.google.com/';
+    //var baseUrl = 'https://www.google.com/';
 
     var TabController = function(id, layout, navigationView) {
         this.id = id;
@@ -67,7 +67,7 @@ function(
                 };
 
                 bindNavigation(navigationView, navigate);
-                navigate(baseUrl);
+                navigate(tab.url);
 
                 return new TabController(
                     tab.id,
