@@ -19,7 +19,7 @@ window.run = function() {
     ) {
 
         // Enter your site url here
-        var baseUrl = 'https://www.google.com/';
+        //var baseUrl = 'https://www.google.com/';
 
         // *****Need to enable deep linking again ******
 

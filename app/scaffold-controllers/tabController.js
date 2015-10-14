@@ -20,6 +20,23 @@ function(
         this.layout = layout;
     };
 
+    var bindNavigation = function(navigator, navigate) {
+        var navigationHandler = function(params) {
+            var url = params['url'];
+            var currentUrl = params['currentUrl'];
+
+            // We're expected to navigate the web view if we're called with a
+            // url and the web view isn't in the process of redirecting (i.e.
+            // `params.isCurrentlyLoading` is not set).
+            if (url != null && !params.isCurrentlyLoading) {
+                navigate(url);
+            }
+        };
+
+        navigator.on('navigate', navigationHandler);
+        navigator.disableDefaultNavigationHandler();
+    };
+
     TabController.init = function(tab) {
         return Promise.join(
             AnchoredLayoutPlugin.init(),
@@ -35,14 +52,22 @@ function(
 
                 layout.setContentView(navigationView);
 
+                var navigate = function(url) {
+                    if (!url) {
+                        return;
+                    }
 
-                // Enable custom navigation behaviour
-                // var includeSearchIcon = true;
-                // var tabNavigation = new TabNavigation(navigationView, headerController, includeSearchIcon);
-                // tabNavigation.bindTitleUpdate(tab.title);
-                // tabNavigation.navigate(tab.url);
+                    headerController.generateContent()
+                        .then(function(headerContent) {
+                            return navigationView.navigate(url, headerContent);
+                        })
+                        .then(function() {
+                            return headerController.setTitle();
+                        });
+                };
 
-                navigationView.navigate(baseUrl);
+                bindNavigation(navigationView, navigate);
+                navigate(baseUrl);
 
                 return new TabController(
                     tab.id,

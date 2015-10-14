@@ -1,23 +1,13 @@
 define([
-    // 'thinkgeek-components/headerBar',
-    // 'thinkgeek-components/cartConfig',
-    // 'thinkgeek-components/headerConfig',
-    // 'thinkgeek-plugins/counterBadgePlugin',
+    'scaffold-plugins/counterBadgePlugin',
     'plugins/headerBarPlugin',
     'bluebird'
 ],
 function(
+    CounterBadgePlugin,
     HeaderBarPlugin,
     Promise
 ) {
-// function(
-//     HeaderBar,
-//     CartConfig,
-//     HeaderConfig,
-//     CounterBadgePlugin,
-//     Promise
-// ) {
-    // Global cart counter to share btw. all the instances
 
     var TabHeaderController = function(headerBar) {
         this.viewPlugin = headerBar;
@@ -27,34 +17,37 @@ function(
     // //     counterBadge.setCount(count ? count : 0);
     // // };
     //
-    // var _createCartCounter = function(counterBadge) {
-    //     if (counterBadge) {
-    //         // Set Icon
-    //         counterBadge.setImagePath(CartConfig.cartOpenIcon.url);
-    //         counterBadge.setBackgroundColor(CartConfig.cartCounterBadge.backgroundColor);
-    //
-    //         // // Set Counter Badge
-    //         // _setCartCounter(counterBadge, ThinkGeekApplication.cartCounter);
-    //         //
-    //         // // Delegate counter update event listener
-    //         // ThinkGeekApplication.on(ThinkGeekApplication.events.cartUpdateCounter, function(param) {
-    //         //     _setCartCounter(counterBadge, param.count);
-    //         // });
-    //     }
-    // };
-    //
-    // var _createCartHeaderContent = function(counterBadge) {
-    //     return {
-    //         id: 'cart_id',
-    //         pluginAddress: counterBadge.toMethodArg()
-    //     };
-    // };
+    var _createCartCounter = function(counterBadge) {
+        if (counterBadge) {
+            // Set Icon
+            counterBadge.setImagePath('file:///Icon__cart.png');
+            counterBadge.setBackgroundColor('#ff0000');
+            counterBadge.setCount(1);
+
+            // // Set Counter Badge
+            // _setCartCounter(counterBadge, ThinkGeekApplication.cartCounter);
+            //
+            // // Delegate counter update event listener
+            // ThinkGeekApplication.on(ThinkGeekApplication.events.cartUpdateCounter, function(param) {
+            //     _setCartCounter(counterBadge, param.count);
+            // });
+        }
+    };
+
+    var _createCartHeaderContent = function(counterBadge) {
+        return {
+            id: 'cart_id',
+            pluginAddress: counterBadge.toMethodArg()
+        };
+    };
 
     TabHeaderController.init = function() {
         return HeaderBarPlugin.init().then(function(headerBar) {
             //Application.setStatusBarLightText();
             //headerBar.setOpaque();
-            //headerBar.hideBackButtonText();
+            headerBar.hideBackButtonText();
+            headerBar.setTextColor('#ffffff');
+            headerBar.setBackgroundColor('#007BA7');
 
             var tabHeaderController = new TabHeaderController(headerBar);
 
@@ -62,19 +55,19 @@ function(
         });
     };
 
-    // TabHeaderController.prototype.generateContent = function(includeSearchIcon) {
-    //     return CounterBadgePlugin.init().then(
-    //         function(counterBadge) {
-    //             _createCartCounter(counterBadge);
-    //
-    //             return {
-    //                 header: {
-    //                     rightIcon: _createCartHeaderContent(counterBadge)
-    //                 }
-    //             };
-    //         }
-    //     );
-    // };
+    TabHeaderController.prototype.generateContent = function() {
+        return CounterBadgePlugin.init().then(
+            function(counterBadge) {
+                _createCartCounter(counterBadge);
+
+                return {
+                    header: {
+                        rightIcon: _createCartHeaderContent(counterBadge)
+                    }
+                };
+            }
+        );
+    };
 
     TabHeaderController.prototype.registerBackEvents = function(callback) {
         if (!callback) {
@@ -84,9 +77,9 @@ function(
         this.viewPlugin.on('click:back', callback);
     };
 
-    // TabHeaderController.prototype.setTitle = function(title) {
-    //     this.viewPlugin.setCenterTitle(title, HeaderConfig.title.id);
-    // };
+    TabHeaderController.prototype.setTitle = function() {
+        this.viewPlugin.setCenterTitle('Scaffold App', 'header_id');
+    };
 
     return TabHeaderController;
 });
