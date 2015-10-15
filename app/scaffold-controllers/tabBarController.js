@@ -1,15 +1,11 @@
 define([
     'plugins/tabBarPlugin',
-    'plugins/navigationPlugin',
-    'plugins/anchoredLayoutPlugin',
     'scaffold-components/tabBarConfig',
     'scaffold-controllers/tabController',
     'bluebird'
 ],
 function(
     TabBarPlugin,
-    NavigationPlugin,
-    AnchoredLayoutPlugin,
     TabBarConfig,
     TabController,
     Promise

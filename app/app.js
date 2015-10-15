@@ -5,7 +5,6 @@ window.run = function() {
         'astro-full',
         'bluebird',
         'application',
-        'plugins/navigationPlugin',
         'plugins/anchoredLayoutPlugin',
         'scaffold-controllers/tabBarController',
         'scaffold-components/deepLinkingServices'
@@ -14,14 +13,10 @@ window.run = function() {
         Astro,
         Promise,
         Application,
-        NavigationPlugin,
         AnchoredLayoutPlugin,
         TabBarController,
         DeepLinkingServices
     ) {
-
-        // Enter your site url here
-        //var baseUrl = 'https://www.google.com/';
 
         var layoutPromise = AnchoredLayoutPlugin.init();
         var tabBarControllerPromise = TabBarController.init(layoutPromise);
@@ -37,16 +32,17 @@ window.run = function() {
             return Application.setMainViewPlugin(layout);
         });
 
-        // Tab layout must be added as the mainViewPlugin before
-        // The first tab is selected or else the navigation does
-        // not complete correctly - TGI-273
         Promise.join(tabBarControllerPromise, layoutSetupPromise, function(tabBarController) {
+            // Tab layout must be added as the mainViewPlugin before
+            // The first tab is selected or else the navigation does
+            // not complete correctly
             tabBarController.selectTab('1');
 
             // Deep linking services will enable deep linking on startup
             // and while running
             // It will open the deep link in the current active tab
-            var deepLinkingServices = new DeepLinkingServices(tabBarController.navigateActiveTab.bind(tabBarController));
+            var deepLinkingServices = new DeepLinkingServices(
+                tabBarController.navigateActiveTab.bind(tabBarController));
 
         });
 

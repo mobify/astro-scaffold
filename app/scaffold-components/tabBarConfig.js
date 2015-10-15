@@ -1,6 +1,8 @@
 define([ ], function() {
 /* eslint-enable max-statements */
 
+    // Configure your tabs here:
+
     var tabOne = {
         id: '1',
         title:'Bikes',
