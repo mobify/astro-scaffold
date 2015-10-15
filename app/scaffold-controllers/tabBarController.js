@@ -24,8 +24,6 @@ function(
     };
 
     var configTabBar = function(tabBar, tabItems) {
-        // tabBar.setColor(Styles.Colors.middle_blue_accent);
-        // tabBar.setBackgroundColor(Styles.Colors.white);
         tabBar.setItems(tabItems);
         tabBar.setOpaque();
 

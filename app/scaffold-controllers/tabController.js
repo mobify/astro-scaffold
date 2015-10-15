@@ -35,7 +35,7 @@ function(
         this.layout = layout;
         this.headerController = headerController;
 
-        bindNavigation(this.navigationView, this.navigate);
+        bindNavigation(this.navigationView, this.navigate.bind(this));
         this.navigate(tab.url);
     };
 
