@@ -95,5 +95,9 @@ function(
         });
     };
 
+    TabBarController.prototype.navigateActiveTab = function(url) {
+        this.tabBar.tabControllers[this.activeTabId].navigate(url);
+    };
+
     return TabBarController;
 });

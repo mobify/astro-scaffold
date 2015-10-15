@@ -12,14 +12,6 @@ function(
     HeaderController
 ) {
 /* eslint-enable */
-    //var baseUrl = 'https://www.google.com/';
-
-    var TabController = function(id, layout, navigationView) {
-        this.id = id;
-        this.navigationView = navigationView;
-        this.layout = layout;
-    };
-
     var bindNavigation = function(navigator, navigate) {
         var navigationHandler = function(params) {
             var url = params['url'];
@@ -37,6 +29,16 @@ function(
         navigator.disableDefaultNavigationHandler();
     };
 
+    var TabController = function(tab, layout, navigationView, headerController) {
+        this.id = tab.id;
+        this.navigationView = navigationView;
+        this.layout = layout;
+        this.headerController = headerController;
+
+        bindNavigation(this.navigationView, this.navigate);
+        this.navigate(tab.url);
+    };
+
     TabController.init = function(tab) {
         return Promise.join(
             AnchoredLayoutPlugin.init(),
@@ -52,30 +54,28 @@ function(
 
                 layout.setContentView(navigationView);
 
-                var navigate = function(url) {
-                    if (!url) {
-                        return;
-                    }
-
-                    headerController.generateContent()
-                        .then(function(headerContent) {
-                            return navigationView.navigate(url, headerContent);
-                        })
-                        .then(function() {
-                            return headerController.setTitle();
-                        });
-                };
-
-                bindNavigation(navigationView, navigate);
-                navigate(tab.url);
-
                 return new TabController(
-                    tab.id,
+                    tab,
                     layout,
-                    navigationView
+                    navigationView,
+                    headerController
                 );
             }
         );
+    };
+
+    TabController.prototype.navigate = function(url) {
+        if (!url) {
+            return;
+        }
+
+        this.headerController.generateContent()
+            .then(function(headerContent) {
+                return this.navigationView.navigate(url, headerContent);
+            }.bind(this))
+            .then(function() {
+                return this.headerController.setTitle();
+            }.bind(this));
     };
 
     return TabController;

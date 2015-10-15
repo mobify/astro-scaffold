@@ -13,22 +13,27 @@ function(
         this.viewPlugin = headerBar;
     };
 
-    // // var _setCartCounter = function(counterBadge, count) {
-    // //     counterBadge.setCount(count ? count : 0);
-    // // };
-    //
+    var _setCartCounter = function(counterBadge, count) {
+        counterBadge.setCount(count ? count : 0);
+    };
+
     var _createCartCounter = function(counterBadge) {
         if (counterBadge) {
             // Set Icon
             counterBadge.setImagePath('file:///Icon__cart.png');
             counterBadge.setBackgroundColor('#ff0000');
-            counterBadge.setCount(1);
 
-            // // Set Counter Badge
-            // _setCartCounter(counterBadge, ThinkGeekApplication.cartCounter);
-            //
-            // // Delegate counter update event listener
-            // ThinkGeekApplication.on(ThinkGeekApplication.events.cartUpdateCounter, function(param) {
+            // Set Counter Badge initial value
+            _setCartCounter(counterBadge, 1);
+
+            // In order to update the counter badge on every tab
+            // and on every stack item this code should register to
+            // listen for a cart update counter event
+            // (which app will have to emit)
+            // Call _setCartCounter from here every time tht event is received
+
+            // Example:
+            // ScaffoldApplication.on(ScaffoldApplication.events.cartUpdateCounter, function(param) {
             //     _setCartCounter(counterBadge, param.count);
             // });
         }
@@ -43,8 +48,6 @@ function(
 
     TabHeaderController.init = function() {
         return HeaderBarPlugin.init().then(function(headerBar) {
-            //Application.setStatusBarLightText();
-            //headerBar.setOpaque();
             headerBar.hideBackButtonText();
             headerBar.setTextColor('#ffffff');
             headerBar.setBackgroundColor('#007BA7');
