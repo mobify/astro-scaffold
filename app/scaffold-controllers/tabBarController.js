@@ -2,6 +2,7 @@ define([
     'plugins/tabBarPlugin',
     'plugins/navigationPlugin',
     'plugins/anchoredLayoutPlugin',
+    'scaffold-components/tabBarConfig',
     'scaffold-controllers/tabController',
     'bluebird'
 ],
@@ -9,17 +10,10 @@ function(
     TabBarPlugin,
     NavigationPlugin,
     AnchoredLayoutPlugin,
+    TabBarConfig,
     TabController,
     Promise
 ) {
-
-    var tabItems = [
-        {id: '1', title:'Bikes', url: 'https://webpush-you-host.mobifydemo.io/', imageUrl: 'file:///Icon__discover.png', selectedImageUrl: 'file:///Icon__discover.png'},
-        {id: '2', title:'Accessories', url: 'https://webpush-you-host.mobifydemo.io/accessories/', imageUrl: 'file:///Icon__discover.png', selectedImageUrl: 'file:///Icon__discover.png'},
-        {id: '3', title:'Services', url: 'https://webpush-you-host.mobifydemo.io/services/', imageUrl: 'file:///Icon__discover.png', selectedImageUrl: 'file:///Icon__discover.png'},
-        {id: '4', title:'Sales', url: 'https://webpush-you-host.mobifydemo.io/sales/', imageUrl: 'file:///Icon__discover.png', selectedImageUrl: 'file:///Icon__discover.png'},
-        {id: '5', title:'About', url: 'https://webpush-you-host.mobifydemo.io/about/', imageUrl: 'file:///Icon__discover.png', selectedImageUrl: 'file:///Icon__discover.png'}
-    ];
 
     var TabBarController = function(tabBar, layout) {
         this.tabBar = tabBar;
@@ -29,22 +23,22 @@ function(
         this._bindEvents();
     };
 
-    var configTabBar = function(tabBar, tabItemsStruct) {
+    var configTabBar = function(tabBar, tabItems) {
         // tabBar.setColor(Styles.Colors.middle_blue_accent);
         // tabBar.setBackgroundColor(Styles.Colors.white);
-        tabBar.setItems(tabItemsStruct.tabItems);
+        tabBar.setItems(tabItems);
         tabBar.setOpaque();
 
         return tabBar;
     };
 
-    var initRegularTabs = function(tabBar, tabItemsStruct) {
+    var initRegularTabs = function(tabBar, tabItems) {
         // Set up regular tabs' layouts
         tabBar.tabViews = {};
         tabBar.tabControllers = {};
 
         // Make sure all tabViews are set up
-        return Promise.all(tabItemsStruct.tabItems.map(function(tab) {
+        return Promise.all(tabItems.map(function(tab) {
             // Init a new tabController
             return TabController.init(tab).then(function(tabController) {
                 tabBar.tabControllers[tab.id] = tabController;
@@ -58,9 +52,7 @@ function(
     };
 
     TabBarController.init = function(layoutPromise) {
-        var constructTabItemsPromise = Promise.resolve({
-            tabItems: tabItems
-        });
+        var constructTabItemsPromise = Promise.resolve(TabBarConfig.tabItems);
 
         var initTabBarPromise = Promise.join(
             TabBarPlugin.init(),
