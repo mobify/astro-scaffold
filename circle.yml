@@ -13,6 +13,7 @@ checkout:
     - git submodule update --init
 dependencies:
   pre:
+    - brew update
     - brew install npm
     - npm install -g grunt-cli
 ## ANDROID_BEGIN
