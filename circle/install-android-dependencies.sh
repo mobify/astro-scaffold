@@ -2,8 +2,6 @@
 
 MYDIR=$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )
 
-brew tap caskroom/cask &&
-brew install brew-cask &&
 brew cask install java &&
 brew install android-sdk &&
 pushd $ANDROID_HOME &&
