@@ -134,6 +134,9 @@ function resignApp() {
     rm -f "$PAYLOAD_APP_PATH/embedded.mobileprovision"
     cp "$PROVISIONING_PROFILE" "$PAYLOAD_APP_PATH/embedded.mobileprovision"
 
+    # Update bundle version
+    /usr/libexec/PlistBuddy "$PAYLOAD_APP_PATH/Info.plist" -c "Set :CFBundleVersion $BUNDLE_VERSION"
+    
     # Fix entitlements
     ENTITLEMENTS_FILE="$WORKING_DIR/entitlements.plist"
     NEW_ENTITLEMENTS_FILE=$(mktemp -t entitlements.plist)
