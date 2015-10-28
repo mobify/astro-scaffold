@@ -1,3 +1,5 @@
+window.AstroMessages = []; // For debugging messages
+
 window.run = function() {
     require([
         'astro-full',
