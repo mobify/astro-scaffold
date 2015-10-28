@@ -1,0 +1,30 @@
+{
+  "DVTSourceControlWorkspaceBlueprintPrimaryRemoteRepositoryKey" : "6C46D1FA93C60FABFCFE02DBE07609B16046FB5C",
+  "DVTSourceControlWorkspaceBlueprintWorkingCopyRepositoryLocationsKey" : {
+
+  },
+  "DVTSourceControlWorkspaceBlueprintWorkingCopyStatesKey" : {
+    "C8599756400699B8844918406DF3A9460F6598AB" : 0,
+    "6C46D1FA93C60FABFCFE02DBE07609B16046FB5C" : 0
+  },
+  "DVTSourceControlWorkspaceBlueprintIdentifierKey" : "967869FF-F705-4E13-AE65-F22182410F8D",
+  "DVTSourceControlWorkspaceBlueprintWorkingCopyPathsKey" : {
+    "C8599756400699B8844918406DF3A9460F6598AB" : "astro",
+    "6C46D1FA93C60FABFCFE02DBE07609B16046FB5C" : "astro-scaffold"
+  },
+  "DVTSourceControlWorkspaceBlueprintNameKey" : "scaffold",
+  "DVTSourceControlWorkspaceBlueprintVersion" : 204,
+  "DVTSourceControlWorkspaceBlueprintRelativePathToProjectKey" : "ios\/scaffold.xcworkspace",
+  "DVTSourceControlWorkspaceBlueprintRemoteRepositoriesKey" : [
+    {
+      "DVTSourceControlWorkspaceBlueprintRemoteRepositoryURLKey" : "github.com:mobify\/astro-scaffold.git",
+      "DVTSourceControlWorkspaceBlueprintRemoteRepositorySystemKey" : "com.apple.dt.Xcode.sourcecontrol.Git",
+      "DVTSourceControlWorkspaceBlueprintRemoteRepositoryIdentifierKey" : "6C46D1FA93C60FABFCFE02DBE07609B16046FB5C"
+    },
+    {
+      "DVTSourceControlWorkspaceBlueprintRemoteRepositoryURLKey" : "github.com:mobify\/astro.git",
+      "DVTSourceControlWorkspaceBlueprintRemoteRepositorySystemKey" : "com.apple.dt.Xcode.sourcecontrol.Git",
+      "DVTSourceControlWorkspaceBlueprintRemoteRepositoryIdentifierKey" : "C8599756400699B8844918406DF3A9460F6598AB"
+    }
+  ]
+}
