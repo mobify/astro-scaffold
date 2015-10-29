@@ -7,7 +7,7 @@ To get up and running with scaffold, ensure your submodules are up to date:
 **Note**: The app/build-js.sh script automatically builds app.js.
 If node.js isn't installed to /usr/local/bin, run:
 
-    cp app/user-env.sh.example app/user-env.sh && which npm | pbcopy
+    cp app/user-env.sh.example app/user-env.sh && which npm | sed 's/\/npm//' | pbcopy
 
 Then paste the npm path from your clipboard onto the end of the path inside of the user-env.sh file.
 
