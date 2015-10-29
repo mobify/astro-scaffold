@@ -1,53 +1,59 @@
-require([
-    'astro-full',
-    'bluebird',
-    'application',
-    'plugins/navigationPlugin',
-    'plugins/anchoredLayoutPlugin'
-],
-function(
-    Astro,
-    Promise,
-    Application,
-    NavigationPlugin,
-    AnchoredLayoutPlugin
-) {
+window.AstroMessages = []; // For debugging messages
 
-    // Enter your site url here
-    var baseUrl = 'http://www.google.com/';
-    var startUriPromise = Application.getStartUri();
+window.run = function() {
+    require([
+        'astro-full',
+        'bluebird',
+        'application',
+        'plugins/navigationPlugin',
+        'plugins/anchoredLayoutPlugin'
+    ],
+    function(
+        Astro,
+        Promise,
+        Application,
+        NavigationPlugin,
+        AnchoredLayoutPlugin
+    ) {
 
-    // Initialize plugins
-    var mainNavigationViewPromise = NavigationPlugin.init();
-    var layoutPromise = AnchoredLayoutPlugin.init();
+        // Enter your site url here
+        var baseUrl = 'http://www.google.com/';
+        var startUriPromise = Application.getStartUri();
 
-    // Start the app at the base url or provided start uri (deep link launch)
-    Promise.join(mainNavigationViewPromise, startUriPromise, function(mainNavigationView, uri) {
-        if (uri != null) {
-            mainNavigationView.navigate(uri);
-        } else {
-            mainNavigationView.navigate(baseUrl);
-        }
-    });
+        // Initialize plugins
+        var mainNavigationViewPromise = NavigationPlugin.init();
+        var layoutPromise = AnchoredLayoutPlugin.init();
 
-    // Listen for deep link events once app is running
-    Application.on('receivedDeepLink', function(params) {
-        mainNavigationViewPromise.then(function(mainNavigationView) {
-            var uri = params.uri;
+        // Start the app at the base url or provided start uri (deep link launch)
+        Promise.join(mainNavigationViewPromise, startUriPromise, function(mainNavigationView, uri) {
             if (uri != null) {
                 mainNavigationView.navigate(uri);
+            } else {
+                mainNavigationView.navigate(baseUrl);
             }
         });
-    });
 
-    // Use the mainNavigationView as the main content view for our layout
-    Promise.join(layoutPromise, mainNavigationViewPromise, function(layout, mainNavigationView) {
-        layout.setContentView(mainNavigationView);
-    });
+        // Listen for deep link events once app is running
+        Application.on('receivedDeepLink', function(params) {
+            mainNavigationViewPromise.then(function(mainNavigationView) {
+                var uri = params.uri;
+                if (uri != null) {
+                    mainNavigationView.navigate(uri);
+                }
+            });
+        });
 
-    // Set the main view as the layout
-    layoutPromise.then(function(layout) {
-        Application.setMainViewPlugin(layout);
-    });
+        // Use the mainNavigationView as the main content view for our layout
+        Promise.join(layoutPromise, mainNavigationViewPromise, function(layout, mainNavigationView) {
+            layout.setContentView(mainNavigationView);
+        });
 
-}, undefined, true);
+        // Set the main view as the layout
+        layoutPromise.then(function(layout) {
+            Application.setMainViewPlugin(layout);
+        });
+
+    }, undefined, true);
+};
+// Comment out next line for JS debugging
+window.run();
