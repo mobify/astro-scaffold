@@ -17,7 +17,7 @@ window.run = function() {
     ) {
 
         // Enter your site url here
-        var baseUrl = 'http://www.google.com/';
+        var baseUrl = 'http://astro.mobify.com/';
         var startUriPromise = Application.getStartUri();
 
         // Initialize plugins
