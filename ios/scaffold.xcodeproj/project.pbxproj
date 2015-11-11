@@ -7,6 +7,8 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		0E49A5E01BF3E324001549B6 /* local_www in Resources */ = {isa = PBXBuildFile; fileRef = 0E49A5DF1BF3E324001549B6 /* local_www */; settings = {ASSET_TAGS = (); }; };
+		0E49A5E11BF3E324001549B6 /* local_www in Resources */ = {isa = PBXBuildFile; fileRef = 0E49A5DF1BF3E324001549B6 /* local_www */; settings = {ASSET_TAGS = (); }; };
 		87132A201B6016FF00FC74A4 /* Astro.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 87132A1E1B6016FF00FC74A4 /* Astro.framework */; };
 		87132A211B6016FF00FC74A4 /* Astro.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 87132A1E1B6016FF00FC74A4 /* Astro.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		87132A221B6016FF00FC74A4 /* Cordova.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 87132A1F1B6016FF00FC74A4 /* Cordova.framework */; };
@@ -48,6 +50,7 @@
 /* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
+		0E49A5DF1BF3E324001549B6 /* local_www */ = {isa = PBXFileReference; lastKnownFileType = folder; name = local_www; path = ../../app/local_www; sourceTree = "<group>"; };
 		87132A1E1B6016FF00FC74A4 /* Astro.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Astro.framework; path = "$(CONFIGURATION_BUILD_DIR)/Astro.framework"; sourceTree = "<group>"; };
 		87132A1F1B6016FF00FC74A4 /* Cordova.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Cordova.framework; path = "$(CONFIGURATION_BUILD_DIR)/Cordova.framework"; sourceTree = "<group>"; };
 		87C6A8861B43044D001876CE /* scaffold.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = scaffold.app; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -115,6 +118,7 @@
 				87C6A88D1B43044D001876CE /* ViewController.swift */,
 				87C6A88F1B43044D001876CE /* Main.storyboard */,
 				87C6A8921B43044D001876CE /* Images.xcassets */,
+				0E49A5DF1BF3E324001549B6 /* local_www */,
 				87C6A8941B43044D001876CE /* LaunchScreen.xib */,
 				87C6A8891B43044D001876CE /* Supporting Files */,
 			);
@@ -250,6 +254,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				96C2AD861B62B6180032A784 /* app.js in Resources */,
+				0E49A5E01BF3E324001549B6 /* local_www in Resources */,
 				87C6A8911B43044D001876CE /* Main.storyboard in Resources */,
 				87C6A8961B43044D001876CE /* LaunchScreen.xib in Resources */,
 				87C6A8931B43044D001876CE /* Images.xcassets in Resources */,
@@ -262,6 +267,7 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				0E49A5E11BF3E324001549B6 /* local_www in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

@@ -1,0 +1,190 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta name="viewport" content="initial-scale=1, user-scalable=no">
+
+    <!-- Navitron Styles -->
+    <link rel="stylesheet" href="vendor/css/navitron.css">
+
+    <!-- Optional Navitron Theme Style -->
+    <link rel="stylesheet" href="vendor/css/navitron-theme.css">
+
+    <!-- Example Page Styles -->
+    <link rel="stylesheet" href="assets/css/left_menu.css">
+
+    <script src="http://assets.mobify.com/astro/astro-client-0.2.0.min.js"></script>
+    <script src="vendor/js/jquery.min.js"></script>
+    <script src="vendor/js/fastclick.js"></script>
+    <script>
+        $(function() {
+            $('.navitron__astro-link').on('click', function(e){
+                var url = $(this).attr('href');
+                Astro.trigger('navitron__astro-link', url);
+                return false;
+            });
+        });
+    </script>
+    <script>
+        $(function() {
+            FastClick.attach(document.body);
+        });
+    </script>
+</head>
+<body>
+    <nav id="myNavitron" hidden>
+        <ul>
+            <li class="navitron__header" id="testing2" value="12">
+                <div class="c-bar">
+                    <span class="c-bar__heading">Top Level</span>
+                </div>
+            </li>
+
+            <li>
+                <button class="navitron__next-pane" type="button">Men</button>
+                <ul>
+                    <li class="navitron__header">
+                        <div class="c-bar">
+                            <button class="c-button navitron__prev-pane" type="button">
+                                Back
+                            </button>
+                            <span class="c-bar__heading">Men</span>
+                        </div>
+                    </li>
+
+                    <li>
+                        <button class="navitron__next-pane" type="button">Outerwear</button>
+                        <ul>
+                            <li><a href="#">Jacket</a></li>
+                            <li><a href="#">Parkas</a></li>
+                            <li><a href="#">Vests</a></li>
+                            <li class="navitron__footer">
+                                <div class="c-bar">
+                                    <button class="c-button navitron__prev-pane" type="button">
+                                        Back
+                                    </button>
+                                    <span class="c-bar__heading">Outerwear</span>
+                                </div>
+                            </li>
+                        </ul>
+                    </li>
+
+                    <li>
+                        <button class="navitron__next-pane" type="button">Shirts</button>
+                        <ul>
+                            <li class="navitron__header">
+                                <div class="c-bar">
+                                    <button class="c-button navitron__prev-pane" type="button">
+                                        Back
+                                    </button>
+                                    <span class="c-bar__heading">Shirts</span>
+                                </div>
+                            </li>
+                            <li><a href="#">Plain</a></li>
+                            <li><a href="#">Two Tone</a></li>
+                            <li><a href="#">Plaid</a></li>
+                        </ul>
+                    </li>
+
+                    <li>
+                        <button class="navitron__next-pane" type="button">Pants</button>
+                        <ul>
+                            <li class="navitron__header">
+                                <div class="c-bar">
+                                    <button class="c-button navitron__prev-pane" type="button">
+                                        Back
+                                    </button>
+                                    <span class="c-bar__heading">Pants</span>
+                                </div>
+                            </li>
+                            <li><a href="#">Dress Pants</a></li>
+                            <li><a href="#">Jeans</a></li>
+                            <li><a href="#">Ski Pants</a></li>
+                        </ul>
+                    </li>
+                </ul>
+            </li>
+
+            <li>
+                <button class="navitron__next-pane" type="button">Women</button>
+                <ul>
+                    <li class="navitron__header">
+                        <div class="c-bar">
+                            <button class="c-button navitron__prev-pane" type="button">
+                                Back
+                            </button>
+                            <span class="c-bar__heading">Women</span>
+                        </div>
+                    </li>
+                    <li>
+                        <a href="#">Tops</a>
+                    </li>
+
+                    <li>
+                        <a href="#">Dresses</a>
+                    </li>
+
+                    <li>
+                        <a href="#">Fleece</a>
+                    </li>
+                </ul>
+            </li>
+
+            <li><a class="navitron__astro-link" href="https://m.reddit.com">Anchor Link</a></li>
+
+            <li><a class="navitron__astro-link" href="http://www.mobify.com">Anchor Link</a></li>
+
+            <li><a class="navitron__astro-link" href="http://eddiebauer.com">Anchor Link</a></li>
+
+            <li>
+                <button class="navitron__next-pane" type="button">Gear</button>
+                <ul>
+                    <li class="navitron__header">
+                        <div class="c-bar">
+                            <button class="c-button navitron__prev-pane" type="button">
+                                Back
+                            </button>
+                            <span class="c-bar__heading">Gear</span>
+                        </div>
+                    </li>
+                    <li>
+                        <a href="#">Lighting</a>
+                    </li>
+
+                    <li>
+                        <a href="#">Tents</a>
+                    </li>
+
+                    <li>
+                        <a href="#">Backpacks</a>
+                    </li>
+                </ul>
+            </li>
+
+            <li class="navitron__footer">
+                <div class="c-bar">
+                    <span class="c-bar__heading">Footer</span>
+                </div>
+            </li>
+        </ul>
+        <ul>
+            <li>
+                <a class='astro-link' href="http://m.reddit.com">Secondary menu link 1</a>
+            </li>
+            <li>
+                <a class='astro-link' href="http://m.reddit.com">Secondary menu link 2</a>
+            </li>
+            <li>
+                <a class='astro-link' href="http://m.reddit.com">Secondary menu link 3</a>
+            </li>
+            <li>
+                <a class='astro-link' href="http://m.reddit.com">Secondary menu link 4</a>
+            </li>
+        </ul>
+    </nav>
+
+    <script data-main="vendor/js/main" src="vendor/js/require.js"></script>
+
+</body>
+</html>
+
+
