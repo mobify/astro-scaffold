@@ -34,12 +34,16 @@ window.run = function() {
         });
 
         // Listen for deep link events once app is running
-        Application.on('receivedDeepLink', function(params) {
-            mainNavigationViewPromise.then(function(mainNavigationView) {
+        mainNavigationViewPromise.then(function(mainNavigationView) {
+            Application.on('receivedDeepLink', function(params) {
                 var uri = params.uri;
                 if (uri != null) {
                     mainNavigationView.navigate(uri);
                 }
+            });
+            // Wiring up the hardware back button for Android
+            Application.on('onKeyDown', function(params) {
+                mainNavigationView.back();
             });
         });
 
