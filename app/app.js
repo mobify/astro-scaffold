@@ -1,43 +1,63 @@
-require([
-    'astro',
-    'bluebird',
-    'plugins/applicationPlugin',
-    'plugins/webViewPlugin',
-    'plugins/anchoredLayoutPlugin'
-],
-function(
-    Astro,
-    Promise,
-    ApplicationPlugin,
-    WebViewPlugin,
-    AnchoredLayoutPlugin
-) {
+window.AstroMessages = []; // For debugging messages
 
-    // Enter your site url here
-    var baseUrl = 'http://www.google.com/';
+window.run = function() {
+    require([
+        'astro-full',
+        'bluebird',
+        'application',
+        'plugins/navigationPlugin',
+        'plugins/anchoredLayoutPlugin'
+    ],
+    function(
+        Astro,
+        Promise,
+        Application,
+        NavigationPlugin,
+        AnchoredLayoutPlugin
+    ) {
 
-    // Initialize plugins
-    var applicationPromise = ApplicationPlugin.init();
-    var mainWebViewPromise = WebViewPlugin.init();
-    var layoutPromise = AnchoredLayoutPlugin.init();
+        // Enter your site url here
+        var baseUrl = 'http://astro.mobify.com/';
+        var startUriPromise = Application.getStartUri();
 
-    // Start the app at the base url
-    mainWebViewPromise.then(function(mainWebView) {
-        mainWebView.navigate(baseUrl);
-    });
+        // Initialize plugins
+        var mainNavigationViewPromise = NavigationPlugin.init();
+        var layoutPromise = AnchoredLayoutPlugin.init();
 
-    // Use the mainWebView as the main content view for our layout
-    Promise.join(layoutPromise, mainWebViewPromise, function(layout, mainWebView) {
-        layout.setContentView(mainWebView.address);
-    });
+        // Start the app at the base url or provided start uri (deep link launch)
+        Promise.join(mainNavigationViewPromise, startUriPromise, function(mainNavigationView, uri) {
+            if (uri != null) {
+                mainNavigationView.navigate(uri);
+            } else {
+                mainNavigationView.navigate(baseUrl);
+            }
+        });
 
-    // Route all unhandled key presses to the mainWebView
-    Promise.join(applicationPromise, mainWebViewPromise, function(application, mainWebView){
-        application.setMainInputPlugin(mainWebView.address);
-    });
+        // Listen for deep link events once app is running
+        mainNavigationViewPromise.then(function(mainNavigationView) {
+            Application.on('receivedDeepLink', function(params) {
+                var uri = params.uri;
+                if (uri != null) {
+                    mainNavigationView.navigate(uri);
+                }
+            });
+            // Wiring up the hardware back button for Android
+            Application.on('onKeyDown', function(params) {
+                mainNavigationView.back();
+            });
+        });
 
-    Promise.join(applicationPromise, layoutPromise, function(application, layout) {
-        application.setMainViewPlugin(layout.address);
-    });
+        // Use the mainNavigationView as the main content view for our layout
+        Promise.join(layoutPromise, mainNavigationViewPromise, function(layout, mainNavigationView) {
+            layout.setContentView(mainNavigationView);
+        });
 
-}, undefined, true);
+        // Set the main view as the layout
+        layoutPromise.then(function(layout) {
+            Application.setMainViewPlugin(layout);
+        });
+
+    }, undefined, true);
+};
+// Comment out next line for JS debugging
+window.run();

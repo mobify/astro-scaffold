@@ -1,0 +1,4 @@
+# Duplicate this file as `user-env.sh` to export additional paths if Android
+# Studio or Xcode have problems finding `npm` or `node` during the build step.
+#
+export PATH=$PATH:/usr/local/bin
