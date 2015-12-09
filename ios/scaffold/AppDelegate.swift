@@ -23,6 +23,10 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
             AstroConfig.allowUntrustedHTTPSCertificate = true
         #endif
 
+        if #available(iOS 9.0, *) {
+            AstroConfig.useWKWebView = true
+        }
+
         astroViewController = AstroViewController(appJsUrl: NSURL(string: "app.js")!, launchOptions: launchOptions,
             pluginRegistrations: { pluginRegistrar in
                 pluginRegistrar.registerPlugin(name: "CounterBadgePlugin", type: CounterBadgePlugin.self)

@@ -6,7 +6,7 @@ define([ ], function() {
     var tabOne = {
         id: '1',
         title:'Bikes',
-        url: 'https://webpush-you-host.mobifydemo.io/',
+        url: 'https://www.google.ca',
         imageUrl: 'file:///Icon__discover.png',
         selectedImageUrl: 'file:///Icon__discover.png'
     };
@@ -14,7 +14,7 @@ define([ ], function() {
     var tabTwo = {
         id: '2',
         title:'Accessories',
-        url: 'https://webpush-you-host.mobifydemo.io/accessories/',
+        url: 'http://www.wired.com',
         imageUrl: 'file:///Icon__discover.png',
         selectedImageUrl: 'file:///Icon__discover.png'
     };
@@ -22,7 +22,7 @@ define([ ], function() {
     var tabThree = {
         id: '3',
         title:'Services',
-        url: 'https://webpush-you-host.mobifydemo.io/services/',
+        url: 'http://www.wired.com',
         imageUrl: 'file:///Icon__discover.png',
         selectedImageUrl: 'file:///Icon__discover.png'
     };
@@ -30,7 +30,7 @@ define([ ], function() {
     var tabFour = {
         id: '4',
         title:'Sales',
-        url: 'https://webpush-you-host.mobifydemo.io/sales/',
+        url: 'http://www.yahoo.com',
         imageUrl: 'file:///Icon__discover.png',
         selectedImageUrl: 'file:///Icon__discover.png'
     };
@@ -38,7 +38,7 @@ define([ ], function() {
     var tabFive = {
         id: '5',
         title:'About',
-        url: 'https://webpush-you-host.mobifydemo.io/about/',
+        url: 'https://www.thinkgeek.com',
         imageUrl: 'file:///Icon__discover.png',
         selectedImageUrl: 'file:///Icon__discover.png'
     };
