@@ -25,7 +25,6 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
 
         astroViewController = AstroViewController(appJsUrl: NSURL(string: "app.js")!, launchOptions: launchOptions,
             pluginRegistrations: { pluginRegistrar in
-                pluginRegistrar.registerPlugin(name: "CounterBadgePlugin", type: CounterBadgePlugin.self)
         })
         
         window?.rootViewController = astroViewController

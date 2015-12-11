@@ -1,10 +1,8 @@
 define([
-    'scaffold-plugins/counterBadgePlugin',
     'plugins/headerBarPlugin',
     'bluebird'
 ],
 function(
-    CounterBadgePlugin,
     HeaderBarPlugin,
     Promise
 ) {
@@ -13,36 +11,10 @@ function(
         this.viewPlugin = headerBar;
     };
 
-    var _setCartCounter = function(counterBadge, count) {
-        counterBadge.setCount(count ? count : 0);
-    };
-
-    var _createCartCounter = function(counterBadge) {
-        if (counterBadge) {
-            // Set Icon
-            counterBadge.setImagePath('file:///Icon__cart.png');
-            counterBadge.setBackgroundColor('#ff0000');
-
-            // Set Counter Badge initial value
-            _setCartCounter(counterBadge, 1);
-
-            // In order to update the counter badge on every tab
-            // and on every stack item this code should register to
-            // listen for a cart update counter event
-            // (which app will have to emit)
-            // Call _setCartCounter from here every time tht event is received
-
-            // Example:
-            // ScaffoldApplication.on(ScaffoldApplication.events.cartUpdateCounter, function(param) {
-            //     _setCartCounter(counterBadge, param.count);
-            // });
-        }
-    };
-
-    var _createCartHeaderContent = function(counterBadge) {
+    var _createCartHeaderContent = function() {
         return {
             id: 'cart_id',
-            pluginAddress: counterBadge.toMethodArg()
+            imageUrl: 'file:///Icon__cart.png'
         };
     };
 
@@ -59,17 +31,13 @@ function(
     };
 
     TabHeaderController.prototype.generateContent = function() {
-        return CounterBadgePlugin.init().then(
-            function(counterBadge) {
-                _createCartCounter(counterBadge);
-
-                return {
-                    header: {
-                        rightIcon: _createCartHeaderContent(counterBadge)
-                    }
-                };
+        var headerContent = {
+            header: {
+                rightIcon: _createCartHeaderContent()
             }
-        );
+        };
+
+        return Promise.resolve(headerContent);
     };
 
     TabHeaderController.prototype.registerBackEvents = function(callback) {
