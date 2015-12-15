@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta name="viewport" content="initial-scale=1, user-scalable=no">
+        <script src="astro-client.js"></script>
+        <script src="jquery.min.js"></script>
+
+        <script>
+            $(function() {
+                Astro.on('menuConfig', function(menuItems) {
+                    window.menuItems = menuItems;
+                    for (var i = 0; i < menuItems.length; i++) {
+                        var item = menuItems[i];
+                        $('#menu').append(
+                            $('<li>').append(
+                                $('<a>').attr('href', item.url).append(
+                                    $('<span>').attr('class', 'tab').append(item.title)
+                        )));
+                    }
+                });
+            });
+        </script>
+    </head>
+    <body>
+        <ul id="menu">
+        </ul>
+    </body>
+</html>
