@@ -6,24 +6,18 @@ window.run = function() {
         'bluebird',
         'application',
         'plugins/anchoredLayoutPlugin',
-        'plugins/drawerPlugin',
-        'plugins/webViewPlugin',
-        'plugins/navigationPlugin',
         'scaffold-controllers/tabBarController',
+        'scaffold-controllers/drawerController',
         'scaffold-components/deepLinkingServices',
-        'scaffold-components/tabBarConfig',
     ],
     function(
         Astro,
         Promise,
         Application,
         AnchoredLayoutPlugin,
-        DrawerPlugin,
-        WebViewPlugin,
-        NavigationPlugin,
         TabBarController,
-        DeepLinkingServices,
-        TabBarConfig
+        DrawerController,
+        DeepLinkingServices
     ) {
 
         var setupIosLayout = function() {
@@ -48,29 +42,13 @@ window.run = function() {
         };
 
         var setupAndroidLayout = function() {
-            return Promise.join(
-                DrawerPlugin.init(),
-                WebViewPlugin.init(),
-                NavigationPlugin.init(),
-            function(drawer, leftMenu, navigation) {
-                leftMenu.navigate('file:///scaffold-www/left-menu.html');
-                leftMenu.trigger('menuConfig', TabBarConfig.tabItems);
+            return DrawerController.init().then(function(drawerController) {
+                Application.setMainViewPlugin(drawerController.drawer);
 
-                leftMenu.disableDefaultNavigationHandler();
-                leftMenu.on('navigate', function(params) {
-                    if (!params.isCurrentlyLoading) {
-                        drawer.hideLeftMenu();
-                        navigation.navigate(params.url);
-                    }
-                });
-
-                navigation.navigate(TabBarConfig.tabItems[0].url);
-                drawer.setContentView(navigation);
-                drawer.setLeftMenu(leftMenu);
-
-                Application.setMainViewPlugin(drawer);
-
-                return navigation.navigate.bind(navigation);
+                return drawerController;
+            }).then(function(drawerController) {
+                drawerController.selectItem('1');
+                return drawerController.navigateActiveItem.bind(drawerController);
             });
         };
 
