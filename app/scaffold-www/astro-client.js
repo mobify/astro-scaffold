@@ -5496,10 +5496,12 @@ module.exports = ret;
 
         // Log everything if verbose mode is enabled.
         if (Astro.verboseMode) {
+            console.group && console.group('RPC Response [' + (data.id ? data.id : '??') + ']');
             data.payload.error && data.payload.error.message && console.error(data.payload.error.message);
             data.payload.error && data.payload.error.details && console.error(data.payload.error.details);
             data.payload.error && data.payload.error.stacktrace && console.error(data.payload.error.stacktrace);
             data.payload.result && console.log(data.payload.result);
+            console.groupEnd && console.groupEnd();
         }
 
         if (callback) {

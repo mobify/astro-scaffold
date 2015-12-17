@@ -55,12 +55,10 @@ window.run = function() {
         Application.getOSInformation().then(
         function(osInfo) {
             if (osInfo.os === Astro.platforms.ios) {
-                return setupIosLayout;
+                return setupIosLayout();
             }
 
-            return setupAndroidLayout;
-        }).then(function(layoutFunction) {
-            return layoutFunction();
+            return setupAndroidLayout();
         }).then(function(navigate) {
             // Deep linking services will enable deep linking on startup
             // and while running
