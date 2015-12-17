@@ -38,13 +38,17 @@ function(
     };
 
     var initNavigationItems = function(drawer, tabItems) {
+        var drawerEventHandler = function() {
+            drawer.showLeftMenu();
+        };
+
         drawer.itemViews = {};
         drawer.itemControllers = {};
 
         // Make sure all tabViews are set up
         return Promise.all(tabItems.map(function(tab) {
             // Init a new tabController
-            return TabController.init(tab).then(function(tabController) {
+            return TabController.init(tab, drawerEventHandler).then(function(tabController) {
                 drawer.itemControllers[tab.id] = tabController;
                 drawer.itemViews[tab.id] = tabController.layout;
 

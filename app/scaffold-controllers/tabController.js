@@ -29,17 +29,17 @@ function(
         navigator.disableDefaultNavigationHandler();
     };
 
-    var TabController = function(tab, layout, navigationView, headerController) {
+    var TabController = function(tab, layout, navigationView, headerController, includeDrawerIcon) {
         this.id = tab.id;
         this.navigationView = navigationView;
         this.layout = layout;
         this.headerController = headerController;
 
         bindNavigation(this.navigationView, this.navigate.bind(this));
-        this.navigate(tab.url);
+        this.navigate(tab.url, includeDrawerIcon);
     };
 
-    TabController.init = function(tab) {
+    TabController.init = function(tab, drawerEventHandler) {
         return Promise.join(
             AnchoredLayoutPlugin.init(),
             HeaderController.init(),
@@ -52,24 +52,30 @@ function(
                     navigationView.back();
                 });
 
+                var drawerIconEnabled = drawerEventHandler !== undefined;
+                if (drawerIconEnabled) {
+                    headerController.registerDrawerEvents(drawerEventHandler);
+                }
+
                 layout.setContentView(navigationView);
 
                 return new TabController(
                     tab,
                     layout,
                     navigationView,
-                    headerController
+                    headerController,
+                    drawerIconEnabled
                 );
             }
         );
     };
 
-    TabController.prototype.navigate = function(url) {
+    TabController.prototype.navigate = function(url, includeDrawerIcon) {
         if (!url) {
             return;
         }
 
-        this.headerController.generateContent()
+        this.headerController.generateContent(includeDrawerIcon)
             .then(function(headerContent) {
                 return this.navigationView.navigate(url, headerContent);
             }.bind(this))

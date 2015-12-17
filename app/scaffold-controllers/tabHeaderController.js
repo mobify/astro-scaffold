@@ -14,7 +14,14 @@ function(
     var _createCartHeaderContent = function() {
         return {
             id: 'cart_id',
-            imageUrl: 'file:///Icon__cart.png'
+            imageUrl: 'file:///icon__cart.png'
+        };
+    };
+
+    var _createDrawerHeaderContent = function() {
+        return {
+            id: 'drawer_id',
+            imageUrl: 'file:///icon__drawer.png'
         };
     };
 
@@ -30,12 +37,16 @@ function(
         });
     };
 
-    TabHeaderController.prototype.generateContent = function() {
+    TabHeaderController.prototype.generateContent = function(includeDrawer) {
         var headerContent = {
             header: {
                 rightIcon: _createCartHeaderContent()
             }
         };
+
+        if (includeDrawer !== undefined && includeDrawer) {
+            headerContent.header.leftIcon = _createDrawerHeaderContent();
+        }
 
         return Promise.resolve(headerContent);
     };
@@ -46,6 +57,14 @@ function(
         }
 
         this.viewPlugin.on('click:back', callback);
+    };
+
+    TabHeaderController.prototype.registerDrawerEvents = function(callback) {
+        if (!callback) {
+            return;
+        }
+
+        this.viewPlugin.on('click:drawer_id', callback);
     };
 
     TabHeaderController.prototype.setTitle = function() {
