@@ -13,13 +13,6 @@ function(
     Promise
 ) {
 
-    var retrieveItemId = function(url) {
-        var parser = document.createElement('a');
-        parser.href = url;
-        var splitPath = parser.pathname.split('/');
-        return splitPath[splitPath.length-1];
-    };
-
     var DrawerController = function(drawer, leftMenu) {
         this.drawer = drawer;
         this.leftMenu = leftMenu;
@@ -90,12 +83,9 @@ function(
     DrawerController.prototype._bindEvents = function() {
         var self = this;
 
-        this.leftMenu.disableDefaultNavigationHandler();
-        this.leftMenu.on('navigate', function(params) {
-            if (!params.isCurrentlyLoading) {
-                self.drawer.hideLeftMenu();
-                self.selectItem(retrieveItemId(params.url));
-            }
+        this.leftMenu.on('menuItemSelected', function(data) {
+            self.drawer.hideLeftMenu();
+            self.selectItem(data.id);
         });
     };
 

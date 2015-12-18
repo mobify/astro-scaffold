@@ -1,6 +1,7 @@
 <!DOCTYPE html>
 <html>
     <head>
+        <link href='http://fonts.googleapis.com/css?family=Droid+Sans' rel='stylesheet' type='text/css'>
         <meta name="viewport" content="initial-scale=1, user-scalable=no">
         <script src="astro-client.js"></script>
         <script src="jquery.min.js"></script>
@@ -12,17 +13,42 @@
                     for (var i = 0; i < menuItems.length; i++) {
                         var item = menuItems[i];
                         $('#menu').append(
-                            $('<li>').append(
-                                $('<a>').attr('href', item.id).append(
-                                    $('<span>').attr('class', 'tab').append(item.title)
-                        )));
+                            $('<li>').attr('data-link', item.id).append(item.title)
+                        );
+                    }
+
+                    var listItems = document.querySelectorAll('.menu li');
+
+                    for (var i = 0, length = listItems.length; i < length; i++) {
+                        listItems[i].addEventListener('touchstart', function() {
+                            Astro.trigger('menuItemSelected', {id: this.dataset.link});
+                        });
                     }
                 });
             });
         </script>
     </head>
+    <style>
+        body {
+            font-family: "Droid Sans";
+            font-weight: bold;
+            background-color: #007BA7;
+            margin: 0;
+        }
+        ul.menu {
+            margin: 0;
+            padding: 0;
+            list-style: none;
+            background-color: #007BA7;
+        }
+
+        .menu li {
+            color: #ffffff;
+            padding: 16px;
+        }
+    </style>
     <body>
-        <ul id="menu">
+        <ul class="menu" id="menu">
         </ul>
     </body>
 </html>
