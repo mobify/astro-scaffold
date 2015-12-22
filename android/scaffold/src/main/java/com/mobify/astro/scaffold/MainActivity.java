@@ -4,8 +4,8 @@ import android.os.Bundle;
 
 import com.mobify.astro.AstroActivity;
 import com.mobify.astro.plugins.*;
+import com.mobify.astro.plugins.loaders.*;
 import com.mobify.astro.plugins.headerbarplugin.HeaderBarPlugin;
-import com.mobify.astro.plugins.loaders.DefaultLoaderPlugin;
 import com.mobify.astro.plugins.webviewplugin.WebViewPlugin;
 
 import org.apache.cordova.CordovaWebView;
@@ -18,7 +18,6 @@ public class MainActivity extends AstroActivity {
         super.onCreate(savedInstanceState);
 
         // Register plugins.
-        // TODO: In the future we probably want to load this from a configuration file.
         pluginManager.register(AnchoredLayoutPlugin.class);
         pluginManager.register(CounterBadgePlugin.class);
         pluginManager.register(DefaultLoaderPlugin.class);

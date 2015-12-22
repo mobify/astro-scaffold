@@ -23,6 +23,13 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
             AstroConfig.allowUntrustedHTTPSCertificate = true
         #endif
 
+        // Due to the inability to navigate to pages with untrusted SSL certs on WKWebView
+        // with iOS < 9, we've decided to only use WKWebView for iOS 9 and above. It will be
+        // too difficult to develop and test if we have to constantly worry about this.
+        if #available(iOS 9.0, *) {
+            AstroConfig.useWKWebView = true
+        }
+
         astroViewController = AstroViewController(appJsUrl: NSURL(string: "app.js")!, launchOptions: launchOptions,
             pluginRegistrations: { pluginRegistrar in
         })
@@ -42,7 +49,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     
     // Called on receiving deep links unless prevented by didFinish/willFinish
     // didFinish/willFinish are only called if the appplication is not already running
-    func application(application: UIApplication, openURL url: NSURL, sourceApplication: String?, annotation: AnyObject?) -> Bool {
+    func application(application: UIApplication, openURL url: NSURL, sourceApplication: String?, annotation: AnyObject) -> Bool {
         if let astroViewController = astroViewController {
             astroViewController.receivedDeeplink(url)
         }
