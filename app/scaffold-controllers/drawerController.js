@@ -2,14 +2,14 @@ define([
     'plugins/drawerPlugin',
     'plugins/webViewPlugin',
     'scaffold-components/tabBarConfig',
-    'scaffold-controllers/tabController',
+    'scaffold-controllers/navigationController',
     'bluebird'
 ],
 function(
     DrawerPlugin,
     WebViewPlugin,
     TabBarConfig,
-    TabController,
+    NavigationController,
     Promise
 ) {
 
@@ -40,10 +40,10 @@ function(
 
         // Make sure all tabViews are set up
         return Promise.all(tabItems.map(function(tab) {
-            // Init a new tabController
-            return TabController.init(tab, drawerEventHandler).then(function(tabController) {
-                drawer.itemControllers[tab.id] = tabController;
-                drawer.itemViews[tab.id] = tabController.layout;
+            // Init a new NavigationController
+            return NavigationController.init(tab, drawerEventHandler).then(function(NavigationController) {
+                drawer.itemControllers[tab.id] = NavigationController;
+                drawer.itemViews[tab.id] = NavigationController.layout;
 
                 return drawer;
             });

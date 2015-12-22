@@ -29,7 +29,7 @@ function(
         navigator.disableDefaultNavigationHandler();
     };
 
-    var TabController = function(tab, layout, navigationView, headerController, includeDrawerIcon) {
+    var NavigationController = function(tab, layout, navigationView, headerController, includeDrawerIcon) {
         this.id = tab.id;
         this.navigationView = navigationView;
         this.layout = layout;
@@ -39,7 +39,7 @@ function(
         this.navigate(tab.url, includeDrawerIcon);
     };
 
-    TabController.init = function(tab, drawerEventHandler) {
+    NavigationController.init = function(tab, drawerEventHandler) {
         return Promise.join(
             AnchoredLayoutPlugin.init(),
             HeaderController.init(),
@@ -59,7 +59,7 @@ function(
 
                 layout.setContentView(navigationView);
 
-                return new TabController(
+                return new NavigationController(
                     tab,
                     layout,
                     navigationView,
@@ -70,7 +70,7 @@ function(
         );
     };
 
-    TabController.prototype.navigate = function(url, includeDrawerIcon) {
+    NavigationController.prototype.navigate = function(url, includeDrawerIcon) {
         if (!url) {
             return;
         }
@@ -84,5 +84,5 @@ function(
             }.bind(this));
     };
 
-    return TabController;
+    return NavigationController;
 });

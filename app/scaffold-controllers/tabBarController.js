@@ -1,13 +1,13 @@
 define([
     'plugins/tabBarPlugin',
     'scaffold-components/tabBarConfig',
-    'scaffold-controllers/tabController',
+    'scaffold-controllers/navigationController',
     'bluebird'
 ],
 function(
     TabBarPlugin,
     TabBarConfig,
-    TabController,
+    NavigationController,
     Promise
 ) {
 
@@ -29,14 +29,14 @@ function(
     var initRegularTabs = function(tabBar, tabItems) {
         // Set up regular tabs' layouts
         tabBar.tabViews = {};
-        tabBar.tabControllers = {};
+        tabBar.NavigationControllers = {};
 
         // Make sure all tabViews are set up
         return Promise.all(tabItems.map(function(tab) {
-            // Init a new tabController
-            return TabController.init(tab).then(function(tabController) {
-                tabBar.tabControllers[tab.id] = tabController;
-                tabBar.tabViews[tab.id] = tabController.layout;
+            // Init a new NavigationController
+            return NavigationController.init(tab).then(function(NavigationController) {
+                tabBar.NavigationControllers[tab.id] = NavigationController;
+                tabBar.tabViews[tab.id] = NavigationController.layout;
 
                 return tabBar;
             });
@@ -82,7 +82,7 @@ function(
     };
 
     TabBarController.prototype.navigateActiveTab = function(url) {
-        this.tabBar.tabControllers[this.activeTabId].navigate(url);
+        this.tabBar.NavigationControllers[this.activeTabId].navigate(url);
     };
 
     return TabBarController;
