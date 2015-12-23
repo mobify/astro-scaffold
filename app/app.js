@@ -37,7 +37,7 @@ window.run = function() {
                 // The first tab is selected or else the navigation does
                 // not complete correctly
                 tabBarController.selectTab('1');
-                return tabBarController.navigateActiveTab.bind(tabBarController);
+                return tabBarController;
             });
         };
 
@@ -48,7 +48,7 @@ window.run = function() {
                 return drawerController;
             }).then(function(drawerController) {
                 drawerController.selectItem('1');
-                return drawerController.navigateActiveItem.bind(drawerController);
+                return drawerController;
             });
         };
 
@@ -59,11 +59,11 @@ window.run = function() {
             }
 
             return setupAndroidLayout();
-        }).then(function(navigate) {
+        }).then(function(layoutController) {
             // Deep linking services will enable deep linking on startup
             // and while running
             // It will open the deep link in the current active tab
-            var deepLinkingServices = new DeepLinkingServices(navigate);
+            var deepLinkingServices = new DeepLinkingServices(layoutController);
         });
 
     }, undefined, true);

@@ -1,9 +1,11 @@
 define([
     'plugins/headerBarPlugin',
+    'scaffold-components/navigationHeaderConfig',
     'bluebird'
 ],
 function(
     HeaderBarPlugin,
+    NavigationHeaderConfig,
     Promise
 ) {
 
@@ -12,24 +14,18 @@ function(
     };
 
     var _createCartHeaderContent = function() {
-        return {
-            id: 'cart_id',
-            imageUrl: 'file:///icon__cart.png'
-        };
+        return NavigationHeaderConfig.cartHeaderContent;
     };
 
     var _createDrawerHeaderContent = function() {
-        return {
-            id: 'drawer_id',
-            imageUrl: 'file:///icon__drawer.png'
-        };
+        return NavigationHeaderConfig.drawerHeaderContent;
     };
 
     NavigationHeaderController.init = function() {
         return HeaderBarPlugin.init().then(function(headerBar) {
             headerBar.hideBackButtonText();
-            headerBar.setTextColor('#ffffff');
-            headerBar.setBackgroundColor('#007BA7');
+            headerBar.setTextColor(NavigationHeaderConfig.colors.textColor);
+            headerBar.setBackgroundColor(NavigationHeaderConfig.colors.backgroundColor);
 
             var navigationHeaderController = new NavigationHeaderController(headerBar);
 
@@ -64,11 +60,12 @@ function(
             return;
         }
 
-        this.viewPlugin.on('click:drawer_id', callback);
+        this.viewPlugin.on('click:' + NavigationHeaderConfig.drawerHeaderContent.id, callback);
     };
 
     NavigationHeaderController.prototype.setTitle = function() {
-        this.viewPlugin.setCenterTitle('Velo', 'header_id');
+        var titleHeaderContent = NavigationHeaderConfig.titleHeaderContent;
+        this.viewPlugin.setCenterTitle(titleHeaderContent.title, titleHeaderContent.id);
     };
 
     return NavigationHeaderController;

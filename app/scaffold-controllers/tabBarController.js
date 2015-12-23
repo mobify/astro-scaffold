@@ -81,7 +81,7 @@ function(
         });
     };
 
-    TabBarController.prototype.navigateActiveTab = function(url) {
+    TabBarController.prototype.navigateActiveItem = function(url) {
         this.tabBar.NavigationControllers[this.activeTabId].navigate(url);
     };
 
