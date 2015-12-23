@@ -4,8 +4,8 @@ define([
 function(
     Application
 ) {
-    var DeepLinkingServices = function(layoutController) {
-        this.layoutController = layoutController;
+    var DeepLinkingServices = function(menuController) {
+        this.menuController = menuController;
 
         this._bindStartUp();
         this._bindRunning();
@@ -14,7 +14,7 @@ function(
     DeepLinkingServices.prototype._bindStartUp = function() {
         Application.getStartUri().then(function(uri) {
             if (uri != null) {
-                this.layoutController.navigateActiveItem(uri);
+                this.menuController.navigateActiveItem(uri);
             }
         }.bind(this));
     };
@@ -24,7 +24,7 @@ function(
         Application.on('receivedDeepLink', function(params) {
             var uri = params.uri;
             if (uri != null) {
-                this.layoutController.navigateActiveItem(uri);
+                this.menuController.navigateActiveItem(uri);
             }
         }.bind(this));
     };

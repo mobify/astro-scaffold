@@ -59,11 +59,11 @@ window.run = function() {
             }
 
             return setupAndroidLayout();
-        }).then(function(layoutController) {
+        }).then(function(menuController) {
             // Deep linking services will enable deep linking on startup
             // and while running
             // It will open the deep link in the current active tab
-            var deepLinkingServices = new DeepLinkingServices(layoutController);
+            var deepLinkingServices = new DeepLinkingServices(menuController);
         });
 
     }, undefined, true);
