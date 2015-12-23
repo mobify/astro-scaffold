@@ -2,14 +2,14 @@ define([
     'bluebird',
     'plugins/anchoredLayoutPlugin',
     'plugins/navigationPlugin',
-    'scaffold-controllers/tabHeaderController'
+    'scaffold-controllers/navigationHeaderController'
 ],
 /* eslint-disable */
 function(
     Promise,
     AnchoredLayoutPlugin,
     NavigationPlugin,
-    HeaderController
+    NavigationHeaderController
 ) {
 /* eslint-enable */
     var bindNavigation = function(navigator, navigate) {
@@ -29,11 +29,11 @@ function(
         navigator.disableDefaultNavigationHandler();
     };
 
-    var NavigationController = function(tab, layout, navigationView, headerController, includeDrawerIcon) {
+    var NavigationController = function(tab, layout, navigationView, navigationHeaderController, includeDrawerIcon) {
         this.id = tab.id;
         this.navigationView = navigationView;
         this.layout = layout;
-        this.headerController = headerController;
+        this.navigationHeaderController = navigationHeaderController;
 
         bindNavigation(this.navigationView, this.navigate.bind(this));
         this.navigate(tab.url, includeDrawerIcon);
@@ -42,19 +42,19 @@ function(
     NavigationController.init = function(tab, drawerEventHandler) {
         return Promise.join(
             AnchoredLayoutPlugin.init(),
-            HeaderController.init(),
+            NavigationHeaderController.init(),
             NavigationPlugin.init(),
-            function(layout, headerController, navigationView) {
+            function(layout, navigationHeaderController, navigationView) {
                 // Add Header Bar
-                navigationView.setHeaderBar(headerController.viewPlugin);
-                layout.addTopView(headerController.viewPlugin);
-                headerController.registerBackEvents(function() {
+                navigationView.setHeaderBar(navigationHeaderController.viewPlugin);
+                layout.addTopView(navigationHeaderController.viewPlugin);
+                navigationHeaderController.registerBackEvents(function() {
                     navigationView.back();
                 });
 
                 var drawerIconEnabled = drawerEventHandler !== undefined;
                 if (drawerIconEnabled) {
-                    headerController.registerDrawerEvents(drawerEventHandler);
+                    navigationHeaderController.registerDrawerEvents(drawerEventHandler);
                 }
 
                 layout.setContentView(navigationView);
@@ -63,7 +63,7 @@ function(
                     tab,
                     layout,
                     navigationView,
-                    headerController,
+                    navigationHeaderController,
                     drawerIconEnabled
                 );
             }
@@ -75,12 +75,12 @@ function(
             return;
         }
 
-        this.headerController.generateContent(includeDrawerIcon)
+        this.navigationHeaderController.generateContent(includeDrawerIcon)
             .then(function(headerContent) {
                 return this.navigationView.navigate(url, headerContent);
             }.bind(this))
             .then(function() {
-                return this.headerController.setTitle();
+                return this.navigationHeaderController.setTitle();
             }.bind(this));
     };
 

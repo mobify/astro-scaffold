@@ -7,7 +7,7 @@ function(
     Promise
 ) {
 
-    var TabHeaderController = function(headerBar) {
+    var NavigationHeaderController = function(headerBar) {
         this.viewPlugin = headerBar;
     };
 
@@ -25,19 +25,19 @@ function(
         };
     };
 
-    TabHeaderController.init = function() {
+    NavigationHeaderController.init = function() {
         return HeaderBarPlugin.init().then(function(headerBar) {
             headerBar.hideBackButtonText();
             headerBar.setTextColor('#ffffff');
             headerBar.setBackgroundColor('#007BA7');
 
-            var tabHeaderController = new TabHeaderController(headerBar);
+            var navigationHeaderController = new NavigationHeaderController(headerBar);
 
-            return tabHeaderController;
+            return navigationHeaderController;
         });
     };
 
-    TabHeaderController.prototype.generateContent = function(includeDrawer) {
+    NavigationHeaderController.prototype.generateContent = function(includeDrawer) {
         var headerContent = {
             header: {
                 rightIcon: _createCartHeaderContent()
@@ -51,7 +51,7 @@ function(
         return Promise.resolve(headerContent);
     };
 
-    TabHeaderController.prototype.registerBackEvents = function(callback) {
+    NavigationHeaderController.prototype.registerBackEvents = function(callback) {
         if (!callback) {
             return;
         }
@@ -59,7 +59,7 @@ function(
         this.viewPlugin.on('click:back', callback);
     };
 
-    TabHeaderController.prototype.registerDrawerEvents = function(callback) {
+    NavigationHeaderController.prototype.registerDrawerEvents = function(callback) {
         if (!callback) {
             return;
         }
@@ -67,9 +67,9 @@ function(
         this.viewPlugin.on('click:drawer_id', callback);
     };
 
-    TabHeaderController.prototype.setTitle = function() {
+    NavigationHeaderController.prototype.setTitle = function() {
         this.viewPlugin.setCenterTitle('Velo', 'header_id');
     };
 
-    return TabHeaderController;
+    return NavigationHeaderController;
 });
