@@ -26,7 +26,7 @@ function(
         return tabBar;
     };
 
-    var initRegularTabs = function(tabBar, tabItems) {
+    var initRegularTabs = function(tabBar, tabItems, cartEventHandler) {
         // Set up regular tabs' layouts
         tabBar.tabViews = {};
         tabBar.NavigationControllers = {};
@@ -34,7 +34,7 @@ function(
         // Make sure all tabViews are set up
         return Promise.all(tabItems.map(function(tab) {
             // Init a new NavigationController
-            return NavigationController.init(tab).then(function(NavigationController) {
+            return NavigationController.init(tab, cartEventHandler).then(function(NavigationController) {
                 tabBar.NavigationControllers[tab.id] = NavigationController;
                 tabBar.tabViews[tab.id] = NavigationController.layout;
 
@@ -45,7 +45,7 @@ function(
         });
     };
 
-    TabBarController.init = function(layoutPromise) {
+    TabBarController.init = function(layoutPromise, cartEventHandlerPromise) {
         var constructTabItemsPromise = Promise.resolve(TabBarConfig.tabItems);
 
         var initTabBarPromise = Promise.join(
@@ -56,6 +56,7 @@ function(
         var initRegularTabsPromise = Promise.join(
             initTabBarPromise,
             constructTabItemsPromise,
+            cartEventHandlerPromise,
             initRegularTabs);
 
         return Promise.all([initRegularTabsPromise]).then(function() {

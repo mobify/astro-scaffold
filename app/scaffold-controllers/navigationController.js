@@ -39,7 +39,7 @@ function(
         this.navigate(tab.url, includeDrawerIcon);
     };
 
-    NavigationController.init = function(tab, drawerEventHandler) {
+    NavigationController.init = function(tab, cartEventHandler, drawerEventHandler) {
         return Promise.join(
             AnchoredLayoutPlugin.init(),
             NavigationHeaderController.init(),
@@ -51,6 +51,8 @@ function(
                 navigationHeaderController.registerBackEvents(function() {
                     navigationView.back();
                 });
+
+                navigationHeaderController.registerCartEvents(cartEventHandler);
 
                 var drawerIconEnabled = drawerEventHandler !== undefined;
                 if (drawerIconEnabled) {

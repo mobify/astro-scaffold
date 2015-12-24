@@ -63,6 +63,14 @@ function(
         this.viewPlugin.on('click:' + NavigationHeaderConfig.drawerHeaderContent.id, callback);
     };
 
+    NavigationHeaderController.prototype.registerCartEvents = function(callback) {
+        if (!callback) {
+            return;
+        }
+
+        this.viewPlugin.on('click:' + NavigationHeaderConfig.cartHeaderContent.id, callback);
+    };
+
     NavigationHeaderController.prototype.setTitle = function() {
         var titleHeaderContent = NavigationHeaderConfig.titleHeaderContent;
         this.viewPlugin.setCenterTitle(titleHeaderContent.title, titleHeaderContent.id);

@@ -8,6 +8,7 @@ window.run = function() {
         'plugins/anchoredLayoutPlugin',
         'scaffold-controllers/tabBarController',
         'scaffold-controllers/drawerController',
+        'scaffold-controllers/cartModalController',
         'scaffold-components/deepLinkingServices',
     ],
     function(
@@ -17,14 +18,23 @@ window.run = function() {
         AnchoredLayoutPlugin,
         TabBarController,
         DrawerController,
+        CartModalController,
         DeepLinkingServices
     ) {
 
         var setupIosLayout = function() {
             var layoutPromise = AnchoredLayoutPlugin.init();
+            var cartModalControllerPromise = CartModalController.init();
+            var cartEventHandlerPromise = cartModalControllerPromise.then(
+            function(cartModalController) {
+                return function() {
+                    cartModalController.show();
+                };
+            });
+
             return Promise.join(
                 layoutPromise,
-                TabBarController.init(layoutPromise),
+                TabBarController.init(layoutPromise, cartEventHandlerPromise),
             function(layout, tabBarController) {
                 layout.addBottomView(tabBarController.tabBar);
 

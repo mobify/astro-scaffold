@@ -3,6 +3,7 @@ define([
     'plugins/webViewPlugin',
     'scaffold-components/tabBarConfig',
     'scaffold-controllers/navigationController',
+    'scaffold-controllers/cartController',
     'bluebird'
 ],
 function(
@@ -10,6 +11,7 @@ function(
     WebViewPlugin,
     TabBarConfig,
     NavigationController,
+    CartController,
     Promise
 ) {
 
@@ -30,9 +32,19 @@ function(
         return drawer;
     };
 
+    var initRightMenu = function(drawer, cartController) {
+        drawer.setRightMenu(cartController.webView);
+
+        return drawer;
+    };
+
     var initNavigationItems = function(drawer, tabItems) {
         var drawerEventHandler = function() {
             drawer.showLeftMenu();
+        };
+
+        var cartEventHandler = function() {
+            drawer.showRightMenu();
         };
 
         drawer.itemViews = {};
@@ -41,7 +53,7 @@ function(
         // Make sure all tabViews are set up
         return Promise.all(tabItems.map(function(tab) {
             // Init a new NavigationController
-            return NavigationController.init(tab, drawerEventHandler).then(function(NavigationController) {
+            return NavigationController.init(tab, cartEventHandler, drawerEventHandler).then(function(NavigationController) {
                 drawer.itemControllers[tab.id] = NavigationController;
                 drawer.itemViews[tab.id] = NavigationController.layout;
 
@@ -61,8 +73,13 @@ function(
             webViewPromise,
             initLeftMenu);
 
-        var initNavigationItemsPromise = Promise.join(
+        var initRightMenuPromise = Promise.join(
             initLeftMenuPromise,
+            CartController.init(),
+            initRightMenu);
+
+        var initNavigationItemsPromise = Promise.join(
+            initRightMenuPromise,
             constructTabItemsPromise,
             initNavigationItems);
 
