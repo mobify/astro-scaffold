@@ -1,31 +1,33 @@
 define([
     'plugins/headerBarPlugin',
-    'scaffold-components/navigationHeaderConfig',
+    'scaffold-components/headerConfig',
     'bluebird'
 ],
+/* eslint-disable */
 function(
     HeaderBarPlugin,
-    NavigationHeaderConfig,
+    HeaderConfig,
     Promise
 ) {
+/* eslint-enable */
 
     var NavigationHeaderController = function(headerBar) {
         this.viewPlugin = headerBar;
     };
 
     var _createCartHeaderContent = function() {
-        return NavigationHeaderConfig.cartHeaderContent;
+        return HeaderConfig.cartHeaderContent;
     };
 
     var _createDrawerHeaderContent = function() {
-        return NavigationHeaderConfig.drawerHeaderContent;
+        return HeaderConfig.drawerHeaderContent;
     };
 
     NavigationHeaderController.init = function() {
         return HeaderBarPlugin.init().then(function(headerBar) {
             headerBar.hideBackButtonText();
-            headerBar.setTextColor(NavigationHeaderConfig.colors.textColor);
-            headerBar.setBackgroundColor(NavigationHeaderConfig.colors.backgroundColor);
+            headerBar.setTextColor(HeaderConfig.colors.textColor);
+            headerBar.setBackgroundColor(HeaderConfig.colors.backgroundColor);
 
             var navigationHeaderController = new NavigationHeaderController(headerBar);
 
@@ -60,7 +62,7 @@ function(
             return;
         }
 
-        this.viewPlugin.on('click:' + NavigationHeaderConfig.drawerHeaderContent.id, callback);
+        this.viewPlugin.on('click:' + HeaderConfig.drawerHeaderContent.id, callback);
     };
 
     NavigationHeaderController.prototype.registerCartEvents = function(callback) {
@@ -68,11 +70,11 @@ function(
             return;
         }
 
-        this.viewPlugin.on('click:' + NavigationHeaderConfig.cartHeaderContent.id, callback);
+        this.viewPlugin.on('click:' + HeaderConfig.cartHeaderContent.id, callback);
     };
 
     NavigationHeaderController.prototype.setTitle = function() {
-        var titleHeaderContent = NavigationHeaderConfig.titleHeaderContent;
+        var titleHeaderContent = HeaderConfig.titleHeaderContent;
         this.viewPlugin.setCenterTitle(titleHeaderContent.title, titleHeaderContent.id);
     };
 

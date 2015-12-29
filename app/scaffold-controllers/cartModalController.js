@@ -1,28 +1,39 @@
 define([
     'bluebird',
     'plugins/modalViewPlugin',
-    'scaffold-controllers/cartController'
+    'plugins/anchoredLayoutPlugin',
+    'scaffold-controllers/cartController',
+    'scaffold-controllers/cartHeaderController'
 ],
 /* eslint-disable */
 function(
     Promise,
     ModalViewPlugin,
-    CartController
+    AnchoredLayoutPlugin,
+    CartController,
+    CartHeaderController
 ) {
 /* eslint-enable */
 
-    var CartModalController = function(modalView, cartController) {
+    var CartModalController = function(modalView) {
         this.modalView = modalView;
-        this.cartController = cartController;
     };
 
     CartModalController.init = function() {
         return Promise.join(
             ModalViewPlugin.init(),
+            AnchoredLayoutPlugin.init(),
             CartController.init(),
-        function(modalView, cartController) {
-            modalView.setContentView(cartController.webView);
-            return new CartModalController(modalView, cartController);
+            CartHeaderController.init(),
+        function(modalView, anchoredLayout, cartController, cartHeaderController) {
+            cartHeaderController.registerCloseEvents(function() {
+                modalView.hide();
+            });
+
+            anchoredLayout.addTopView(cartHeaderController.headerBar);
+            anchoredLayout.setContentView(cartController.webView)
+            modalView.setContentView(anchoredLayout);
+            return new CartModalController(modalView);
         });
     };
 
