@@ -12,11 +12,12 @@ function(
     };
 
     DeepLinkingServices.prototype._bindStartUp = function() {
+        var self = this;
         Application.getStartUri().then(function(uri) {
             if (uri != null) {
-                this.menuController.navigateActiveItem(uri);
+                self.menuController.navigateActiveItem(uri);
             }
-        }.bind(this));
+        });
     };
 
     DeepLinkingServices.prototype._bindRunning = function() {
@@ -24,9 +25,9 @@ function(
         Application.on('receivedDeepLink', function(params) {
             var uri = params.uri;
             if (uri != null) {
-                this.menuController.navigateActiveItem(uri);
+                self.menuController.navigateActiveItem(uri);
             }
-        }.bind(this));
+        });
     };
 
     return DeepLinkingServices;

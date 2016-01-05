@@ -15,7 +15,6 @@ function(
     var bindNavigation = function(navigator, navigate) {
         var navigationHandler = function(params) {
             var url = params['url'];
-            var currentUrl = params['currentUrl'];
 
             // We're expected to navigate the web view if we're called with a
             // url and the web view isn't in the process of redirecting (i.e.
@@ -77,13 +76,14 @@ function(
             return;
         }
 
-        this.navigationHeaderController.generateContent(includeDrawerIcon)
+        var self = this;
+        self.navigationHeaderController.generateContent(includeDrawerIcon)
             .then(function(headerContent) {
-                return this.navigationView.navigate(url, headerContent);
-            }.bind(this))
+                return self.navigationView.navigate(url, headerContent);
+            })
             .then(function() {
-                return this.navigationHeaderController.setTitle();
-            }.bind(this));
+                return self.navigationHeaderController.setTitle();
+            });
     };
 
     NavigationController.prototype.back = function() {

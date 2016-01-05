@@ -38,7 +38,6 @@ window.run = function() {
             function(layout, tabBarController) {
                 layout.addBottomView(tabBarController.tabBar);
 
-                //Application.setBackgroundColor(Styles.Colors.white);
                 Application.setMainViewPlugin(layout);
 
                 return tabBarController;
