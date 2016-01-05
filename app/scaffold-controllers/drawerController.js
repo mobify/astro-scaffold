@@ -110,5 +110,9 @@ function(
         this.drawer.itemControllers[this.activeItemId].navigate(url);
     };
 
+    DrawerController.prototype.backActiveItem = function() {
+        this.drawer.itemControllers[this.activeItemId].back();
+    };
+
     return DrawerController;
 });

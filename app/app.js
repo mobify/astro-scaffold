@@ -55,6 +55,11 @@ window.run = function() {
             return DrawerController.init().then(function(drawerController) {
                 Application.setMainViewPlugin(drawerController.drawer);
 
+                // Wiring up the hardware back button for Android
+                Application.on('onKeyDown', function(params) {
+                    drawerController.backActiveItem();
+                });
+
                 return drawerController;
             }).then(function(drawerController) {
                 drawerController.selectItem('1');

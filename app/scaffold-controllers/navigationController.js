@@ -86,5 +86,9 @@ function(
             }.bind(this));
     };
 
+    NavigationController.prototype.back = function() {
+        this.navigationView.back();
+    };
+
     return NavigationController;
 });
