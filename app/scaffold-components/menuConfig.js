@@ -1,9 +1,9 @@
 define([ ], function() {
 /* eslint-enable max-statements */
 
-    // Configure your tabs here:
+    // Configure your menu items here:
 
-    var tabOne = {
+    var menuItemOne = {
         id: '1',
         title:'Bikes',
         url: 'https://webpush-you-host.mobifydemo.io/',
@@ -11,7 +11,7 @@ define([ ], function() {
         selectedImageUrl: 'file:///Icon__discover.png'
     };
 
-    var tabTwo = {
+    var menuItemTwo = {
         id: '2',
         title:'Accessories',
         url: 'https://webpush-you-host.mobifydemo.io/accessories/',
@@ -19,7 +19,7 @@ define([ ], function() {
         selectedImageUrl: 'file:///Icon__discover.png'
     };
 
-    var tabThree = {
+    var menuItemThree = {
         id: '3',
         title:'Services',
         url: 'https://webpush-you-host.mobifydemo.io/services/',
@@ -27,7 +27,7 @@ define([ ], function() {
         selectedImageUrl: 'file:///Icon__discover.png'
     };
 
-    var tabFour = {
+    var menuItemFour = {
         id: '4',
         title:'Sales',
         url: 'https://webpush-you-host.mobifydemo.io/sales/',
@@ -35,7 +35,7 @@ define([ ], function() {
         selectedImageUrl: 'file:///Icon__discover.png'
     };
 
-    var tabFive = {
+    var menuItemFive = {
         id: '5',
         title:'About',
         url: 'https://webpush-you-host.mobifydemo.io/about/',
@@ -43,15 +43,15 @@ define([ ], function() {
         selectedImageUrl: 'file:///Icon__discover.png'
     };
 
-    var tabItems = [
-        tabOne,
-        tabTwo,
-        tabThree,
-        tabFour,
-        tabFive
+    var menuItems = [
+        menuItemOne,
+        menuItemTwo,
+        menuItemThree,
+        menuItemFour,
+        menuItemFive
     ];
 
     return {
-        tabItems: tabItems
+        menuItems: menuItems
     };
 });

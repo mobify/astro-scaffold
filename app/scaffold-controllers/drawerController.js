@@ -1,7 +1,7 @@
 define([
     'plugins/drawerPlugin',
     'plugins/webViewPlugin',
-    'scaffold-components/tabBarConfig',
+    'scaffold-components/menuConfig',
     'scaffold-controllers/navigationController',
     'scaffold-controllers/cartController',
     'bluebird'
@@ -9,7 +9,7 @@ define([
 function(
     DrawerPlugin,
     WebViewPlugin,
-    TabBarConfig,
+    MenuConfig,
     NavigationController,
     CartController,
     Promise
@@ -25,7 +25,7 @@ function(
 
     var initLeftMenu = function(drawer, leftMenu) {
         leftMenu.navigate('file:///scaffold-www/left-menu.html');
-        leftMenu.trigger('menuConfig', TabBarConfig.tabItems);
+        leftMenu.trigger('menuConfig', MenuConfig.menuItems);
 
         drawer.setLeftMenu(leftMenu);
 
@@ -65,7 +65,7 @@ function(
     };
 
     DrawerController.init = function() {
-        var constructTabItemsPromise = Promise.resolve(TabBarConfig.tabItems);
+        var constructTabItemsPromise = Promise.resolve(MenuConfig.menuItems);
         var webViewPromise = WebViewPlugin.init();
 
         var initLeftMenuPromise = Promise.join(

@@ -1,12 +1,12 @@
 define([
     'plugins/tabBarPlugin',
-    'scaffold-components/tabBarConfig',
+    'scaffold-components/menuConfig',
     'scaffold-controllers/navigationController',
     'bluebird'
 ],
 function(
     TabBarPlugin,
-    TabBarConfig,
+    MenuConfig,
     NavigationController,
     Promise
 ) {
@@ -46,7 +46,7 @@ function(
     };
 
     TabBarController.init = function(layoutPromise, cartEventHandlerPromise) {
-        var constructTabItemsPromise = Promise.resolve(TabBarConfig.tabItems);
+        var constructTabItemsPromise = Promise.resolve(MenuConfig.menuItems);
 
         var initTabBarPromise = Promise.join(
             TabBarPlugin.init(),
