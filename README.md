@@ -48,7 +48,7 @@ Open `app/app.js` to get started with development on this project!
 
 ## Controller Architecture
 
-Astro uses a controller pattern to manage the business logic of UX components. Controllers can manage a single Astro plugin or coordinate the behavior of several astro plugins which make up a single UX component in the app.
+Astro uses a controller pattern to manage the business logic of UI components. Controllers can manage a single Astro plugin or coordinate the behavior of several astro plugins which make up a single UI component in the app.
 
 Astro defines a controller inside of a requirejs module. The module exposes a prototype object as well as a factory method (`init`) which can be used to instantiate controllers with the prototype. The `init` method returns a promise which resolves to the newly created object.
 
@@ -59,7 +59,7 @@ Astro defines a controller inside of a requirejs module. The module exposes a pr
   * `app/scaffold-components/deepLinkingServices.js` allows the app to configure deep linking functionality
   * `app/scaffold-components/headerConfig.js` configure the header styles and icons
   * `app/scaffold-components/menuConfig.js` configure the menu items
-* `app/scaffold-controllers/` contains controller objects which manage the business logic of the UX components
+* `app/scaffold-controllers/` contains controller objects which manage the business logic of the UI components
   * `app/scaffold-controllers/cartController.js` manages the webview which contains the cart page
   * `app/scaffold-controllers/cartHeaderController.js` manages the header bar which is displayed in the cart modal
   * `app/scaffold-controllers/cartModalController.js` manages the cart modal which contains a header bar and the cart webview
