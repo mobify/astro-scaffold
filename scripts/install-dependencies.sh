@@ -3,12 +3,12 @@
 # Ensure the astro submodule is loaded correctly
 git submodule update --init
 
-# Install dependancies in `app`
+# Install dependencies in `app`
 pushd app
 npm install
 popd
 
-# Install dependancies in `astro`
+# Install dependencies in `astro`
 pushd astro
 npm install
 popd
