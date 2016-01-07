@@ -25,7 +25,7 @@ grunt build
 # Astro from within the project, and build astro-client.js
 git diff | grep dirty
 if [ $? -eq "0" ] && [ -f app/scaffold-www/astro-client.js ]; then
-    exit
+    exit 0
 fi
 cd ../astro
 grunt build_astro_client
