@@ -4,6 +4,7 @@
   "author": "Mobify",
   "dependencies": {},
   "scripts": {
-    "test": "./scripts/ios-appium.sh"
+    "test": "./scripts/ios-appium.sh",
+    "install-dependencies": "./scripts/install-dependancies.sh"
   }
 }
