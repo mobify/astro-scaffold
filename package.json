@@ -5,6 +5,6 @@
   "dependencies": {},
   "scripts": {
     "test": "./scripts/ios-appium.sh",
-    "install-dependencies": "./scripts/install-dependancies.sh"
+    "install-dependencies": "./scripts/install-dependencies.sh"
   }
 }
