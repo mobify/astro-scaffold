@@ -1,6 +1,6 @@
 # Setup
 
-To get up and running with scaffold, ensure the dependancies are installed:
+To get up and running with scaffold, ensure the dependencies are installed:
 
     npm run-script install-dependencies
 
