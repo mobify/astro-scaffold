@@ -1,10 +1,10 @@
 # Setup
 
-To get up and running with scaffold, ensure your submodules are up to date:
+To get up and running with scaffold, ensure the dependencies are installed:
 
-    git submodule update --init
+    npm run-script install-dependencies
 
-**Note**: The app/build-js.sh script automatically builds app.js.
+**Note**: The `app/build-js.sh` script automatically builds app.js.
 If node.js isn't installed to /usr/local/bin, run:
 
     cp app/user-env.sh.example app/user-env.sh && which npm | sed 's/\/npm//' | pbcopy
@@ -29,8 +29,15 @@ Astro is brought in as a submodule. To update the Astro submodule to point to co
 - `git checkout develop`
 - `git pull`
 - `cd ..`
+- `npm run-script install-dependencies`
 - `git add astro`
 - `git commit -m "Updating Astro submodule to latest on 'develop' branch."`
+
+# Developing Astro from within your project
+
+If you are making changes to Astro and testing them from within this project,
+`app/build-js.js` will detect if the `astro` submodule has been modified. If it has,
+it will automatically build `astro-client.js` and copy it into your project.
 
 # Switching between Debug and Release mode
 
