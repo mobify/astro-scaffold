@@ -1,5 +1,7 @@
 #!/bin/bash
 
+set -e
+
 MYPATH=$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )
 
 pushd "$MYPATH"
@@ -19,16 +21,15 @@ if ! which npm 1>/dev/null 2>&1; then
 fi
 
 # Build app.js.
-grunt build || exit 1
+grunt build
 
 # If the astro submodule has been modified, assume the user is developing
 # Astro from within the project, and build astro-client.js
-git diff | grep dirty
-if [ $? -ne 0 ] && [ -f ../app/scaffold-www/astro-client.js ]; then
+if [ -z "$(git diff | grep dirty)" ] && [ -f ../app/scaffold-www/astro-client.js ]; then
     echo "No need to build astro-client"
     exit 0
 fi
 cd ../astro
-grunt build_astro_client || exit 1
+grunt build_astro_client
 cp js/build/astro-client.js ../app/scaffold-www/
 popd
