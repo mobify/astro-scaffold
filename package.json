@@ -1,9 +1,10 @@
 {
   "name": "astro-scaffold",
-  "version": "0.2.0",
+  "version": "0.6.0",
   "author": "Mobify",
   "dependencies": {},
   "scripts": {
-    "test": "./scripts/ios-appium.sh"
+    "test": "./scripts/ios-appium.sh",
+    "install-dependencies": "./scripts/install-dependencies.sh"
   }
 }

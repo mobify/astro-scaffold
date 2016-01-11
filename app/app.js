@@ -5,56 +5,79 @@ window.run = function() {
         'astro-full',
         'bluebird',
         'application',
-        'plugins/navigationPlugin',
-        'plugins/anchoredLayoutPlugin'
+        'plugins/anchoredLayoutPlugin',
+        'scaffold-controllers/tabBarController',
+        'scaffold-controllers/drawerController',
+        'scaffold-controllers/cartModalController',
+        'scaffold-components/deepLinkingServices',
     ],
     function(
         Astro,
         Promise,
         Application,
-        NavigationPlugin,
-        AnchoredLayoutPlugin
+        AnchoredLayoutPlugin,
+        TabBarController,
+        DrawerController,
+        CartModalController,
+        DeepLinkingServices
     ) {
 
-        // Enter your site url here
-        var baseUrl = 'http://astro.mobify.com/';
-        var startUriPromise = Application.getStartUri();
+        var setupIosLayout = function() {
+            var layoutPromise = AnchoredLayoutPlugin.init();
+            var cartModalControllerPromise = CartModalController.init();
+            var cartEventHandlerPromise = cartModalControllerPromise.then(
+            function(cartModalController) {
+                return function() {
+                    cartModalController.show();
+                };
+            });
 
-        // Initialize plugins
-        var mainNavigationViewPromise = NavigationPlugin.init();
-        var layoutPromise = AnchoredLayoutPlugin.init();
+            return Promise.join(
+                layoutPromise,
+                TabBarController.init(layoutPromise, cartEventHandlerPromise),
+            function(layout, tabBarController) {
+                layout.addBottomView(tabBarController.tabBar);
 
-        // Start the app at the base url or provided start uri (deep link launch)
-        Promise.join(mainNavigationViewPromise, startUriPromise, function(mainNavigationView, uri) {
-            if (uri != null) {
-                mainNavigationView.navigate(uri);
-            } else {
-                mainNavigationView.navigate(baseUrl);
+                Application.setMainViewPlugin(layout);
+
+                return tabBarController;
+            }).then(function(tabBarController) {
+                // Tab layout must be added as the mainViewPlugin before
+                // The first tab is selected or else the navigation does
+                // not complete correctly
+                tabBarController.selectTab('1');
+                return tabBarController;
+            });
+        };
+
+        var setupAndroidLayout = function() {
+            return DrawerController.init().then(function(drawerController) {
+                Application.setMainViewPlugin(drawerController.drawer);
+
+                // Wiring up the hardware back button for Android
+                Application.on('onKeyDown', function(params) {
+                    drawerController.backActiveItem();
+                });
+
+                return drawerController;
+            }).then(function(drawerController) {
+                drawerController.selectItem('1');
+                return drawerController;
+            });
+        };
+
+        Application.getOSInformation().then(
+        function(osInfo) {
+            if (osInfo.os === Astro.platforms.ios) {
+                return setupIosLayout();
             }
-        });
 
-        // Listen for deep link events once app is running
-        mainNavigationViewPromise.then(function(mainNavigationView) {
-            Application.on('receivedDeepLink', function(params) {
-                var uri = params.uri;
-                if (uri != null) {
-                    mainNavigationView.navigate(uri);
-                }
-            });
-            // Wiring up the hardware back button for Android
-            Application.on('onKeyDown', function(params) {
-                mainNavigationView.back();
-            });
-        });
-
-        // Use the mainNavigationView as the main content view for our layout
-        Promise.join(layoutPromise, mainNavigationViewPromise, function(layout, mainNavigationView) {
-            layout.setContentView(mainNavigationView);
-        });
-
-        // Set the main view as the layout
-        layoutPromise.then(function(layout) {
-            Application.setMainViewPlugin(layout);
+            return setupAndroidLayout();
+        }).then(function(menuController) {
+            // Deep linking services will enable deep linking on startup
+            // and while running
+            // It will open the deep link in the current active tab
+            var deepLinkingServices = new DeepLinkingServices(menuController);
         });
 
     }, undefined, true);

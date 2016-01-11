@@ -18,15 +18,18 @@ public class MainActivity extends AstroActivity {
         super.onCreate(savedInstanceState);
 
         // Register plugins.
-        pluginManager.register(DrawerPlugin.class);
-        pluginManager.register(WebViewPlugin.class);
-        pluginManager.register(NavigationPlugin.class);
         pluginManager.register(AnchoredLayoutPlugin.class);
-        pluginManager.register(ModalViewPlugin.class);
+        pluginManager.register(CounterBadgePlugin.class);
+        pluginManager.register(DefaultLoaderPlugin.class);
+        pluginManager.register(DrawerPlugin.class);
         pluginManager.register(HeaderBarPlugin.class);
         pluginManager.register(ImageViewPlugin.class);
-        pluginManager.register(DefaultLoaderPlugin.class);
+        pluginManager.register(ModalViewPlugin.class);
+        pluginManager.register(NavigationPlugin.class);
+        pluginManager.register(SecureStorePlugin.class);
         pluginManager.register(TabBarPlugin.class);
+        pluginManager.register(WebViewPlugin.class);
+        pluginManager.register(SharingPlugin.class);
 
         // Create the initial worker.
         worker = new AstroWorker(this, pluginManager);
