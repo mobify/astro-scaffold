@@ -1,22 +1,21 @@
 define([
     'plugins/headerBarPlugin',
+    'controllers/counterBadgeController',
     'scaffold-components/headerConfig',
     'bluebird'
 ],
 /* eslint-disable */
 function(
     HeaderBarPlugin,
+    CounterBadgeController,
     HeaderConfig,
     Promise
 ) {
 /* eslint-enable */
 
-    var NavigationHeaderController = function(headerBar) {
+    var NavigationHeaderController = function(headerBar, counterBadgeController) {
         this.viewPlugin = headerBar;
-    };
-
-    var _createCartHeaderContent = function() {
-        return HeaderConfig.cartHeaderContent;
+        this.counterBadgeController = counterBadgeController;
     };
 
     var _createDrawerHeaderContent = function() {
@@ -24,29 +23,42 @@ function(
     };
 
     NavigationHeaderController.init = function() {
-        return HeaderBarPlugin.init().then(function(headerBar) {
+        var counterBadgeControllerPromise = CounterBadgeController.init(
+            HeaderConfig.cartHeaderContent.imageUrl,
+            HeaderConfig.cartHeaderContent.id
+        );
+
+        return Promise.join(
+            HeaderBarPlugin.init(),
+            counterBadgeControllerPromise,
+        function(headerBar, counterBadgeController) {
             headerBar.hideBackButtonText();
             headerBar.setTextColor(HeaderConfig.colors.textColor);
             headerBar.setBackgroundColor(HeaderConfig.colors.backgroundColor);
 
-            var navigationHeaderController = new NavigationHeaderController(headerBar);
+            counterBadgeController.updateCounterValue(8);
+
+            var navigationHeaderController =
+                new NavigationHeaderController(headerBar, counterBadgeController);
 
             return navigationHeaderController;
         });
     };
 
     NavigationHeaderController.prototype.generateContent = function(includeDrawer) {
-        var headerContent = {
-            header: {
-                rightIcon: _createCartHeaderContent()
+        return this.counterBadgeController.generateContent().then(function(counterHeaderContent) {
+            var headerContent = {
+                header: {
+                    rightIcon: counterHeaderContent
+                }
+            };
+
+            if (includeDrawer !== undefined && includeDrawer) {
+                headerContent.header.leftIcon = _createDrawerHeaderContent();
             }
-        };
 
-        if (includeDrawer !== undefined && includeDrawer) {
-            headerContent.header.leftIcon = _createDrawerHeaderContent();
-        }
-
-        return Promise.resolve(headerContent);
+            return headerContent;
+        });
     };
 
     NavigationHeaderController.prototype.registerBackEvents = function(callback) {

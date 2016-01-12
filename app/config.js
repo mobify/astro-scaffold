@@ -6,6 +6,7 @@ require.config({
         'application': '../astro/js/src/application',
         'bluebird': 'node_modules/bluebird/js/browser/bluebird',
         'plugins': '../astro/js/src/plugins',
+        'controllers': '../astro/js/src/controllers',
         'plugin-manager': '../astro/js/src/plugin-manager',
         'vendor/backbone-events': '../astro/js/vendor/backbone-events',
         'worker': '../astro/js/src/worker'
