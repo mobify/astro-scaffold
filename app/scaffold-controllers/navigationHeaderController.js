@@ -1,13 +1,11 @@
 define([
     'plugins/headerBarPlugin',
-    'controllers/counterBadgeController',
     'scaffold-components/headerConfig',
     'bluebird'
 ],
 /* eslint-disable */
 function(
     HeaderBarPlugin,
-    CounterBadgeController,
     HeaderConfig,
     Promise
 ) {
@@ -22,21 +20,11 @@ function(
         return HeaderConfig.drawerHeaderContent;
     };
 
-    NavigationHeaderController.init = function() {
-        var counterBadgeControllerPromise = CounterBadgeController.init(
-            HeaderConfig.cartHeaderContent.imageUrl,
-            HeaderConfig.cartHeaderContent.id
-        );
-
-        return Promise.join(
-            HeaderBarPlugin.init(),
-            counterBadgeControllerPromise,
-        function(headerBar, counterBadgeController) {
+    NavigationHeaderController.init = function(counterBadgeController) {
+        return HeaderBarPlugin.init().then(function(headerBar) {
             headerBar.hideBackButtonText();
             headerBar.setTextColor(HeaderConfig.colors.textColor);
             headerBar.setBackgroundColor(HeaderConfig.colors.backgroundColor);
-
-            counterBadgeController.updateCounterValue(8);
 
             var navigationHeaderController =
                 new NavigationHeaderController(headerBar, counterBadgeController);
