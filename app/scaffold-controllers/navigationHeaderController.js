@@ -1,6 +1,6 @@
 define([
     'plugins/headerBarPlugin',
-    'scaffold-components/headerConfig',
+    'scaffold-config/headerConfig',
     'bluebird'
 ],
 /* eslint-disable */
@@ -11,42 +11,42 @@ function(
 ) {
 /* eslint-enable */
 
-    var NavigationHeaderController = function(headerBar) {
+    var NavigationHeaderController = function(headerBar, counterBadgeController) {
         this.viewPlugin = headerBar;
-    };
-
-    var _createCartHeaderContent = function() {
-        return HeaderConfig.cartHeaderContent;
+        this.counterBadgeController = counterBadgeController;
     };
 
     var _createDrawerHeaderContent = function() {
         return HeaderConfig.drawerHeaderContent;
     };
 
-    NavigationHeaderController.init = function() {
+    NavigationHeaderController.init = function(counterBadgeController) {
         return HeaderBarPlugin.init().then(function(headerBar) {
             headerBar.hideBackButtonText();
             headerBar.setTextColor(HeaderConfig.colors.textColor);
             headerBar.setBackgroundColor(HeaderConfig.colors.backgroundColor);
 
-            var navigationHeaderController = new NavigationHeaderController(headerBar);
+            var navigationHeaderController =
+                new NavigationHeaderController(headerBar, counterBadgeController);
 
             return navigationHeaderController;
         });
     };
 
     NavigationHeaderController.prototype.generateContent = function(includeDrawer) {
-        var headerContent = {
-            header: {
-                rightIcon: _createCartHeaderContent()
+        return this.counterBadgeController.generateContent().then(function(counterHeaderContent) {
+            var headerContent = {
+                header: {
+                    rightIcon: counterHeaderContent
+                }
+            };
+
+            if (includeDrawer !== undefined && includeDrawer) {
+                headerContent.header.leftIcon = _createDrawerHeaderContent();
             }
-        };
 
-        if (includeDrawer !== undefined && includeDrawer) {
-            headerContent.header.leftIcon = _createDrawerHeaderContent();
-        }
-
-        return Promise.resolve(headerContent);
+            return headerContent;
+        });
     };
 
     NavigationHeaderController.prototype.registerBackEvents = function(callback) {

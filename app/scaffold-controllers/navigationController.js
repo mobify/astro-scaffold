@@ -38,10 +38,11 @@ function(
         this.navigate(tab.url, includeDrawerIcon);
     };
 
-    NavigationController.init = function(tab, cartEventHandler, drawerEventHandler) {
+    NavigationController.init = function(
+        tab, counterBadgeController, cartEventHandler, drawerEventHandler) {
         return Promise.join(
             AnchoredLayoutPlugin.init(),
-            NavigationHeaderController.init(),
+            NavigationHeaderController.init(counterBadgeController),
             NavigationPlugin.init(),
             function(layout, navigationHeaderController, navigationView) {
                 // Add Header Bar
