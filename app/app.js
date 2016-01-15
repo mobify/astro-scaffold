@@ -79,7 +79,7 @@ window.run = function() {
             HeaderConfig.cartHeaderContent.imageUrl,
             HeaderConfig.cartHeaderContent.id
         ).then(function(counterBadgeController) {
-            counterBadgeController.updateCounterValue(8);
+            counterBadgeController.updateCounterValue(3);
             return counterBadgeController;
         });
 
