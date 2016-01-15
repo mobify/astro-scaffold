@@ -11,7 +11,7 @@ window.run = function() {
         'scaffold-controllers/drawerController',
         'scaffold-controllers/cartModalController',
         'scaffold-components/deepLinkingServices',
-        'scaffold-components/headerConfig',
+        'scaffold-config/headerConfig',
     ],
     function(
         Astro,

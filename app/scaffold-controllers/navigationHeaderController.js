@@ -1,6 +1,6 @@
 define([
     'plugins/headerBarPlugin',
-    'scaffold-components/headerConfig',
+    'scaffold-config/headerConfig',
     'bluebird'
 ],
 /* eslint-disable */

@@ -1,6 +1,6 @@
 define([
     'plugins/tabBarPlugin',
-    'scaffold-components/menuConfig',
+    'scaffold-config/menuConfig',
     'scaffold-controllers/navigationController',
     'bluebird'
 ],

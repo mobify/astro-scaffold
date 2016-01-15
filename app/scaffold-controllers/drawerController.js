@@ -1,7 +1,7 @@
 define([
     'plugins/drawerPlugin',
     'plugins/webViewPlugin',
-    'scaffold-components/menuConfig',
+    'scaffold-config/menuConfig',
     'scaffold-controllers/navigationController',
     'scaffold-controllers/cartController',
     'bluebird'
