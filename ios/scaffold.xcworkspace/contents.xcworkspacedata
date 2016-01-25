@@ -2,10 +2,10 @@
 <Workspace
    version = "1.0">
    <FileRef
-      location = "group:../astro/ios/vendor/CordovaLib/CordovaLib.xcodeproj">
+      location = "group:../../astro/ios/vendor/CordovaLib/CordovaLib.xcodeproj">
    </FileRef>
    <FileRef
-      location = "group:../astro/ios/Astro.xcodeproj">
+      location = "group:../../astro/ios/Astro.xcodeproj">
    </FileRef>
    <FileRef
       location = "group:scaffold.xcodeproj">
