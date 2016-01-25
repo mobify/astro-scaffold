@@ -20,16 +20,12 @@ if ! which npm 1>/dev/null 2>&1; then
 	exit 1
 fi
 
+# Build astro-client.js
+pushd ../node_modules/astro-sdk
+npm install --production
+grunt build_astro_client
+cp js/build/astro-client.js ../../app/scaffold-www/
+popd
+
 # Build app.js.
 grunt build
-
-# If the astro submodule has been modified, assume the user is developing
-# Astro from within the project, and build astro-client.js
-if [ -z "$(git diff | grep dirty)" ] && [ -f ../app/scaffold-www/astro-client.js ]; then
-    echo "No need to build astro-client"
-    exit 0
-fi
-cd ../astro
-grunt build_astro_client
-cp js/build/astro-client.js ../app/scaffold-www/
-popd
