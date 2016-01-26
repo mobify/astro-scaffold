@@ -7,9 +7,5 @@
     "test": "./scripts/ios-appium.sh",
     "install-dependencies": "./scripts/install-dependencies.sh"
   },
-  "licenses": [
-    {
-      "url": "https://github.com/mobify/astro-scaffold/blob/develop/LICENSE"
-    }
-  ]
+  "license" : "SEE LICENSE IN LICENSE"
 }
