@@ -18,5 +18,6 @@
   "scripts": {
     "test": "./scripts/ios-appium.sh",
     "install-dependencies": "./scripts/install-dependencies.sh"
-  }
+  },
+  "license": "SEE LICENSE IN LICENSE"
 }
