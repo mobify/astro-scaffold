@@ -31,7 +31,8 @@ the Astro team)
     cd astro
     npm link
 
-Then run, `npm link astro-sdk` to use your locally developed version of Astro.
+Then navigate back to your project root directory and run: `npm link astro-sdk`
+to use your locally developed version of Astro.
 
 # Switching between Debug and Release mode
 
