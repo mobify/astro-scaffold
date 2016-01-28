@@ -3,10 +3,10 @@
   "version": "0.7.0",
   "author": "Mobify",
   "dependencies": {
-    "bluebird": "~2.9.24"
+    "bluebird": "~2.9.24",
+    "astro-sdk": "^0.7.0-dev"
   },
   "devDependencies": {
-    "astro-sdk": "^0.7.0-dev",
     "grunt": "^0.4.5",
     "grunt-contrib-watch": "^0.6.1",
     "grunt-eslint": "^13.0.0",
