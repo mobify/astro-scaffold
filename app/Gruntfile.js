@@ -27,7 +27,7 @@ module.exports = function(grunt) {
         config[configName] = _.extend(config[configName] || {}, option);
     });
 
-    grunt.config('pkg', grunt.file.readJSON('package.json'));
+    grunt.config('pkg', grunt.file.readJSON('../package.json'));
 
     grunt.initConfig(config);
 

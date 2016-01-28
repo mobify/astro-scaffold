@@ -2,7 +2,7 @@
 
 To get up and running with scaffold, ensure the dependencies are installed:
 
-    npm run-script install-dependencies
+    npm install
 
 **Note**: The `app/build-js.sh` script automatically builds app.js.
 If node.js isn't installed to /usr/local/bin, run:
@@ -22,22 +22,17 @@ Run the following command to open the iOS scaffold in Xcode:
 
     open ios/scaffold.xcworkspace
 
-# Updating to the latest Astro
+# Developing against `develop` of astro
 
-Astro is brought in as a submodule. To update the Astro submodule to point to correct commit (ie. latest ‘develop’)
-- `cd astro`
-- `git checkout develop`
-- `git pull`
-- `cd ..`
-- `npm run-script install-dependencies`
-- `git add astro`
-- `git commit -m "Updating Astro submodule to latest on 'develop' branch."`
+Clone Astro (note: Astro is not open on GitHub, to gain access please contact
+the Astro team)
 
-# Developing Astro from within your project
+    git clone git@github.com:mobify/astro.git
+    cd astro
+    npm link
 
-If you are making changes to Astro and testing them from within this project,
-`app/build-js.js` will detect if the `astro` submodule has been modified. If it has,
-it will automatically build `astro-client.js` and copy it into your project.
+Then navigate back to your project root directory and run: `npm link astro-sdk`
+to use your locally developed version of Astro.
 
 # Switching between Debug and Release mode
 

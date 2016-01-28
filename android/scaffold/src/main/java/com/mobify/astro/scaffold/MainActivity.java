@@ -4,6 +4,7 @@ import android.os.Bundle;
 
 import com.mobify.astro.AstroActivity;
 import com.mobify.astro.plugins.*;
+import com.mobify.astro.plugins.counterbadgeplugin.CounterBadgePlugin;
 import com.mobify.astro.plugins.loaders.*;
 import com.mobify.astro.plugins.headerbarplugin.HeaderBarPlugin;
 import com.mobify.astro.plugins.webviewplugin.WebViewPlugin;
