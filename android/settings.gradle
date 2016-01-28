@@ -1,2 +1,2 @@
 include ':scaffold', ':astro'
-project(':astro').projectDir = new File(settingsDir, '../astro/android')
+project(':astro').projectDir = new File(settingsDir, '../node_modules/astro-sdk/android')

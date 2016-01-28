@@ -1,8 +1,20 @@
 {
   "name": "astro-scaffold",
-  "version": "0.6.0",
+  "version": "0.7.0",
   "author": "Mobify",
-  "dependencies": {},
+  "dependencies": {
+    "bluebird": "~2.9.24",
+    "astro-sdk": "^0.7.0"
+  },
+  "devDependencies": {
+    "grunt": "^0.4.5",
+    "grunt-contrib-watch": "^0.6.1",
+    "grunt-eslint": "^13.0.0",
+    "grunt-requirejs": "^0.4.2",
+    "mobify-code-style": "^2.2.1",
+    "nightwatch": "0.7.9",
+    "nightwatch-commands": "1.1.1"
+  },
   "scripts": {
     "test": "./scripts/ios-appium.sh",
     "install-dependencies": "./scripts/install-dependencies.sh"
