@@ -1,3 +1,6 @@
+## v0.7.1
+Astro no longer uses grunt-harp
+
 ## v0.7.0
 - Update to reference Astro via npm
 
