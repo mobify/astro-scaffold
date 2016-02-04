@@ -1,6 +1,6 @@
 {
   "name": "astro-scaffold",
-  "version": "0.7.0",
+  "version": "0.7.1",
   "author": "Mobify",
   "dependencies": {
     "bluebird": "~2.9.24",
