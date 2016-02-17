@@ -1,9 +1,10 @@
 var path = require('path');
 var appPath = path.join(process.cwd(), '../ios/build/Build/Products/Debug-iphonesimulator/scaffold.app');
+var apkPath = path.join(process.cwd(), '../android/scaffold/build/outputs/apk/scaffold-debug.apk');
 
 module.exports = {
     'src_folders': ['./tests/system'],
-    'output_folder': './reports',
+    'output_folder': '${CIRCLE_TEST_REPORTS}',
     'custom_commands_path': './node_modules/nightwatch-commands/commands',
     'custom_assertions_path': './node_modules/nightwatch-commands/assertions',
 
@@ -21,35 +22,40 @@ module.exports = {
     'test_settings': {
         'default': {
             'globals' : {
-                'waitForConditionTimeout' : 60000
+                'waitForConditionTimeout' : 60000,
+                'waitForConditionPollInterval': 500
             },
+            'end_session_on_fail': false,
             'launch_url': 'http://localhost:4723/wd/hub',
             'selenium_host': 'localhost',
             'selenium_port': 4723,
             'silent': true,
             'output': true,
             'screenshots': {
-                'enabled': false,
-                'path': ''
+                'enabled': true,
+                'path': '${CIRCLE_ARTIFACTS}',
+                'on_failure': true
             },
             'desiredCapabilities': {
-                'fullReset': false,
                 'app': appPath,
                 'platformName': 'iOS',
-                'platformVersion': '8.4',
+                'platformVersion': '9.2',
                 'deviceName': 'iPhone 6'
             },
             'exclude': 'nightwatch-config.js'
         },
 
-        'ios-sim': {
+        'android': {
             'desiredCapabilities': {
-                'fullReset': false,
-                'app': appPath,
-                'platformName': 'iOS',
-                'platformVersion': '8.3',
-                'deviceName': 'iPhone 6'
+                'app': apkPath,
+                'platformName': 'Android',
+                'platformVersion': '',
+                'deviceName': 'DEVICE NAME',
+                'appPackage': 'com.mobify.astro.scaffold',
+                'browserName': '',
+                'recreateChromeDriverSessions': true
             }
-        }
+        },
+
     }
 };
