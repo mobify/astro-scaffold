@@ -42,7 +42,7 @@ module.exports = {
                 'platformVersion': '9.2',
                 'deviceName': 'iPhone 6'
             },
-            'exclude': 'nightwatch-config.js'
+            'exclude': ['nightwatch-config.js', 'pageObjects', 'assertions']
         },
 
         'android': {
