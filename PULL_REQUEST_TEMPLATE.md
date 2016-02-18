@@ -19,4 +19,5 @@ Linked PRs: **(links to corresponding PRs, optional)**
 - [ ] Change works in both Android and iOS.
 - [ ] CHANGELOG.md has been updated.
 - [ ] Scaffold is working. If a new feature was added, it was added to the Scaffold app.
+- [ ] Run the generator to make sure it still functions correctly.
 - [ ] +1 from an engineer on the Astro team.
