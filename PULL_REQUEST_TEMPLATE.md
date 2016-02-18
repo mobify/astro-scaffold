@@ -15,7 +15,7 @@ Linked PRs: **(links to corresponding PRs, optional)**
 
 ## TODOS:
 - [ ] Tests have been written.
-- [ ] Tests are passing on your machine. 
+- [ ] Tests are passing on your machine.
 - [ ] Change works in both Android and iOS.
 - [ ] CHANGELOG.md has been updated.
 - [ ] Scaffold is working. If a new feature was added, it was added to the Scaffold app.
