@@ -1,10 +1,18 @@
 var path = require('path');
-var appPath = path.join(process.cwd(), '../ios/build/Build/Products/Debug-iphonesimulator/scaffold.app');
-var apkPath = path.join(process.cwd(), '../android/scaffold/build/outputs/apk/scaffold-debug.apk');
+// Customize these for your project.
+var appPath = path.join(process.cwd(), '../ios/build/Build/Products/Release-iphonesimulator/scaffold.app');
+var apkPath = path.join(process.cwd(), '../android/scaffold/build/outputs/apk/scaffold-release.apk');
+var reportsPath = process.env.CIRCLE_TEST_REPORTS || './tests/reports';
+var screenshotsPath = process.env.CIRCLE_ARTIFACTS || './tests/screenshots';
+var appPackage = 'com.mobify.astro.scaffold';
+
+// Device desired capabilities 
+var iOSVersion = '9.2';
+var androidDeviceName = 'DEVICE_NAME';
 
 module.exports = {
     'src_folders': ['./tests/system'],
-    'output_folder': '${CIRCLE_TEST_REPORTS}',
+    'output_folder': reportsPath,
     'custom_commands_path': './node_modules/nightwatch-commands/commands',
     'custom_assertions_path': './node_modules/nightwatch-commands/assertions',
 
@@ -33,13 +41,13 @@ module.exports = {
             'output': true,
             'screenshots': {
                 'enabled': true,
-                'path': '${CIRCLE_ARTIFACTS}',
+                'path': screenshotsPath,
                 'on_failure': true
             },
             'desiredCapabilities': {
                 'app': appPath,
                 'platformName': 'iOS',
-                'platformVersion': '9.2',
+                'platformVersion': iOSVersion,
                 'deviceName': 'iPhone 6'
             },
             'exclude': ['nightwatch-config.js', 'pageObjects', 'assertions']
@@ -50,8 +58,8 @@ module.exports = {
                 'app': apkPath,
                 'platformName': 'Android',
                 'platformVersion': '',
-                'deviceName': 'DEVICE NAME',
-                'appPackage': 'com.mobify.astro.scaffold',
+                'deviceName': androidDeviceName,
+                'appPackage': appPackage,
                 'browserName': '',
                 'recreateChromeDriverSessions': true
             }
