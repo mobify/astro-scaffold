@@ -6,7 +6,7 @@ var reportsPath = process.env.CIRCLE_TEST_REPORTS || './tests/reports';
 var screenshotsPath = process.env.CIRCLE_ARTIFACTS || './tests/screenshots';
 var appPackage = 'com.mobify.astro.scaffold';
 
-// Device desired capabilities 
+// Device desired capabilities
 var iOSVersion = process.env.IOS_VERSION || '9.2';
 var iOSDeviceName = process.env.IOS_DEVICE_NAME || 'iPhone 6';
 var androidDeviceName = 'DEVICE_NAME';
