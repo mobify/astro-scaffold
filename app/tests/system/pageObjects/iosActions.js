@@ -1,5 +1,5 @@
 /*
- Put iOS own actions in this page object.
+ Put iOS-specific actions in this page object.
  
  Do not perform verifications here. Verifications and assertions should go
  either in the test script or, for commonly used assertions, placed in an 
@@ -19,7 +19,7 @@ var iOSAction = function(browser) {
 	this.selectors = selectors;
 };
 
-iOSAction.prototype.clickBackButton = function(browser) {
+iOSAction.prototype.clickBackButton = function() {
 	this.browser
 		.contexts(function(result) {
 			browser
@@ -45,7 +45,7 @@ iOSAction.prototype.clickBackButton = function(browser) {
 	return this;
 };
 
-iOSAction.prototype.clickProfileTab = function(browser) {
+iOSAction.prototype.clickProfileTab = function() {
 	this.browser
 		.contexts(function(result) {
 			browser
@@ -58,7 +58,7 @@ iOSAction.prototype.clickProfileTab = function(browser) {
 	return this;
 };
 
-iOSAction.prototype.setContext = function(browser, contextName) {
+iOSAction.prototype.setContext = function(contextName) {
 	this.browser
 		.log('Starting Set Context')
 		.setContext(contextName)
