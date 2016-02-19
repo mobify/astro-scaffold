@@ -1,5 +1,5 @@
 /*
- Put Android own actions in this page object.
+ Put Android-specific actions in this page object.
  
  Do not perform verifications here. Verifications and assertions should go
  either in the test script or, for commonly used assertions, placed in an 
@@ -18,7 +18,7 @@ var AndroidAction = function(browser) {
 	this.selectors = selectors;
 };
 
-AndroidAction.prototype.clickHamburgerMenuButton = function(browser) {
+AndroidAction.prototype.clickHamburgerMenuButton = function() {
 	this.browser
 		.contexts(function(result) {
 			browser
@@ -44,7 +44,7 @@ AndroidAction.prototype.clickHamburgerMenuButton = function(browser) {
 	return this;
 };
 
-AndroidAction.prototype.clickBackButton = function(browser) {
+AndroidAction.prototype.clickBackButton = function() {
 	this.browser
 		.pause(3000)
 		.log('Clicking System Back Button')
@@ -53,7 +53,7 @@ AndroidAction.prototype.clickBackButton = function(browser) {
 	return this;
 };
 
-AndroidAction.prototype.setWindowHandle = function(browser, winNum) {
+AndroidAction.prototype.setWindowHandle = function(winNum) {
 	this.browser
 		//Check the currect context is Native or webview
 		.currentContext(function(ctx) {
