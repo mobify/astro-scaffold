@@ -7,7 +7,8 @@ var screenshotsPath = process.env.CIRCLE_ARTIFACTS || './tests/screenshots';
 var appPackage = 'com.mobify.astro.scaffold';
 
 // Device desired capabilities 
-var iOSVersion = '9.2';
+var iOSVersion = process.env.IOS_VERSION || '9.2';
+var iOSDeviceName = process.env.IOS_DEVICE_NAME || 'iPhone 6';
 var androidDeviceName = 'DEVICE_NAME';
 
 module.exports = {
@@ -48,7 +49,7 @@ module.exports = {
                 'app': appPath,
                 'platformName': 'iOS',
                 'platformVersion': iOSVersion,
-                'deviceName': 'iPhone 6'
+                'deviceName': iOSDeviceName
             },
             'exclude': ['nightwatch-config.js', 'pageObjects', 'assertions']
         },
