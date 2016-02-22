@@ -15,7 +15,7 @@ module.exports = {
                     .url(function(url) {
                         browser.log(url.value);
                     })
-                    .assert.urlContains('google');
+                    .assert.urlContains('https://webpush-you-host.mobifydemo.io/about/');
             })
             .end();
     }
