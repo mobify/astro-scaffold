@@ -1,9 +1,9 @@
 /*
  Put actions in this page object.
- 
+
  Do not perform verifications here. Verifications and assertions should go
- either in the test script or, for commonly used assertions, placed in an 
- assertions object in tests/system/assertions. 
+ either in the test script or, for commonly used assertions, placed in an
+ assertions object in tests/system/assertions.
 */
 
 var selectors = {

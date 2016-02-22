@@ -1,7 +1,7 @@
 /*
  Place commonly used assertions here.
 
- Use selectors from the equivalent page object. 
+ Use selectors from the equivalent page object.
 */
 
 var Home = require('../pageObjects/home');
@@ -9,11 +9,11 @@ var Home = require('../pageObjects/home');
 var home;
 var selectors;
 
-function HomeAssertions(browser) {
+var HomeAssertions = function(browser) {
     this.browser = browser;
     home = new Home(browser);
     selectors = home.selectors;
-}
+};
 
 HomeAssertions.prototype.assertElements = function() {
     this.browser

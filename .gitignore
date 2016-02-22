@@ -33,3 +33,7 @@ DerivedData
 ### Swift ###
 *.hmap
 *.ipa
+
+### Test Reports ###
+reports
+screenshots
