@@ -51,7 +51,7 @@ module.exports = {
                 'platformVersion': iOSVersion,
                 'deviceName': iOSDeviceName
             },
-            'exclude': ['nightwatch-config.js', 'pageObjects', 'assertions']
+            'exclude': ['nightwatch-config.js', 'setup', 'pageObjects', 'assertions']
         },
 
         'android': {
