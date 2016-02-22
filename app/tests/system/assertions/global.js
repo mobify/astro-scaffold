@@ -9,7 +9,7 @@ var GlobalAssertions = function(browser) {
 /*
  Assert that landscape mode is disabled.
 
- Set browser orientation to landscape, then verify the value of 
+ Set browser orientation to landscape, then verify the value of
  window.orientation:
  0 - Portrait
  -90 - Landscape, clockwise
@@ -38,7 +38,7 @@ GlobalAssertions.prototype.assertPortrait = function() {
 /*
  Assert that landscape mode is enabled.
 
- Set browser orientation to landscape, then verify the value of 
+ Set browser orientation to landscape, then verify the value of
  window.orientation:
  0 - Portrait
  -90 - Landscape, clockwise
