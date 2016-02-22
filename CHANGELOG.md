@@ -1,4 +1,5 @@
 ## To be released
+- Added automated system tests
 
 ## v0.7.1
 - Astro no longer uses grunt-harp

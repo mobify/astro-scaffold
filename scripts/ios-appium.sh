@@ -4,6 +4,8 @@ set -o pipefail
  
 MYPATH=$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd ) 
 ROOT=$MYPATH/..
+export IOS_DEVICE_NAME="iPhone 6"
+export IOS_VERSION="9.2"
 
 # Kill background processes when this script exits.
 trap 'kill $(jobs -p)' EXIT
@@ -23,10 +25,11 @@ pushd $ROOT/ios/
 xcodebuild \
     -workspace "scaffold.xcworkspace/" \
     -scheme "scaffold" \
-    -destination "platform=iOS Simulator,name=iPhone 6,OS=8.3" \
+    -configuration "Release" \
+    -destination "platform=iOS Simulator,name=$IOS_DEVICE_NAME,OS=$IOS_VERSION" \
     -derivedDataPath "build" \
     build | prettifyOutput
 popd
 
 pushd $ROOT/app/
-grunt nightwatch -e ios-sim
+grunt nightwatch
