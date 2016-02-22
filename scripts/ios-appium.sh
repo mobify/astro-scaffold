@@ -25,6 +25,7 @@ pushd $ROOT/ios/
 xcodebuild \
     -workspace "scaffold.xcworkspace/" \
     -scheme "scaffold" \
+    -configuration "Release" \
     -destination "platform=iOS Simulator,name=$IOS_DEVICE_NAME,OS=$IOS_VERSION" \
     -derivedDataPath "build" \
     build | prettifyOutput
