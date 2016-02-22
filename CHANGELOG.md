@@ -1,5 +1,5 @@
 ## To be released
-- Updates to automated system test config and scripts.
+- Added automated system tests
 
 ## v0.7.1
 - Astro no longer uses grunt-harp
