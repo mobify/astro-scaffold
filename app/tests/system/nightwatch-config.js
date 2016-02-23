@@ -30,8 +30,8 @@ module.exports = {
 
     'test_settings': {
         'default': {
-            'globals' : {
-                'waitForConditionTimeout' : 60000,
+            'globals': {
+                'waitForConditionTimeout': 60000,
                 'waitForConditionPollInterval': 500
             },
             'end_session_on_fail': false,
@@ -49,7 +49,8 @@ module.exports = {
                 'app': appPath,
                 'platformName': 'iOS',
                 'platformVersion': iOSVersion,
-                'deviceName': iOSDeviceName
+                'deviceName': iOSDeviceName,
+                'browserName': ''
             },
             'exclude': ['nightwatch-config.js', 'setup', 'pageObjects', 'assertions']
         },
