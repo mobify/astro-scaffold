@@ -1,5 +1,5 @@
 /*
- Global assertions for any webview context.
+ Global assertions for any context.
 */
 
 var GlobalAssertions = function(browser) {
