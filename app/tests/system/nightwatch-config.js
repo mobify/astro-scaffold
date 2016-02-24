@@ -32,7 +32,12 @@ module.exports = {
         'default': {
             'globals': {
                 'waitForConditionTimeout': 60000,
-                'waitForConditionPollInterval': 500
+                'waitForConditionPollInterval': 500,
+                // WEBVIEWS GO HERE. Are set dynamically on test run
+                "contexts": {
+                    'NO_INTERNET': '',
+                    'COULD_NOT_LOAD': '',
+                }
             },
             'end_session_on_fail': false,
             'launch_url': 'http://localhost:4723/wd/hub',

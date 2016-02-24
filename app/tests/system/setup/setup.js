@@ -16,9 +16,8 @@ var selectors = {
     registeredAuctionList: '.js-auction-lists'
 };
 
-// THESE URLS DO NOT CHANGE REGARDLESS OF ENVIRONMENT
 var expected = {
-    //EXAMPLE Webviews constructed for project
+    //EXAMPLE Webviews constructed for project.
     'noInternet': /no-internet\.html/i,
     'couldNotLoad': /could-not-load\.html/i
 };
