@@ -2,6 +2,13 @@
  Global assertions for any context.
 */
 
+var orientations = {
+    portrait: 0,
+    clockwise: -90,
+    counterClockwise: 90,
+    upsideDown: 180
+};
+
 var GlobalAssertions = function(browser) {
     this.browser = browser;
 };
@@ -11,10 +18,6 @@ var GlobalAssertions = function(browser) {
 
  Set browser orientation to landscape, then verify the value of
  window.orientation:
- 0 - Portrait
- -90 - Landscape, clockwise
- 90 - Landscape, counterclockwise
- 180 - Portrait, upside-down
 */
 GlobalAssertions.prototype.assertPortrait = function() {
     var self = this;
@@ -27,8 +30,8 @@ GlobalAssertions.prototype.assertPortrait = function() {
                     return window.orientation;
                 }, function(result) {
                         var rotation = result.value;
-                        self.browser.log('Window rotation should be 0.');
-                        this.assert.equal(rotation, 0);
+                        self.browser.log('Window orientation should be portrait.');
+                        this.assert.equal(rotation, orientations.portrait);
                     }
                 );
         });
@@ -40,10 +43,6 @@ GlobalAssertions.prototype.assertPortrait = function() {
 
  Set browser orientation to landscape, then verify the value of
  window.orientation:
- 0 - Portrait
- -90 - Landscape, clockwise
- 90 - Landscape, counterclockwise
- 180 - Portrait, upside-down
 */
 GlobalAssertions.prototype.assertLandscape = function() {
     var self = this;
@@ -56,9 +55,9 @@ GlobalAssertions.prototype.assertLandscape = function() {
                     return window.orientation;
                 }, function(result) {
                         var rotation = result.value;
-                        self.browser.log('Window rotation should be 90 or -90');
-                        this.assert.notEqual(rotation, 0);
-                        this.assert.notEqual(rotation, 180);
+                        self.browser.log('Window orientation should be (counter)clockwise.');
+                        this.assert.notEqual(rotation, orientations.portrait);
+                        this.assert.notEqual(rotation, orientations.upsideDown);
                     }
                 );
         });
