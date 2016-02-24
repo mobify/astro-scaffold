@@ -24,8 +24,8 @@ fi
 pushd ../node_modules/astro-sdk
 npm install
 grunt build_astro_client
-cp js/build/astro-client.js ../../app/scaffold-www/
 popd
+cp ../node_modules/astro-sdk/js/build/astro-client.js scaffold-www/
 
 # Build app.js.
 grunt build
