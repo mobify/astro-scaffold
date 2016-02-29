@@ -4,6 +4,10 @@ To get up and running with scaffold, ensure the dependencies are installed:
 
     npm install
 
+During the first build in Xcode or Android Studio, the npm dependencies for astro-sdk are installed. This takes some time, so you can install them manually:
+
+    pushd node_modules/astro-sdk && npm install && popd
+
 **Note**: The `app/build-js.sh` script automatically builds app.js.
 If node.js isn't installed to /usr/local/bin, run:
 
