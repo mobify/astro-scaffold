@@ -1,4 +1,5 @@
 ## To be released
+- Update to use backButtonPressed event and ensure application closes at appropriate times in Android.
 - Added automated system tests
 
 ## v0.7.1

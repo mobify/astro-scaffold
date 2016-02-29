@@ -1,5 +1,6 @@
 define([
     'bluebird',
+    'application',
     'plugins/anchoredLayoutPlugin',
     'plugins/navigationPlugin',
     'scaffold-controllers/navigationHeaderController'
@@ -7,6 +8,7 @@ define([
 /* eslint-disable */
 function(
     Promise,
+    Application,
     AnchoredLayoutPlugin,
     NavigationPlugin,
     NavigationHeaderController
@@ -88,7 +90,14 @@ function(
     };
 
     NavigationController.prototype.back = function() {
-        this.navigationView.back();
+        var self = this;
+        self.navigationView.canGoBack().then(function(canGoBack) {
+            if (canGoBack) {
+                self.navigationView.back();
+            } else {
+                Application.closeApp();
+            }
+        });
     };
 
     return NavigationController;
