@@ -35,8 +35,8 @@ module.exports = {
                 'waitForConditionPollInterval': 500,
                 // WEBVIEWS GO HERE. Are set dynamically on test run
                 "contexts": {
-                    'NO_INTERNET': '',
-                    'COULD_NOT_LOAD': '',
+                    'NO_INTERNET': null,
+                    'COULD_NOT_LOAD': null,
                 }
             },
             'end_session_on_fail': false,

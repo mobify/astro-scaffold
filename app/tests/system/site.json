@@ -5,9 +5,5 @@
             "bundleUrl": "http://localhost:8080/adaptive.js",
             "siteUrl": "http://www.google.ca"
         }
-    },
-    "webviews": {
-        "noInternetUrl": "no-internet.html",
-        "couldNotLoadUrl": "could-not-load.html",
     }
 }

@@ -17,7 +17,8 @@ var selectors = {
 };
 
 var expected = {
-    //EXAMPLE Webviews constructed for project.
+    //EXAMPLE Webviews constructed for project. 
+    //These expressions are match the part of the URL 
     'noInternet': /no-internet\.html/i,
     'couldNotLoad': /could-not-load\.html/i
 };
