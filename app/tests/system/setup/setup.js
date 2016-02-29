@@ -25,77 +25,74 @@ var expected = {
 
 Setup.appPreview = function(browser) {
     browser.contexts(function(result) {
-        browser
-            .session(function(type) {
+        browser.session(function(type) {
+            browser.log('Running on platform - ' + type.value.platformName);
+            if (type.value.platformName === 'Android') {
+                var contextsAndroid = result.value;
                 browser
-                    .log('Running on platform - ' + type.value.platformName);
-                if (type.value.platformName === 'Android') {
-                    var contextsAndroid = result.value;
-                    browser
-                        .log('Starting Preview Process')
-                        .currentContext(function(ctx) {
-                            browser.log('The current context is ' + ctx.value);
-                        })
-                        .setContext(contextsAndroid[1])
-                        .useCss()
-                        .waitForElementVisible(selectors.previewButton)
+                    .log('Starting Preview Process')
+                    .currentContext(function(ctx) {
+                        browser.log('The current context is ' + ctx.value);
+                    })
+                    .setContext(contextsAndroid[1])
+                    .useCss()
+                    .waitForElementVisible(selectors.previewButton)
 
                     // Checking window handle
                     .windowHandle(function(h) {
-                            browser.log('Window handle before clicking preview ' + h.value);
-                        })
-                        .click(selectors.previewButton)
-                        //This is only needed if using an adaptive build
-                        .pause(3000)
-                        .waitUntilMobified();
-                } else if (type.value.platformName === 'iOS') {
-                    browser.log('these are the contexts ' + result.value);
-                    var contextsiOS = result.value.slice(2);
-                    browser
-                        .log('Starting Preview Process iOS')
-                        .currentContext(function(ctx) {
-                            browser.log('The current context is ' + ctx.value);
-                        })
-                        .setContext(contextsiOS[contextsiOS.length - 1])
-                        .currentContext(function(ctx) {
-                            browser.log('The context after switching is ' + ctx.value);
-                        })
-                        .url(function(url) {
-                            browser.log('Print the URL ' + url.value);
-                        })
-                        .useCss()
-                        .waitForElementVisible(selectors.previewButton)
-                        //waits to ensure button fully loaded and context is available
-                        .pause(2000)
-                        .click(selectors.previewButton)
-                        //This is only needed if using an adaptive build
-                        .waitUntilMobified()
-                        //Wait for context to be available
-                        .pause(3000);
-                }
-            });
+                        browser.log('Window handle before clicking preview ' + h.value);
+                    })
+                    .click(selectors.previewButton)
+                    //This is only needed if using an adaptive build
+                    .pause(3000)
+                    .waitUntilMobified();
+            } else if (type.value.platformName === 'iOS') {
+                browser.log('these are the contexts ' + result.value);
+                var contextsiOS = result.value.slice(2);
+                browser
+                    .log('Starting Preview Process iOS')
+                    .currentContext(function(ctx) {
+                        browser.log('The current context is ' + ctx.value);
+                    })
+                    .setContext(contextsiOS[contextsiOS.length - 1]) 
+                    .currentContext(function(ctx) {
+                        browser.log('The context after switching is ' + ctx.value);
+                    })
+                    .url(function(url) {
+                        browser.log('Print the URL ' + url.value);
+                    })
+                    .useCss()
+                    .waitForElementVisible(selectors.previewButton)
+                    //waits to ensure button fully loaded and context is available
+                    .pause(2000)
+                    .click(selectors.previewButton)
+                    //This is only needed if using an adaptive build
+                    .waitUntilMobified()
+                    //Wait for context to be available
+                    .pause(3000);
+            }
+        });
     });
 };
 
 Setup.ensurePreviewed = function(browser) {
-    browser
-        .session(function(type) {
-            if (type.value.platform === 'ANDROID') {
-                browser.log('Running on platform - ' + type.value.platform);
-                browser.windowHandle(function(h) {
-                    browser.log('Window handle after Preview ' + h.value);
-                });
-                browser.windowHandles(function(result) {
-                    browser.log('Print all the window handles ');
-                    browser.log(result.value);
-                    browser.waitUntilMobified();
-                });
-            }
-        });
+    browser.session(function(type) {
+        if (type.value.platform === 'ANDROID') {
+            browser.log('Running on platform - ' + type.value.platform);
+            browser.windowHandle(function(h) {
+                browser.log('Window handle after Preview ' + h.value);
+            });
+            browser.windowHandles(function(result) {
+                browser.log('Print all the window handles ');
+                browser.log(result.value);
+                browser.waitUntilMobified();
+            });
+        }
+    });
 
     browser.contexts(function(result) {
-        browser.log(result.value);
         browser
+            .log(result.value)
             .useCss()
             .log('Preview Complete');
     });
@@ -119,21 +116,22 @@ Setup.getContextNames = function(browser) {
         var webContexts = result.value.slice(2);
         browser.log('Checking ' + webContexts.length + ' webviews.');
         webContexts.forEach(function(context) {
-            browser.setContext(context);
-            browser.pause(2000);
-            browser.url(function(result) {
-                var contextUrl = result.value;
-                browser.log(contextUrl);
-                if (expected.noInternet.test(contextUrl)) {
-                    browser.globals.contexts.NO_INTERNET = context;
-                } else if (expected.couldNotLoad.test(contextUrl)) {
-                    browser.globals.contexts.COULD_NOT_LOAD = context;
-                } else if (expected.homeUrl.test(contextUrl)) {
-                    browser.globals.contexts.HOME = context;
-                }
-                // ADD MORE WEBVIEWS HERE, PLEASE KEEP HOMEURL TO THE LAST ONE
+            browser
+                .setContext(context)
+                .pause(2000)
+                .url(function(result) {
+                    var contextUrl = result.value;
+                    browser.log(contextUrl);
+                    if (expected.noInternet.test(contextUrl)) {
+                        browser.globals.contexts.NO_INTERNET = context;
+                    } else if (expected.couldNotLoad.test(contextUrl)) {
+                        browser.globals.contexts.COULD_NOT_LOAD = context;
+                    } else if (expected.homeUrl.test(contextUrl)) {
+                        browser.globals.contexts.HOME = context;
+                    }
+                    // ADD MORE WEBVIEWS HERE, PLEASE KEEP HOMEURL TO THE LAST ONE
+                });
             });
-        });
         browser.log(browser.globals.contexts);
     });
 
