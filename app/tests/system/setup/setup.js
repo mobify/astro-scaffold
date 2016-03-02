@@ -24,7 +24,7 @@ var expected = {
 };
 
 Setup.isAndroid = function(platform) {
-    platform = platform || 'platformName';
+    platform = platform || 'unknown';
     return platform.toLowerCase() === 'android';
 };
 
