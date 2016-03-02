@@ -23,11 +23,16 @@ var expected = {
     'couldNotLoad': /could-not-load\.html/i
 };
 
+Setup.isAndroid = function(platform) {
+    platform = platform || 'platformName';
+    return platform.toLowerCase() === 'android';
+};
+
 Setup.appPreview = function(browser) {
     browser.contexts(function(result) {
         browser.session(function(type) {
             browser.log('Running on platform - ' + type.value.platformName);
-            if (type.value.platformName === 'Android') {
+            if (isAndroid(type.value.platform)) {
                 var contextsAndroid = result.value;
                 browser
                     .log('Starting Preview Process')
@@ -46,7 +51,7 @@ Setup.appPreview = function(browser) {
                     //This is only needed if using an adaptive build
                     .pause(3000)
                     .waitUntilMobified();
-            } else if (type.value.platformName === 'iOS') {
+            } else if (!isAndroid(type.value.platform)) {
                 browser.log('these are the contexts ' + result.value);
                 var contextsiOS = result.value.slice(2);
                 browser
@@ -77,7 +82,7 @@ Setup.appPreview = function(browser) {
 
 Setup.ensurePreviewed = function(browser) {
     browser.session(function(type) {
-        if (type.value.platform === 'ANDROID') {
+        if (isAndroid(type.value.platform)) {
             browser.log('Running on platform - ' + type.value.platform);
             browser.windowHandle(function(h) {
                 browser.log('Window handle after Preview ' + h.value);
