@@ -2,18 +2,26 @@
 
 To get up and running with scaffold, ensure the dependencies are installed:
 
-    npm install
+```bash
+npm install
+```
 
 During the first build in Xcode or Android Studio, the npm dependencies for astro-sdk are installed. This takes some time, so you can install them manually:
 
-    pushd node_modules/astro-sdk && npm install && popd
+```bash
+pushd node_modules/astro-sdk && npm install && popd
+```
 
 **Note**: The `app/build-js.sh` script automatically builds app.js.
-If node.js isn't installed to /usr/local/bin, run:
 
-    cp app/user-env.sh.example app/user-env.sh && which npm | sed 's/\/npm//' | pbcopy
+If node.js isn't installed in `/usr/local/bin`, run:
 
-Then paste the npm path from your clipboard onto the end of the path inside of the user-env.sh file.
+```bash
+cp app/user-env.sh.example app/user-env.sh && \
+    sed -i '' '/export PATH="/d"' app/user-env.sh && \
+    echo "export PATH=\$PATH:\"$(which npm | sed 's/\/npm//')\"" >> app/user-env.sh && \
+    chmod +x app/user-env.sh
+```
 
 # Android
 
@@ -24,16 +32,20 @@ Import the scaffold into Android Studio using the Import Project option and by s
 
 Run the following command to open the iOS scaffold in Xcode:
 
-    open ios/scaffold.xcworkspace
+```bash
+open ios/scaffold.xcworkspace
+```
 
-# Developing against `develop` of astro
+# Developing against `develop` of Astro
 
 Clone Astro (note: Astro is not open on GitHub, to gain access please contact
 the Astro team)
 
-    git clone git@github.com:mobify/astro.git
-    cd astro
-    npm link
+```bash
+git clone git@github.com:mobify/astro.git
+cd astro
+npm link
+```
 
 Then navigate back to your project root directory and run: `npm link astro-sdk`
 to use your locally developed version of Astro.
@@ -42,7 +54,7 @@ to use your locally developed version of Astro.
 
 ## iOS
 
-Xcode - Product > Scheme > Edit Scheme ... In the Run scheme, change Build Configuration to Release
+Xcode - Product > Scheme > Edit Scheme ... In the Run scheme, change *Build Configuration* to Release
 
 ## Android
 
@@ -81,7 +93,9 @@ Astro defines a controller inside of a requirejs module. The module exposes a pr
 The scaffold comes with an example appium test located in app/tests/system/
 The tests depend on appium. Install it:
 
-    npm install -g appium
+```bash
+npm install -g appium
+```
 
 By default, the tests run on the iOS 8.3 simulator. Make sure this is installed by going to Xcode > Preferences > Downloads.    
 
@@ -89,29 +103,34 @@ By default, the tests run on the iOS 8.3 simulator. Make sure this is installed 
 
 You may also have to authorize the ios simulator to run your application using appium:
 
-    sudo authorize_ios
+```bash
+sudo authorize_ios
+```
 
 (Optional) Install xcpretty to format the output from xcodebuild
 
-    gem install xcpretty    
+```bash
+gem install xcpretty
+```
 
 To run the tests, execute the following command from the root directory of the repo:
 
-    npm test
+```bash
+npm test
+```
 
 ### Specify Test Device Version
 
 To specify the version you want to test against, edit the `scripts/ios-appium.sh` script and specify the desired iOS device and version. These values will then be used as desired capabilities in the `nightwatch-config.js` file inside of `app/tests/system`. 
 
 # CircleCI Setup:
-- (iOS only) Update the files in `circle/certificates` and `circle/provisioning-profiles` if you have non-Mobify certificates and provision profiles.
-- (iOS only) Update the config files in `circle/config` based on the updates made in the previous step
+- (iOS only) Add/Update the files in `circle/certificates` and `circle/provisioning-profiles` if you have non-Mobify certificates and provision profiles.
+- (iOS only) Add/Update the config files in `circle/config` based on the updates made in the previous step
 - **Follow** GitHub repo in CircleCI
 - In **Experimental Settings** enable **Build iOS Project**
 - In **Environment Variables** make sure to set:
     - `HOCKEYAPP_TOKEN` and `HOCKEYAPP_TOKEN_ANDROID` - See HockeyApp Setup below to get this
-    - KEY_PASSWORD - Passwords for the .p12 files are in "CI Development Key" of the "Shared-App Credentials" folder in LastPass.
-- You will need to make sure CircleCI can access the Astro repo (for Mobify projects, follow [these instructions](https://mobify.atlassian.net/wiki/display/LT/questions/79528346/i-am-creating-a-new-cst-mobile-build-ios-or-android-that-has-linked-in-astro-as-a-git-submodule.-how-do-grant-circleci-access-to-both-repos)).
+    - `KEY_PASSWORD` - Passwords for the .p12 files are in "CI Development Key" of the "Shared-App Credentials" folder in LastPass.
 
 # HockeyApp Setup
 - Make sure there is an iOS project created with bundle identifier: `com.mobify.astro.scaffold`
@@ -119,8 +138,6 @@ To specify the version you want to test against, edit the `scripts/ios-appium.sh
 - For iOS, create a `HOCKEYAPP_TOKEN` key in Account Settings -> API Tokens. Copy & Paste the token into the `HOCKEYAPP_TOKEN` environment variable in CircleCI described in   
 - For Android, create a `HOCKEYAPP_TOKEN_ANDROID` key in Account Settings -> API Tokens. Copy & Paste the token into the `HOCKEYAPP_TOKEN_ANDROID` environment variable in CircleCI described in   
  the above section CircleCI Setup
-
-
 
 # Troubleshooting
 
