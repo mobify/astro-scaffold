@@ -1,10 +1,10 @@
 {
   "name": "astro-scaffold",
-  "version": "0.7.1",
+  "version": "0.8.0",
   "author": "Mobify",
   "dependencies": {
     "bluebird": "~2.9.24",
-    "astro-sdk": "^0.7.1"
+    "astro-sdk": "^0.8.0"
   },
   "devDependencies": {
     "grunt": "^0.4.5",
