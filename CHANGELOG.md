@@ -1,4 +1,4 @@
-## To be released
+## v0.8.0
 - Update to use backButtonPressed event and ensure application closes at appropriate times in Android.
 - Added automated system tests
 
