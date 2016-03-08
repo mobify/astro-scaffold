@@ -17,8 +17,8 @@ var selectors = {
 };
 
 var expected = {
-    //EXAMPLE Webviews constructed for project. 
-    //These expressions are match the part of the URL 
+    //EXAMPLE Webviews constructed for project.
+    //These expressions are match the part of the URL
     'noInternet': /no-internet\.html/i,
     'couldNotLoad': /could-not-load\.html/i
 };
@@ -32,7 +32,7 @@ Setup.appPreview = function(browser) {
     browser.contexts(function(result) {
         browser.session(function(type) {
             browser.log('Running on platform - ' + type.value.platformName);
-            if (isAndroid(type.value.platform)) {
+            if (this.isAndroid(type.value.platform)) {
                 var contextsAndroid = result.value;
                 browser
                     .log('Starting Preview Process')
@@ -51,7 +51,7 @@ Setup.appPreview = function(browser) {
                     //This is only needed if using an adaptive build
                     .pause(3000)
                     .waitUntilMobified();
-            } else if (!isAndroid(type.value.platform)) {
+            } else if (!this.isAndroid(type.value.platform)) {
                 browser.log('these are the contexts ' + result.value);
                 var contextsiOS = result.value.slice(2);
                 browser
@@ -59,7 +59,7 @@ Setup.appPreview = function(browser) {
                     .currentContext(function(ctx) {
                         browser.log('The current context is ' + ctx.value);
                     })
-                    .setContext(contextsiOS[contextsiOS.length - 1]) 
+                    .setContext(contextsiOS[contextsiOS.length - 1])
                     .currentContext(function(ctx) {
                         browser.log('The context after switching is ' + ctx.value);
                     })
@@ -82,7 +82,7 @@ Setup.appPreview = function(browser) {
 
 Setup.ensurePreviewed = function(browser) {
     browser.session(function(type) {
-        if (isAndroid(type.value.platform)) {
+        if (this.isAndroid(type.value.platform)) {
             browser.log('Running on platform - ' + type.value.platform);
             browser.windowHandle(function(h) {
                 browser.log('Window handle after Preview ' + h.value);
@@ -136,7 +136,7 @@ Setup.getContextNames = function(browser) {
                     }
                     // ADD MORE WEBVIEWS HERE, PLEASE KEEP HOMEURL TO THE LAST ONE
                 });
-            });
+        });
         browser.log(browser.globals.contexts);
     });
 

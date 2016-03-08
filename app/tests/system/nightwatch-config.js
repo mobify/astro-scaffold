@@ -34,9 +34,9 @@ module.exports = {
                 'waitForConditionTimeout': 60000,
                 'waitForConditionPollInterval': 500,
                 // WEBVIEWS GO HERE. Are set dynamically on test run
-                "contexts": {
-                    'NO_INTERNET': null,
-                    'COULD_NOT_LOAD': null,
+                'contexts': {
+                    'NO_INTERNET': {}, // These cannot be null -- will cause inifinite recursion in clirunner.js
+                    'COULD_NOT_LOAD': {},
                 }
             },
             'end_session_on_fail': false,
