@@ -4,6 +4,10 @@ To get up and running with scaffold, ensure the dependencies are installed:
 
     npm install
 
+During the first build in Xcode or Android Studio, the npm dependencies for astro-sdk are installed. This takes some time, so you can install them manually:
+
+    pushd node_modules/astro-sdk && npm install && popd
+
 **Note**: The `app/build-js.sh` script automatically builds app.js.
 If node.js isn't installed to /usr/local/bin, run:
 
@@ -97,10 +101,7 @@ To run the tests, execute the following command from the root directory of the r
 
 ### Specify Test Device Version
 
-To specify the version you want to test against, edit the `scripts/ios-appium.sh` script and
-change the `-destination` argument to point at the desired device and version. You must also
-update the `nightwatch-config.js` file inside of `app/tests/system`. Make sure the desired capabilities
-of the nightwatch config file match the device version you specify in the bash script.
+To specify the version you want to test against, edit the `scripts/ios-appium.sh` script and specify the desired iOS device and version. These values will then be used as desired capabilities in the `nightwatch-config.js` file inside of `app/tests/system`. 
 
 # CircleCI Setup:
 - (iOS only) Update the files in `circle/certificates` and `circle/provisioning-profiles` if you have non-Mobify certificates and provision profiles.

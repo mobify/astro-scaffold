@@ -5381,6 +5381,16 @@ module.exports = ret;
         var iframeID = 'astro-bridge-frame';
 
         var notify = function() {
+            // We insert the notifying iframe into body (it's not a good
+            // idea to put iframes into head). But, if someone was to
+            // put `astro-client.js` and a bunch of Astro.trigger calls
+            // in the <head>, we need to make sure we wait until body
+            // is available.
+            if (!window.document.body) {
+                setTimeout(notify, 100);
+                return;
+            }
+
             // Ensure that the bridge exists and hasn't been removed from the document
             if (!document.getElementById(iframeID)) {
                 iframe = document.createElement('iframe');

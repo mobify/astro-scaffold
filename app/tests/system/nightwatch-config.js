@@ -1,9 +1,19 @@
 var path = require('path');
-var appPath = path.join(process.cwd(), '../ios/build/Build/Products/Debug-iphonesimulator/scaffold.app');
+// Customize these for your project.
+var appPath = path.join(process.cwd(), '../ios/build/Build/Products/Release-iphonesimulator/scaffold.app');
+var apkPath = path.join(process.cwd(), '../android/scaffold/build/outputs/apk/scaffold-release.apk');
+var reportsPath = process.env.CIRCLE_TEST_REPORTS || './tests/reports';
+var screenshotsPath = process.env.CIRCLE_ARTIFACTS || './tests/screenshots';
+var appPackage = 'com.mobify.astro.scaffold';
+
+// Device desired capabilities
+var iOSVersion = process.env.IOS_VERSION || '9.2';
+var iOSDeviceName = process.env.IOS_DEVICE_NAME || 'iPhone 6';
+var androidDeviceName = 'DEVICE_NAME';
 
 module.exports = {
     'src_folders': ['./tests/system'],
-    'output_folder': './reports',
+    'output_folder': reportsPath,
     'custom_commands_path': './node_modules/nightwatch-commands/commands',
     'custom_assertions_path': './node_modules/nightwatch-commands/assertions',
 
@@ -20,36 +30,47 @@ module.exports = {
 
     'test_settings': {
         'default': {
-            'globals' : {
-                'waitForConditionTimeout' : 60000
+            'globals': {
+                'waitForConditionTimeout': 60000,
+                'waitForConditionPollInterval': 500,
+                // WEBVIEWS GO HERE. Are set dynamically on test run
+                'contexts': {
+                    'NO_INTERNET': {}, // These cannot be null -- will cause inifinite recursion in clirunner.js
+                    'COULD_NOT_LOAD': {},
+                }
             },
+            'end_session_on_fail': false,
             'launch_url': 'http://localhost:4723/wd/hub',
             'selenium_host': 'localhost',
             'selenium_port': 4723,
             'silent': true,
             'output': true,
             'screenshots': {
-                'enabled': false,
-                'path': ''
+                'enabled': true,
+                'path': screenshotsPath,
+                'on_failure': true
             },
             'desiredCapabilities': {
-                'fullReset': false,
                 'app': appPath,
                 'platformName': 'iOS',
-                'platformVersion': '8.4',
-                'deviceName': 'iPhone 6'
+                'platformVersion': iOSVersion,
+                'deviceName': iOSDeviceName,
+                'browserName': ''
             },
-            'exclude': 'nightwatch-config.js'
+            'exclude': ['nightwatch-config.js', 'setup', 'pageObjects', 'assertions']
         },
 
-        'ios-sim': {
+        'android': {
             'desiredCapabilities': {
-                'fullReset': false,
-                'app': appPath,
-                'platformName': 'iOS',
-                'platformVersion': '8.3',
-                'deviceName': 'iPhone 6'
+                'app': apkPath,
+                'platformName': 'Android',
+                'platformVersion': '',
+                'deviceName': androidDeviceName,
+                'appPackage': appPackage,
+                'browserName': '',
+                'recreateChromeDriverSessions': true
             }
-        }
+        },
+
     }
 };

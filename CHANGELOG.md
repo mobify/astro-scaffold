@@ -1,5 +1,9 @@
+## v0.8.0
+- Update to use backButtonPressed event and ensure application closes at appropriate times in Android.
+- Added automated system tests
+
 ## v0.7.1
-Astro no longer uses grunt-harp
+- Astro no longer uses grunt-harp
 
 ## v0.7.0
 - Update to reference Astro via npm
