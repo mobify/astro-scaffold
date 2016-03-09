@@ -1,8 +1,8 @@
 #!/bin/bash -eu
 
 set -o pipefail
- 
-MYPATH=$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd ) 
+
+MYPATH=$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )
 ROOT=$MYPATH/..
 export IOS_DEVICE_NAME="iPhone 6"
 export IOS_VERSION="9.2"
@@ -28,6 +28,7 @@ xcodebuild \
     -configuration "Release" \
     -destination "platform=iOS Simulator,name=$IOS_DEVICE_NAME,OS=$IOS_VERSION" \
     -derivedDataPath "build" \
+    OTHER_SWIFT_FLAGS="\${inherited} -D TEST" \
     build | prettifyOutput
 popd
 
