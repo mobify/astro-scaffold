@@ -60,7 +60,7 @@ window.run = function() {
         };
 
         var setupAndroidLayout = function(counterBadgeControllerPromise) {
-            return DrawerController.init(counterBadgeControllerPromise).then(
+            return DrawerController.init(counterBadgeControllerPromise, cartEventHandlerPromise).then(
             function(drawerController) {
                 Application.setMainViewPlugin(drawerController.drawer);
 

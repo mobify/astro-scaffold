@@ -3,7 +3,6 @@ define([
     'plugins/webViewPlugin',
     'config/menuConfig',
     'scaffold-controllers/navigationController',
-    'scaffold-controllers/cart/cartModalController',
     'bluebird'
 ],
 function(
@@ -11,7 +10,6 @@ function(
     WebViewPlugin,
     MenuConfig,
     NavigationController,
-    CartModalController,
     Promise
 ) {
 
@@ -43,21 +41,19 @@ function(
         // Make sure all tabViews are set up
         return Promise.all(tabItems.map(function(tab) {
             //Init a new NavigationController
-            return cartEventHandlerPromise.then(function(cartEventHandler) {
-                return NavigationController.init(tab, counterBadgeController, cartEventHandler, drawerEventHandler);
-            }).then(function(navigationController) {
-                        drawer.itemControllers[tab.id] = navigationController;
-                        drawer.itemViews[tab.id] = navigationController.layout;
+            return NavigationController.init(tab, counterBadgeController, cartEventHandler, drawerEventHandler).then(function(navigationController) {
+                    drawer.itemControllers[tab.id] = navigationController;
+                    drawer.itemViews[tab.id] = navigationController.layout;
 
-                        return drawer;
+                    return drawer;
+                });
+
+            })).then(function() {
+                return drawer;
             });
+        };
 
-        })).then(function() {
-            return drawer;
-        });
-    };
-
-    DrawerController.init = function(counterBadgeControllerPromise, cartEventHandler) {
+    DrawerController.init = function(counterBadgeControllerPromise, cartEventHandlerPromise) {
         var constructTabItemsPromise = Promise.resolve(MenuConfig.menuItems);
         var webViewPromise = WebViewPlugin.init();
 
@@ -70,7 +66,7 @@ function(
             initLeftMenuPromise,
             constructTabItemsPromise,
             counterBadgeControllerPromise,
-            cartEventHandler,
+            cartEventHandlerPromise,
             initNavigationItems);
 
         return Promise.all([initNavigationItemsPromise]).then(function() {
