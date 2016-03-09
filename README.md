@@ -97,7 +97,7 @@ The tests depend on appium. Install it:
 npm install -g appium
 ```
 
-By default, the tests run on the iOS 8.3 simulator. Make sure this is installed by going to Xcode > Preferences > Downloads.    
+By default, the tests run on the simulator version specified in `scripts/ios-appium.sh`. Here you can change the device/iOS version to the combination you want to run the tests against. Make sure the specified version is installed on your machine by going to Xcode > Preferences > Downloads.
 
 ![Screenshot of Xcode Downloads](https://s3.amazonaws.com/uploads.hipchat.com/15359/58433/YSrQpl7NyZEown6/2015-08-12%2011.59.00%20am.png)
 
@@ -119,10 +119,6 @@ To run the tests, execute the following command from the root directory of the r
 npm test
 ```
 
-### Specify Test Device Version
-
-To specify the version you want to test against, edit the `scripts/ios-appium.sh` script and specify the desired iOS device and version. These values will then be used as desired capabilities in the `nightwatch-config.js` file inside of `app/tests/system`. 
-
 # CircleCI Setup:
 - (iOS only) Add/Update the files in `circle/certificates` and `circle/provisioning-profiles` if you have non-Mobify certificates and provision profiles.
 - (iOS only) Add/Update the config files in `circle/config` based on the updates made in the previous step
@@ -135,8 +131,8 @@ To specify the version you want to test against, edit the `scripts/ios-appium.sh
 # HockeyApp Setup
 - Make sure there is an iOS project created with bundle identifier: `com.mobify.astro.scaffold`
 - Make sure there is an Android project created with package name: `com.mobify.astro.scaffold`
-- For iOS, create a `HOCKEYAPP_TOKEN` key in Account Settings -> API Tokens. Copy & Paste the token into the `HOCKEYAPP_TOKEN` environment variable in CircleCI described in   
-- For Android, create a `HOCKEYAPP_TOKEN_ANDROID` key in Account Settings -> API Tokens. Copy & Paste the token into the `HOCKEYAPP_TOKEN_ANDROID` environment variable in CircleCI described in   
+- For iOS, create a `HOCKEYAPP_TOKEN` key in Account Settings -> API Tokens. Copy & Paste the token into the `HOCKEYAPP_TOKEN` environment variable in CircleCI described in
+- For Android, create a `HOCKEYAPP_TOKEN_ANDROID` key in Account Settings -> API Tokens. Copy & Paste the token into the `HOCKEYAPP_TOKEN_ANDROID` environment variable in CircleCI described in
  the above section CircleCI Setup
 
 # Troubleshooting

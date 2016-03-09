@@ -23,6 +23,10 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
             AstroConfig.allowUntrustedHTTPSCertificate = true
         #endif
 
+        #if TEST
+            AstroConfig.useWKWebView = false
+        #endif
+
         astroViewController = AstroViewController(appJsUrl: NSURL(string: "app.js")!, launchOptions: launchOptions,
             pluginRegistrations: { pluginRegistrar in
         })

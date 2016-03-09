@@ -1,6 +1,7 @@
 ## To be released
 - Cart styling is now configurable through the `cartConfig.js` file
 - Cart is in modal for both Android and iOS devices
+- Use UIWebView for Appium tests until Appium supports WKWebView
 
 ## v0.8.0
 - Update to use backButtonPressed event and ensure application closes at appropriate times in Android.
