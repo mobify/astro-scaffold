@@ -31,7 +31,7 @@ function(
             });
 
             anchoredLayout.addTopView(cartHeaderController.headerBar);
-            anchoredLayout.setContentView(cartController.webView)
+            anchoredLayout.setContentView(cartController.webView);
             modalView.setContentView(anchoredLayout);
             return new CartModalController(modalView);
         });

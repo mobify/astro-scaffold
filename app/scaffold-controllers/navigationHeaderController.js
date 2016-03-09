@@ -1,13 +1,15 @@
 define([
-    'plugins/headerBarPlugin',
-    'scaffold-config/headerConfig',
-    'bluebird'
+    'bluebird',
+    'config/baseConfig',
+    'config/headerConfig',
+    'plugins/headerBarPlugin'
 ],
 /* eslint-disable */
 function(
-    HeaderBarPlugin,
+    Promise,
+    BaseConfig,
     HeaderConfig,
-    Promise
+    HeaderBarPlugin
 ) {
 /* eslint-enable */
 
@@ -23,13 +25,10 @@ function(
     NavigationHeaderController.init = function(counterBadgeController) {
         return HeaderBarPlugin.init().then(function(headerBar) {
             headerBar.hideBackButtonText();
-            headerBar.setTextColor(HeaderConfig.colors.textColor);
-            headerBar.setBackgroundColor(HeaderConfig.colors.backgroundColor);
+            headerBar.setTextColor(BaseConfig.colors.whiteColor);
+            headerBar.setBackgroundColor(BaseConfig.colors.primaryColor);
 
-            var navigationHeaderController =
-                new NavigationHeaderController(headerBar, counterBadgeController);
-
-            return navigationHeaderController;
+            return new NavigationHeaderController(headerBar, counterBadgeController);
         });
     };
 

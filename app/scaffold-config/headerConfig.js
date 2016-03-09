@@ -26,17 +26,11 @@ define([ ], function() {
         title: 'Cart'
     };
 
-    var colors = {
-        textColor: '#ffffff',
-        backgroundColor: '#007BA7'
-    };
-
     return {
         cartHeaderContent: cartHeaderContent,
         drawerHeaderContent: drawerHeaderContent,
         closeHeaderContent: closeHeaderContent,
         titleHeaderContent: titleHeaderContent,
-        cartTitleHeaderContent: cartTitleHeaderContent,
-        colors: colors
+        cartTitleHeaderContent: cartTitleHeaderContent
     };
 });

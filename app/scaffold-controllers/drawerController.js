@@ -1,7 +1,7 @@
 define([
     'plugins/drawerPlugin',
     'plugins/webViewPlugin',
-    'scaffold-config/menuConfig',
+    'config/menuConfig',
     'scaffold-controllers/navigationController',
     'scaffold-controllers/cartController',
     'bluebird'
@@ -18,7 +18,7 @@ function(
     var DrawerController = function(drawer, leftMenu) {
         this.drawer = drawer;
         this.leftMenu = leftMenu;
-        this.activeItemId;
+        this.activeItemId = null;
 
         this._bindEvents();
     };

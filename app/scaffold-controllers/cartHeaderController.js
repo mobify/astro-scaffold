@@ -1,13 +1,15 @@
 define([
-    'plugins/headerBarPlugin',
-    'scaffold-config/headerConfig',
-    'bluebird'
+    'bluebird',
+    'config/baseConfig',
+    'config/headerConfig',
+    'plugins/headerBarPlugin'
 ],
 /* eslint-disable */
 function(
-    HeaderBarPlugin,
+    Promise,
+    BaseConfig,
     HeaderConfig,
-    Promise
+    HeaderBarPlugin
 ) {
 /* eslint-enable */
 
@@ -17,8 +19,8 @@ function(
 
     CartHeaderController.init = function() {
         return HeaderBarPlugin.init().then(function(headerBar) {
-            headerBar.setTextColor(HeaderConfig.colors.textColor);
-            headerBar.setBackgroundColor(HeaderConfig.colors.backgroundColor);
+            headerBar.setTextColor(BaseConfig.colors.whiteColor);
+            headerBar.setBackgroundColor(BaseConfig.colors.primaryColor);
 
             headerBar.setCenterTitle(
                 HeaderConfig.cartTitleHeaderContent.title,
