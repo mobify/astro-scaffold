@@ -2,9 +2,9 @@
 define([],
 function() {
     var colors = {
-        primaryColor: '#007BA7',
-        secondaryColor: '#007BA7',
-        whiteColor: '#FFFFFF'
+        primaryColor: '#007ba7',
+        secondaryColor: '#007ba7',
+        whiteColor: '#ffffff'
     };
     return {
         colors: colors

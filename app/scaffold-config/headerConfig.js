@@ -1,4 +1,4 @@
-define([ ], function() {
+define(['config/baseConfig'], function(BaseConfig) {
 /* eslint-enable max-statements */
 
     var cartHeaderContent = {
@@ -11,11 +11,6 @@ define([ ], function() {
         imageUrl: 'file:///icon__drawer.png'
     };
 
-    var closeHeaderContent = {
-        id: 'close_id',
-        imageUrl: 'file:///icon__close.png'
-    };
-
     var titleHeaderContent = {
         id: 'header_id',
         title: 'Velo'
@@ -26,11 +21,16 @@ define([ ], function() {
         title: 'Cart'
     };
 
+    var colors = {
+        titleTextColor: BaseConfig.colors.whiteColor,
+        backgroundColor: BaseConfig.colors.primaryColor
+    };
+
     return {
         cartHeaderContent: cartHeaderContent,
         drawerHeaderContent: drawerHeaderContent,
-        closeHeaderContent: closeHeaderContent,
         titleHeaderContent: titleHeaderContent,
-        cartTitleHeaderContent: cartTitleHeaderContent
+        cartTitleHeaderContent: cartTitleHeaderContent,
+        colors: colors
     };
 });

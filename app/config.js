@@ -3,6 +3,7 @@ require.config({
     paths: {
         'astro-base': '../node_modules/astro-sdk/js/src/astro-base',
         'astro-full': '../node_modules/astro-sdk/js/src/astro-full',
+        'astro-events': 'global/astro-events',
         'application': '../node_modules/astro-sdk/js/src/application',
         'bluebird': '../node_modules/bluebird/js/browser/bluebird',
         'config': 'scaffold-config',

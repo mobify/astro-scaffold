@@ -1,13 +1,11 @@
 define([
     'bluebird',
-    'config/baseConfig',
     'config/headerConfig',
     'plugins/headerBarPlugin'
 ],
 /* eslint-disable */
 function(
     Promise,
-    BaseConfig,
     HeaderConfig,
     HeaderBarPlugin
 ) {
@@ -25,8 +23,8 @@ function(
     NavigationHeaderController.init = function(counterBadgeController) {
         return HeaderBarPlugin.init().then(function(headerBar) {
             headerBar.hideBackButtonText();
-            headerBar.setTextColor(BaseConfig.colors.whiteColor);
-            headerBar.setBackgroundColor(BaseConfig.colors.primaryColor);
+            headerBar.setTextColor(HeaderConfig.colors.titleTextColor);
+            headerBar.setBackgroundColor(HeaderConfig.colors.backgroundColor);
 
             return new NavigationHeaderController(headerBar, counterBadgeController);
         });

@@ -1,45 +1,78 @@
 define([
+    'astro-full',
+    'astro-events',
     'bluebird',
     'plugins/modalViewPlugin',
-    'plugins/anchoredLayoutPlugin',
-    'scaffold-controllers/cartController',
-    'scaffold-controllers/cartHeaderController'
+    'scaffold-controllers/cartController'
 ],
 /* eslint-disable */
 function(
+    Astro,
+    AstroEvents,
     Promise,
     ModalViewPlugin,
-    AnchoredLayoutPlugin,
-    CartController,
-    CartHeaderController
+    CartController
 ) {
 /* eslint-enable */
 
-    var CartModalController = function(modalView) {
-        this.modalView = modalView;
+    var CartModalController = function(modalView, cartController) {
+        this.isShowing = false;
+        this.viewPlugin = modalView;
+
+
+        // Privileged methods
+        this._reload = function() {
+            cartController.reload();
+        };
+
+        this._loadBlank = function() {
+            cartController.navigate('about:blank');
+        };
     };
 
     CartModalController.init = function() {
         return Promise.join(
-            ModalViewPlugin.init(),
-            AnchoredLayoutPlugin.init(),
             CartController.init(),
-            CartHeaderController.init(),
-        function(modalView, anchoredLayout, cartController, cartHeaderController) {
-            cartHeaderController.registerCloseEvents(function() {
-                modalView.hide();
+            ModalViewPlugin.init(),
+        function(cartController, modalView) {
+            modalView.setContentView(cartController.viewPlugin);
+
+            var cartModalController = new CartModalController(modalView, cartController);
+            cartController.registerCloseEventHandler(function() {
+                cartModalController.hide();
             });
 
-            anchoredLayout.addTopView(cartHeaderController.headerBar);
-            anchoredLayout.setContentView(cartController.webView);
-            modalView.setContentView(anchoredLayout);
-            return new CartModalController(modalView);
+            // Register RPC methods
+            Astro.registerRpcMethod(AstroEvents.rpcNames.openCart, [], function(res) {
+                cartModalController.show();
+            });
+            Astro.registerRpcMethod(AstroEvents.rpcNames.closeCart, [], function(res) {
+                cartModalController.hide();
+            });
+            Astro.registerRpcMethod(AstroEvents.rpcNames.cartShowing, [], function(res) {
+                res.send(null, cartModalController.isActiveItem());
+            });
+            return cartModalController;
         });
     };
 
     CartModalController.prototype.show = function() {
-        this.modalView.show();
+        if (this.isShowing) {
+            return;
+        }
+        this._reload();
+        this.isShowing = true;
+        this.viewPlugin.show({animated: true});
     };
 
+    CartModalController.prototype.hide = function() {
+        this.viewPlugin.hide({animated: true});
+        this.isShowing = false;
+        this._loadBlank();
+    };
+
+    CartModalController.prototype.isActiveItem = function() {
+        return this.isShowing;
+    };
     return CartModalController;
 });

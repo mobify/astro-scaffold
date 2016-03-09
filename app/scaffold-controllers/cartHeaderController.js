@@ -1,49 +1,45 @@
 define([
     'bluebird',
-    'config/baseConfig',
-    'config/headerConfig',
+    'config/cartConfig',
     'plugins/headerBarPlugin'
 ],
 /* eslint-disable */
 function(
     Promise,
-    BaseConfig,
-    HeaderConfig,
+    CartConfig,
     HeaderBarPlugin
 ) {
 /* eslint-enable */
 
     var CartHeaderController = function(headerBar) {
-        this.headerBar = headerBar;
+        this.viewPlugin = headerBar;
     };
 
     CartHeaderController.init = function() {
         return HeaderBarPlugin.init().then(function(headerBar) {
-            headerBar.setTextColor(BaseConfig.colors.whiteColor);
-            headerBar.setBackgroundColor(BaseConfig.colors.primaryColor);
+            headerBar.setTextColor(CartConfig.colors.titleTextColor);
+            headerBar.setBackgroundColor(CartConfig.colors.backgroundColor);
 
             headerBar.setCenterTitle(
-                HeaderConfig.cartTitleHeaderContent.title,
-                HeaderConfig.cartTitleHeaderContent.id
+                CartConfig.headerContent.title,
+                CartConfig.headerContent.id
             );
 
             headerBar.setRightIcon(
-                HeaderConfig.closeHeaderContent.imageUrl,
-                HeaderConfig.closeHeaderContent.id
+                CartConfig.closeIcon.imageUrl,
+                CartConfig.closeIcon.id
             );
 
-            var cartHeaderController = new CartHeaderController(headerBar);
-
-            return cartHeaderController;
+            return new CartHeaderController(headerBar);
         });
     };
 
-    CartHeaderController.prototype.registerCloseEvents = function(callback) {
+    CartHeaderController.prototype.registerCloseEventHandler = function(callback) {
         if (!callback) {
             return;
         }
 
-        this.headerBar.on('click:' + HeaderConfig.closeHeaderContent.id, callback);
+        this.viewPlugin.on('click:' + CartConfig.closeIcon.id, callback);
     };
 
     return CartHeaderController;
