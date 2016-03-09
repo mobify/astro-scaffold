@@ -32,17 +32,10 @@ function(
         return drawer;
     };
 
-    var initNavigationItems = function(drawer, tabItems, counterBadgeController) {
+    var initNavigationItems = function(drawer, tabItems, counterBadgeController, cartEventHandler) {
         var drawerEventHandler = function() {
             drawer.showLeftMenu();
         };
-
-        var cartEventHandlerPromise =
-            CartModalController.init().then(function(cartModalController) {
-                return function() {
-                    cartModalController.show();
-                };
-            });
 
         drawer.itemViews = {};
         drawer.itemControllers = {};
@@ -64,7 +57,7 @@ function(
         });
     };
 
-    DrawerController.init = function(counterBadgeControllerPromise) {
+    DrawerController.init = function(counterBadgeControllerPromise, cartEventHandler) {
         var constructTabItemsPromise = Promise.resolve(MenuConfig.menuItems);
         var webViewPromise = WebViewPlugin.init();
 
@@ -77,6 +70,7 @@ function(
             initLeftMenuPromise,
             constructTabItemsPromise,
             counterBadgeControllerPromise,
+            cartEventHandler,
             initNavigationItems);
 
         return Promise.all([initNavigationItemsPromise]).then(function() {

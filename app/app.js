@@ -10,7 +10,7 @@ window.run = function() {
         'controllers/counterBadgeController',
         'scaffold-controllers/tabBarController',
         'scaffold-controllers/drawerController',
-        'scaffold-controllers/cartModalController',
+        'scaffold-controllers/cart/cartModalController',
         'scaffold-components/deepLinkingServices',
         'config/headerConfig'
     ],
@@ -28,16 +28,15 @@ window.run = function() {
         HeaderConfig
     ) {
 
-        var setupIosLayout = function(counterBadgeControllerPromise) {
-            var layoutPromise = AnchoredLayoutPlugin.init();
-            var cartModalControllerPromise = CartModalController.init();
-            var cartEventHandlerPromise = cartModalControllerPromise.then(
-            function(cartModalController) {
+        var cartEventHandlerPromise =
+            CartModalController.init().then(function(cartModalController) {
                 return function() {
                     cartModalController.show();
                 };
             });
 
+        var setupIosLayout = function(counterBadgeControllerPromise) {
+            var layoutPromise = AnchoredLayoutPlugin.init();
             var tabBarControllerPromise = TabBarController.init(
                 layoutPromise, cartEventHandlerPromise, counterBadgeControllerPromise);
 
