@@ -97,7 +97,7 @@ The tests depend on appium. Install it:
 npm install -g appium
 ```
 
-By default, the tests run on the simulator version specified in `scripts/ios-appium.sh`. Make sure this version is installed on your machine (or change the device/version to one that is installed already) by going to Xcode > Preferences > Downloads.
+By default, the tests run on the simulator version specified in `scripts/ios-appium.sh`. Here you can change the device/iOS version to the combination you want to run the tests against. Make sure the specified version is installed on your machine by going to Xcode > Preferences > Downloads.
 
 ![Screenshot of Xcode Downloads](https://s3.amazonaws.com/uploads.hipchat.com/15359/58433/YSrQpl7NyZEown6/2015-08-12%2011.59.00%20am.png)
 
