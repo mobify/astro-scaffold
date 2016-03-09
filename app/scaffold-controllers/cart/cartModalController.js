@@ -3,7 +3,7 @@ define([
     'astro-events',
     'bluebird',
     'plugins/modalViewPlugin',
-    'scaffold-controllers/cartController'
+    'scaffold-controllers/cart/cartController'
 ],
 /* eslint-disable */
 function(

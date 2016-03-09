@@ -3,7 +3,7 @@ define([
     'plugins/webViewPlugin',
     'config/menuConfig',
     'scaffold-controllers/navigationController',
-    'scaffold-controllers/cartModalController',
+    'scaffold-controllers/cart/cartModalController',
     'bluebird'
 ],
 function(

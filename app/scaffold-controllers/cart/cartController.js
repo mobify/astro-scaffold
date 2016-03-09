@@ -5,7 +5,7 @@ define([
     'plugins/webViewPlugin',
     'plugins/anchoredLayoutPlugin',
     'plugins/loaders/defaultLoaderPlugin',
-    'scaffold-controllers/cartHeaderController'
+    'scaffold-controllers/cart/cartHeaderController'
 ],
 /* eslint-disable */
 function(
