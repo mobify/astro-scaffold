@@ -22,7 +22,7 @@ define(['config/baseConfig'], function(BaseConfig) {
     };
 
     var colors = {
-        titleTextColor: BaseConfig.colors.whiteColor,
+        textColor: BaseConfig.colors.whiteColor,
         backgroundColor: BaseConfig.colors.primaryColor
     };
 

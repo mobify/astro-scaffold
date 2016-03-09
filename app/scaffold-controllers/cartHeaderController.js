@@ -17,7 +17,7 @@ function(
 
     CartHeaderController.init = function() {
         return HeaderBarPlugin.init().then(function(headerBar) {
-            headerBar.setTextColor(CartConfig.colors.titleTextColor);
+            headerBar.setTextColor(CartConfig.colors.textColor);
             headerBar.setBackgroundColor(CartConfig.colors.backgroundColor);
 
             headerBar.setCenterTitle(

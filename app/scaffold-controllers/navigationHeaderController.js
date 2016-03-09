@@ -23,7 +23,7 @@ function(
     NavigationHeaderController.init = function(counterBadgeController) {
         return HeaderBarPlugin.init().then(function(headerBar) {
             headerBar.hideBackButtonText();
-            headerBar.setTextColor(HeaderConfig.colors.titleTextColor);
+            headerBar.setTextColor(HeaderConfig.colors.textColor);
             headerBar.setBackgroundColor(HeaderConfig.colors.backgroundColor);
 
             return new NavigationHeaderController(headerBar, counterBadgeController);
