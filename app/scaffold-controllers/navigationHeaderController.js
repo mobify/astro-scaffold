@@ -1,13 +1,13 @@
 define([
-    'plugins/headerBarPlugin',
-    'scaffold-config/headerConfig',
-    'bluebird'
+    'bluebird',
+    'config/headerConfig',
+    'plugins/headerBarPlugin'
 ],
 /* eslint-disable */
 function(
-    HeaderBarPlugin,
+    Promise,
     HeaderConfig,
-    Promise
+    HeaderBarPlugin
 ) {
 /* eslint-enable */
 
@@ -26,10 +26,7 @@ function(
             headerBar.setTextColor(HeaderConfig.colors.textColor);
             headerBar.setBackgroundColor(HeaderConfig.colors.backgroundColor);
 
-            var navigationHeaderController =
-                new NavigationHeaderController(headerBar, counterBadgeController);
-
-            return navigationHeaderController;
+            return new NavigationHeaderController(headerBar, counterBadgeController);
         });
     };
 

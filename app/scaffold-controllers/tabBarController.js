@@ -1,6 +1,6 @@
 define([
     'plugins/tabBarPlugin',
-    'scaffold-config/menuConfig',
+    'config/menuConfig',
     'scaffold-controllers/navigationController',
     'bluebird'
 ],
@@ -14,7 +14,7 @@ function(
     var TabBarController = function(tabBar, layout) {
         this.tabBar = tabBar;
         this.layout = layout;
-        this.activeTabId;
+        this.activeTabId = null;
 
         this._bindEvents();
     };
