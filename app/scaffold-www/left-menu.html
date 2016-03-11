@@ -8,8 +8,7 @@
 
         <script>
             $(function() {
-                Astro.on('menuConfig', function(menuItems) {
-                    window.menuItems = menuItems;
+                Astro.jsRpcMethod('menuItems', [])().then(function(menuItems) {
                     for (var i = 0; i < menuItems.length; i++) {
                         var item = menuItems[i];
                         $('#menu').append(

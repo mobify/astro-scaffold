@@ -12,6 +12,7 @@ window.run = function() {
         'scaffold-controllers/drawerController',
         'scaffold-controllers/cart/cartModalController',
         'scaffold-components/deepLinkingServices',
+        'config/baseConfig',
         'config/headerConfig'
     ],
     function(
@@ -25,9 +26,9 @@ window.run = function() {
         DrawerController,
         CartModalController,
         DeepLinkingServices,
+        BaseConfig,
         HeaderConfig
     ) {
-        var iosUsingTabLayout = false;
         var deepLinkingServices = null;
 
         var cartModalControllerPromise = CartModalController.init();
@@ -94,7 +95,7 @@ window.run = function() {
         });
 
         Application.getOSInformation().then(function(osInfo) {
-            if (osInfo.os === Astro.platforms.ios && iosUsingTabLayout) {
+            if (osInfo.os === Astro.platforms.ios && BaseConfig.iosUsingTabLayout) {
                 return tabBarLayout(counterBadgeControllerPromise);
             }
             return drawerLayout(counterBadgeControllerPromise);
