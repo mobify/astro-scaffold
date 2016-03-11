@@ -59,5 +59,9 @@ function(
         this.webView.navigate(CartConfig.url);
     };
 
+    CartController.prototype.back = function() {
+        return this.webView.back();
+    };
+
     return CartController;
 });

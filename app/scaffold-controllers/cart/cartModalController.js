@@ -1,6 +1,6 @@
 define([
     'astro-full',
-    'astro-events',
+    'astro-rpc',
     'bluebird',
     'plugins/modalViewPlugin',
     'scaffold-controllers/cart/cartController'
@@ -8,7 +8,7 @@ define([
 /* eslint-disable */
 function(
     Astro,
-    AstroEvents,
+    AstroRpc,
     Promise,
     ModalViewPlugin,
     CartController
@@ -18,7 +18,7 @@ function(
     var CartModalController = function(modalView, cartController) {
         this.isShowing = false;
         this.viewPlugin = modalView;
-
+        this.cartController = cartController;
 
         // Privileged methods
         this._reload = function() {
@@ -43,15 +43,13 @@ function(
             });
 
             // Register RPC methods
-            Astro.registerRpcMethod(AstroEvents.rpcNames.openCart, [], function(res) {
+            Astro.registerRpcMethod(AstroRpc.names.openCart, [], function(res) {
                 cartModalController.show();
             });
-            Astro.registerRpcMethod(AstroEvents.rpcNames.closeCart, [], function(res) {
+            Astro.registerRpcMethod(AstroRpc.names.closeCart, [], function(res) {
                 cartModalController.hide();
             });
-            Astro.registerRpcMethod(AstroEvents.rpcNames.cartShowing, [], function(res) {
-                res.send(null, cartModalController.isActiveItem());
-            });
+
             return cartModalController;
         });
     };
@@ -60,19 +58,23 @@ function(
         if (this.isShowing) {
             return;
         }
-        this._reload();
+        // As per request, we reload cart on `show` every time
         this.isShowing = true;
+        this._reload();
         this.viewPlugin.show({animated: true});
     };
 
     CartModalController.prototype.hide = function() {
+        // We load a blank page upon hide to prevent displaying
+        // previously loaded content when we open the cart
         this.viewPlugin.hide({animated: true});
         this.isShowing = false;
         this._loadBlank();
     };
 
-    CartModalController.prototype.isActiveItem = function() {
-        return this.isShowing;
+    CartModalController.prototype.back = function() {
+        return this.cartController.back();
     };
+
     return CartModalController;
 });

@@ -3,7 +3,7 @@ window.AstroMessages = []; // For debugging messages
 window.run = function() {
     require([
         'astro-full',
-        'astro-events',
+        'astro-rpc',
         'bluebird',
         'application',
         'plugins/anchoredLayoutPlugin',
@@ -16,7 +16,7 @@ window.run = function() {
     ],
     function(
         Astro,
-        AstroEvents,
+        AstroRpc,
         Promise,
         Application,
         AnchoredLayoutPlugin,
@@ -27,7 +27,7 @@ window.run = function() {
         DeepLinkingServices,
         HeaderConfig
     ) {
-
+        var cartModalControllerPromise = CartModalController.init();
         var cartEventHandlerPromise =
             CartModalController.init().then(function(cartModalController) {
                 return function() {
@@ -66,9 +66,9 @@ window.run = function() {
 
                 // Wiring up the hardware back button for Android
                 Application.on('backButtonPressed', function() {
-                    AstroEvents.cartShowing().then(function(cartShowing) {
-                        if (cartShowing) {
-                            AstroEvents.closeCart();
+                    cartModalControllerPromise.then(function(cartModalController) {
+                        if (cartModalController.isShowing) {
+                            cartModalController.hide();
                         } else {
                             drawerController.backActiveItem();
                         }
