@@ -28,8 +28,8 @@ window.run = function() {
         HeaderConfig
     ) {
         var cartModalControllerPromise = CartModalController.init();
-        var cartEventHandlerPromise =
-            CartModalController.init().then(function(cartModalController) {
+        var cartEventHandlerPromise = cartModalControllerPromise.then(
+            function(cartModalController) {
                 return function() {
                     cartModalController.show();
                 };
