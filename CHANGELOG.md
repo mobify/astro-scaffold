@@ -1,4 +1,5 @@
 ## To be released
+- ios layout is now configurable through the `baseConfig.js` file
 - Cart styling is now configurable through the `cartConfig.js` file
 - Cart is in modal for both Android and iOS devices
 - Use UIWebView for Appium tests until Appium supports WKWebView
