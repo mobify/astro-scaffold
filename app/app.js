@@ -3,18 +3,20 @@ window.AstroMessages = []; // For debugging messages
 window.run = function() {
     require([
         'astro-full',
+        'astro-rpc',
         'bluebird',
         'application',
         'plugins/anchoredLayoutPlugin',
         'controllers/counterBadgeController',
         'scaffold-controllers/tabBarController',
         'scaffold-controllers/drawerController',
-        'scaffold-controllers/cartModalController',
+        'scaffold-controllers/cart/cartModalController',
         'scaffold-components/deepLinkingServices',
-        'scaffold-config/headerConfig',
+        'config/headerConfig'
     ],
     function(
         Astro,
+        AstroRpc,
         Promise,
         Application,
         AnchoredLayoutPlugin,
@@ -25,17 +27,17 @@ window.run = function() {
         DeepLinkingServices,
         HeaderConfig
     ) {
-
-        var setupIosLayout = function(counterBadgeControllerPromise) {
-            var layoutPromise = AnchoredLayoutPlugin.init();
-            var cartModalControllerPromise = CartModalController.init();
-            var cartEventHandlerPromise = cartModalControllerPromise.then(
+        var deepLinkingServices = null;
+        var cartModalControllerPromise = CartModalController.init();
+        var cartEventHandlerPromise = cartModalControllerPromise.then(
             function(cartModalController) {
                 return function() {
                     cartModalController.show();
                 };
             });
 
+        var setupIosLayout = function(counterBadgeControllerPromise) {
+            var layoutPromise = AnchoredLayoutPlugin.init();
             var tabBarControllerPromise = TabBarController.init(
                 layoutPromise, cartEventHandlerPromise, counterBadgeControllerPromise);
 
@@ -59,13 +61,19 @@ window.run = function() {
         };
 
         var setupAndroidLayout = function(counterBadgeControllerPromise) {
-            return DrawerController.init(counterBadgeControllerPromise).then(
+            return DrawerController.init(counterBadgeControllerPromise, cartEventHandlerPromise).then(
             function(drawerController) {
                 Application.setMainViewPlugin(drawerController.drawer);
 
                 // Wiring up the hardware back button for Android
                 Application.on('backButtonPressed', function() {
-                    drawerController.backActiveItem();
+                    cartModalControllerPromise.then(function(cartModalController) {
+                        if (cartModalController.isShowing) {
+                            cartModalController.hide();
+                        } else {
+                            drawerController.backActiveItem();
+                        }
+                    });
                 });
 
                 return drawerController;
@@ -86,14 +94,14 @@ window.run = function() {
         Application.getOSInformation().then(function(osInfo) {
             if (osInfo.os === Astro.platforms.ios) {
                 return setupIosLayout(counterBadgeControllerPromise);
+            } else if (osInfo.os === Astro.platforms.android) {
+                return setupAndroidLayout(counterBadgeControllerPromise);
             }
-
-            return setupAndroidLayout(counterBadgeControllerPromise);
         }).then(function(menuController) {
             // Deep linking services will enable deep linking on startup
             // and while running
             // It will open the deep link in the current active tab
-            var deepLinkingServices = new DeepLinkingServices(menuController);
+            deepLinkingServices = new DeepLinkingServices(menuController);
         });
 
     }, undefined, true);

@@ -1,9 +1,8 @@
 define([
     'plugins/drawerPlugin',
     'plugins/webViewPlugin',
-    'scaffold-config/menuConfig',
+    'config/menuConfig',
     'scaffold-controllers/navigationController',
-    'scaffold-controllers/cartController',
     'bluebird'
 ],
 function(
@@ -11,14 +10,13 @@ function(
     WebViewPlugin,
     MenuConfig,
     NavigationController,
-    CartController,
     Promise
 ) {
 
     var DrawerController = function(drawer, leftMenu) {
         this.drawer = drawer;
         this.leftMenu = leftMenu;
-        this.activeItemId;
+        this.activeItemId = null;
 
         this._bindEvents();
     };
@@ -32,19 +30,9 @@ function(
         return drawer;
     };
 
-    var initRightMenu = function(drawer, cartController) {
-        drawer.setRightMenu(cartController.webView);
-
-        return drawer;
-    };
-
-    var initNavigationItems = function(drawer, tabItems, counterBadgeController) {
+    var initNavigationItems = function(drawer, tabItems, counterBadgeController, cartEventHandler) {
         var drawerEventHandler = function() {
             drawer.showLeftMenu();
-        };
-
-        var cartEventHandler = function() {
-            drawer.showRightMenu();
         };
 
         drawer.itemViews = {};
@@ -52,20 +40,20 @@ function(
 
         // Make sure all tabViews are set up
         return Promise.all(tabItems.map(function(tab) {
-            // Init a new NavigationController
-            return NavigationController.init(tab, counterBadgeController, cartEventHandler, drawerEventHandler).then(
-            function(NavigationController) {
-                drawer.itemControllers[tab.id] = NavigationController;
-                drawer.itemViews[tab.id] = NavigationController.layout;
+            //Init a new NavigationController
+            return NavigationController.init(tab, counterBadgeController, cartEventHandler, drawerEventHandler).then(function(navigationController) {
+                    drawer.itemControllers[tab.id] = navigationController;
+                    drawer.itemViews[tab.id] = navigationController.layout;
 
+                    return drawer;
+                });
+
+            })).then(function() {
                 return drawer;
             });
-        })).then(function() {
-            return drawer;
-        });
-    };
+        };
 
-    DrawerController.init = function(counterBadgeControllerPromise) {
+    DrawerController.init = function(counterBadgeControllerPromise, cartEventHandlerPromise) {
         var constructTabItemsPromise = Promise.resolve(MenuConfig.menuItems);
         var webViewPromise = WebViewPlugin.init();
 
@@ -74,15 +62,11 @@ function(
             webViewPromise,
             initLeftMenu);
 
-        var initRightMenuPromise = Promise.join(
-            initLeftMenuPromise,
-            CartController.init(),
-            initRightMenu);
-
         var initNavigationItemsPromise = Promise.join(
-            initRightMenuPromise,
+            initLeftMenuPromise,
             constructTabItemsPromise,
             counterBadgeControllerPromise,
+            cartEventHandlerPromise,
             initNavigationItems);
 
         return Promise.all([initNavigationItemsPromise]).then(function() {
