@@ -26,7 +26,9 @@ window.run = function() {
         HeaderConfig
     ) {
 
-        var setupIosLayout = function(counterBadgeControllerPromise) {
+        var iosUsingTabLayout = false;
+
+        var tabBarLayout = function(counterBadgeControllerPromise) {
             var layoutPromise = AnchoredLayoutPlugin.init();
             var cartModalControllerPromise = CartModalController.init();
             var cartEventHandlerPromise = cartModalControllerPromise.then(
@@ -58,7 +60,7 @@ window.run = function() {
             });
         };
 
-        var setupAndroidLayout = function(counterBadgeControllerPromise) {
+        var drawerLayout = function(counterBadgeControllerPromise) {
             return DrawerController.init(counterBadgeControllerPromise).then(
             function(drawerController) {
                 Application.setMainViewPlugin(drawerController.drawer);
@@ -84,11 +86,11 @@ window.run = function() {
         });
 
         Application.getOSInformation().then(function(osInfo) {
-            if (osInfo.os === Astro.platforms.ios) {
-                return setupIosLayout(counterBadgeControllerPromise);
+            if (osInfo.os === Astro.platforms.ios && iosUsingTabLayout) {
+                return tabBarLayout(counterBadgeControllerPromise);
             }
 
-            return setupAndroidLayout(counterBadgeControllerPromise);
+            return drawerLayout(counterBadgeControllerPromise);
         }).then(function(menuController) {
             // Deep linking services will enable deep linking on startup
             // and while running
@@ -99,4 +101,4 @@ window.run = function() {
     }, undefined, true);
 };
 // Comment out next line for JS debugging
-window.run();
+//window.run();
