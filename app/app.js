@@ -27,6 +27,7 @@ window.run = function() {
         DeepLinkingServices,
         HeaderConfig
     ) {
+        var deepLinkingServices = null;
         var cartModalControllerPromise = CartModalController.init();
         var cartEventHandlerPromise = cartModalControllerPromise.then(
             function(cartModalController) {
@@ -93,14 +94,14 @@ window.run = function() {
         Application.getOSInformation().then(function(osInfo) {
             if (osInfo.os === Astro.platforms.ios) {
                 return setupIosLayout(counterBadgeControllerPromise);
+            } else if (osInfo.os === Astro.platforms.android) {
+                return setupAndroidLayout(counterBadgeControllerPromise);
             }
-
-            return setupAndroidLayout(counterBadgeControllerPromise);
         }).then(function(menuController) {
             // Deep linking services will enable deep linking on startup
             // and while running
             // It will open the deep link in the current active tab
-            var deepLinkingServices = new DeepLinkingServices(menuController);
+            deepLinkingServices = new DeepLinkingServices(menuController);
         });
 
     }, undefined, true);
