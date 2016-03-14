@@ -1,8 +1,7 @@
-define([ ], function() {
+define([], function() {
 /* eslint-enable max-statements */
 
     // Configure your menu items here:
-
     var menuItemOne = {
         id: '1',
         title:'Bikes',

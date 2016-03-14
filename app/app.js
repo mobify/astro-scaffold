@@ -11,6 +11,7 @@ window.run = function() {
         'scaffold-controllers/tabBarController',
         'scaffold-controllers/drawerController',
         'scaffold-controllers/cart/cartModalController',
+        'scaffold-controllers/welcome-screen/welcomeModalController',
         'scaffold-components/deepLinkingServices',
         'config/headerConfig'
     ],
@@ -24,10 +25,12 @@ window.run = function() {
         TabBarController,
         DrawerController,
         CartModalController,
+        WelcomeModalController,
         DeepLinkingServices,
         HeaderConfig
     ) {
         var deepLinkingServices = null;
+        var welcomeModalControllerPromise = WelcomeModalController.init();
         var cartModalControllerPromise = CartModalController.init();
         var cartEventHandlerPromise = cartModalControllerPromise.then(
             function(cartModalController) {
@@ -89,6 +92,10 @@ window.run = function() {
         ).then(function(counterBadgeController) {
             counterBadgeController.updateCounterValue(3);
             return counterBadgeController;
+        });
+
+        welcomeModalControllerPromise.then(function(welcomeModalController) {
+            welcomeModalController.show({forced:true});
         });
 
         Application.getOSInformation().then(function(osInfo) {
