@@ -19,7 +19,7 @@ function(
 
     var WelcomeModalController = function(modalView) {
         this.isShowing = false;
-        this.viewPlugin = modalView;
+        this.modalView = modalView;
     };
 
     WelcomeModalController.init = function() {
@@ -63,7 +63,7 @@ function(
             if (onboarded !== 'YES' || params.forced) {
                 self.isShowing = true;
                 self.welcomeController.
-                self.viewPlugin.show({animated: true});
+                self.modalView.show({animated: true});
                 secureStore.set('onboarded', 'YES');
             }
         });
@@ -72,7 +72,7 @@ function(
     WelcomeModalController.prototype.hide = function() {
         var self = this;
         self.isShowing = false;
-        self.viewPlugin.hide({animated: true});
+        self.modalView.hide({animated: true});
     };
 
     WelcomeModalController.prototype.isActiveItem = function() {

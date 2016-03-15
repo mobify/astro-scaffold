@@ -103,6 +103,9 @@ function(
         }
 
         var self = this;
+        // Without a header controller, we do not need to generate header
+        // content for the navigation. Instead, we allow the webView to
+        // simply navigate.
         if (!self.headerController) {
             self.navigationView.navigate(url);
             return;
