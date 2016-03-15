@@ -1,4 +1,6 @@
 define([
+    'astro-full',
+    'astro-rpc',
     'bluebird',
     'config/baseConfig',
     'config/welcomeConfig',
@@ -9,6 +11,8 @@ define([
 ],
 /* eslint-disable */
 function(
+    Astro,
+    AstroRpc,
     Promise,
     BaseConfig,
     WelcomeConfig,
@@ -20,7 +24,6 @@ function(
 /* eslint-enable */
     var WelcomeController = function(navigationView, layout, headerController) {
         this.viewPlugin = layout;
-        console.log('viewPlugin set:', this.viewPlugin);
 
         this.navigationView = navigationView;
         this.headerController = headerController;
@@ -43,6 +46,10 @@ function(
                     navigationView.back();
                 });
 
+                // Remove this line if you wish to enable scrolling
+                // in your welcome screen
+                navigationView.disableScrolling();
+
                 layout.addTopView(headerController.viewPlugin);
                 layout.setContentView(navigationView);
 
@@ -61,9 +68,17 @@ function(
                 loader.setColor(BaseConfig.loaderColor);
                 layout.setContentView(webView);
 
+                // Remove this line if you wish to enable scrolling
+                // in your welcome screen
+                webView.disableScrolling();
+
                 return new WelcomeController(webView, layout);
             });
         };
+
+        Astro.registerRpcMethod(AstroRpc.names.welcomeHasHeader, [], function(res) {
+            res.send(null, WelcomeConfig.showHeader);
+        });
 
         return (WelcomeConfig.showHeader)
             ? initWithHeader()
@@ -74,10 +89,7 @@ function(
         if (!callback) {
             return;
         }
-        var self = this;
-        if (!self.headerController) {
-            // TODO: create a way for controller to dismiss
-        } else {
+        if (this.headerController) {
             this.headerController.registerCloseEventHandler(callback);
         }
     };

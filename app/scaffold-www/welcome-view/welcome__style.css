@@ -1,0 +1,71 @@
+body {
+    margin: 0;
+}
+
+.t-welcome {
+    display: -webkit-flex;
+    display: flex;
+    -webkit-flex-direction: column;
+            flex-direction: column;
+    -webkit-justify-content: space-between;
+            justify-content: space-between;
+
+    padding: 0 15px;
+    font-family: Lato, sans-serif;
+    text-align: center;
+    overflow: hidden;
+}
+
+.welcome__image {
+    flex: 0 0 auto;
+
+    width: 80%;
+    max-width: 300px;
+    height: auto;
+    margin: auto;
+    margin-bottom: 15px;
+}
+
+.welcome__header {
+    color: #007ba7;
+    margin-top: 44px;
+
+}
+
+    .t-welcome__header h1 {
+        margin-bottom: 15px;
+
+        font-size: 25px;
+        font-weight: 900;
+        text-transform: uppercase;
+    }
+
+    .t-welcome__header p {
+        margin: 0;
+        margin-bottom: 250px;
+
+        font-size: 18px;
+    }
+
+
+.welcome__buttons {
+    margin-top: 16px;
+}
+
+.c-button {
+    /* Apple: 44px is the avg finger tap*/
+    width: 44px;
+    height: 44px;
+    padding: 16px;
+    border: 0;
+
+    /*prevents button from scrolling*/
+    position: fixed;
+    top: 16px;
+    right: 16px;
+
+    /* Set icon for dismiss button */
+    background: url(icon__close.png) no-repeat;
+    background-size: 75%;
+    background-position: center;
+}

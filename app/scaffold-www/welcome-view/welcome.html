@@ -1,0 +1,33 @@
+<html>
+    <head>
+        <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
+        <script src="../astro-client.js"></script>
+        <link href='https://fonts.googleapis.com/css?family=Lato:400,700,900' rel='stylesheet' type='text/css'>
+        <link rel="stylesheet" href="welcome__style.css">
+    </head>
+    <body>
+        <div class="t-welcome">
+            <div class="welcome__buttons">
+                <button class="c-button" id="close"></button>
+            </div>
+
+            <header class="welcome__header">
+                <h1>&#60Welcome Title/&#62</h1>
+                <p>You may customize the content and styling of this view with the files located in your scaffold-www/welcome-view directory.</p>
+            </header>
+
+            <img class="welcome__image" src="welcome__image.png" alt="welcome">
+        </div>
+        <script>
+        // Display dismiss button if there is no headerbar for the welcome modal
+        Astro.jsRpcMethod('welcomeHasHeader', [])().then(function(hasHeader) {
+            if(hasHeader) {
+                document.getElementById('close').style.visibility = 'hidden';
+            }
+        });
+        document.getElementById('close').addEventListener('click', function() {
+            Astro.jsRpcMethod('hideWelcome', [])();
+        });
+    </script>
+    </body>
+</html>

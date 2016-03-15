@@ -1,9 +1,9 @@
 define(['config/baseConfig'], function(BaseConfig) {
 /* eslint-enable max-statements */
 
-    var url = 'http://google.ca';//'file://welcome-views/welcome.html';
+    var url = 'file:///scaffold-www/welcome-view/welcome.html';
 
-    var showHeader = true;
+    var showHeader = false;
 
     var headerContent = {
         id : 'welcomeTitle_id',
