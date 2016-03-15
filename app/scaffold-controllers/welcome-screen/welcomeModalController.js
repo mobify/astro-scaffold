@@ -17,22 +17,24 @@ function(
 ) {
 /* eslint-enable */
 
-    var WelcomeModalController = function(modalView) {
+    var WelcomeModalController = function(modalView, secureStore) {
         this.isShowing = false;
         this.modalView = modalView;
+        this._secureStore = secureStore;
     };
 
     WelcomeModalController.init = function() {
         return Promise.join(
             ModalViewPlugin.init(),
             WelcomeController.init(),
-        function(modalView, welcomeController) {
+            SecureStorePlugin.init(),
+        function(modalView, welcomeController, secureStore) {
             modalView.setContentView(welcomeController.viewPlugin);
 
             // This registers a close handler on the header bar to dismiss
             // the modal. Without a header bar, the developer is responsible
             // for implementing a way to dismiss the modal.
-            var welcomeModalController = new WelcomeModalController(modalView);
+            var welcomeModalController = new WelcomeModalController(modalView, secureStore);
             welcomeController.registerCloseEventHandler(function() {
                 welcomeModalController.hide();
             });
@@ -54,15 +56,9 @@ function(
         var self = this;
         params = Astro.Utils.extend({forced: false}, params);
 
-        var secureStorePromise = SecureStorePlugin.init();
-        var onboardedPromise = secureStorePromise.then(function(secureStore) {
-            return secureStore.get('onboarded');
-        });
-
-        Promise.join(secureStorePromise, onboardedPromise, function(secureStore, onboarded) {
+        this._secureStore.get('onboarded').then(function(onboarded) {
             if (onboarded !== 'YES' || params.forced) {
                 self.isShowing = true;
-                self.welcomeController.
                 self.modalView.show({animated: true});
                 secureStore.set('onboarded', 'YES');
             }

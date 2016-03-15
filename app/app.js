@@ -98,7 +98,7 @@ window.run = function() {
             // The welcome modal can be configured to show only
             // once -- on initial startup, by passing in the
             // parameter `{forced: false}` below
-            welcomeModalController.show({forced: true});
+            welcomeModalController.show({forced: false});
         });
 
         Application.getOSInformation().then(function(osInfo) {
