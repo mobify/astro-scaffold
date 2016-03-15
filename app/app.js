@@ -95,7 +95,7 @@ window.run = function() {
         });
 
         welcomeModalControllerPromise.then(function(welcomeModalController) {
-            welcomeModalController.show({forced:true});
+            welcomeModalController.show();
         });
 
         Application.getOSInformation().then(function(osInfo) {

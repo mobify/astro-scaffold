@@ -18,7 +18,7 @@ function(
 /* eslint-enable */
 
     var WelcomeModalController = function(modalView) {
-        this.isShowing = true;
+        this.isShowing = false;
         this.viewPlugin = modalView;
     };
 
@@ -61,8 +61,6 @@ function(
                 self.isShowing = true;
                 self.viewPlugin.show({animated: true});
                 secureStore.set('onboarded', 'YES');
-            } else {
-                self.isShowing = false;
             }
         });
     };
