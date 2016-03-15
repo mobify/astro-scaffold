@@ -1,4 +1,6 @@
 ## To be released
+- Welcome modal is now configurable through `welcomeConfig.js`
+- Welcome modal with feature switch header displays on startup
 - Cart styling is now configurable through the `cartConfig.js` file
 - Cart is in modal for both Android and iOS devices
 - Use UIWebView for Appium tests until Appium supports WKWebView
