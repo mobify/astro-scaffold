@@ -1,5 +1,19 @@
+/* Welcome Page
+//
+// Layout
+// ---
+//
+// 1. Behold my awesome normalizer! 👷
+// 2. So last flex-box item will be aligned with the bottom of the viewport
+// 3. Maintain image ratio
+// 4. Making sure image doesn't get too big
+// 5. Centering image
+// 6. Margin here instead of padding on wrapper so flexbox doesn't doesn't
+//    cause the page to scroll
+*/
+
 body {
-    margin: 0;
+    margin: 0; /* 1 */
 }
 
 .t-welcome {
@@ -9,20 +23,21 @@ body {
             flex-direction: column;
     -webkit-justify-content: space-between;
             justify-content: space-between;
+
+    height: 100%; /* 2 */
     padding: 0 20px;
-    height: 100%;
     font-family: Lato, sans-serif;
     text-align: center;
     overflow: hidden;
 }
 
 .welcome__image {
-    flex: 0 0 auto;
+    flex: 0 0 auto; /* 3 */
 
     width: 80%;
-    max-width: 300px;
+    max-width: 300px; /* 4 */
     height: auto;
-    margin: auto;
+    margin: auto; /* 5 */
     margin-bottom: 15px;
 }
 
@@ -45,7 +60,7 @@ body {
     }
 
 .welcome__buttons {
-    margin-top: 16px;
+    margin-top: 16px; /* 7 */
 }
 
 .c-button {

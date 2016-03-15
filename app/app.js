@@ -95,7 +95,7 @@ window.run = function() {
         });
 
         welcomeModalControllerPromise.then(function(welcomeModalController) {
-            // The welcome modal can to configured to show only
+            // The welcome modal can be configured to show only
             // once -- on initial startup, by passing in the
             // parameter `{forced: false}` below
             welcomeModalController.show({forced: true});
