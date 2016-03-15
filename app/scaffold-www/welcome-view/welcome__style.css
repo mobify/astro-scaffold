@@ -49,7 +49,8 @@ body {
 }
 
 .c-button {
-    /* WWDC: 44px is the avg finger tap */
+    /* 44 × 44 points is the comfortable
+    minimum size of a tappable UI element. */
     width: 44px;
     height: 44px;
     padding: 16px;

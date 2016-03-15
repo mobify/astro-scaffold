@@ -29,7 +29,10 @@ function(
         function(modalView, welcomeController) {
             modalView.setContentView(welcomeController.viewPlugin);
 
-            var welcomeModalController = new WelcomeModalController(modalView, welcomeController);
+            // This registers a close handler on the header bar to dismiss
+            // the modal. Without a header bar, the developer is responsible
+            // for implementing a way to dismiss the modal.
+            var welcomeModalController = new WelcomeModalController(modalView);
             welcomeController.registerCloseEventHandler(function() {
                 welcomeModalController.hide();
             });
@@ -59,6 +62,7 @@ function(
         Promise.join(secureStorePromise, onboardedPromise, function(secureStore, onboarded) {
             if (onboarded !== 'YES' || params.forced) {
                 self.isShowing = true;
+                self.welcomeController.
                 self.viewPlugin.show({animated: true});
                 secureStore.set('onboarded', 'YES');
             }

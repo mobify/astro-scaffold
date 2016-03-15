@@ -27,7 +27,6 @@ function(
 
         this.navigationView = navigationView;
         this.headerController = headerController;
-        this.navigate(WelcomeConfig.url);
     };
 
     WelcomeController.init = function() {
@@ -53,7 +52,9 @@ function(
                 layout.addTopView(headerController.viewPlugin);
                 layout.setContentView(navigationView);
 
-                return new WelcomeController(navigationView, layout, headerController);
+                var welcomeController = new WelcomeController(navigationView, layout, headerController);
+                welcomeController.navigate(WelcomeConfig.url);
+                return welcomeController;
             });
         };
 
@@ -68,11 +69,13 @@ function(
                 loader.setColor(BaseConfig.loaderColor);
                 layout.setContentView(webView);
 
-                // Remove this line if you wish to enable scrolling
-                // in your welcome screen
+                // Remove this line to enable scrolling on welcome screen
                 webView.disableScrolling();
 
-                return new WelcomeController(webView, layout);
+                var welcomeController = new WelcomeController(webView, layout);
+                welcomeController.navigate(WelcomeConfig.url);
+
+                return welcomeController;
             });
         };
 
@@ -118,14 +121,6 @@ function(
         self.headerController.generateContent().then(function(headerContent) {
             return self.navigationView.navigateToUrl(url, headerContent, {navigationHandler: navigationHandler});
         });
-    };
-
-    WelcomeController.prototype.hideTopViews = function() {
-        this.viewPlugin.hideTopViews();
-    };
-
-    WelcomeController.prototype.showTopViews = function() {
-        this.viewPlugin.showTopViews();
     };
 
     WelcomeController.prototype.back = function() {
