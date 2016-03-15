@@ -14,29 +14,12 @@ function(
     NavigationHeaderController
 ) {
 /* eslint-enable */
-    var bindNavigation = function(navigator, navigate) {
-        var navigationHandler = function(params) {
-            var url = params['url'];
-
-            // We're expected to navigate the web view if we're called with a
-            // url and the web view isn't in the process of redirecting (i.e.
-            // `params.isCurrentlyLoading` is not set).
-            if (url != null && !params.isCurrentlyLoading) {
-                navigate(url);
-            }
-        };
-
-        navigator.on('navigate', navigationHandler);
-        navigator.disableDefaultNavigationHandler();
-    };
-
     var NavigationController = function(tab, layout, navigationView, navigationHeaderController, includeDrawerIcon) {
         this.id = tab.id;
         this.navigationView = navigationView;
         this.layout = layout;
         this.navigationHeaderController = navigationHeaderController;
 
-        bindNavigation(this.navigationView, this.navigate.bind(this));
         this.navigate(tab.url, includeDrawerIcon);
     };
 
@@ -80,9 +63,21 @@ function(
         }
 
         var self = this;
+        var navigationHandler = function(params) {
+            var url = params.url;
+
+            // We're expected to navigate the web view if we're called with a
+            // url and the web view isn't in the process of redirecting (i.e.
+            // `params.isCurrentlyLoading` is not set).
+            if (url != null && !params.isCurrentlyLoading) {
+                self.navigate(url);
+            }
+        };
+
         self.navigationHeaderController.generateContent(includeDrawerIcon)
             .then(function(headerContent) {
-                return self.navigationView.navigate(url, headerContent);
+                return self.navigationView.navigateToUrl(
+                    url, headerContent, {navigationHandler: navigationHandler});
             })
             .then(function() {
                 return self.navigationHeaderController.setTitle();
