@@ -70,13 +70,12 @@ body {
     minimum size of a tappable UI element. */
     width: 44px;
     height: 44px;
-    padding: 16px;
     border: 0;
 
     /* prevents button from scrolling */
     position: fixed;
-    top: 16px;
-    right: 16px;
+    top: 8px;
+    right: 8px;
 
     /* Set icon for dismiss button */
     background: url(icon__close.png) no-repeat;
