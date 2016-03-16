@@ -20,6 +20,7 @@
 		87C6A8E91B430E15001876CE /* config.xml in Resources */ = {isa = PBXBuildFile; fileRef = 87C6A8D71B430E15001876CE /* config.xml */; };
 		87C6A8F61B430EDD001876CE /* www in Resources */ = {isa = PBXBuildFile; fileRef = 87C6A8F51B430EDD001876CE /* www */; };
 		96C2AD861B62B6180032A784 /* app.js in Resources */ = {isa = PBXBuildFile; fileRef = 87C6A8F91B430FB7001876CE /* app.js */; };
+		B12FAF521C9751BC00F254BD /* scaffold-www in Resources */ = {isa = PBXBuildFile; fileRef = B12FAF511C9751BC00F254BD /* scaffold-www */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -64,6 +65,7 @@
 		87C6A8F51B430EDD001876CE /* www */ = {isa = PBXFileReference; lastKnownFileType = folder; path = www; sourceTree = "<group>"; };
 		87C6A8F71B430FA2001876CE /* app.js */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.javascript; name = app.js; path = ../../app/app.js; sourceTree = "<group>"; };
 		87C6A8F91B430FB7001876CE /* app.js */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.javascript; name = app.js; path = ../../app/build/app.js; sourceTree = "<group>"; };
+		B12FAF511C9751BC00F254BD /* scaffold-www */ = {isa = PBXFileReference; lastKnownFileType = folder; name = "scaffold-www"; path = "../../app/scaffold-www"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -115,6 +117,7 @@
 				87C6A88D1B43044D001876CE /* ViewController.swift */,
 				87C6A88F1B43044D001876CE /* Main.storyboard */,
 				87C6A8921B43044D001876CE /* Images.xcassets */,
+				B12FAF511C9751BC00F254BD /* scaffold-www */,
 				87C6A8941B43044D001876CE /* LaunchScreen.xib */,
 				87C6A8891B43044D001876CE /* Supporting Files */,
 			);
@@ -248,6 +251,7 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				B12FAF521C9751BC00F254BD /* scaffold-www in Resources */,
 				96C2AD861B62B6180032A784 /* app.js in Resources */,
 				87C6A8911B43044D001876CE /* Main.storyboard in Resources */,
 				87C6A8961B43044D001876CE /* LaunchScreen.xib in Resources */,
