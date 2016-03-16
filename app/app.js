@@ -13,6 +13,7 @@ window.run = function() {
         'scaffold-controllers/cart/cartModalController',
         'scaffold-controllers/welcome-screen/welcomeModalController',
         'scaffold-components/deepLinkingServices',
+        'config/baseConfig',
         'config/headerConfig'
     ],
     function(
@@ -27,10 +28,12 @@ window.run = function() {
         CartModalController,
         WelcomeModalController,
         DeepLinkingServices,
+        BaseConfig,
         HeaderConfig
     ) {
         var deepLinkingServices = null;
         var welcomeModalControllerPromise = WelcomeModalController.init();
+
         var cartModalControllerPromise = CartModalController.init();
         var cartEventHandlerPromise = cartModalControllerPromise.then(
             function(cartModalController) {
@@ -39,7 +42,7 @@ window.run = function() {
                 };
             });
 
-        var setupIosLayout = function(counterBadgeControllerPromise) {
+        var createTabBarLayout = function(counterBadgeControllerPromise) {
             var layoutPromise = AnchoredLayoutPlugin.init();
             var tabBarControllerPromise = TabBarController.init(
                 layoutPromise, cartEventHandlerPromise, counterBadgeControllerPromise);
@@ -63,7 +66,7 @@ window.run = function() {
             });
         };
 
-        var setupAndroidLayout = function(counterBadgeControllerPromise) {
+        var createDrawerLayout = function(counterBadgeControllerPromise) {
             return DrawerController.init(counterBadgeControllerPromise, cartEventHandlerPromise).then(
             function(drawerController) {
                 Application.setMainViewPlugin(drawerController.drawer);
@@ -102,11 +105,10 @@ window.run = function() {
         });
 
         Application.getOSInformation().then(function(osInfo) {
-            if (osInfo.os === Astro.platforms.ios) {
-                return setupIosLayout(counterBadgeControllerPromise);
-            } else if (osInfo.os === Astro.platforms.android) {
-                return setupAndroidLayout(counterBadgeControllerPromise);
+            if (osInfo.os === Astro.platforms.ios && BaseConfig.iosUsingTabLayout) {
+                return createTabBarLayout(counterBadgeControllerPromise);
             }
+            return createDrawerLayout(counterBadgeControllerPromise);
         }).then(function(menuController) {
             // Deep linking services will enable deep linking on startup
             // and while running

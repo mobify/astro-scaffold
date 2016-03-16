@@ -14,10 +14,9 @@ Linked PRs: **(links to corresponding PRs, optional)**
 - (how to access the new / changed functionality -- fixtures, URLs)
 
 ## TODOS:
-- [ ] Tests have been written.
-- [ ] Tests are passing on your machine.
 - [ ] Change works in both Android and iOS.
 - [ ] CHANGELOG.md has been updated.
 - [ ] Scaffold is working. If a new feature was added, it was added to the Scaffold app.
 - [ ] Run the generator to make sure it still functions correctly.
 - [ ] +1 from an engineer on the Astro team.
+- [ ] Both tab layout and drawer layout are fully functional in ios. (Set `iosUsingTabLayout` in `baseConfig`)

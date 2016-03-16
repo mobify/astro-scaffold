@@ -1,4 +1,6 @@
 define([
+    'astro-full',
+    'astro-rpc',
     'plugins/drawerPlugin',
     'plugins/webViewPlugin',
     'config/menuConfig',
@@ -6,6 +8,8 @@ define([
     'bluebird'
 ],
 function(
+    Astro,
+    AstroRpc,
     DrawerPlugin,
     WebViewPlugin,
     MenuConfig,
@@ -23,8 +27,6 @@ function(
 
     var initLeftMenu = function(drawer, leftMenu) {
         leftMenu.navigate('file:///scaffold-www/left-menu.html');
-        leftMenu.trigger('menuConfig', MenuConfig.menuItems);
-
         drawer.setLeftMenu(leftMenu);
 
         return drawer;
@@ -56,6 +58,10 @@ function(
     DrawerController.init = function(counterBadgeControllerPromise, cartEventHandlerPromise) {
         var constructTabItemsPromise = Promise.resolve(MenuConfig.menuItems);
         var webViewPromise = WebViewPlugin.init();
+
+        Astro.registerRpcMethod(AstroRpc.names.menuItems, [], function(res) {
+            res.send(null, MenuConfig.menuItems);
+        });
 
         var initLeftMenuPromise = Promise.join(
             DrawerPlugin.init(),
