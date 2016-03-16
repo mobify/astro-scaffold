@@ -21,16 +21,6 @@ function(
             headerBar.setBackgroundColor(WelcomeConfig.colors.backgroundColor);
             headerBar.hideBackButtonText();
 
-            headerBar.setCenterTitle(
-                WelcomeConfig.headerContent.title,
-                WelcomeConfig.headerContent.id
-            );
-
-            headerBar.setRightIcon(
-                WelcomeConfig.closeIcon.imageUrl,
-                WelcomeConfig.closeIcon.id
-            );
-
             return new WelcomeHeaderController(headerBar);
         });
     };
@@ -38,6 +28,7 @@ function(
     WelcomeHeaderController.prototype.generateContent = function() {
         var headerContent = {
             header: {
+                centerIcon: WelcomeConfig.headerContent,
                 rightIcon: WelcomeConfig.closeIcon
             }
         };
