@@ -34,7 +34,7 @@ function(
             WebViewPlugin.init(),
         function(headerController, layout, webView) {
             var loader = webView.getLoader();
-            loader.setColor(BaseConfig.colors.primaryColor);
+            loader.setColor(BaseConfig.loaderColor);
             webView.navigate(CartConfig.url);
 
             layout.addTopView(headerController.viewPlugin);

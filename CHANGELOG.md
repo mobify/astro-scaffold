@@ -1,5 +1,7 @@
 ## To be released
 - iOS layout is now configurable through the `baseConfig.js` file
+- Welcome modal styling is now configurable through the `welcomeConfig.js` file
+- Welcome modal with toggle-able header displays on startup
 - Header content propagated while navigating
 - Cart styling is now configurable through the `cartConfig.js` file
 - Cart is in modal for both Android and iOS devices
