@@ -39,7 +39,7 @@ window.run = function() {
                 };
             });
 
-        var tabBarLayout = function(counterBadgeControllerPromise) {
+        var createTabBarLayout = function(counterBadgeControllerPromise) {
             var layoutPromise = AnchoredLayoutPlugin.init();
             var tabBarControllerPromise = TabBarController.init(
                 layoutPromise, cartEventHandlerPromise, counterBadgeControllerPromise);
@@ -63,7 +63,7 @@ window.run = function() {
             });
         };
 
-        var drawerLayout = function(counterBadgeControllerPromise) {
+        var createDrawerLayout = function(counterBadgeControllerPromise) {
             return DrawerController.init(counterBadgeControllerPromise, cartEventHandlerPromise).then(
             function(drawerController) {
                 Application.setMainViewPlugin(drawerController.drawer);
@@ -96,9 +96,9 @@ window.run = function() {
 
         Application.getOSInformation().then(function(osInfo) {
             if (osInfo.os === Astro.platforms.ios && BaseConfig.iosUsingTabLayout) {
-                return tabBarLayout(counterBadgeControllerPromise);
+                return createTabBarLayout(counterBadgeControllerPromise);
             }
-            return drawerLayout(counterBadgeControllerPromise);
+            return createDrawerLayout(counterBadgeControllerPromise);
         }).then(function(menuController) {
             // Deep linking services will enable deep linking on startup
             // and while running
