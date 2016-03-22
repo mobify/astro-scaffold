@@ -30,8 +30,17 @@ function(
     };
 
     WelcomeController.init = function() {
+        // To hook up your own custom native welcome plugin, you can
+        // modify the initializers below and either:
+        //
+        //  1. With a NavigationPlugin, use the navigationView and
+        //     call the `navigateToPlugin()` method to navigate to
+        //     your custom plugin.
+        //  2. Without using a NavigationPlugin or WebViewPlugin,
+        //     set the custom plugin as the content view of the layout.
+
         // With a header bar, we use a navigationPlugin to handle
-        // navigation and stacking animations
+        // navigation and stacking animations.
         var initWithHeader = function() {
             return Promise.join(
                 NavigationPlugin.init(),
