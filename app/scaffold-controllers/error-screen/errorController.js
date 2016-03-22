@@ -63,9 +63,9 @@ define([
         return ErrorConfig.errors[this.errorType];
     };
 
-    // Remove the events once the modal is hidden or else some untriggered
-    // once events will still exist on the errorModal page and create
-    // inconsitant behaviour in the navigation/web views
+    // Remove the events when the modal is hidden otherwise untriggered
+    // `once()` events will still exist on the errorModal and cause
+    // inconsistent navigation/web view behaviour
     ErrorController.prototype._removeModalEvents = function() {
         this.viewPlugin.off('retry');
         this.viewPlugin.off('back');
@@ -76,6 +76,7 @@ define([
         var backHandler = params.backHandler;
         var retryHandler = params.retryHandler;
         var isActiveItem = params.isActiveItem;
+
         return function(eventArgs) {
             if (isActiveItem()) {
                 // Wait until the error page is loaded before showing
@@ -93,7 +94,7 @@ define([
             }
             // We allow inactive views to listen for `retry` so that views
             // which also tried to navigate without connectivity will reload
-            // when the retry button is pressed
+            // when the error modal's retry button is pressed
             self.viewPlugin.once('retry', function() {
                 self.hide();
                 self._removeModalEvents();
@@ -104,6 +105,8 @@ define([
 
     ErrorController.prototype.bindToNavigator = function(params) {
         var navigator = params.navigator;
+
+        // Listen for triggered events emitted by the navigator
         navigator.on('pageTimeout', this._generateErrorCallback('pageTimeout', params));
         navigator.on('noInternetConnection', this._generateErrorCallback('noInternetConnection', params));
     };

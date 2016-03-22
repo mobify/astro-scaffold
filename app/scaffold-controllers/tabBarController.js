@@ -113,10 +113,10 @@ function(
     };
 
     TabBarController.prototype.canGoBack = function() {
-    var activeTab = this.tabBar.NavigationControllers[this.activeTabId];
-    window.message = [activeTab];
-    return activeTab.canGoBack();
-};
+        var activeTab = this.tabBar.NavigationControllers[this.activeTabId];
+        window.message = [activeTab];
+        return activeTab.canGoBack();
+    };
 
     return TabBarController;
 });

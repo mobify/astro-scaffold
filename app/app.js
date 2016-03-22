@@ -81,9 +81,6 @@ window.run = function() {
             function(layout, tabBarController) {
                 layout.addBottomView(tabBarController.tabBar);
                 Application.setMainViewPlugin(layout);
-
-                return tabBarController;
-            }).then(function(tabBarController) {
                 // Tab layout must be added as the mainViewPlugin before
                 // The first tab is selected or else the navigation does
                 // not complete correctly
@@ -113,11 +110,9 @@ window.run = function() {
                     });
                 });
 
-                return drawerController;
-            }).then(function(drawerController) {
                 drawerController.selectItem('1');
-
                 registerCanGoBackRpc(drawerController);
+
                 return drawerController;
             });
         };

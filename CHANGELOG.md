@@ -1,4 +1,6 @@
 ## To be released
+- Error modal is now configurable through the `errorConfig.js` file
+- Error modal displays when navigating with no connectivity or when page times out
 - iOS layout is now configurable through the `baseConfig.js` file
 - Welcome modal styling is now configurable through the `welcomeConfig.js` file
 - Welcome modal with toggle-able header displays on startup
