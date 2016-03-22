@@ -24,57 +24,62 @@ function(
         this.navigate(tab.url, includeDrawerIcon);
     };
 
-    NavigationController.init = function(tab, counterBadgeController, cartEventHandler, drawerEventHandler, errorController) {
+    NavigationController.init = function(
+        tab,
+        counterBadgeController,
+        cartEventHandler,
+        errorController,
+        drawerEventHandler
+    ) {
         return Promise.join(
             AnchoredLayoutPlugin.init(),
             NavigationHeaderController.init(counterBadgeController),
             NavigationPlugin.init(),
-            function(layout, navigationHeaderController, navigationView) {
-                // Set layout
-                layout.setContentView(navigationView);
-                layout.addTopView(navigationHeaderController.viewPlugin);
-                navigationView.setHeaderBar(navigationHeaderController.viewPlugin);
-                navigationHeaderController.registerBackEvents(function() {
-                    navigationView.back();
-                });
+        function(layout, navigationHeaderController, navigationView) {
+            // Set layout
+            layout.setContentView(navigationView);
+            layout.addTopView(navigationHeaderController.viewPlugin);
+            navigationView.setHeaderBar(navigationHeaderController.viewPlugin);
+            navigationHeaderController.registerBackEvents(function() {
+                navigationView.back();
+            });
 
-                navigationHeaderController.registerCartEvents(cartEventHandler);
+            navigationHeaderController.registerCartEvents(cartEventHandler);
 
-                var drawerIconEnabled = drawerEventHandler !== undefined;
-                if (drawerIconEnabled) {
-                    navigationHeaderController.registerDrawerEvents(drawerEventHandler);
-                }
-
-                var navigationController = new NavigationController(
-                    tab,
-                    layout,
-                    navigationView,
-                    navigationHeaderController,
-                    drawerIconEnabled
-                );
-                var backHandler = function() {
-                    navigationView.back();
-                };
-
-                var retryHandler = function(params) {
-                    if (!params.url) {
-                        return;
-                    }
-                    var navigate = function(eventPlugin) {
-                        eventPlugin.navigate(params.url);
-                    };
-                    navigationView.getEventPluginPromise(params).then(navigate);
-                };
-
-                errorController.bindToNavigator({
-                    navigator: navigationView,
-                    backHandler: backHandler,
-                    retryHandler: retryHandler,
-                    isActiveItem: navigationController.isActiveItem.bind(navigationController)
-                });
-                return navigationController;
+            var drawerIconEnabled = drawerEventHandler !== undefined;
+            if (drawerIconEnabled) {
+                navigationHeaderController.registerDrawerEvents(drawerEventHandler);
             }
-        );
+
+            var navigationController = new NavigationController(
+                tab,
+                layout,
+                navigationView,
+                navigationHeaderController,
+                drawerIconEnabled
+            );
+            var backHandler = function() {
+                navigationView.back();
+            };
+
+            var retryHandler = function(params) {
+                if (!params.url) {
+                    return;
+                }
+                var navigate = function(eventPlugin) {
+                    eventPlugin.navigate(params.url);
+                };
+                navigationView.getEventPluginPromise(params).then(navigate);
+            };
+
+            errorController.bindToNavigator({
+                navigator: navigationView,
+                backHandler: backHandler,
+                retryHandler: retryHandler,
+                isActiveItem: navigationController.isActiveItem.bind(navigationController)
+            });
+            return navigationController;
+        });
     };
 
     NavigationController.prototype.navigate = function(url, includeDrawerIcon) {

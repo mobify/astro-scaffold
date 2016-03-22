@@ -47,8 +47,8 @@ function(
                 tab,
                 counterBadgeController,
                 cartEventHandler,
-                drawerEventHandler,
-                errorController
+                errorController,
+                drawerEventHandler
             );
 
             return navigationControllerPromise.then(function(navigationController) {

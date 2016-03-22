@@ -13,7 +13,7 @@ function(
 
     var TabBarController = function(tabBar, layout) {
         this.tabBar = tabBar;
-        this.layout = layout;
+        this.viewPlugin = layout;
         this.activeTabId = null;
 
         this._bindEvents();
