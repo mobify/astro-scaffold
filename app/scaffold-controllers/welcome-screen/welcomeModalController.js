@@ -88,7 +88,7 @@ function(
         var self = this;
         params = Astro.Utils.extend({forced: false}, params);
 
-        this._secureStore.get('onboarded').then(function(onboarded) {
+        self._secureStore.get('onboarded').then(function(onboarded) {
             if (onboarded !== 'YES' || params.forced) {
                 self.isShowing = true;
                 self.modalView.show({animated: true});

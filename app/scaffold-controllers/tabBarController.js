@@ -26,7 +26,13 @@ function(
         return tabBar;
     };
 
-    var initRegularTabs = function(tabBar, tabItems, cartEventHandler, counterBadgeController, errorController) {
+    var initRegularTabs = function(
+        tabBar,
+        tabItems,
+        cartEventHandler,
+        counterBadgeController,
+        errorController
+    ) {
         // Set up regular tabs' layouts
         tabBar.tabViews = {};
         tabBar.NavigationControllers = {};
@@ -51,8 +57,7 @@ function(
         });
     };
 
-    TabBarController.init =
-    function(
+    TabBarController.init = function(
         layoutPromise,
         cartEventHandlerPromise,
         counterBadgeControllerPromise,

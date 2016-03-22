@@ -122,8 +122,6 @@ function(
 
     DrawerController.prototype.canGoBack = function() {
         var activeItem = this.drawer.itemControllers[this.activeItemId];
-        window.message = ['activeItemId' + this.activeItemId]
-        window.message.push('activeItem: ' +activeItem);
         return activeItem.canGoBack();
     };
     return DrawerController;
