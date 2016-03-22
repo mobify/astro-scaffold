@@ -26,7 +26,7 @@ function(
         return tabBar;
     };
 
-    var initRegularTabs = function(tabBar, tabItems, cartEventHandler, counterBadgeController) {
+    var initRegularTabs = function(tabBar, tabItems, cartEventHandler, counterBadgeController, errorController) {
         // Set up regular tabs' layouts
         tabBar.tabViews = {};
         tabBar.NavigationControllers = {};
@@ -34,10 +34,15 @@ function(
         // Make sure all tabViews are set up
         return Promise.all(tabItems.map(function(tab) {
             // Init a new NavigationController
-            return NavigationController.init(tab, counterBadgeController, cartEventHandler).then(
-            function(NavigationController) {
-                tabBar.NavigationControllers[tab.id] = NavigationController;
-                tabBar.tabViews[tab.id] = NavigationController.layout;
+            var navigationControllerPromise = NavigationController.init(
+                tab,
+                counterBadgeController,
+                cartEventHandler,
+                errorController
+            );
+            return navigationControllerPromise.then(function(navigationController) {
+                tabBar.NavigationControllers[tab.id] = navigationController;
+                tabBar.tabViews[tab.id] = navigationController.viewPlugin;
 
                 return tabBar;
             });
@@ -46,8 +51,13 @@ function(
         });
     };
 
-    TabBarController.init = function(
-        layoutPromise, cartEventHandlerPromise, counterBadgeControllerPromise) {
+    TabBarController.init =
+    function(
+        layoutPromise,
+        cartEventHandlerPromise,
+        counterBadgeControllerPromise,
+        errorControllerPromise
+    ) {
         var constructTabItemsPromise = Promise.resolve(MenuConfig.menuItems);
 
         var initTabBarPromise = Promise.join(
@@ -60,6 +70,7 @@ function(
             constructTabItemsPromise,
             cartEventHandlerPromise,
             counterBadgeControllerPromise,
+            errorControllerPromise,
             initRegularTabs);
 
         return Promise.all([initRegularTabsPromise]).then(function() {
@@ -71,7 +82,14 @@ function(
 
     TabBarController.prototype.selectTab = function(tabId) {
         if (this.activeTabId !== tabId) {
-            this.layout.setContentView(this.tabBar.tabViews[tabId]);
+            // activeTabId is undefined during startup
+            if (this.activeTabId) {
+                this.tabBar.NavigationControllers[this.activeTabId].isActive = false;
+            }
+
+            this.viewPlugin.setContentView(this.tabBar.tabViews[tabId]);
+            var selectedTab = this.tabBar.NavigationControllers[tabId];
+            selectedTab.isActive = true;
             this.activeTabId = tabId;
         }
     };
@@ -88,6 +106,12 @@ function(
     TabBarController.prototype.navigateActiveItem = function(url) {
         this.tabBar.NavigationControllers[this.activeTabId].navigate(url);
     };
+
+    TabBarController.prototype.canGoBack = function() {
+    var activeTab = this.tabBar.NavigationControllers[this.activeTabId];
+    window.message = [activeTab];
+    return activeTab.canGoBack();
+};
 
     return TabBarController;
 });

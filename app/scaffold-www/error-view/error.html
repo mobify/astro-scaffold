@@ -1,0 +1,50 @@
+<html>
+    <head>
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <script src="../astro-client.js"></script>
+        <link rel="stylesheet" href="error__style.css">
+    </head>
+    <body>
+        <div class="t-connectivity-error">
+
+            <header class="connectivity-error__header">
+                <h1 id="title">ERROR_TITLE</h1>
+                <p id="message">ERROR_MESSAGE</p>
+            </header>
+
+            <img class="connectivity-error__image" id="image" src="ERROR_IMAGE.png" alt="logo">
+            <div class="connectivity-error__buttons">
+                <button class="c-button c--cta" id="retry">Retry</button>
+                <button class="c-button" id="back">Back</button>
+            </div>
+        </div>
+        <script>
+            // Back button can be hidden or shown depending availability
+            // of a previous page.
+            Astro.jsRpcMethod('appCanGoBack', [])().then(function(canGoBack) {
+                if (canGoBack) {
+                    document.getElementById('back').style.visibility = "visible";
+                } else {
+                    document.getElementById('back').style.visibility = "hidden";
+                }
+
+                return Astro.jsRpcMethod('errorContent', [])();
+            }).then(function(errorContent) {
+                // Modify error page based on type of error
+                document.getElementById('title').innerHTML = errorContent.title;
+                document.getElementById('message').innerHTML = errorContent.message;
+                document.getElementById('image').src = errorContent.imageUrl;
+
+                Astro.trigger('error:loaded')
+            });
+
+            document.getElementById('retry').addEventListener('click', function() {
+                Astro.trigger('retry');
+            });
+            document.getElementById('back').addEventListener('click', function() {
+                Astro.trigger('back');
+            });
+
+        </script>
+    </body>
+</html>

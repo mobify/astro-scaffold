@@ -32,7 +32,7 @@ function(
         return drawer;
     };
 
-    var initNavigationItems = function(drawer, tabItems, counterBadgeController, cartEventHandler) {
+    var initNavigationItems = function(drawer, tabItems, counterBadgeController, cartEventHandler, errorController) {
         var drawerEventHandler = function() {
             drawer.showLeftMenu();
         };
@@ -43,9 +43,17 @@ function(
         // Make sure all tabViews are set up
         return Promise.all(tabItems.map(function(tab) {
             //Init a new NavigationController
-            return NavigationController.init(tab, counterBadgeController, cartEventHandler, drawerEventHandler).then(function(navigationController) {
+            var navigationControllerPromise = NavigationController.init(
+                tab,
+                counterBadgeController,
+                cartEventHandler,
+                drawerEventHandler,
+                errorController
+            );
+
+            return navigationControllerPromise.then(function(navigationController) {
                     drawer.itemControllers[tab.id] = navigationController;
-                    drawer.itemViews[tab.id] = navigationController.layout;
+                    drawer.itemViews[tab.id] = navigationController.viewPlugin;
 
                     return drawer;
                 });
@@ -55,7 +63,7 @@ function(
             });
         };
 
-    DrawerController.init = function(counterBadgeControllerPromise, cartEventHandlerPromise) {
+    DrawerController.init = function(counterBadgeControllerPromise, cartEventHandlerPromise, errorControllerPromise) {
         var constructTabItemsPromise = Promise.resolve(MenuConfig.menuItems);
         var webViewPromise = WebViewPlugin.init();
 
@@ -73,6 +81,7 @@ function(
             constructTabItemsPromise,
             counterBadgeControllerPromise,
             cartEventHandlerPromise,
+            errorControllerPromise,
             initNavigationItems);
 
         return Promise.all([initNavigationItemsPromise]).then(function() {
@@ -84,7 +93,12 @@ function(
 
     DrawerController.prototype.selectItem = function(itemId) {
         if (this.activeItemId !== itemId) {
+            if (this.activeItemId) {
+                this.drawer.itemControllers[this.activeItemId].isActive = false;
+            }
             this.drawer.setContentView(this.drawer.itemViews[itemId]);
+            var selectedItem = this.drawer.itemControllers[itemId];
+            selectedItem.isActive = true;
             this.activeItemId = itemId;
         }
     };
@@ -106,5 +120,11 @@ function(
         this.drawer.itemControllers[this.activeItemId].back();
     };
 
+    DrawerController.prototype.canGoBack = function() {
+        var activeItem = this.drawer.itemControllers[this.activeItemId];
+        window.message = ['activeItemId' + this.activeItemId]
+        window.message.push('activeItem: ' +activeItem);
+        return activeItem.canGoBack();
+    };
     return DrawerController;
 });

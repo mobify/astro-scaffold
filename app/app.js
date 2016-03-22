@@ -6,69 +6,100 @@ window.run = function() {
         'astro-rpc',
         'bluebird',
         'application',
+        'config/baseConfig',
+        'config/headerConfig',
         'plugins/anchoredLayoutPlugin',
         'controllers/counterBadgeController',
+        'scaffold-components/deepLinkingServices',
         'scaffold-controllers/tabBarController',
         'scaffold-controllers/drawerController',
         'scaffold-controllers/cart/cartModalController',
-        'scaffold-controllers/welcome-screen/welcomeModalController',
-        'scaffold-components/deepLinkingServices',
-        'config/baseConfig',
-        'config/headerConfig'
+        'scaffold-controllers/error-screen/errorController',
+        'scaffold-controllers/welcome-screen/welcomeModalController'
     ],
     function(
         Astro,
         AstroRpc,
         Promise,
         Application,
+        BaseConfig,
+        HeaderConfig,
         AnchoredLayoutPlugin,
         CounterBadgeController,
+        DeepLinkingServices,
         TabBarController,
         DrawerController,
         CartModalController,
-        WelcomeModalController,
-        DeepLinkingServices,
-        BaseConfig,
-        HeaderConfig
+        ErrorController,
+        WelcomeModalController
     ) {
         var deepLinkingServices = null;
-        var welcomeModalControllerPromise = WelcomeModalController.init();
-
-        var cartModalControllerPromise = CartModalController.init();
+        var errorControllerPromise = ErrorController.init();
+        var welcomeModalControllerPromise = WelcomeModalController.init(errorControllerPromise);
+        var cartModalControllerPromise = CartModalController.init(errorControllerPromise);
         var cartEventHandlerPromise = cartModalControllerPromise.then(
             function(cartModalController) {
                 return function() {
                     cartModalController.show();
                 };
             });
-
+        // Register RPC to expose whether it is possible to go back.
+        // This is necessary to determine whether to show/hide
+        // the back button on the error modal
+        var registerCanGoBackRpc = function(controller) {
+            Promise.join(welcomeModalControllerPromise, cartModalControllerPromise,
+            function(welcomeModal, cartModal) {
+                Astro.registerRpcMethod(AstroRpc.names.appCanGoBack, [], function(res) {
+                    // We want to return true when the cart is showing since
+                    // calling `back` is equivalent to dismissing the cart
+                    if (cartModal.isShowing) {
+                        res.send(null, true);
+                    } else if (welcomeModal.isShowing) {
+                        welcomeModal.canGoBack().then(function(canGoBack) {
+                            res.send(null, canGoBack);
+                        });
+                    } else {
+                        controller.canGoBack().then(function(canGoBack) {
+                            res.send(null, canGoBack);
+                        });
+                    }
+                });
+            });
+        };
         var createTabBarLayout = function(counterBadgeControllerPromise) {
             var layoutPromise = AnchoredLayoutPlugin.init();
             var tabBarControllerPromise = TabBarController.init(
-                layoutPromise, cartEventHandlerPromise, counterBadgeControllerPromise);
+                    layoutPromise,
+                    cartEventHandlerPromise,
+                    counterBadgeControllerPromise,
+                    errorControllerPromise
+                );
 
             var layoutSetupPromise = Promise.join(
                 layoutPromise,
                 tabBarControllerPromise,
             function(layout, tabBarController) {
                 layout.addBottomView(tabBarController.tabBar);
+                Application.setMainViewPlugin(layout);
 
-                return Application.setMainViewPlugin(layout);
-            });
-
-            // Tab layout must be added as the mainViewPlugin before
-            // The first tab is selected or else the navigation does
-            // not complete correctly
-            return Promise.join(tabBarControllerPromise, layoutSetupPromise,
-            function(tabBarController) {
+                return tabBarController;
+            }).then(function(tabBarController) {
+                // Tab layout must be added as the mainViewPlugin before
+                // The first tab is selected or else the navigation does
+                // not complete correctly
                 tabBarController.selectTab('1');
+
+                registerCanGoBackRpc(tabBarController);
                 return tabBarController;
             });
         };
 
         var createDrawerLayout = function(counterBadgeControllerPromise) {
-            return DrawerController.init(counterBadgeControllerPromise, cartEventHandlerPromise).then(
-            function(drawerController) {
+            return DrawerController.init(
+                counterBadgeControllerPromise,
+                cartEventHandlerPromise,
+                errorControllerPromise
+            ).then(function(drawerController) {
                 Application.setMainViewPlugin(drawerController.drawer);
 
                 // Wiring up the hardware back button for Android
@@ -85,6 +116,8 @@ window.run = function() {
                 return drawerController;
             }).then(function(drawerController) {
                 drawerController.selectItem('1');
+
+                registerCanGoBackRpc(drawerController);
                 return drawerController;
             });
         };

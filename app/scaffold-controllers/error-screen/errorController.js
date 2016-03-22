@@ -1,24 +1,28 @@
 define([
-    'bluebird',
+    'astro-full',
     'astro-rpc',
+    'bluebird',
     'config/errorConfig',
     'config/baseConfig',
     'plugins/webViewPlugin',
     'plugins/modalViewPlugin'
+/* eslint-disable */
 ], function(
-    Promise,
+    Astro,
     AstroRpc,
+    Promise,
     ErrorConfig,
     BaseConfig,
     WebViewPlugin,
     ModalViewPlugin
 ) {
-    var NO_INTERNET_PAGE = ErrorConfig.errors.connectivityError.url;
+/* eslint-enable */
 
     var ErrorController = function(modalView, webView) {
         this.isShowing = false;
         this.viewPlugin = webView;
         this.modalView = modalView;
+        this.errorType = null;
     };
 
     ErrorController.init = function() {
@@ -31,7 +35,11 @@ define([
             webView.disableScrollBounce();
             modalView.setContentView(webView);
 
-            return new ErrorController(modalView, webView);
+            var errorController = new ErrorController(modalView, webView);
+            Astro.registerRpcMethod(AstroRpc.names.errorContent, [], function(res) {
+                res.send(null, errorController.errorContent());
+            });
+            return errorController;
         });
     };
 
@@ -48,6 +56,13 @@ define([
         this.modalView.hide({animated: true});
     };
 
+    ErrorController.prototype.errorContent = function() {
+        if (!this.errorType) {
+            return null;
+        }
+        return ErrorConfig.errors[this.errorType];
+    };
+
     // Remove the events once the modal is hidden or else some untriggered
     // once events will still exist on the errorModal page and create
     // inconsitant behaviour in the navigation/web views
@@ -56,14 +71,13 @@ define([
         this.viewPlugin.off('back');
     };
 
-    ErrorController.prototype._generateNoInternetCallback = function(params) {
+    ErrorController.prototype._generateErrorCallback = function(errorType, params) {
         var self = this;
         var backHandler = params.backHandler;
         var retryHandler = params.retryHandler;
         var isActiveItem = params.isActiveItem;
         return function(eventArgs) {
             if (isActiveItem()) {
-                self.viewPlugin.navigate(NO_INTERNET_PAGE);
                 // Wait until the error page is loaded before showing
                 self.viewPlugin.on('error:loaded', function() {
                     self.show();
@@ -74,8 +88,10 @@ define([
                     self._removeModalEvents();
                     backHandler();
                 });
+                self.errorType = errorType;
+                self.viewPlugin.navigate(ErrorConfig.url);
             }
-            // We allow non-Active items to listen for `retry` so that views
+            // We allow inactive views to listen for `retry` so that views
             // which also tried to navigate without connectivity will reload
             // when the retry button is pressed
             self.viewPlugin.once('retry', function() {
@@ -88,8 +104,8 @@ define([
 
     ErrorController.prototype.bindToNavigator = function(params) {
         var navigator = params.navigator;
-        navigator.on('pageTimeout', this._generateNoInternetCallback(params));
-        navigator.on('noInternetConnection', this._generateNoInternetCallback(params));
+        navigator.on('pageTimeout', this._generateErrorCallback('pageTimeout', params));
+        navigator.on('noInternetConnection', this._generateErrorCallback('noInternetConnection', params));
     };
 
     return ErrorController;

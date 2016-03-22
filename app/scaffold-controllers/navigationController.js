@@ -16,23 +16,24 @@ function(
 /* eslint-enable */
     var NavigationController = function(tab, layout, navigationView, navigationHeaderController, includeDrawerIcon) {
         this.id = tab.id;
+        this.isActive = false;
+        this.viewPlugin = layout;
         this.navigationView = navigationView;
-        this.layout = layout;
         this.navigationHeaderController = navigationHeaderController;
 
         this.navigate(tab.url, includeDrawerIcon);
     };
 
-    NavigationController.init = function(
-        tab, counterBadgeController, cartEventHandler, drawerEventHandler) {
+    NavigationController.init = function(tab, counterBadgeController, cartEventHandler, drawerEventHandler, errorController) {
         return Promise.join(
             AnchoredLayoutPlugin.init(),
             NavigationHeaderController.init(counterBadgeController),
             NavigationPlugin.init(),
             function(layout, navigationHeaderController, navigationView) {
-                // Add Header Bar
-                navigationView.setHeaderBar(navigationHeaderController.viewPlugin);
+                // Set layout
+                layout.setContentView(navigationView);
                 layout.addTopView(navigationHeaderController.viewPlugin);
+                navigationView.setHeaderBar(navigationHeaderController.viewPlugin);
                 navigationHeaderController.registerBackEvents(function() {
                     navigationView.back();
                 });
@@ -44,15 +45,34 @@ function(
                     navigationHeaderController.registerDrawerEvents(drawerEventHandler);
                 }
 
-                layout.setContentView(navigationView);
-
-                return new NavigationController(
+                var navigationController = new NavigationController(
                     tab,
                     layout,
                     navigationView,
                     navigationHeaderController,
                     drawerIconEnabled
                 );
+                var backHandler = function() {
+                    navigationView.back();
+                };
+
+                var retryHandler = function(params) {
+                    if (!params.url) {
+                        return;
+                    }
+                    var navigate = function(eventPlugin) {
+                        eventPlugin.navigate(params.url);
+                    };
+                    navigationView.getEventPluginPromise(params).then(navigate);
+                };
+
+                errorController.bindToNavigator({
+                    navigator: navigationView,
+                    backHandler: backHandler,
+                    retryHandler: retryHandler,
+                    isActiveItem: navigationController.isActiveItem.bind(navigationController)
+                });
+                return navigationController;
             }
         );
     };
@@ -69,7 +89,7 @@ function(
             // We're expected to navigate the web view if we're called with a
             // url and the web view isn't in the process of redirecting (i.e.
             // `params.isCurrentlyLoading` is not set).
-            if (url != null && !params.isCurrentlyLoading) {
+            if (!!url && !params.isCurrentlyLoading) {
                 self.navigate(url);
             }
         };
@@ -93,6 +113,14 @@ function(
                 Application.closeApp();
             }
         });
+    };
+
+    NavigationController.prototype.canGoBack = function() {
+        return this.navigationView.canGoBack();
+    };
+
+    NavigationController.prototype.isActiveItem = function() {
+        return this.isActive;
     };
 
     return NavigationController;

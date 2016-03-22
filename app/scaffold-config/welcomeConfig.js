@@ -11,7 +11,7 @@ define(['config/baseConfig'], function(BaseConfig) {
     };
 
     var closeIcon = {
-        id : 'closeWelcomeScreen_id',
+        id : 'closeWelcome_id',
         imageUrl : 'file:///icon__close.png'
     };
 
