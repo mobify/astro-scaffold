@@ -30,11 +30,12 @@ function(
         };
     };
 
-    CartModalController.init = function() {
+    CartModalController.init = function(errorControllerPromise) {
         return Promise.join(
             CartController.init(),
             ModalViewPlugin.init(),
-        function(cartController, modalView) {
+            errorControllerPromise,
+        function(cartController, modalView, errorController) {
             modalView.setContentView(cartController.viewPlugin);
 
             var cartModalController = new CartModalController(modalView, cartController);
@@ -43,11 +44,29 @@ function(
             });
 
             // Register RPC methods
-            Astro.registerRpcMethod(AstroRpc.names.openCart, [], function(res) {
+            Astro.registerRpcMethod(AstroRpc.names.cartShow, [], function(res) {
                 cartModalController.show();
             });
-            Astro.registerRpcMethod(AstroRpc.names.closeCart, [], function(res) {
+            Astro.registerRpcMethod(AstroRpc.names.cartHide, [], function(res) {
                 cartModalController.hide();
+            });
+
+            var backHandler = function() {
+                cartModalController.hide();
+            };
+
+            var retryHandler = function(params) {
+                if (!params.url) {
+                    return;
+                }
+                cartController.navigate(params.url);
+            };
+
+            errorController.bindToNavigator({
+                navigator: cartController.webView,
+                backHandler: backHandler,
+                retryHandler: retryHandler,
+                isActiveItem: cartModalController.isActiveItem.bind(cartModalController)
             });
 
             return cartModalController;
@@ -74,6 +93,10 @@ function(
 
     CartModalController.prototype.back = function() {
         return this.cartController.back();
+    };
+
+    CartModalController.prototype.isActiveItem = function() {
+        return this.isShowing;
     };
 
     return CartModalController;

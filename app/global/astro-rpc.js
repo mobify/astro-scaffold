@@ -7,20 +7,24 @@ function(
     var AstroRpc = {};
 
     AstroRpc.names = {
-        openCart: 'openCart',
-        closeCart: 'closeCart',
+        appCanGoBack: 'appCanGoBack',
+        cartShow: 'cartShow',
+        cartHide: 'cartHide',
+        errorContent: 'errorContent',
         menuItems: 'menuItems',
-        showWelcome: 'showWelcome',
-        hideWelcome: 'hideWelcome',
+        welcomeShow: 'welcomeShow',
+        welcomeHide: 'welcomeHide',
         welcomeHasHeader: 'welcomeHasHeader',
         updateCartCounter: 'updateCartCounter'
     };
 
-    AstroRpc.openCart = Astro.jsRpcMethod(AstroRpc.names.openCart, []);
-    AstroRpc.closeCart = Astro.jsRpcMethod(AstroRpc.names.closeCart, []);
+    AstroRpc.appCanGoBack = Astro.jsRpcMethod(AstroRpc.names.appCanGoBack, []);
+    AstroRpc.cartShow = Astro.jsRpcMethod(AstroRpc.names.cartShow, []);
+    AstroRpc.cartHide = Astro.jsRpcMethod(AstroRpc.names.cartHide, []);
+    AstroRpc.errorContent = Astro.jsRpcMethod(AstroRpc.names.errorContent, []);
     AstroRpc.menuItems = Astro.jsRpcMethod(AstroRpc.names.menuItems, []);
-    AstroRpc.showWelcome = Astro.jsRpcMethod(AstroRpc.names.showWelcome, []);
-    AstroRpc.hideWelcome = Astro.jsRpcMethod(AstroRpc.names.hideWelcome, []);
+    AstroRpc.welcomeShow = Astro.jsRpcMethod(AstroRpc.names.welcomeShow, []);
+    AstroRpc.welcomeHide = Astro.jsRpcMethod(AstroRpc.names.welcomeHide, []);
     AstroRpc.welcomeHasHeader = Astro.jsRpcMethod(AstroRpc.names.welcomeHasHeader, []);
     AstroRpc.updateCartCounter = Astro.jsRpcMethod(AstroRpc.names.updateCartCounter, ['count']);
 
