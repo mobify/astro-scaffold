@@ -36,7 +36,6 @@ public class DoubleIconsPlugin: Plugin, ViewPlugin, HandlesUserInteraction {
         iconViewController.removeFromParentViewController()
     }
 
-
     public required init(address: MessageAddress, messageBus: MessageBus, pluginResolver: PluginResolver, options: JsonObject?) {
         super.init(address: address, messageBus: messageBus, pluginResolver: pluginResolver, options: options)
 
