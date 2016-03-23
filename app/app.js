@@ -93,7 +93,10 @@ window.run = function() {
             HeaderConfig.cartHeaderContent.imageUrl,
             HeaderConfig.cartHeaderContent.id
         ).then(function(counterBadgeController) {
-            // rpc method to update counter badge here
+            Astro.registerRpcMethod(AstroRpc.names.updateCartCounter, ['count'], function(res, count) {
+                counterBadgeController.updateCounterValue(count);
+            });
+
             counterBadgeController.updateCounterValue(3);
             return counterBadgeController;
         });

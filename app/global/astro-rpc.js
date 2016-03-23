@@ -12,7 +12,8 @@ function(
         menuItems: 'menuItems',
         showWelcome: 'showWelcome',
         hideWelcome: 'hideWelcome',
-        welcomeHasHeader: 'welcomeHasHeader'
+        welcomeHasHeader: 'welcomeHasHeader',
+        updateCartCounter: 'updateCartCounter'
     };
 
     AstroRpc.openCart = Astro.jsRpcMethod(AstroRpc.names.openCart, []);
@@ -21,6 +22,7 @@ function(
     AstroRpc.showWelcome = Astro.jsRpcMethod(AstroRpc.names.showWelcome, []);
     AstroRpc.hideWelcome = Astro.jsRpcMethod(AstroRpc.names.hideWelcome, []);
     AstroRpc.welcomeHasHeader = Astro.jsRpcMethod(AstroRpc.names.welcomeHasHeader, []);
+    AstroRpc.updateCartCounter = Astro.jsRpcMethod(AstroRpc.names.updateCartCounter, ['count']);
 
     return AstroRpc;
 });
