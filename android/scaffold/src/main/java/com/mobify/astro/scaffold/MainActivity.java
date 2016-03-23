@@ -8,6 +8,7 @@ import com.mobify.astro.plugins.counterbadgeplugin.CounterBadgePlugin;
 import com.mobify.astro.plugins.loaders.*;
 import com.mobify.astro.plugins.headerbarplugin.HeaderBarPlugin;
 import com.mobify.astro.plugins.webviewplugin.WebViewPlugin;
+import com.mobify.astro.scaffold.plugins.DoubleIconsPlugin;
 
 import org.apache.cordova.CordovaWebView;
 
@@ -18,7 +19,7 @@ public class MainActivity extends AstroActivity {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        // Register plugins.
+        // Register Astro plugins.
         pluginManager.register(AnchoredLayoutPlugin.class);
         pluginManager.register(CounterBadgePlugin.class);
         pluginManager.register(DefaultLoaderPlugin.class);
@@ -31,6 +32,9 @@ public class MainActivity extends AstroActivity {
         pluginManager.register(TabBarPlugin.class);
         pluginManager.register(WebViewPlugin.class);
         pluginManager.register(SharingPlugin.class);
+
+        // Register custom plugins.
+        pluginManager.register(DoubleIconsPlugin.class);
 
         // Create the initial worker.
         worker = new AstroWorker(this, pluginManager);

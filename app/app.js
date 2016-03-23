@@ -93,6 +93,7 @@ window.run = function() {
             HeaderConfig.cartHeaderContent.imageUrl,
             HeaderConfig.cartHeaderContent.id
         ).then(function(counterBadgeController) {
+            // rpc method to update counter badge here
             counterBadgeController.updateCounterValue(3);
             return counterBadgeController;
         });
