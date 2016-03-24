@@ -1,6 +1,6 @@
 define([
     'astro-full',
-    'astro-rpc',
+    'app-rpc',
     'bluebird',
     'plugins/modalViewPlugin',
     'plugins/secureStorePlugin',
@@ -9,7 +9,7 @@ define([
 /* eslint-disable */
 function(
     Astro,
-    AstroRpc,
+    AppRpc,
     Promise,
     ModalViewPlugin,
     SecureStorePlugin,
@@ -42,11 +42,11 @@ function(
             });
 
             // Welcome modal RPCs
-            Astro.registerRpcMethod(AstroRpc.names.welcomeShow, [], function(res) {
+            Astro.registerRpcMethod(AppRpc.names.welcomeShow, [], function(res) {
                 welcomeModalController.show({forced: true});
             });
 
-            Astro.registerRpcMethod(AstroRpc.names.welcomeHide, [], function(res) {
+            Astro.registerRpcMethod(AppRpc.names.welcomeHide, [], function(res) {
                 welcomeModalController.hide();
             });
 

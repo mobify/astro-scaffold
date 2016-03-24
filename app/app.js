@@ -3,7 +3,7 @@ window.AstroMessages = []; // For debugging messages
 window.run = function() {
     require([
         'astro-full',
-        'astro-rpc',
+        'app-rpc',
         'bluebird',
         'application',
         'config/baseConfig',
@@ -19,7 +19,7 @@ window.run = function() {
     ],
     function(
         Astro,
-        AstroRpc,
+        AppRpc,
         Promise,
         Application,
         BaseConfig,
@@ -49,7 +49,7 @@ window.run = function() {
         var registerCanGoBackRpc = function(controller) {
             Promise.join(welcomeModalControllerPromise, cartModalControllerPromise,
             function(welcomeModal, cartModal) {
-                Astro.registerRpcMethod(AstroRpc.names.appCanGoBack, [], function(res) {
+                Astro.registerRpcMethod(AppRpc.names.appCanGoBack, [], function(res) {
                     // We want to return true when the cart is showing since
                     // calling `back` is equivalent to dismissing the cart
                     if (cartModal.isShowing) {
@@ -121,10 +121,6 @@ window.run = function() {
             HeaderConfig.cartHeaderContent.imageUrl,
             HeaderConfig.cartHeaderContent.id
         ).then(function(counterBadgeController) {
-            Astro.registerRpcMethod(AstroRpc.names.updateCartCounter, ['count'], function(res, count) {
-                counterBadgeController.updateCounterValue(count);
-            });
-
             counterBadgeController.updateCounterValue(3);
             return counterBadgeController;
         });
