@@ -87,7 +87,7 @@ function(
             return;
         }
 
-        this.viewPlugin.on('click:' + HeaderConfig.cartHeaderContent.id, callback);
+        this.doubleIconsController.on('click:doubleIcons_right', callback);
     };
 
     NavigationHeaderController.prototype.setTitle = function() {
