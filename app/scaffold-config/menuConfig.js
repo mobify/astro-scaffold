@@ -1,11 +1,11 @@
-define([], function() {
+define(['config/baseConfig'], function(BaseConfig) {
 /* eslint-enable max-statements */
 
     // Configure your menu items here:
     var menuItemOne = {
         id: '1',
         title:'Bikes',
-        url: 'https://webpush-you-host.mobifydemo.io/',
+        url: BaseConfig.baseURL,
         imageUrl: 'file:///Icon__discover.png',
         selectedImageUrl: 'file:///Icon__discover.png'
     };
@@ -13,7 +13,7 @@ define([], function() {
     var menuItemTwo = {
         id: '2',
         title:'Accessories',
-        url: 'https://webpush-you-host.mobifydemo.io/accessories/',
+        url: BaseConfig.baseURL + '/accessories',
         imageUrl: 'file:///Icon__discover.png',
         selectedImageUrl: 'file:///Icon__discover.png'
     };
@@ -21,7 +21,7 @@ define([], function() {
     var menuItemThree = {
         id: '3',
         title:'Services',
-        url: 'https://webpush-you-host.mobifydemo.io/services/',
+        url: BaseConfig.baseURL + '/services',
         imageUrl: 'file:///Icon__discover.png',
         selectedImageUrl: 'file:///Icon__discover.png'
     };
@@ -29,7 +29,7 @@ define([], function() {
     var menuItemFour = {
         id: '4',
         title:'Sales',
-        url: 'https://webpush-you-host.mobifydemo.io/sales/',
+        url: BaseConfig.baseURL + '/sales',
         imageUrl: 'file:///Icon__discover.png',
         selectedImageUrl: 'file:///Icon__discover.png'
     };
@@ -37,7 +37,7 @@ define([], function() {
     var menuItemFive = {
         id: '5',
         title:'About',
-        url: 'https://webpush-you-host.mobifydemo.io/about/',
+        url: BaseConfig.baseURL + '/about',
         imageUrl: 'file:///Icon__discover.png',
         selectedImageUrl: 'file:///Icon__discover.png'
     };

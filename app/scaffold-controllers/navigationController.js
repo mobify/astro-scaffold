@@ -1,27 +1,38 @@
 define([
+    'astro-full',
     'bluebird',
     'application',
+    'config/baseConfig',
     'plugins/anchoredLayoutPlugin',
     'plugins/navigationPlugin',
     'scaffold-controllers/navigationHeaderController'
 ],
 /* eslint-disable */
 function(
+    Astro,
     Promise,
     Application,
+    BaseConfig,
     AnchoredLayoutPlugin,
     NavigationPlugin,
     NavigationHeaderController
 ) {
 /* eslint-enable */
-    var NavigationController = function(tab, layout, navigationView, navigationHeaderController, includeDrawerIcon) {
-        this.id = tab.id;
+    var NavigationController = function(tab, layout, navigationView, navigationHeaderController, includeDrawerIcon, url) {
         this.isActive = false;
         this.viewPlugin = layout;
         this.navigationView = navigationView;
         this.navigationHeaderController = navigationHeaderController;
 
-        this.navigate(tab.url, includeDrawerIcon);
+        var self = this;
+        Application.getOSInformation().then(function(osInfo) {
+            if (osInfo.os === Astro.platforms.ios && BaseConfig.iosUsingTabLayout) {
+                self.id = tab.id;
+                self.navigate(tab.url, includeDrawerIcon);
+            } else {
+                self.navigate(url, includeDrawerIcon);
+            }
+        });
     };
 
     NavigationController.init = function(
@@ -29,7 +40,8 @@ function(
         counterBadgeController,
         cartEventHandler,
         errorController,
-        drawerEventHandler
+        drawerEventHandler,
+        url
     ) {
         return Promise.join(
             AnchoredLayoutPlugin.init(),
@@ -56,7 +68,8 @@ function(
                 layout,
                 navigationView,
                 navigationHeaderController,
-                drawerIconEnabled
+                drawerIconEnabled,
+                url
             );
             var backHandler = function() {
                 navigationView.back();
@@ -106,6 +119,25 @@ function(
             })
             .then(function() {
                 return self.navigationHeaderController.setTitle();
+            });
+    };
+
+    NavigationController.prototype.navigateMainViewToNewRoot = function(url, title) {
+        var self = this;
+        this.navigationView.popToRoot({animated: true})
+            .then(function() {
+                return self.navigationView.getTopPlugin();
+            })
+            .then(function(rootWebView) {
+                self.navigationHeaderController.setTitle(title);
+                if (typeof rootWebView.navigate === 'function') {
+                    return rootWebView.navigate(url);
+                } else {
+                    // Note: this code branch is untested
+                    // This would be used if the root plugin is not a WebViewPlugin.
+                    // In that case, we want to tell the navigation plugin to navigate instead.
+                    return self.navigate(url, true);
+                }
             });
     };
 

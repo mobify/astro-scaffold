@@ -91,16 +91,18 @@ window.run = function() {
             });
         };
 
+
         var createDrawerLayout = function(counterBadgeControllerPromise) {
             return DrawerController.init(
                 counterBadgeControllerPromise,
                 cartEventHandlerPromise,
                 errorControllerPromise
-            ).then(function(drawerController) {
+            )
+            .then(function(drawerController) {
                 Application.setMainViewPlugin(drawerController.drawer);
 
                 // Wiring up the hardware back button for Android
-                Application.on('backButtonPressed', function() {
+                Application.on('backButtonPressed', function(params) {
                     cartModalControllerPromise.then(function(cartModalController) {
                         if (cartModalController.isShowing) {
                             cartModalController.hide();
@@ -110,12 +112,41 @@ window.run = function() {
                     });
                 });
 
-                drawerController.selectItem('1');
+                Astro.registerRpcMethod(AstroRpc.names.navigateToNewRootView, ['url', 'title'], function(res, url, title) {
+                    drawerController.navigateToNewRootView(url, title);
+                    res.send(null, 'success');
+                });
                 registerCanGoBackRpc(drawerController);
 
                 return drawerController;
             });
         };
+
+        // var createDrawerLayout = function(counterBadgeControllerPromise) {
+        //     return DrawerController.init(
+        //         counterBadgeControllerPromise,
+        //         cartEventHandlerPromise,
+        //         errorControllerPromise
+        //     ).then(function(drawerController) {
+        //         Application.setMainViewPlugin(drawerController.drawer);
+        //
+        //         // Wiring up the hardware back button for Android
+        //         Application.on('backButtonPressed', function() {
+        //             cartModalControllerPromise.then(function(cartModalController) {
+        //                 if (cartModalController.isShowing) {
+        //                     cartModalController.hide();
+        //                 } else {
+        //                     drawerController.backActiveItem();
+        //                 }
+        //             });
+        //         });
+        //
+        //         drawerController.selectItem('1');
+        //         registerCanGoBackRpc(drawerController);
+        //
+        //         return drawerController;
+        //     });
+        // };
 
         var counterBadgeControllerPromise = CounterBadgeController.init(
             HeaderConfig.cartHeaderContent.imageUrl,

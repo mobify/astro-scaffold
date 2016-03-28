@@ -4,6 +4,7 @@ define([
     'plugins/drawerPlugin',
     'plugins/webViewPlugin',
     'config/menuConfig',
+    'config/baseConfig',
     'scaffold-controllers/navigationController',
     'bluebird'
 ],
@@ -13,6 +14,7 @@ function(
     DrawerPlugin,
     WebViewPlugin,
     MenuConfig,
+    BaseConfig,
     NavigationController,
     Promise
 ) {
@@ -20,56 +22,41 @@ function(
     var DrawerController = function(drawer, leftMenu) {
         this.drawer = drawer;
         this.leftMenu = leftMenu;
-        this.activeItemId = null;
-
-        this._bindEvents();
+        // TODO: tony fix this
+        // this.activeItemId = null;
     };
 
     var initLeftMenu = function(drawer, leftMenu) {
-        leftMenu.navigate('file:///scaffold-www/left-menu.html');
+        leftMenu.navigate('file:///scaffold-www/html/left-drawer.html');
+        leftMenu.disableScrolling();
         drawer.setLeftMenu(leftMenu);
-
         return drawer;
     };
 
-    var initNavigationItems = function(drawer, tabItems, counterBadgeController, cartEventHandler, errorController) {
+    var initNavigationItems = function(drawer, counterBadgeController, cartEventHandler, errorController) {
         var drawerEventHandler = function() {
             drawer.showLeftMenu();
         };
 
-        drawer.itemViews = {};
-        drawer.itemControllers = {};
-
+        //TODO: tony fix this
         // Make sure all tabViews are set up
-        return Promise.all(tabItems.map(function(tab) {
-            //Init a new NavigationController
-            var navigationControllerPromise = NavigationController.init(
+        var tab = null;
+        return NavigationController.init(
                 tab,
                 counterBadgeController,
                 cartEventHandler,
                 errorController,
-                drawerEventHandler
-            );
-
-            return navigationControllerPromise.then(function(navigationController) {
-                    drawer.itemControllers[tab.id] = navigationController;
-                    drawer.itemViews[tab.id] = navigationController.viewPlugin;
-
-                    return drawer;
-                });
-
-            })).then(function() {
+                drawerEventHandler,
+                BaseConfig.baseURL
+            )
+            .then(function(navigationController) {
+                drawer.navigationController= navigationController;
                 return drawer;
             });
-        };
+    };
 
     DrawerController.init = function(counterBadgeControllerPromise, cartEventHandlerPromise, errorControllerPromise) {
-        var constructTabItemsPromise = Promise.resolve(MenuConfig.menuItems);
         var webViewPromise = WebViewPlugin.init();
-
-        Astro.registerRpcMethod(AstroRpc.names.menuItems, [], function(res) {
-            res.send(null, MenuConfig.menuItems);
-        });
 
         var initLeftMenuPromise = Promise.join(
             DrawerPlugin.init(),
@@ -78,50 +65,29 @@ function(
 
         var initNavigationItemsPromise = Promise.join(
             initLeftMenuPromise,
-            constructTabItemsPromise,
             counterBadgeControllerPromise,
             cartEventHandlerPromise,
             errorControllerPromise,
             initNavigationItems);
 
-        return Promise.all([initNavigationItemsPromise]).then(function() {
-            return Promise.join(initNavigationItemsPromise, webViewPromise, function(drawer, leftMenu) {
-                return new DrawerController(drawer, leftMenu);
-            });
+        return Promise.join(initNavigationItemsPromise, webViewPromise, function(drawer, leftMenu) {
+            leftMenu.disableDefaultNavigationHandler();
+            drawer.setContentView(drawer.navigationController.viewPlugin);
+            return new DrawerController(drawer, leftMenu);
         });
     };
 
-    DrawerController.prototype.selectItem = function(itemId) {
-        if (this.activeItemId !== itemId) {
-            if (this.activeItemId) {
-                this.drawer.itemControllers[this.activeItemId].isActive = false;
-            }
-            this.drawer.setContentView(this.drawer.itemViews[itemId]);
-            var selectedItem = this.drawer.itemControllers[itemId];
-            selectedItem.isActive = true;
-            this.activeItemId = itemId;
+    DrawerController.prototype.navigateToNewRootView = function(url, title) {
+        // Strip away 'file://' from relative urls coming from anchor tags
+        if (url.indexOf('file://') > -1) {
+            url = url.replace('file://', BaseConfig.baseURL);
         }
-    };
-
-    DrawerController.prototype._bindEvents = function() {
-        var self = this;
-
-        this.leftMenu.on('menuItemSelected', function(data) {
-            self.drawer.hideLeftMenu();
-            self.selectItem(data.id);
-        });
-    };
-
-    DrawerController.prototype.navigateActiveItem = function(url) {
-        this.drawer.itemControllers[this.activeItemId].navigate(url);
-    };
-
-    DrawerController.prototype.backActiveItem = function() {
-        this.drawer.itemControllers[this.activeItemId].back();
+        this.drawer.navigationController.navigateMainViewToNewRoot(url, title);
+        this.drawer.hideLeftMenu();
     };
 
     DrawerController.prototype.canGoBack = function() {
-        var activeItem = this.drawer.itemControllers[this.activeItemId];
+        var activeItem = this.drawer.navigationController;
         return activeItem.canGoBack();
     };
     return DrawerController;
