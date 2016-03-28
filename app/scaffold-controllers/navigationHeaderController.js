@@ -82,6 +82,14 @@ function(
         this.viewPlugin.on('click:' + HeaderConfig.drawerHeaderContent.id, callback);
     };
 
+    NavigationHeaderController.prototype.registerSearchBarEvents = function(callback) {
+        if (!callback) {
+            return;
+        }
+
+        this.doubleIconsController.on('click:doubleIcons_left', callback);
+    };
+
     NavigationHeaderController.prototype.registerCartEvents = function(callback) {
         if (!callback) {
             return;

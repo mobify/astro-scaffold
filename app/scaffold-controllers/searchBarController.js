@@ -84,5 +84,13 @@ function(
         }
     };
 
+    SearchBarController.prototype.registerSearchSubmittedEvents = function(callback) {
+        if (!callback) {
+            return;
+        }
+
+        this.viewPlugin.on('search:submitted', callback);
+    };
+
     return SearchBarController;
 });

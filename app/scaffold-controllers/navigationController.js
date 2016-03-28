@@ -3,7 +3,9 @@ define([
     'application',
     'plugins/anchoredLayoutPlugin',
     'plugins/navigationPlugin',
-    'scaffold-controllers/navigationHeaderController'
+    'scaffold-controllers/navigationHeaderController',
+    'scaffold-controllers/searchBarController',
+    'scaffold-config/searchConfig'
 ],
 /* eslint-disable */
 function(
@@ -11,17 +13,26 @@ function(
     Application,
     AnchoredLayoutPlugin,
     NavigationPlugin,
-    NavigationHeaderController
+    NavigationHeaderController,
+    SearchBarController,
+    SearchConfig
 ) {
 /* eslint-enable */
-    var NavigationController = function(tab, layout, navigationView, navigationHeaderController, includeDrawerIcon) {
+    var NavigationController = function(tab, layout, navigationView, navigationHeaderController, searchBarController, includeDrawerIcon) {
         this.id = tab.id;
         this.isActive = false;
         this.viewPlugin = layout;
         this.navigationView = navigationView;
         this.navigationHeaderController = navigationHeaderController;
+        this.searchBarController = searchBarController;
 
         this.navigate(tab.url, includeDrawerIcon);
+
+        var self = this;
+
+        this.searchBarController.registerSearchSubmittedEvents(function(params) {
+            self.navigationView.navigateToUrl(SearchBarController.generateSearchUrl(params.searchTerms, SearchConfig.queryUrl));
+        });
     };
 
     NavigationController.init = function(
@@ -31,11 +42,14 @@ function(
         errorController,
         drawerEventHandler
     ) {
+        var layoutPromise = AnchoredLayoutPlugin.init();
+
         return Promise.join(
-            AnchoredLayoutPlugin.init(),
+            layoutPromise,
             NavigationHeaderController.init(counterBadgeController),
             NavigationPlugin.init(),
-        function(layout, navigationHeaderController, navigationView) {
+            SearchBarController.init(layoutPromise, SearchConfig.uiSource),
+        function(layout, navigationHeaderController, navigationView, searchBarController) {
             // Set layout
             layout.setContentView(navigationView);
             layout.addTopView(navigationHeaderController.viewPlugin);
@@ -51,11 +65,15 @@ function(
                 navigationHeaderController.registerDrawerEvents(drawerEventHandler);
             }
 
+            searchBarController.addToLayout();
+            navigationHeaderController.registerSearchBarEvents(searchBarController.toggle.bind(searchBarController, true));
+
             var navigationController = new NavigationController(
                 tab,
                 layout,
                 navigationView,
                 navigationHeaderController,
+                searchBarController,
                 drawerIconEnabled
             );
             var backHandler = function() {
