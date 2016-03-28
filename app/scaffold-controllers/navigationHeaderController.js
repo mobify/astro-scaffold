@@ -1,19 +1,23 @@
 define([
     'bluebird',
     'config/headerConfig',
-    'plugins/headerBarPlugin'
+    'plugins/headerBarPlugin',
+    'plugins/imageViewPlugin',
+    'scaffold-controllers/doubleIconsController'
 ],
 /* eslint-disable */
 function(
     Promise,
     HeaderConfig,
-    HeaderBarPlugin
+    HeaderBarPlugin,
+    ImageViewPlugin,
+    DoubleIconsController
 ) {
 /* eslint-enable */
 
-    var NavigationHeaderController = function(headerBar, counterBadgeController) {
+    var NavigationHeaderController = function(headerBar, doubleIconsController) {
         this.viewPlugin = headerBar;
-        this.counterBadgeController = counterBadgeController;
+        this.doubleIconsController = doubleIconsController;
     };
 
     var _createDrawerHeaderContent = function() {
@@ -21,20 +25,36 @@ function(
     };
 
     NavigationHeaderController.init = function(counterBadgeController) {
-        return HeaderBarPlugin.init().then(function(headerBar) {
+        var generateSearchIcon = function() {
+            return ImageViewPlugin.init().then(function(searchIcon) {
+                searchIcon.setImagePath(HeaderConfig.searchHeaderContent.imageUrl);
+                return searchIcon;
+            });
+        };
+
+        var generateCartIcon =
+            counterBadgeController.generatePlugin.bind(counterBadgeController);
+
+        return Promise.join(
+            HeaderBarPlugin.init(),
+            DoubleIconsController.init(
+                HeaderConfig.searchCartHeaderContent.id,
+                generateSearchIcon,
+                generateCartIcon),
+        function(headerBar, doubleIconsController) {
             headerBar.hideBackButtonText();
             headerBar.setTextColor(HeaderConfig.colors.textColor);
             headerBar.setBackgroundColor(HeaderConfig.colors.backgroundColor);
 
-            return new NavigationHeaderController(headerBar, counterBadgeController);
+            return new NavigationHeaderController(headerBar, doubleIconsController);
         });
     };
 
     NavigationHeaderController.prototype.generateContent = function(includeDrawer) {
-        return this.counterBadgeController.generateContent().then(function(counterHeaderContent) {
+        return this.doubleIconsController.generateContent().then(function(doubleIconsHeaderContent) {
             var headerContent = {
                 header: {
-                    rightIcon: counterHeaderContent
+                    rightIcon: doubleIconsHeaderContent
                 }
             };
 
@@ -67,7 +87,7 @@ function(
             return;
         }
 
-        this.viewPlugin.on('click:' + HeaderConfig.cartHeaderContent.id, callback);
+        this.doubleIconsController.on('click:doubleIcons_right', callback);
     };
 
     NavigationHeaderController.prototype.setTitle = function() {

@@ -1,6 +1,6 @@
 define([
     'astro-full',
-    'astro-rpc',
+    'app-rpc',
     'plugins/drawerPlugin',
     'plugins/webViewPlugin',
     'config/menuConfig',
@@ -9,7 +9,7 @@ define([
 ],
 function(
     Astro,
-    AstroRpc,
+    AppRpc,
     DrawerPlugin,
     WebViewPlugin,
     MenuConfig,
@@ -67,7 +67,7 @@ function(
         var constructTabItemsPromise = Promise.resolve(MenuConfig.menuItems);
         var webViewPromise = WebViewPlugin.init();
 
-        Astro.registerRpcMethod(AstroRpc.names.menuItems, [], function(res) {
+        Astro.registerRpcMethod(AppRpc.names.menuItems, [], function(res) {
             res.send(null, MenuConfig.menuItems);
         });
 

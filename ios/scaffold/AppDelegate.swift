@@ -29,6 +29,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
 
         astroViewController = AstroViewController(appJsUrl: NSURL(string: "app.js")!, launchOptions: launchOptions,
             pluginRegistrations: { pluginRegistrar in
+                pluginRegistrar.registerPlugin(name: "DoubleIconsPlugin", type: DoubleIconsPlugin.self)
         })
         
         window?.rootViewController = astroViewController

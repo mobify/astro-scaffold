@@ -4,7 +4,7 @@
   "author": "Mobify",
   "dependencies": {
     "bluebird": "~2.9.24",
-    "astro-sdk": "^0.8.0"
+    "astro-sdk": "^0.9.0-dev"
   },
   "devDependencies": {
     "grunt": "^0.4.5",

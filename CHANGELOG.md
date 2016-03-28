@@ -1,4 +1,5 @@
 ## To be released
+- Add double icons custom plugin. Add a search icon and cart icon on the right side of the header
 - Error modal is now configurable through the `errorConfig.js` file
 - Error modal displays when navigating with no connectivity or when page times out
 - iOS layout is now configurable through the `baseConfig.js` file

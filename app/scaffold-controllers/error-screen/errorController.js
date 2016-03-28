@@ -1,6 +1,6 @@
 define([
     'astro-full',
-    'astro-rpc',
+    'app-rpc',
     'bluebird',
     'config/errorConfig',
     'config/baseConfig',
@@ -9,7 +9,7 @@ define([
 /* eslint-disable */
 ], function(
     Astro,
-    AstroRpc,
+    AppRpc,
     Promise,
     ErrorConfig,
     BaseConfig,
@@ -36,7 +36,7 @@ define([
             modalView.setContentView(webView);
 
             var errorController = new ErrorController(modalView, webView);
-            Astro.registerRpcMethod(AstroRpc.names.errorContent, [], function(res) {
+            Astro.registerRpcMethod(AppRpc.names.errorContent, [], function(res) {
                 res.send(null, errorController.errorContent());
             });
             return errorController;
