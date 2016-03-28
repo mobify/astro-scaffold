@@ -55,7 +55,7 @@ public class DoubleIconsPlugin: Plugin, ViewPlugin, HandlesUserInteraction {
             /////////////////////////////////////////////////////////////
         }
 
-        viewController.view.frame = CGRectMake(0, 0, 88.0, 44.0)
+        viewController.view.frame = CGRect(x: 0, y: 0, width: 88.0, height: 44.0)
     }
 
     // @RpcMethod
