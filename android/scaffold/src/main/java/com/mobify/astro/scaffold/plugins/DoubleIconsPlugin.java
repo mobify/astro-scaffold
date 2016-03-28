@@ -14,6 +14,7 @@ import android.widget.LinearLayout;
 import com.mobify.astro.messaging.annotations.RpcMethod;
 import com.mobify.astro.plugins.headerbarplugin.HeaderContentItem;
 import com.mobify.astro.scaffold.R;
+import com.mobify.astro.utilities.HeaderUtilities;
 
 public class DoubleIconsPlugin extends AstroPlugin {
 
@@ -63,28 +64,13 @@ public class DoubleIconsPlugin extends AstroPlugin {
         }
     }
 
-    public static int getActionBarHeight(AstroActivity activity) {
-        // Try to get the action bar's height from the theme's resources.
-        TypedValue actionBarSizeTypedValue = new TypedValue();
-        if (activity.getTheme().resolveAttribute(
-                android.R.attr.actionBarSize, actionBarSizeTypedValue, true))
-        {
-            return TypedValue.complexToDimensionPixelSize(
-                    actionBarSizeTypedValue.data, activity.getResources().getDisplayMetrics()
-            );
-        }
-
-        // Fallback to hardcoded, reasonable dips.
-        return (int) activity.getResources().getDimension(com.mobify.astro.R.dimen.header_bar_fallback_height);
-    }
-
     public DoubleIconsPlugin(AstroActivity activity, PluginResolver pluginResolver) {
         super(activity, pluginResolver);
 
         final int minItemSize = activity.getResources().getDimensionPixelSize(R.dimen.header_bar_item_min_size);
 
         LinearLayout.LayoutParams containerParams = new LinearLayout.LayoutParams(
-                LinearLayout.LayoutParams.WRAP_CONTENT, DoubleIconsPlugin.getActionBarHeight(activity)
+                LinearLayout.LayoutParams.WRAP_CONTENT, HeaderUtilities.getActionBarHeight(activity)
         );
         containerParams.gravity = Gravity.CENTER;
 
