@@ -43,6 +43,15 @@ window.run = function() {
                     cartModalController.show();
                 };
             });
+
+        var counterBadgeControllerPromise = CounterBadgeController.init(
+            HeaderConfig.cartHeaderContent.imageUrl,
+            HeaderConfig.cartHeaderContent.id
+        ).then(function(counterBadgeController) {
+            counterBadgeController.updateCounterValue(3);
+            return counterBadgeController;
+        });
+
         // Register RPC to expose whether it is possible to go back.
         // This is necessary to determine whether to show/hide
         // the back button on the error modal
@@ -66,7 +75,7 @@ window.run = function() {
                 });
             });
         };
-        var createTabBarLayout = function(counterBadgeControllerPromise) {
+        var createTabBarLayout = function() {
             var layoutPromise = AnchoredLayoutPlugin.init();
             var tabBarControllerPromise = TabBarController.init(
                     layoutPromise,
@@ -92,13 +101,12 @@ window.run = function() {
         };
 
 
-        var createDrawerLayout = function(counterBadgeControllerPromise) {
+        var createDrawerLayout = function() {
             return DrawerController.init(
                 counterBadgeControllerPromise,
                 cartEventHandlerPromise,
                 errorControllerPromise
-            )
-            .then(function(drawerController) {
+            ).then(function(drawerController) {
                 Application.setMainViewPlugin(drawerController.drawer);
 
                 // Wiring up the hardware back button for Android
@@ -122,53 +130,19 @@ window.run = function() {
             });
         };
 
-        // var createDrawerLayout = function(counterBadgeControllerPromise) {
-        //     return DrawerController.init(
-        //         counterBadgeControllerPromise,
-        //         cartEventHandlerPromise,
-        //         errorControllerPromise
-        //     ).then(function(drawerController) {
-        //         Application.setMainViewPlugin(drawerController.drawer);
-        //
-        //         // Wiring up the hardware back button for Android
-        //         Application.on('backButtonPressed', function() {
-        //             cartModalControllerPromise.then(function(cartModalController) {
-        //                 if (cartModalController.isShowing) {
-        //                     cartModalController.hide();
-        //                 } else {
-        //                     drawerController.backActiveItem();
-        //                 }
-        //             });
-        //         });
-        //
-        //         drawerController.selectItem('1');
-        //         registerCanGoBackRpc(drawerController);
-        //
-        //         return drawerController;
-        //     });
-        // };
-
-        var counterBadgeControllerPromise = CounterBadgeController.init(
-            HeaderConfig.cartHeaderContent.imageUrl,
-            HeaderConfig.cartHeaderContent.id
-        ).then(function(counterBadgeController) {
-            counterBadgeController.updateCounterValue(3);
-            return counterBadgeController;
-        });
-
-        welcomeModalControllerPromise.then(function(welcomeModalController) {
-            // The welcome modal can be configured to show only
-            // once -- on initial startup, by passing in the
-            // parameter `{forced: false}` below
-            welcomeModalController.show({forced: true});
-        });
-
         Application.getOSInformation().then(function(osInfo) {
             if (osInfo.os === Astro.platforms.ios && BaseConfig.iosUsingTabLayout) {
                 return createTabBarLayout(counterBadgeControllerPromise);
             }
             return createDrawerLayout(counterBadgeControllerPromise);
         }).then(function(menuController) {
+            welcomeModalControllerPromise.then(function(welcomeModalController) {
+                // The welcome modal can be configured to show only
+                // once -- on initial startup, by passing in the
+                // parameter `{forced: false}` below
+                welcomeModalController.show({forced: true});
+            });
+
             // Deep linking services will enable deep linking on startup
             // and while running
             // It will open the deep link in the current active tab

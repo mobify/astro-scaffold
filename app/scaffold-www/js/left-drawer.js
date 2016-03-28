@@ -1,11 +1,11 @@
-require(['left-drawer-config'], function() {
+require(['config'], function() {
     require([
         '$',
-        'leftMenuConfig',
+        'menuConfig',
         'velocity',
         'navitron'
     ],
-    function($, LeftMenuConfig) {
+    function($, MenuConfig) {
 
         // Given a list of menuItems in the specified format,
         // generate HTML that navitron JS will understand.
@@ -113,7 +113,7 @@ require(['left-drawer-config'], function() {
         };
 
         var main = function() {
-            var generatedHtml = generateNavitronHtml(LeftMenuConfig.menuItems);
+            var generatedHtml = generateNavitronHtml(MenuConfig.menuItems);
             $('#generatedNavitronHtmlPlaceholder').replaceWith(generatedHtml);
             setupNavitron();
         };

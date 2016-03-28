@@ -2,7 +2,7 @@ require.config({
     baseUrl: '../js',
     paths: {
         '$': 'zepto.min',
-        'leftMenuConfig': '../../scaffold-config/leftMenuConfig',
+        'menuConfig': '../../scaffold-config/menuConfig',
         'velocity': 'velocity.min',
         'navitron': 'navitron.min'
     },

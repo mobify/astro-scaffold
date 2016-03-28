@@ -1,7 +1,6 @@
 define([
     'astro-full',
     'bluebird',
-    'application',
     'config/baseConfig',
     'plugins/anchoredLayoutPlugin',
     'plugins/navigationPlugin',
@@ -11,37 +10,29 @@ define([
 function(
     Astro,
     Promise,
-    Application,
     BaseConfig,
     AnchoredLayoutPlugin,
     NavigationPlugin,
     NavigationHeaderController
 ) {
 /* eslint-enable */
-    var NavigationController = function(tab, layout, navigationView, navigationHeaderController, includeDrawerIcon, url) {
+    var NavigationController = function(id, url, layout, navigationView, navigationHeaderController, includeDrawerIcon) {
+        self.id = id;
         this.isActive = false;
         this.viewPlugin = layout;
         this.navigationView = navigationView;
         this.navigationHeaderController = navigationHeaderController;
 
-        var self = this;
-        Application.getOSInformation().then(function(osInfo) {
-            if (osInfo.os === Astro.platforms.ios && BaseConfig.iosUsingTabLayout) {
-                self.id = tab.id;
-                self.navigate(tab.url, includeDrawerIcon);
-            } else {
-                self.navigate(url, includeDrawerIcon);
-            }
-        });
+        this.navigate(url, includeDrawerIcon);
     };
 
     NavigationController.init = function(
-        tab,
+        id,
+        url,
         counterBadgeController,
         cartEventHandler,
         errorController,
-        drawerEventHandler,
-        url
+        drawerEventHandler
     ) {
         return Promise.join(
             AnchoredLayoutPlugin.init(),
@@ -64,13 +55,32 @@ function(
             }
 
             var navigationController = new NavigationController(
-                tab,
+                id,
+                url,
                 layout,
                 navigationView,
                 navigationHeaderController,
-                drawerIconEnabled,
-                url
+                drawerIconEnabled
             );
+
+            Astro.events.on('welcome:shown', function() {
+                if (navigationController.isActive) {
+                    Astro.events.once('welcome:hidden', function() {
+                        navigationController.isActive = true;
+                    });
+                }
+                navigationController.isActive = false;
+            });
+
+            Astro.events.on('cart:shown', function() {
+                if(navigationController.isActive) {
+                    Astro.events.once('cart:hidden', function() {
+                        navigationController.isActive = true;
+                    });
+                }
+                navigationController.isActive = false;
+            });
+
             var backHandler = function() {
                 navigationView.back();
             };

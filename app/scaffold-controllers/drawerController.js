@@ -3,7 +3,6 @@ define([
     'astro-rpc',
     'plugins/drawerPlugin',
     'plugins/webViewPlugin',
-    'config/menuConfig',
     'config/baseConfig',
     'scaffold-controllers/navigationController',
     'bluebird'
@@ -13,7 +12,6 @@ function(
     AstroRpc,
     DrawerPlugin,
     WebViewPlugin,
-    MenuConfig,
     BaseConfig,
     NavigationController,
     Promise
@@ -22,8 +20,6 @@ function(
     var DrawerController = function(drawer, leftMenu) {
         this.drawer = drawer;
         this.leftMenu = leftMenu;
-        // TODO: tony fix this
-        // this.activeItemId = null;
     };
 
     var initLeftMenu = function(drawer, leftMenu) {
@@ -38,19 +34,20 @@ function(
             drawer.showLeftMenu();
         };
 
-        //TODO: tony fix this
-        // Make sure all tabViews are set up
-        var tab = null;
+        // The navigationController requires an id. Since we are using a drawer
+        // layout, we have 1 main navigation plugin -- thus its ID is set to 1.
+        var controllerID = 1;
         return NavigationController.init(
-                tab,
+                controllerID,
+                BaseConfig.baseURL,
                 counterBadgeController,
                 cartEventHandler,
                 errorController,
-                drawerEventHandler,
-                BaseConfig.baseURL
+                drawerEventHandler
             )
             .then(function(navigationController) {
                 drawer.navigationController= navigationController;
+                navigationController.isActive = true;
                 return drawer;
             });
     };
@@ -86,9 +83,15 @@ function(
         this.drawer.hideLeftMenu();
     };
 
+    DrawerController.prototype.backActiveItem = function() {
+        var activeItem = this.drawer.navigationController;
+        activeItem.back();
+    };
+
     DrawerController.prototype.canGoBack = function() {
         var activeItem = this.drawer.navigationController;
         return activeItem.canGoBack();
     };
+
     return DrawerController;
 });

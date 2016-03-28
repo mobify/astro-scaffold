@@ -81,11 +81,13 @@ function(
         this.isShowing = true;
         this._reload();
         this.viewPlugin.show({animated: true});
+        Astro.events.trigger('cart:shown');
     };
 
     CartModalController.prototype.hide = function() {
         // We load a blank page upon hide to prevent displaying
         // previously loaded content when we open the cart
+        Astro.events.trigger('cart:hidden');
         this.viewPlugin.hide({animated: true});
         this.isShowing = false;
         this._loadBlank();

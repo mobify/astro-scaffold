@@ -27,7 +27,7 @@ li {
 }
 
 .navitron__item {
-    color: black;
+    color: #373737;
     border-bottom: 1px solid silver;
     text-decoration: none;
     font-weight: bold;
@@ -43,7 +43,7 @@ li {
 }
 
 .navitron__prev-pane::before {
-    border-right-color: black;
+    border-right-color: #373737;
 }
 
 .navitron__next-pane::after {
@@ -54,10 +54,10 @@ li {
     display: inline-block;
     width: auto;
     padding: 12px;
-    border: 1px solid black;
+    border: 1px solid silver;
 
     background-color: white;
-    border-radius: 4px;
+    border-radius: 5px;
 
     font-weight: bold;
 }
@@ -73,7 +73,7 @@ li {
     align-items: center;
     padding: 16px;
 
-    color: black;
+    color: #373737;
 }
 
 .c-bar__heading {
@@ -84,4 +84,6 @@ li {
     flex: 1;
 
     text-align: center;
+    font-weight: bold;
+    font-size: 18px;
 }

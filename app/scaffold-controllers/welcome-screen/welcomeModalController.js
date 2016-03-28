@@ -92,6 +92,7 @@ function(
             if (onboarded !== 'YES' || params.forced) {
                 self.isShowing = true;
                 self.modalView.show({animated: true});
+                Astro.events.trigger('welcome:shown');
                 self._secureStore.set('onboarded', 'YES');
             }
         });
@@ -101,6 +102,7 @@ function(
         var self = this;
         self.isShowing = false;
         self.modalView.hide({animated: true});
+        Astro.events.trigger('welcome:hidden');
     };
 
     WelcomeModalController.prototype.isActiveItem = function() {
