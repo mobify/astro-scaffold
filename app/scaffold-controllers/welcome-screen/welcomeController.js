@@ -1,6 +1,6 @@
 define([
     'astro-full',
-    'astro-rpc',
+    'app-rpc',
     'bluebird',
     'config/baseConfig',
     'config/welcomeConfig',
@@ -12,7 +12,7 @@ define([
 /* eslint-disable */
 function(
     Astro,
-    AstroRpc,
+    AppRpc,
     Promise,
     BaseConfig,
     WelcomeConfig,
@@ -88,7 +88,7 @@ function(
             });
         };
 
-        Astro.registerRpcMethod(AstroRpc.names.welcomeHasHeader, [], function(res) {
+        Astro.registerRpcMethod(AppRpc.names.welcomeHasHeader, [], function(res) {
             res.send(null, WelcomeConfig.showHeader);
         });
 

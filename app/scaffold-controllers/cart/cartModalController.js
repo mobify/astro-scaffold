@@ -1,6 +1,6 @@
 define([
     'astro-full',
-    'astro-rpc',
+    'app-rpc',
     'bluebird',
     'plugins/modalViewPlugin',
     'scaffold-controllers/cart/cartController'
@@ -8,7 +8,7 @@ define([
 /* eslint-disable */
 function(
     Astro,
-    AstroRpc,
+    AppRpc,
     Promise,
     ModalViewPlugin,
     CartController
@@ -44,10 +44,10 @@ function(
             });
 
             // Register RPC methods
-            Astro.registerRpcMethod(AstroRpc.names.cartShow, [], function(res) {
+            Astro.registerRpcMethod(AppRpc.names.cartShow, [], function(res) {
                 cartModalController.show();
             });
-            Astro.registerRpcMethod(AstroRpc.names.cartHide, [], function(res) {
+            Astro.registerRpcMethod(AppRpc.names.cartHide, [], function(res) {
                 cartModalController.hide();
             });
 
