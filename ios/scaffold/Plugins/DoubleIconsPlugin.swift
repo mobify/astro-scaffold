@@ -97,7 +97,7 @@ public class DoubleIconsPlugin: Plugin, ViewPlugin, HandlesUserInteraction {
 
     private func wrapInUIControl(view: UIView, triggerFunctionName: String) -> UIControl {
         let subViewSize = view.frame.size
-        let viewRect = CGRectMake(CGFloat(0), CGFloat(0), subViewSize.width, subViewSize.height)
+        let viewRect = CGRect(x: CGFloat(0), y: CGFloat(0), width: subViewSize.width, height: subViewSize.height)
 
         let uiControl = UIControl(frame: viewRect)
         uiControl.translatesAutoresizingMaskIntoConstraints = false

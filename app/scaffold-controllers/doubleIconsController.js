@@ -20,6 +20,12 @@ function(Astro, Promise, BackboneEvents, DoubleIconsPlugin) {
     };
 
     DoubleIconsController.prototype._createDoubleIcons = function(doubleIcons) {
+        // The double icons controller is responsible for managing
+        // many instances of the left and right icons. To ensure that all
+        // instances of the icons stay in sync each instance of the icon
+        // registers for an event which gets triggered when the function for
+        // generating new plugins for that icon changes
+        // (ie. icon is being changed to display a different image)
         this.on('updateLeftIcon', function(param) {
             _setLeftIcon(doubleIcons, param.generateLeftIcon());
         });
