@@ -74,13 +74,14 @@ Astro defines a controller inside of a requirejs module. The module exposes a pr
 
 * `app/app.js` is the entry point of the App
 * `app/global` contains files that provide a common interface for communication between controller objects
-  * `app/global/astro-rpc.js` is an RPC bus that contains registered methods exposed to Astro 
+  * `app/global/app-rpc.js` is an RPC bus that contains registered methods exposed to Astro 
 * `app/scaffold-config/` contains configuration files aiding in the centralization of app styling and content customization
   * `app/scaffold-config/baseConfig.js` configures application-level styling & content
   * `app/scaffold-config/cartConfig.js` configures modal cart styling & content
   * `app/scaffold-config/errorConfig.js` configures error modal styling & content
   * `app/scaffold-config/headerConfig.js` configures header styling & icon
   * `app/scaffold-config/menuConfig.js` configures left drawer menu items
+  * `app/scaffold-config/tabConfig.js` configures tab bar items
   * `app/scaffold-config/welcomeConfig.js` configures welcome modal styling & content
 * `app/scaffold-components/` contains helper objects which allow the app to maintain a clean architecture
   * `app/scaffold-components/deepLinkingServices.js` allows the app to configure deep linking functionality
@@ -99,10 +100,11 @@ Astro defines a controller inside of a requirejs module. The module exposes a pr
   * `app/scaffold-controllers/navigationController.js` manages the navigation component for a menu item. Coordinates behavior between the navigation plugin and the header bar for the menu item.
   * `app/scaffold-controllers/navigationHeaderController.js` manages the header bars which are displayed in the navigation components
   * `app/scaffold-controllers/tabBarController.js` manages the tab bar layout which is used in the iOS version of the app. Coordinates the behavior of the tab bar buttons, navigation components and the cart which is displayed in a modal view.
-* `app/scaffold-www/` contains html/css/js files needed for the apps embedded webpages - allows for these pages to be accessible offline
-  * `app/scaffold-www/error-view` contains html/css/resources which define the content and layout of the error screen
-  * `app/scaffold-www/welcome-view` contains html/css/resources which define the content and layout of welcome screen
-  * `app/scaffold-www/left-menu.html` ui for the Android app's left menu
+* `app/scaffold-www/` contains assets/css/html/js files needed for the apps embedded webpages - allows for these pages to be accessible offline
+  * `app/scaffold-www/assets/` contains assets for embedded web content
+  * `app/scaffold-www/css/` contains style sheets for embedded web content
+  * `app/scaffold-www/html/` contains html files for embedded web content
+  * `app/scaffold-www/js/` contains JavaScript files for embedded web content
 
 # Running Tests
 
