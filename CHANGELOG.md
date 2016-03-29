@@ -1,4 +1,6 @@
 ## To be released
+- Replaced drawer layout with a multi-level drawer navigation (Navitron)
+- TabBar item configuration moved to `tabConfig.js`
 - Add double icons custom plugin. Add a search icon and cart icon on the right side of the header
 - Error modal is now configurable through the `errorConfig.js` file
 - Error modal displays when navigating with no connectivity or when page times out

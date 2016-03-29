@@ -44,8 +44,7 @@ function(
                 cartEventHandler,
                 errorController,
                 drawerEventHandler
-            )
-            .then(function(navigationController) {
+            ).then(function(navigationController) {
                 drawer.navigationController= navigationController;
                 navigationController.isActive = true;
                 return drawer;
