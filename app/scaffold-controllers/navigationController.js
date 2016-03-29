@@ -17,7 +17,7 @@ function(
 ) {
 /* eslint-enable */
     var NavigationController = function(id, url, layout, navigationView, navigationHeaderController, includeDrawerIcon) {
-        self.id = id;
+        this.id = id;
         this.isActive = false;
         this.viewPlugin = layout;
         this.navigationView = navigationView;

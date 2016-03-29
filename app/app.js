@@ -85,7 +85,7 @@ window.run = function() {
                     errorControllerPromise
                 );
 
-            var layoutSetupPromise = Promise.join(
+            return Promise.join(
                 layoutPromise,
                 tabBarControllerPromise,
             function(layout, tabBarController) {
@@ -110,7 +110,7 @@ window.run = function() {
                 Application.setMainViewPlugin(drawerController.drawer);
 
                 // Wiring up the hardware back button for Android
-                Application.on('backButtonPressed', function(params) {
+                Application.on('backButtonPressed', function() {
                     cartModalControllerPromise.then(function(cartModalController) {
                         if (cartModalController.isShowing) {
                             cartModalController.hide();
@@ -136,6 +136,8 @@ window.run = function() {
             }
             return createDrawerLayout(counterBadgeControllerPromise);
         }).then(function(menuController) {
+            // Show welcome modal only after layout is created for proper
+            // bookkeeping of the active view.
             welcomeModalControllerPromise.then(function(welcomeModalController) {
                 // The welcome modal can be configured to show only
                 // once -- on initial startup, by passing in the
