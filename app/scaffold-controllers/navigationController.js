@@ -31,7 +31,7 @@ function(
         var self = this;
 
         this.searchBarController.registerSearchSubmittedEvents(function(params) {
-            self.navigate(SearchBarController.generateSearchUrl(params.searchTerms, SearchConfig.queryUrl));
+            self.navigate(self.searchBarController.generateSearchUrl(params.searchTerms));
         });
     };
 
@@ -48,7 +48,7 @@ function(
             layoutPromise,
             NavigationHeaderController.init(counterBadgeController),
             NavigationPlugin.init(),
-            SearchBarController.init(layoutPromise, SearchConfig.uiSource),
+            SearchBarController.init(layoutPromise, SearchConfig),
         function(layout, navigationHeaderController, navigationView, searchBarController) {
             // Set layout
             layout.setContentView(navigationView);

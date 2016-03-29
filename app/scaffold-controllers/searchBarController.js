@@ -6,9 +6,10 @@ function(
     Promise,
     WebViewPlugin
 ) {
-    var SearchBarController = function(webView, layout, interfaceUrl) {
+    var SearchBarController = function(webView, layout, searchConfig) {
         this.viewPlugin = webView;
         this.layout = layout;
+        this.searchConfig = searchConfig;
 
         // Track the state to show.hide keyboard on toggle
         //
@@ -18,22 +19,22 @@ function(
 
         this._registerEvents();
 
-        this.viewPlugin.navigate(interfaceUrl);
+        this.viewPlugin.navigate(this.searchConfig.uiSource);
         this.viewPlugin.disableScrolling();
     };
 
-    SearchBarController.init = function(layoutPromise, interfaceUrl) {
+    SearchBarController.init = function(layoutPromise, searchConfig) {
         return Promise.join(layoutPromise, WebViewPlugin.init(),
             function(layout, webView) {
-                return new SearchBarController(webView, layout, interfaceUrl);
+                return new SearchBarController(webView, layout, searchConfig);
             }
         );
     };
 
     // Returns queryUrl with the string "<search_terms>" replaced with the
     // URI-encoded version of searchTerms
-    SearchBarController.generateSearchUrl = function(searchTerms, queryUrl) {
-        return queryUrl.replace('<search_terms>', encodeURIComponent(searchTerms));
+    SearchBarController.prototype.generateSearchUrl = function(searchTerms) {
+        return this.searchConfig.queryUrl.replace('<search_terms>', encodeURIComponent(searchTerms));
     };
 
     // You must manually call this for the search bar to be visible
