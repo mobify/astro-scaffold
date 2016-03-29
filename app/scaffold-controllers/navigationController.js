@@ -31,7 +31,7 @@ function(
         var self = this;
 
         this.searchBarController.registerSearchSubmittedEvents(function(params) {
-            self.navigationView.navigateToUrl(SearchBarController.generateSearchUrl(params.searchTerms, SearchConfig.queryUrl));
+            self.navigate(SearchBarController.generateSearchUrl(params.searchTerms, SearchConfig.queryUrl));
         });
     };
 
