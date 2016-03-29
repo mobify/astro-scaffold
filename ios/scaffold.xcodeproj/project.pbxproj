@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		6E4715221CA1DB2600A359FE /* DoubleIconsPlugin.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6E4715211CA1DB2600A359FE /* DoubleIconsPlugin.swift */; };
 		87132A201B6016FF00FC74A4 /* Astro.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 87132A1E1B6016FF00FC74A4 /* Astro.framework */; };
 		87132A211B6016FF00FC74A4 /* Astro.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 87132A1E1B6016FF00FC74A4 /* Astro.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		87132A221B6016FF00FC74A4 /* Cordova.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 87132A1F1B6016FF00FC74A4 /* Cordova.framework */; };
@@ -50,6 +51,8 @@
 /* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
+		6E4715211CA1DB2600A359FE /* DoubleIconsPlugin.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = DoubleIconsPlugin.swift; path = Plugins/DoubleIconsPlugin.swift; sourceTree = "<group>"; };
+		6E6371351C936E9E00FA7E13 /* scaffold-www */ = {isa = PBXFileReference; lastKnownFileType = folder; name = "scaffold-www"; path = "../app/scaffold-www"; sourceTree = "<group>"; };
 		87132A1E1B6016FF00FC74A4 /* Astro.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Astro.framework; path = "$(CONFIGURATION_BUILD_DIR)/Astro.framework"; sourceTree = "<group>"; };
 		87132A1F1B6016FF00FC74A4 /* Cordova.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Cordova.framework; path = "$(CONFIGURATION_BUILD_DIR)/Cordova.framework"; sourceTree = "<group>"; };
 		87C6A8861B43044D001876CE /* scaffold.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = scaffold.app; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -90,6 +93,14 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		6E4715201CA1DAA500A359FE /* Plugins */ = {
+			isa = PBXGroup;
+			children = (
+				6E4715211CA1DB2600A359FE /* DoubleIconsPlugin.swift */,
+			);
+			name = Plugins;
+			sourceTree = "<group>";
+		};
 		87C6A87D1B43044D001876CE = {
 			isa = PBXGroup;
 			children = (
@@ -114,6 +125,7 @@
 		87C6A8881B43044D001876CE /* scaffold */ = {
 			isa = PBXGroup;
 			children = (
+				6E4715201CA1DAA500A359FE /* Plugins */,
 				87C6A88B1B43044D001876CE /* AppDelegate.swift */,
 				87C6A8F71B430FA2001876CE /* app.js */,
 				87C6A88D1B43044D001876CE /* ViewController.swift */,
@@ -311,6 +323,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				87C6A88E1B43044D001876CE /* ViewController.swift in Sources */,
+				6E4715221CA1DB2600A359FE /* DoubleIconsPlugin.swift in Sources */,
 				87C6A88C1B43044D001876CE /* AppDelegate.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

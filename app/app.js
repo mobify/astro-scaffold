@@ -3,7 +3,7 @@ window.AstroMessages = []; // For debugging messages
 window.run = function() {
     require([
         'astro-full',
-        'astro-rpc',
+        'app-rpc',
         'bluebird',
         'application',
         'config/baseConfig',
@@ -19,7 +19,7 @@ window.run = function() {
     ],
     function(
         Astro,
-        AstroRpc,
+        AppRpc,
         Promise,
         Application,
         BaseConfig,
@@ -58,7 +58,7 @@ window.run = function() {
         var registerCanGoBackRpc = function(controller) {
             Promise.join(welcomeModalControllerPromise, cartModalControllerPromise,
             function(welcomeModal, cartModal) {
-                Astro.registerRpcMethod(AstroRpc.names.appCanGoBack, [], function(res) {
+                Astro.registerRpcMethod(AppRpc.names.appCanGoBack, [], function(res) {
                     // We want to return true when the cart is showing since
                     // calling `back` is equivalent to dismissing the cart
                     if (cartModal.isShowing) {
@@ -75,6 +75,7 @@ window.run = function() {
                 });
             });
         };
+
         var createTabBarLayout = function() {
             var layoutPromise = AnchoredLayoutPlugin.init();
             var tabBarControllerPromise = TabBarController.init(
@@ -100,7 +101,6 @@ window.run = function() {
             });
         };
 
-
         var createDrawerLayout = function() {
             return DrawerController.init(
                 counterBadgeControllerPromise,
@@ -120,7 +120,7 @@ window.run = function() {
                     });
                 });
 
-                Astro.registerRpcMethod(AstroRpc.names.navigateToNewRootView, ['url', 'title'], function(res, url, title) {
+                Astro.registerRpcMethod(AppRpc.names.navigateToNewRootView, ['url', 'title'], function(res, url, title) {
                     drawerController.navigateToNewRootView(url, title);
                     res.send(null, 'success');
                 });

@@ -6,6 +6,11 @@ define(['config/baseConfig'], function(BaseConfig) {
         imageUrl: 'file:///icon__cart.png'
     };
 
+    var searchHeaderContent = {
+        id: 'search_id',
+        imageUrl: 'file:///icon__search.png'
+    };
+
     var drawerHeaderContent = {
         id: 'drawer_id',
         imageUrl: 'file:///icon__drawer.png'
@@ -21,6 +26,8 @@ define(['config/baseConfig'], function(BaseConfig) {
         title: 'Cart'
     };
 
+    var searchCartHeaderContent = {id: 'header__search_cart'};
+
     var colors = {
         textColor: BaseConfig.colors.whiteColor,
         backgroundColor: BaseConfig.colors.primaryColor
@@ -28,9 +35,11 @@ define(['config/baseConfig'], function(BaseConfig) {
 
     return {
         cartHeaderContent: cartHeaderContent,
+        searchHeaderContent: searchHeaderContent,
         drawerHeaderContent: drawerHeaderContent,
         titleHeaderContent: titleHeaderContent,
         cartTitleHeaderContent: cartTitleHeaderContent,
+        searchCartHeaderContent: searchCartHeaderContent,
         colors: colors
     };
 });

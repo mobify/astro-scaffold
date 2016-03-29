@@ -1,6 +1,6 @@
 define([
     'astro-full',
-    'astro-rpc',
+    'app-rpc',
     'plugins/drawerPlugin',
     'plugins/webViewPlugin',
     'config/baseConfig',
@@ -9,7 +9,7 @@ define([
 ],
 function(
     Astro,
-    AstroRpc,
+    AppRpc,
     DrawerPlugin,
     WebViewPlugin,
     BaseConfig,
