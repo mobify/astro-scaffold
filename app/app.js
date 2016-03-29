@@ -85,18 +85,25 @@ window.run = function() {
                     errorControllerPromise
                 );
 
-            return Promise.join(
+            var layoutSetupPromise = Promise.join(
                 layoutPromise,
                 tabBarControllerPromise,
             function(layout, tabBarController) {
                 layout.addBottomView(tabBarController.tabBar);
-                Application.setMainViewPlugin(layout);
-                // Tab layout must be added as the mainViewPlugin before
-                // The first tab is selected or else the navigation does
-                // not complete correctly
-                tabBarController.selectTab('1');
 
+                return Application.setMainViewPlugin(layout);
+            });
+
+            // Tab layout must be added as the mainViewPlugin before
+            // The first tab is selected or else the navigation does
+            // not complete correctly
+            return Promise.join(
+                tabBarControllerPromise,
+                layoutSetupPromise,
+            function(tabBarController) {
+                tabBarController.selectTab('1');
                 registerCanGoBackRpc(tabBarController);
+
                 return tabBarController;
             });
         };

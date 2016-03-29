@@ -2,7 +2,6 @@ require(['config'], function() {
     require([
         '$',
         'menuConfig',
-        'velocity',
         'navitron'
     ],
     function($, MenuConfig) {
