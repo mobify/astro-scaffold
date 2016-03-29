@@ -39,6 +39,8 @@ function(
             NavigationHeaderController.init(counterBadgeController),
             NavigationPlugin.init(),
         function(layout, navigationHeaderController, navigationView) {
+            var loader = navigationView.getLoader();
+            loader.setColor(BaseConfig.loaderColor);
             // Set layout
             layout.setContentView(navigationView);
             layout.addTopView(navigationHeaderController.viewPlugin);

@@ -1,7 +1,7 @@
 define(['config/baseConfig'], function(BaseConfig) {
 /* eslint-enable max-statements */
 
-    // Configure your menu items here:
+    // Configure your tab bar items here:
     var tabItemOne = {
         id: '1',
         title:'Bikes',
