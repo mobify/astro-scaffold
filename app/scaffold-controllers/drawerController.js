@@ -52,7 +52,7 @@ function(
                 errorController,
                 drawerEventHandler
             ).then(function(navigationController) {
-                drawer.navigationController= navigationController;
+                drawer.navigationController = navigationController;
                 navigationController.isActive = true;
                 return drawer;
             });
@@ -102,7 +102,7 @@ function(
     // This method is used to re-render the left menu after it has already
     // been initialized.
     DrawerController.prototype.renderLeftMenu = function(menuItems) {
-        this.leftMenu.trigger('setMenuItems', {menuItems: menuItems});
+        this.leftMenu.trigger('setMenuItems', {'menuItems': menuItems});
     };
 
     return DrawerController;

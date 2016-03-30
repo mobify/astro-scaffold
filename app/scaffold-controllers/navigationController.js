@@ -75,7 +75,7 @@ function(
             });
 
             Astro.events.on('cart:shown', function() {
-                if(navigationController.isActive) {
+                if (navigationController.isActive) {
                     Astro.events.once('cart:hidden', function() {
                         navigationController.isActive = true;
                     });
