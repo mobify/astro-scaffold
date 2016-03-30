@@ -1,5 +1,6 @@
 define([
     'astro-full',
+    'app-events',
     'app-rpc',
     'bluebird',
     'plugins/modalViewPlugin',
@@ -8,6 +9,7 @@ define([
 /* eslint-disable */
 function(
     Astro,
+    AppEvents,
     AppRpc,
     Promise,
     ModalViewPlugin,
@@ -81,13 +83,13 @@ function(
         this.isShowing = true;
         this._reload();
         this.viewPlugin.show({animated: true});
-        Astro.events.trigger('cart:shown');
+        AppEvents.trigger(AppEvents.names.cartShown);
     };
 
     CartModalController.prototype.hide = function() {
         // We load a blank page upon hide to prevent displaying
         // previously loaded content when we open the cart
-        Astro.events.trigger('cart:hidden');
+        AppEvents.trigger(AppEvents.names.cartHidden);
         this.viewPlugin.hide({animated: true});
         this.isShowing = false;
         this._loadBlank();

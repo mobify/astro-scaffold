@@ -1,5 +1,6 @@
 define([
     'astro-full',
+    'app-events',
     'bluebird',
     'config/baseConfig',
     'plugins/anchoredLayoutPlugin',
@@ -11,6 +12,7 @@ define([
 /* eslint-disable */
 function(
     Astro,
+    AppEvents,
     Promise,
     BaseConfig,
     AnchoredLayoutPlugin,
@@ -84,21 +86,21 @@ function(
                 searchBarController,
                 drawerIconEnabled
             );
-            var handleActiveState = function(controller) {
+            var handleActiveState = function(event) {
                 if (navigationController.isActive) {
-                    Astro.events.once(controller + ':hidden', function() {
+                    AppEvents.once(event, function() {
                         navigationController.setActive(true);
                     });
                 }
                 navigationController.setActive(false);
             };
 
-            Astro.events.on('welcome:shown', function() {
-                handleActiveState('welcome');
+            AppEvents.on(AppEvents.names.welcomeShown, function() {
+                handleActiveState(AppEvents.names.welcomeHidden);
             });
 
-            Astro.events.on('cart:shown', function() {
-                handleActiveState('cart');
+            AppEvents.on(AppEvents.names.cartShown, function() {
+                handleActiveState(AppEvents.names.cartHidden);
             });
 
             var backHandler = function() {
