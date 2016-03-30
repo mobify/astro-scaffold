@@ -90,12 +90,12 @@ function(
         if (this.activeTabId !== tabId) {
             // activeTabId is undefined during startup
             if (this.activeTabId) {
-                this.tabBar.NavigationControllers[this.activeTabId].isActive = false;
+                this.tabBar.NavigationControllers[this.activeTabId].setActive(false);
             }
 
             this.viewPlugin.setContentView(this.tabBar.tabViews[tabId]);
             var selectedTab = this.tabBar.NavigationControllers[tabId];
-            selectedTab.isActive = true;
+            selectedTab.setActive(true);
             this.activeTabId = tabId;
         }
     };

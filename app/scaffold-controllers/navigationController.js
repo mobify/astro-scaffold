@@ -87,10 +87,10 @@ function(
             var handleActiveState = function() {
                 if (navigationController.isActive) {
                     Astro.events.once('welcome:hidden', function() {
-                        navigationController.isActive = true;
+                        navigationController.setActive(true);
                     });
                 }
-                navigationController.isActive = false;
+                navigationController.setActive(false);
             };
 
             Astro.events.on('welcome:shown', function() {
@@ -190,5 +190,8 @@ function(
         return this.isActive;
     };
 
+    NavigationController.prototype.setActive = function(state) {
+        this.isActive = state;
+    };
     return NavigationController;
 });
