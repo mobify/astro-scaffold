@@ -1,7 +1,7 @@
 require.config({
     baseUrl: '../js',
     paths: {
-        '$': 'zepto.min',
+        '$': 'jquery.min',
         'velocity': 'velocity.min',
         'navitron': 'navitron.min'
     },
