@@ -4,6 +4,7 @@ define([
     'plugins/drawerPlugin',
     'plugins/webViewPlugin',
     'config/baseConfig',
+    'config/menuConfig',
     'scaffold-controllers/navigationController',
     'bluebird'
 ],
@@ -13,6 +14,7 @@ function(
     DrawerPlugin,
     WebViewPlugin,
     BaseConfig,
+    MenuConfig,
     NavigationController,
     Promise
 ) {
@@ -23,9 +25,14 @@ function(
     };
 
     var initLeftMenu = function(drawer, leftMenu) {
+        Astro.registerRpcMethod(AppRpc.names.menuItems, [], function(res) {
+            res.send(null, MenuConfig.menuItems);
+        });
+
         leftMenu.navigate('file:///scaffold-www/html/left-drawer.html');
         leftMenu.disableScrolling();
         drawer.setLeftMenu(leftMenu);
+
         return drawer;
     };
 
@@ -90,6 +97,12 @@ function(
     DrawerController.prototype.canGoBack = function() {
         var activeItem = this.drawer.navigationController;
         return activeItem.canGoBack();
+    };
+
+    // This method is used to re-render the left menu after it has already
+    // been initialized.
+    DrawerController.prototype.renderLeftMenu = function(menuItems) {
+        this.leftMenu.trigger('setMenuItems', {menuItems: menuItems});
     };
 
     return DrawerController;

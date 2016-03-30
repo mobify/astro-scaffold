@@ -1,7 +1,6 @@
 require(['config'], function() {
     require([
         '$',
-        'menuConfig',
         'navitron'
     ],
     function($, MenuConfig) {
@@ -111,11 +110,20 @@ require(['config'], function() {
             });
         };
 
-        var main = function() {
-            var generatedHtml = generateNavitronHtml(MenuConfig.menuItems);
+        var renderNavitron = function(menuItems) {
+            var generatedHtml = generateNavitronHtml(menuItems);
             $('#generatedNavitronHtmlPlaceholder').replaceWith(generatedHtml);
             setupNavitron();
         };
-        main();
+
+        Astro.jsRpcMethod('menuItems', [])().then(function(menuItems) {
+            renderNavitron(menuItems);
+        });
+
+        // Allows the left drawer to be rerendered by having the drawerController
+        // call `renderLeftMenu`.
+        Astro.on('setMenuItems', function(params) {
+            renderNavitron(params.menuItems);
+        });
     });
 });
