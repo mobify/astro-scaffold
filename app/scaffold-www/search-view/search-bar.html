@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta name="viewport" content="initial-scale=1, user-scalable=no">
+        <script src="../astro-client.js"></script>
+        <script src="../jquery.min.js"></script>
+        <link rel="stylesheet" type="text/css" href="search-bar.css">
+    </head>
+    <body>
+        <form id="search-form" action="#">
+        <fieldset>
+            <input placeholder="Enter Keyword or Product Code..." class="" id="search" onblur="" onfocus="" name="q" type="search" autocomplete="off" maxlength="70" autocapitalize="off">
+            <button type="button" class="c-button c--chevron" value="Search" id="search-submit">
+                <i class="c-icon" data-icon-name="chevron-right" aria-hidden="true">Search</i>
+            </button>
+            <button type="button" class="c-button" value="Cancel" id="search-cancel">
+                Cancel
+            </button>
+        </fieldset>
+        </form>
+        <script>
+            document.getElementById('search-submit').addEventListener('click', function() {
+                var searchField = document.getElementById('search');
+                Astro.trigger('search:submitted', {searchTerms: searchField.value});
+                return false;
+            });
+            document.getElementById('search-cancel').addEventListener('click', function() {
+                Astro.trigger('search:cancelled');
+                return false;
+            });
+            document.getElementById('search-form').addEventListener('submit', function() {
+                document.getElementById('search-submit').click();
+            });
+        </script>
+    </body>
+</html>
