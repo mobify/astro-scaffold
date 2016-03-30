@@ -4,7 +4,9 @@ define([
     'config/baseConfig',
     'plugins/anchoredLayoutPlugin',
     'plugins/navigationPlugin',
-    'scaffold-controllers/navigationHeaderController'
+    'scaffold-controllers/navigationHeaderController',
+    'scaffold-controllers/searchBarController',
+    'config/searchConfig'
 ],
 /* eslint-disable */
 function(
@@ -13,17 +15,26 @@ function(
     BaseConfig,
     AnchoredLayoutPlugin,
     NavigationPlugin,
-    NavigationHeaderController
+    NavigationHeaderController,
+    SearchBarController,
+    SearchConfig
 ) {
 /* eslint-enable */
-    var NavigationController = function(id, url, layout, navigationView, navigationHeaderController, includeDrawerIcon) {
+    var NavigationController = function(id, url, layout, navigationView, navigationHeaderController, searchBarController, includeDrawerIcon) {
         this.id = id;
         this.isActive = false;
         this.viewPlugin = layout;
         this.navigationView = navigationView;
         this.navigationHeaderController = navigationHeaderController;
+        this.searchBarController = searchBarController;
 
         this.navigate(url, includeDrawerIcon);
+
+        var self = this;
+        this.searchBarController.registerSearchSubmittedEvents(function(params) {
+            var searchUrl = self.searchBarController.generateSearchUrl(params.searchTerms);
+            self.navigate(searchUrl);
+        });
     };
 
     NavigationController.init = function(
@@ -34,11 +45,14 @@ function(
         errorController,
         drawerEventHandler
     ) {
+        var layoutPromise = AnchoredLayoutPlugin.init();
+
         return Promise.join(
-            AnchoredLayoutPlugin.init(),
+            layoutPromise,
             NavigationHeaderController.init(counterBadgeController),
             NavigationPlugin.init(),
-        function(layout, navigationHeaderController, navigationView) {
+            SearchBarController.init(layoutPromise, SearchConfig),
+        function(layout, navigationHeaderController, navigationView,  searchBarController) {
             var loader = navigationView.getLoader();
             loader.setColor(BaseConfig.loaderColor);
             // Set layout
@@ -56,31 +70,35 @@ function(
                 navigationHeaderController.registerDrawerEvents(drawerEventHandler);
             }
 
+            searchBarController.addToLayout();
+
+            var searchBarToggleCallback = searchBarController.toggle.bind(searchBarController, {animated: true});
+            navigationHeaderController.registerSearchBarEvents(searchBarToggleCallback);
+
             var navigationController = new NavigationController(
                 id,
                 url,
                 layout,
                 navigationView,
                 navigationHeaderController,
+                searchBarController,
                 drawerIconEnabled
             );
-
-            Astro.events.on('welcome:shown', function() {
+            var handleActiveState = function() {
                 if (navigationController.isActive) {
                     Astro.events.once('welcome:hidden', function() {
                         navigationController.isActive = true;
                     });
                 }
                 navigationController.isActive = false;
+            };
+
+            Astro.events.on('welcome:shown', function() {
+                handleActiveState();
             });
 
             Astro.events.on('cart:shown', function() {
-                if (navigationController.isActive) {
-                    Astro.events.once('cart:hidden', function() {
-                        navigationController.isActive = true;
-                    });
-                }
-                navigationController.isActive = false;
+                handleActiveState();
             });
 
             var backHandler = function() {
