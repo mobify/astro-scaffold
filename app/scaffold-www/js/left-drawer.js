@@ -3,7 +3,7 @@ require(['config'], function() {
         '$',
         'navitron'
     ],
-    function($, MenuConfig) {
+    function($) {
 
         // Given a list of menuItems in the specified format,
         // generate HTML that navitron JS will understand.
@@ -91,12 +91,13 @@ require(['config'], function() {
             return generatedHtmlString;
         };
 
+        var navigateToNewRootView = Astro.jsRpcMethod('navigateToNewRootView', ['url', 'title']);
+
         var setupNavitron = function() {
             // Setup the glue required to open selected items in the main navigation view
             $('.navitron-link').on('click', function(event) {
                 var url = event.target.href;
                 var title = event.target.innerText;
-                var navigateToNewRootView = Astro.jsRpcMethod('navigateToNewRootView', ['url', 'title']);
                 navigateToNewRootView(url, title).error(function(error) {
                     console.log('error', error);
                 });

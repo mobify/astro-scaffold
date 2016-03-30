@@ -84,9 +84,9 @@ function(
                 searchBarController,
                 drawerIconEnabled
             );
-            var handleActiveState = function() {
+            var handleActiveState = function(controller) {
                 if (navigationController.isActive) {
-                    Astro.events.once('welcome:hidden', function() {
+                    Astro.events.once(controller + ':hidden', function() {
                         navigationController.setActive(true);
                     });
                 }
@@ -94,11 +94,11 @@ function(
             };
 
             Astro.events.on('welcome:shown', function() {
-                handleActiveState();
+                handleActiveState('welcome');
             });
 
             Astro.events.on('cart:shown', function() {
-                handleActiveState();
+                handleActiveState('cart');
             });
 
             var backHandler = function() {

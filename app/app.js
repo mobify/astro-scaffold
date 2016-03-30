@@ -137,20 +137,23 @@ window.run = function() {
             });
         };
 
-        Application.getOSInformation().then(function(osInfo) {
+        var appLayoutPromise = Application.getOSInformation().then(function(osInfo) {
             if (osInfo.os === Astro.platforms.ios && BaseConfig.iosUsingTabLayout) {
                 return createTabBarLayout(counterBadgeControllerPromise);
             }
             return createDrawerLayout(counterBadgeControllerPromise);
-        }).then(function(menuController) {
-            // Show welcome modal only after layout is created for proper
-            // bookkeeping of the active view.
-            welcomeModalControllerPromise.then(function(welcomeModalController) {
-                // The welcome modal can be configured to show only
-                // once -- on initial startup, by passing in the
-                // parameter `{forced: false}` below
-                welcomeModalController.show({forced: true});
-            });
+        });
+
+        // Show welcome modal only after layout is created for proper
+        // bookkeeping of the active view.
+        Promise.join(
+            appLayoutPromise,
+            welcomeModalControllerPromise,
+        function(menuController, welcomeModalController) {
+            // The welcome modal can be configured to show only
+            // once -- on initial startup, by passing in the
+            // parameter `{forced: false}` below
+            welcomeModalController.show({forced: true});
 
             // Deep linking services will enable deep linking on startup
             // and while running

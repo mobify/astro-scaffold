@@ -37,7 +37,7 @@ function(
         return drawer;
     };
 
-    var initNavigationItems = function(drawer, counterBadgeController, cartEventHandler, errorController) {
+    var initNavigationController = function(drawer, counterBadgeController, cartEventHandler, errorController) {
         var drawerEventHandler = function() {
             drawer.showLeftMenu();
         };
@@ -62,16 +62,16 @@ function(
             webViewPromise,
             initLeftMenu);
 
-        var initNavigationItemsPromise = Promise.join(
+        var initNavigationControllerPromise = Promise.join(
             initLeftMenuPromise,
             counterBadgeControllerPromise,
             cartEventHandlerPromise,
             errorControllerPromise,
-            initNavigationItems);
+            initNavigationController);
 
         return Promise.join(
             initLeftMenuPromise,
-            initNavigationItemsPromise,
+            initNavigationControllerPromise,
             webViewPromise,
         function(drawer, navigationController, leftMenu) {
             navigationController.setActive(true);
@@ -96,7 +96,7 @@ function(
     };
 
     DrawerController.prototype.canGoBack = function() {
-        var activeItem = this.drawer.navigationController;
+        var activeItem = this.navigationController;
         return activeItem.canGoBack();
     };
 
