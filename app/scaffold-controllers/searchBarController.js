@@ -13,8 +13,10 @@ function(
 
         // Track the state to show.hide keyboard on toggle
         //
-        // Set to true because it will be hidden when added
-        // to the parent layout
+        // Set to true because the 'addToLayout' method hides
+        // the search bar (sets isVisible to false) when it is
+        // being added to the anchored layout
+        // By default views added to the anchored layout are visible
         this.isVisible = true;
 
         this._registerEvents();

@@ -5,7 +5,7 @@ define([
     'plugins/navigationPlugin',
     'scaffold-controllers/navigationHeaderController',
     'scaffold-controllers/searchBarController',
-    'scaffold-config/searchConfig'
+    'config/searchConfig'
 ],
 /* eslint-disable */
 function(
@@ -31,7 +31,8 @@ function(
         var self = this;
 
         this.searchBarController.registerSearchSubmittedEvents(function(params) {
-            self.navigate(self.searchBarController.generateSearchUrl(params.searchTerms));
+            var searchUrl = self.searchBarController.generateSearchUrl(params.searchTerms);
+            self.navigate(searchUrl);
         });
     };
 
@@ -66,7 +67,9 @@ function(
             }
 
             searchBarController.addToLayout();
-            navigationHeaderController.registerSearchBarEvents(searchBarController.toggle.bind(searchBarController, true));
+
+            var searchBarToggleCallback = searchBarController.toggle.bind(searchBarController, true);
+            navigationHeaderController.registerSearchBarEvents(searchBarToggleCallback);
 
             var navigationController = new NavigationController(
                 tab,
