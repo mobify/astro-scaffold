@@ -42,7 +42,7 @@ function(
     // You must manually call this for the search bar to be visible
     SearchBarController.prototype.addToLayout = function() {
         this.layout.addTopView(this.viewPlugin, {height: 52});
-        this.hide(false); // don't show it by default
+        this.hide({animated: false}); // don't show it by default
     };
 
     SearchBarController.prototype._registerEvents = function() {
@@ -53,37 +53,37 @@ function(
         // The search terms are expected to be in a string found in
         // params['searchTerms']
         this.viewPlugin.on('search:submitted', function(params) {
-            self.hide(true);
+            self.hide({animated: true});
         });
 
         this.viewPlugin.on('search:cancelled', function(params) {
-            self.hide(true);
+            self.hide({animated: true});
         });
     };
 
-    SearchBarController.prototype.show = function(animated) {
+    SearchBarController.prototype.show = function(options) {
         if (this.isVisible) {
             return;
         }
 
-        this.layout.showView(this.viewPlugin, {animated: animated});
+        this.layout.showView(this.viewPlugin, options);
         this.isVisible = true;
     };
 
-    SearchBarController.prototype.hide = function(animated) {
+    SearchBarController.prototype.hide = function(options) {
         if (!this.isVisible) {
             return;
         }
 
-        this.layout.hideView(this.viewPlugin, {animated: animated});
+        this.layout.hideView(this.viewPlugin, options);
         this.isVisible = false;
     };
 
-    SearchBarController.prototype.toggle = function(animated) {
+    SearchBarController.prototype.toggle = function(options) {
         if (this.isVisible) {
-            this.hide(animated);
+            this.hide(options);
         } else {
-            this.show(animated);
+            this.show(options);
         }
     };
 
