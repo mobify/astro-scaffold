@@ -39,7 +39,7 @@ function(
 
         // Make sure all tabViews are set up
         return Promise.all(tabItems.map(function(tab) {
-            // Init a new NavigationController.
+            // Init a new NavigationController
             var navigationControllerPromise = NavigationController.init(
                 tab.id,
                 tab.url,
@@ -90,12 +90,12 @@ function(
         if (this.activeTabId !== tabId) {
             // activeTabId is undefined during startup
             if (this.activeTabId) {
-                this.tabBar.NavigationControllers[this.activeTabId].setActive(false);
+                this.tabBar.NavigationControllers[this.activeTabId].isActive = false;
             }
 
             this.viewPlugin.setContentView(this.tabBar.tabViews[tabId]);
             var selectedTab = this.tabBar.NavigationControllers[tabId];
-            selectedTab.setActive(true);
+            selectedTab.isActive = true;
             this.activeTabId = tabId;
         }
     };

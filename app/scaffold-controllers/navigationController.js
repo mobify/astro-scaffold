@@ -89,10 +89,10 @@ function(
             var handleActiveState = function(event) {
                 if (navigationController.isActive) {
                     AppEvents.once(event, function() {
-                        navigationController.setActive(true);
+                        navigationController.isActive = true;
                     });
                 }
-                navigationController.setActive(false);
+                navigationController.isActive = false;
             };
 
             AppEvents.on(AppEvents.names.welcomeShown, function() {
@@ -192,8 +192,5 @@ function(
         return this.isActive;
     };
 
-    NavigationController.prototype.setActive = function(state) {
-        this.isActive = state;
-    };
     return NavigationController;
 });

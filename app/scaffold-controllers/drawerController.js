@@ -74,7 +74,7 @@ function(
             initNavigationControllerPromise,
             webViewPromise,
         function(drawer, navigationController, leftMenu) {
-            navigationController.setActive(true);
+            navigationController.isActive = true;
             leftMenu.disableDefaultNavigationHandler();
             drawer.setContentView(navigationController.viewPlugin);
             return new DrawerController(drawer, leftMenu, navigationController);

@@ -58,7 +58,7 @@ require(['config'], function() {
                     pr('<ul>');
                     currentTabDepth++;
 
-                    buildHeader(item.title);
+                    buildHeader({title: item.title});
 
                     parseData(item.subItems);
                     currentTabDepth--;
@@ -74,20 +74,35 @@ require(['config'], function() {
                 pr('<button class="navitron__next-pane" type="button">' + title + '</button>');
             };
 
-            var buildHeader = function(title) {
+            var buildHeader = function(params) {
                 pr('<li class="navitron__header">');
                 currentTabDepth++;
                 pr('<div class="c-bar">');
                 currentTabDepth++;
-                pr('<button class="c-button navitron__prev-pane" type="button">Back</button>');
-                pr('<span class="c-bar__heading">' + title + '</span>');
+                if (params.topLevel) {
+                    pr('<span class="c-bar__heading top-level">' + params.title + '</span>');
+                } else {
+                    pr('<button class="c-button navitron__prev-pane" type="button">Back</button>');
+                    pr('<span class="c-bar__heading">' + params.title + '</span>');
+                }
                 currentTabDepth--;
                 pr("</div>");
                 currentTabDepth--;
                 pr('</li>');
             };
 
+            var buildFooter = function() {
+                pr('<li class="navitron__footer">');
+                currentTabDepth++;
+                pr('<div class="c-bar">');
+                pr('</div>');
+                currentTabDepth--;
+                pr('</li>');
+            };
+
+            buildHeader({title: 'Vélo', topLevel: true});
             parseData(menuItems);
+            buildFooter();
             return generatedHtmlString;
         };
 
@@ -113,7 +128,7 @@ require(['config'], function() {
 
         var renderNavitron = function(menuItems) {
             var generatedHtml = generateNavitronHtml(menuItems);
-            $('#generatedNavitronHtmlPlaceholder').replaceWith(generatedHtml);
+            $('#navitronMenuWrapper').html(generatedHtml);
             setupNavitron();
         };
 
