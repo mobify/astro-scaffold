@@ -100,7 +100,7 @@ Astro defines a controller inside of a requirejs module. The module exposes a pr
   * `app/scaffold-controllers/drawerController.js` manages the drawer layout which is used in the Android version of the app. Coordinates behavior between the menu in the left drawer, navigation components in the main content view of the drawer and the cart in the right drawer.
   * `app/scaffold-controllers/navigationController.js` manages the navigation component for a menu item. Coordinates behavior between the navigation plugin and the header bar for the menu item.
   * `app/scaffold-controllers/navigationHeaderController.js` manages the header bars which are displayed in the navigation components
-  * `app/scaffold-controllers/searchBarController.js` manages the search bar which allows the search bar to hide and show in a parent view. Allows navigation of NavigationPlugin when search query is entered.
+  * `app/scaffold-controllers/searchBarController.js` manages the search bar. Allows the search bar to hide and show in a parent view. Allows search request to be handled by the app.
   * `app/scaffold-controllers/tabBarController.js` manages the tab bar layout which is used in the iOS version of the app. Coordinates the behavior of the tab bar buttons, navigation components and the cart which is displayed in a modal view.
 * `app/scaffold-www/` contains html/css/js files needed for the apps embedded webpages - allows for these pages to be accessible offline
   * `app/scaffold-www/error-view` contains html/css/resources which define the content and layout of the error screen
