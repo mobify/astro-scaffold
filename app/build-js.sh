@@ -29,7 +29,7 @@ cp bower_components/mobify-velocity/velocity.min.js $MYPATH/scaffold-www/js
 cp dist/navitron.min.js $MYPATH/scaffold-www/js
 popd
 
-pushd ../node_modules/jquery/dist/
+pushd ../node_modules/jquery/dist
 cp jquery.min.js $MYPATH/scaffold-www/js
 popd
 

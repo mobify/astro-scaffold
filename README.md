@@ -74,7 +74,8 @@ Astro defines a controller inside of a requirejs module. The module exposes a pr
 
 * `app/app.js` is the entry point of the App
 * `app/global` contains files that provide a common interface for communication between controller objects
-  * `app/global/app-rpc.js` is an RPC bus that contains registered methods exposed to Astro 
+  * `app/global/app-events.js` is an event bus that is used to communicate between app components
+  * `app/global/app-rpc.js` is an RPC bus that contains registered methods exposed to Astro
 * `app/scaffold-config/` contains configuration files aiding in the centralization of app styling and content customization
   * `app/scaffold-config/baseConfig.js` configures application-level styling & content
   * `app/scaffold-config/cartConfig.js` configures modal cart styling & content

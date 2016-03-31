@@ -1,4 +1,5 @@
 ## To be released
+- Event bus added for communication between app components on the js side
 - Replaced drawer layout with a multi-level drawer navigation (Navitron)
 - TabBar item configuration moved to `tabConfig.js`
 - Add a search bar which can be opened with the search icon
