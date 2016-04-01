@@ -93,9 +93,9 @@ Astro defines a controller inside of a requirejs module. The module exposes a pr
   * `app/scaffold-controllers/error-screen` contains the controller object which manages error modal logic
     * `app/scaffold-controllers/errorController.js` manages event handling for triggered errors
   * `app/scaffold-controllers/welcome-screen` contains controller objects which manage welcome modal logic
-    * `app/scaffold-controllers/welcomeController.js` manages the navigation and layout of the welcome screen
-    * `app/scaffold-controllers/welcomeHeaderController.js` manages the header bar which is displayed in the welcome screen
-    * `app/scaffold-controllers/welcomeModalController.js` manages the modal logic for the welcome screen
+    * `app/scaffold-controllers/welcome-screen/welcomeController.js` manages the navigation and layout of the welcome screen
+    * `app/scaffold-controllers/welcome-screen/welcomeHeaderController.js` manages the header bar which is displayed in the welcome screen
+    * `app/scaffold-controllers/welcome-screen/welcomeModalController.js` manages the modal logic for the welcome screen
   * `app/scaffold-controllers/doubleIconsController.js` coordinates a set of double icon plugins. Ensures the icons displayed in all the double icon plugins stay in-sync.
   * `app/scaffold-controllers/drawerController.js` manages the drawer layout which is used in the Android version of the app. Coordinates behavior between the menu in the left drawer, navigation components in the main content view of the drawer and the cart in the right drawer.
   * `app/scaffold-controllers/navigationController.js` manages the navigation component for a menu item. Coordinates behavior between the navigation plugin and the header bar for the menu item.
