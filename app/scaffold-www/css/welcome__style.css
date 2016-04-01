@@ -78,7 +78,7 @@ body {
     right: 8px;
 
     /* Set icon for dismiss button */
-    background: url(icon__close.png) no-repeat;
+    background: url(../assets/icon__close.png) no-repeat;
     background-size: 75%;
     background-position: center;
 }

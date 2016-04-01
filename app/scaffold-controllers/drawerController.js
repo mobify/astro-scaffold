@@ -3,6 +3,7 @@ define([
     'app-rpc',
     'plugins/drawerPlugin',
     'plugins/webViewPlugin',
+    'config/baseConfig',
     'config/menuConfig',
     'scaffold-controllers/navigationController',
     'bluebird'
@@ -12,117 +13,104 @@ function(
     AppRpc,
     DrawerPlugin,
     WebViewPlugin,
+    BaseConfig,
     MenuConfig,
     NavigationController,
     Promise
 ) {
 
-    var DrawerController = function(drawer, leftMenu) {
+    var DrawerController = function(drawer, leftMenu, navigationController) {
         this.drawer = drawer;
         this.leftMenu = leftMenu;
-        this.activeItemId = null;
-
-        this._bindEvents();
+        this.navigationController = navigationController;
     };
 
     var initLeftMenu = function(drawer, leftMenu) {
-        leftMenu.navigate('file:///scaffold-www/left-menu.html');
+        Astro.registerRpcMethod(AppRpc.names.menuItems, [], function(res) {
+            res.send(null, MenuConfig.menuItems);
+        });
+
+        leftMenu.navigate('file:///scaffold-www/html/left-drawer.html');
+        leftMenu.disableScrolling();
         drawer.setLeftMenu(leftMenu);
 
         return drawer;
     };
 
-    var initNavigationItems = function(drawer, tabItems, counterBadgeController, cartEventHandler, errorController) {
+    var initNavigationController = function(drawer, counterBadgeController, cartEventHandler, errorController) {
         var drawerEventHandler = function() {
             drawer.showLeftMenu();
         };
 
-        drawer.itemViews = {};
-        drawer.itemControllers = {};
-
-        // Make sure all tabViews are set up
-        return Promise.all(tabItems.map(function(tab) {
-            //Init a new NavigationController
-            var navigationControllerPromise = NavigationController.init(
-                tab,
-                counterBadgeController,
-                cartEventHandler,
-                errorController,
-                drawerEventHandler
-            );
-
-            return navigationControllerPromise.then(function(navigationController) {
-                    drawer.itemControllers[tab.id] = navigationController;
-                    drawer.itemViews[tab.id] = navigationController.viewPlugin;
-
-                    return drawer;
-                });
-
-            })).then(function() {
-                return drawer;
-            });
-        };
+        // The navigationController requires an id. Since we are using a drawer
+        // layout, we have 1 main navigation plugin -- thus its ID is set to 1.
+        var controllerID = 1;
+        return NavigationController.init(
+            controllerID,
+            BaseConfig.baseURL,
+            counterBadgeController,
+            cartEventHandler,
+            errorController,
+            drawerEventHandler);
+    };
 
     DrawerController.init = function(counterBadgeControllerPromise, cartEventHandlerPromise, errorControllerPromise) {
-        var constructTabItemsPromise = Promise.resolve(MenuConfig.menuItems);
         var webViewPromise = WebViewPlugin.init();
-
-        Astro.registerRpcMethod(AppRpc.names.menuItems, [], function(res) {
-            res.send(null, MenuConfig.menuItems);
-        });
 
         var initLeftMenuPromise = Promise.join(
             DrawerPlugin.init(),
             webViewPromise,
             initLeftMenu);
 
-        var initNavigationItemsPromise = Promise.join(
+        var initNavigationControllerPromise = Promise.join(
             initLeftMenuPromise,
-            constructTabItemsPromise,
             counterBadgeControllerPromise,
             cartEventHandlerPromise,
             errorControllerPromise,
-            initNavigationItems);
+            initNavigationController);
 
-        return Promise.all([initNavigationItemsPromise]).then(function() {
-            return Promise.join(initNavigationItemsPromise, webViewPromise, function(drawer, leftMenu) {
-                return new DrawerController(drawer, leftMenu);
+        return Promise.join(
+            initLeftMenuPromise,
+            initNavigationControllerPromise,
+            webViewPromise,
+        function(drawer, navigationController, leftMenu) {
+            navigationController.isActive = true;
+            leftMenu.disableDefaultNavigationHandler();
+            drawer.setContentView(navigationController.viewPlugin);
+            var drawerController = new DrawerController(drawer, leftMenu, navigationController);
+
+            Astro.registerRpcMethod(AppRpc.names.renderLeftMenu, ['menuItems'], function(res, menuItems) {
+                drawerController.renderLeftMenu(menuItems);
             });
+
+            return drawerController;
         });
     };
 
-    DrawerController.prototype.selectItem = function(itemId) {
-        if (this.activeItemId !== itemId) {
-            if (this.activeItemId) {
-                this.drawer.itemControllers[this.activeItemId].isActive = false;
-            }
-            this.drawer.setContentView(this.drawer.itemViews[itemId]);
-            var selectedItem = this.drawer.itemControllers[itemId];
-            selectedItem.isActive = true;
-            this.activeItemId = itemId;
+    DrawerController.prototype.navigateToNewRootView = function(url, title) {
+        // Strip away 'file://' from relative urls coming from anchor tags
+        if (url.indexOf('file://') > -1) {
+            url = url.replace('file://', BaseConfig.baseURL);
         }
-    };
-
-    DrawerController.prototype._bindEvents = function() {
-        var self = this;
-
-        this.leftMenu.on('menuItemSelected', function(data) {
-            self.drawer.hideLeftMenu();
-            self.selectItem(data.id);
-        });
-    };
-
-    DrawerController.prototype.navigateActiveItem = function(url) {
-        this.drawer.itemControllers[this.activeItemId].navigate(url);
+        this.navigationController.navigateMainViewToNewRoot(url, title);
+        this.drawer.hideLeftMenu();
     };
 
     DrawerController.prototype.backActiveItem = function() {
-        this.drawer.itemControllers[this.activeItemId].back();
+        var activeItem = this.navigationController;
+        activeItem.back();
     };
 
     DrawerController.prototype.canGoBack = function() {
-        var activeItem = this.drawer.itemControllers[this.activeItemId];
+        var activeItem = this.navigationController;
         return activeItem.canGoBack();
     };
+
+    // This method is used to re-render the left menu after it has already
+    // been initialized.
+    DrawerController.prototype.renderLeftMenu = function(menuItems) {
+        this.leftMenu.trigger('setMenuItems', {menuItems: menuItems});
+    };
+
     return DrawerController;
 });

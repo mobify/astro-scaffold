@@ -1,12 +1,12 @@
 define([
     'plugins/tabBarPlugin',
-    'config/menuConfig',
+    'config/tabConfig',
     'scaffold-controllers/navigationController',
     'bluebird'
 ],
 function(
     TabBarPlugin,
-    MenuConfig,
+    TabConfig,
     NavigationController,
     Promise
 ) {
@@ -41,7 +41,8 @@ function(
         return Promise.all(tabItems.map(function(tab) {
             // Init a new NavigationController
             var navigationControllerPromise = NavigationController.init(
-                tab,
+                tab.id,
+                tab.url,
                 counterBadgeController,
                 cartEventHandler,
                 errorController
@@ -63,7 +64,7 @@ function(
         counterBadgeControllerPromise,
         errorControllerPromise
     ) {
-        var constructTabItemsPromise = Promise.resolve(MenuConfig.menuItems);
+        var constructTabItemsPromise = Promise.resolve(TabConfig.tabItems);
 
         var initTabBarPromise = Promise.join(
             TabBarPlugin.init(),

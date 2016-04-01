@@ -1,6 +1,9 @@
 define([
-    'bluebird',
+    'astro-full',
+    'app-events',
     'application',
+    'bluebird',
+    'config/baseConfig',
     'plugins/anchoredLayoutPlugin',
     'plugins/navigationPlugin',
     'scaffold-controllers/navigationHeaderController',
@@ -9,8 +12,11 @@ define([
 ],
 /* eslint-disable */
 function(
-    Promise,
+    Astro,
+    AppEvents,
     Application,
+    Promise,
+    BaseConfig,
     AnchoredLayoutPlugin,
     NavigationPlugin,
     NavigationHeaderController,
@@ -18,18 +24,17 @@ function(
     SearchConfig
 ) {
 /* eslint-enable */
-    var NavigationController = function(tab, layout, navigationView, navigationHeaderController, searchBarController, includeDrawerIcon) {
-        this.id = tab.id;
+    var NavigationController = function(id, url, layout, navigationView, navigationHeaderController, searchBarController, includeDrawerIcon) {
+        this.id = id;
         this.isActive = false;
         this.viewPlugin = layout;
         this.navigationView = navigationView;
         this.navigationHeaderController = navigationHeaderController;
         this.searchBarController = searchBarController;
 
-        this.navigate(tab.url, includeDrawerIcon);
+        this.navigate(url, includeDrawerIcon);
 
         var self = this;
-
         this.searchBarController.registerSearchSubmittedEvents(function(params) {
             var searchUrl = self.searchBarController.generateSearchUrl(params.searchTerms);
             self.navigate(searchUrl);
@@ -37,7 +42,8 @@ function(
     };
 
     NavigationController.init = function(
-        tab,
+        id,
+        url,
         counterBadgeController,
         cartEventHandler,
         errorController,
@@ -50,7 +56,9 @@ function(
             NavigationHeaderController.init(counterBadgeController),
             NavigationPlugin.init(),
             SearchBarController.init(layoutPromise, SearchConfig),
-        function(layout, navigationHeaderController, navigationView, searchBarController) {
+        function(layout, navigationHeaderController, navigationView,  searchBarController) {
+            var loader = navigationView.getLoader();
+            loader.setColor(BaseConfig.loaderColor);
             // Set layout
             layout.setContentView(navigationView);
             layout.addTopView(navigationHeaderController.viewPlugin);
@@ -72,13 +80,31 @@ function(
             navigationHeaderController.registerSearchBarEvents(searchBarToggleCallback);
 
             var navigationController = new NavigationController(
-                tab,
+                id,
+                url,
                 layout,
                 navigationView,
                 navigationHeaderController,
                 searchBarController,
                 drawerIconEnabled
             );
+            var handleActiveState = function(event) {
+                if (navigationController.isActive) {
+                    AppEvents.once(event, function() {
+                        navigationController.isActive = true;
+                    });
+                }
+                navigationController.isActive = false;
+            };
+
+            AppEvents.on(AppEvents.names.welcomeShown, function() {
+                handleActiveState(AppEvents.names.welcomeHidden);
+            });
+
+            AppEvents.on(AppEvents.names.cartShown, function() {
+                handleActiveState(AppEvents.names.cartHidden);
+            });
+
             var backHandler = function() {
                 navigationView.back();
             };
@@ -127,6 +153,25 @@ function(
             })
             .then(function() {
                 return self.navigationHeaderController.setTitle();
+            });
+    };
+
+    NavigationController.prototype.navigateMainViewToNewRoot = function(url, title) {
+        var self = this;
+        this.navigationView.popToRoot({animated: true})
+            .then(function() {
+                return self.navigationView.getTopPlugin();
+            })
+            .then(function(rootWebView) {
+                self.navigationHeaderController.setTitle(title);
+                if (typeof rootWebView.navigate === 'function') {
+                    return rootWebView.navigate(url);
+                } else {
+                    // Note: this code branch is untested
+                    // This would be used if the root plugin is not a WebViewPlugin.
+                    // In that case, we want to tell the navigation plugin to navigate instead.
+                    return self.navigate(url, true);
+                }
             });
     };
 

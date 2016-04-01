@@ -1,7 +1,7 @@
 define(['config/baseConfig'], function(BaseConfig) {
 /* eslint-enable max-statements */
 
-    var url = 'file:///scaffold-www/welcome-view/welcome.html';
+    var url = 'file:///scaffold-www/html/welcome.html';
 
     var showHeader = false;
 

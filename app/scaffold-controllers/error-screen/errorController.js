@@ -79,22 +79,22 @@ define([
 
         return function(eventArgs) {
             if (isActiveItem()) {
-                // Wait until the error page is loaded before showing
-                self.viewPlugin.on('error:loaded', function() {
-                    self.show();
-                });
-
                 self.viewPlugin.once('back', function() {
                     self.hide();
                     self._removeModalEvents();
                     backHandler();
                 });
-                self.errorType = errorType;
-                self.viewPlugin.navigate(ErrorConfig.url);
             }
-            // We allow inactive views to listen for `retry` so that views
-            // which also tried to navigate without connectivity will reload
-            // when the error modal's retry button is pressed
+            // Wait until the error page is loaded before showing
+            self.viewPlugin.on('error:loaded', function() {
+                self.show();
+            });
+            self.errorType = errorType;
+            self.viewPlugin.navigate(ErrorConfig.url);
+
+            // We allow all views that triggered this modal to listen for
+            // `retry` so that they will reload when the error modal's retry
+            // button is pressed
             self.viewPlugin.once('retry', function() {
                 self.hide();
                 self._removeModalEvents();
