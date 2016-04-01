@@ -1,6 +1,7 @@
 define([
     'astro-full',
     'app-events',
+    'application',
     'bluebird',
     'config/baseConfig',
     'plugins/anchoredLayoutPlugin',
@@ -13,6 +14,7 @@ define([
 function(
     Astro,
     AppEvents,
+    Application,
     Promise,
     BaseConfig,
     AnchoredLayoutPlugin,
