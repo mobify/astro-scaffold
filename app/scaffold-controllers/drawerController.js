@@ -77,7 +77,13 @@ function(
             navigationController.isActive = true;
             leftMenu.disableDefaultNavigationHandler();
             drawer.setContentView(navigationController.viewPlugin);
-            return new DrawerController(drawer, leftMenu, navigationController);
+            var drawerController = new DrawerController(drawer, leftMenu, navigationController);
+
+            Astro.registerRpcMethod(AppRpc.names.renderLeftMenu, ['menuItems'], function(res, menuItems) {
+                drawerController.renderLeftMenu(menuItems);
+            });
+
+            return drawerController;
         });
     };
 

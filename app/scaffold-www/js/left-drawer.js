@@ -28,6 +28,8 @@ require(['config'], function() {
         //             ]
         //         }
         //     }, ... ]
+
+        var bodyTemplate = document.body.innerHTML;
         var generateNavitronHtml = function(menuItems) {
             var SPACES_PER_TAB = 4;
             var currentTabDepth = 0;
@@ -58,7 +60,7 @@ require(['config'], function() {
                     pr('<ul>');
                     currentTabDepth++;
 
-                    buildHeader({title: item.title});
+                    buildHeader(item.title);
 
                     parseData(item.subItems);
                     currentTabDepth--;
@@ -74,35 +76,21 @@ require(['config'], function() {
                 pr('<button class="navitron__next-pane" type="button">' + title + '</button>');
             };
 
-            var buildHeader = function(params) {
+            var buildHeader = function(title) {
                 pr('<li class="navitron__header">');
                 currentTabDepth++;
                 pr('<div class="c-bar">');
                 currentTabDepth++;
-                if (params.topLevel) {
-                    pr('<span class="c-bar__heading top-level">' + params.title + '</span>');
-                } else {
-                    pr('<button class="c-button navitron__prev-pane" type="button">Back</button>');
-                    pr('<span class="c-bar__heading">' + params.title + '</span>');
-                }
+                pr('<button class="c-button navitron__prev-pane" type="button">Back</button>');
+                pr('<span class="c-bar__heading">' + title + '</span>');
                 currentTabDepth--;
                 pr("</div>");
                 currentTabDepth--;
                 pr('</li>');
             };
 
-            var buildFooter = function() {
-                pr('<li class="navitron__footer">');
-                currentTabDepth++;
-                pr('<div class="c-bar">');
-                pr('</div>');
-                currentTabDepth--;
-                pr('</li>');
-            };
-
-            buildHeader({title: 'Vélo', topLevel: true});
             parseData(menuItems);
-            buildFooter();
+
             return generatedHtmlString;
         };
 
@@ -128,7 +116,7 @@ require(['config'], function() {
 
         var renderNavitron = function(menuItems) {
             var generatedHtml = generateNavitronHtml(menuItems);
-            $('#navitronMenuWrapper').html(generatedHtml);
+            $('#menuPlaceHolder').replaceWith(generatedHtml);
             setupNavitron();
         };
 
@@ -139,6 +127,7 @@ require(['config'], function() {
         // Allows the left drawer to be rerendered by having the drawerController
         // call `renderLeftMenu`.
         Astro.on('setMenuItems', function(params) {
+            document.body.innerHTML = bodyTemplate;
             renderNavitron(params.menuItems);
         });
     });

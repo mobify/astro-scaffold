@@ -12,6 +12,7 @@ function(
         cartHide: 'cartHide',
         errorContent: 'errorContent',
         menuItems: 'menuItems',
+        renderLeftMenu: 'renderLeftMenu',
         welcomeShow: 'welcomeShow',
         welcomeHide: 'welcomeHide',
         welcomeHasHeader: 'welcomeHasHeader',
@@ -23,6 +24,7 @@ function(
     AppRpc.cartHide = Astro.jsRpcMethod(AppRpc.names.cartHide, []);
     AppRpc.errorContent = Astro.jsRpcMethod(AppRpc.names.errorContent, []);
     AppRpc.menuItems = Astro.jsRpcMethod(AppRpc.names.menuItems, []);
+    AppRpc.renderLeftMenu = Astro.jsRpcMethod(AppRpc.names.renderLeftMenu, ['menuItems']);
     AppRpc.welcomeShow = Astro.jsRpcMethod(AppRpc.names.welcomeShow, []);
     AppRpc.welcomeHide = Astro.jsRpcMethod(AppRpc.names.welcomeHide, []);
     AppRpc.welcomeHasHeader = Astro.jsRpcMethod(AppRpc.names.welcomeHasHeader, []);
