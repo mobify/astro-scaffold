@@ -82,6 +82,7 @@ Astro defines a controller inside of a requirejs module. The module exposes a pr
   * `app/scaffold-config/errorConfig.js` configures error modal styling & content
   * `app/scaffold-config/headerConfig.js` configures header styling & icon
   * `app/scaffold-config/menuConfig.js` configures left drawer menu items
+  * `app/scaffold-config/searchConfig.js` configures search bar
   * `app/scaffold-config/tabConfig.js` configures tab bar items
   * `app/scaffold-config/welcomeConfig.js` configures welcome modal styling & content
 * `app/scaffold-components/` contains helper objects which allow the app to maintain a clean architecture
@@ -94,12 +95,14 @@ Astro defines a controller inside of a requirejs module. The module exposes a pr
   * `app/scaffold-controllers/error-screen` contains the controller object which manages error modal logic
     * `app/scaffold-controllers/errorController.js` manages event handling for triggered errors
   * `app/scaffold-controllers/welcome-screen` contains controller objects which manage welcome modal logic
-    * `app/scaffold-controllers/welcomeController.js` manages the navigation and layout of the welcome screen
-    * `app/scaffold-controllers/welcomeHeaderController.js` manages the header bar which is displayed in the welcome screen
-    * `app/scaffold-controllers/welcomeModalController.js` manages the modal logic for the welcome screen
+    * `app/scaffold-controllers/welcome-screen/welcomeController.js` manages the navigation and layout of the welcome screen
+    * `app/scaffold-controllers/welcome-screen/welcomeHeaderController.js` manages the header bar which is displayed in the welcome screen
+    * `app/scaffold-controllers/welcome-screen/welcomeModalController.js` manages the modal logic for the welcome screen
+  * `app/scaffold-controllers/doubleIconsController.js` coordinates a set of double icon plugins. Ensures the icons displayed in all the double icon plugins stay in-sync.
   * `app/scaffold-controllers/drawerController.js` manages the drawer layout which is used in the Android version of the app. Coordinates behavior between the menu in the left drawer, navigation components in the main content view of the drawer and the cart in the right drawer.
   * `app/scaffold-controllers/navigationController.js` manages the navigation component for a menu item. Coordinates behavior between the navigation plugin and the header bar for the menu item.
   * `app/scaffold-controllers/navigationHeaderController.js` manages the header bars which are displayed in the navigation components
+  * `app/scaffold-controllers/searchBarController.js` manages the search bar. Allows the search bar to hide and show in a parent view. Allows search request to be handled by the app.
   * `app/scaffold-controllers/tabBarController.js` manages the tab bar layout which is used in the iOS version of the app. Coordinates the behavior of the tab bar buttons, navigation components and the cart which is displayed in a modal view.
 * `app/scaffold-www/` contains assets/css/html/js files needed for the apps embedded webpages - allows for these pages to be accessible offline
   * `app/scaffold-www/assets/` contains assets for embedded web content
