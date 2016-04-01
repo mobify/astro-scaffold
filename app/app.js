@@ -43,6 +43,15 @@ window.run = function() {
                     cartModalController.show();
                 };
             });
+
+        var counterBadgeControllerPromise = CounterBadgeController.init(
+            HeaderConfig.cartHeaderContent.imageUrl,
+            HeaderConfig.cartHeaderContent.id
+        ).then(function(counterBadgeController) {
+            counterBadgeController.updateCounterValue(3);
+            return counterBadgeController;
+        });
+
         // Register RPC to expose whether it is possible to go back.
         // This is necessary to determine whether to show/hide
         // the back button on the error modal
@@ -66,7 +75,8 @@ window.run = function() {
                 });
             });
         };
-        var createTabBarLayout = function(counterBadgeControllerPromise) {
+
+        var createTabBarLayout = function() {
             var layoutPromise = AnchoredLayoutPlugin.init();
             var tabBarControllerPromise = TabBarController.init(
                     layoutPromise,
@@ -80,18 +90,25 @@ window.run = function() {
                 tabBarControllerPromise,
             function(layout, tabBarController) {
                 layout.addBottomView(tabBarController.tabBar);
-                Application.setMainViewPlugin(layout);
-                // Tab layout must be added as the mainViewPlugin before
-                // The first tab is selected or else the navigation does
-                // not complete correctly
-                tabBarController.selectTab('1');
 
+                return Application.setMainViewPlugin(layout);
+            });
+
+            // Tab layout must be added as the mainViewPlugin before
+            // The first tab is selected or else the navigation does
+            // not complete correctly
+            return Promise.join(
+                tabBarControllerPromise,
+                layoutSetupPromise,
+            function(tabBarController) {
+                tabBarController.selectTab('1');
                 registerCanGoBackRpc(tabBarController);
+
                 return tabBarController;
             });
         };
 
-        var createDrawerLayout = function(counterBadgeControllerPromise) {
+        var createDrawerLayout = function() {
             return DrawerController.init(
                 counterBadgeControllerPromise,
                 cartEventHandlerPromise,
@@ -110,34 +127,34 @@ window.run = function() {
                     });
                 });
 
-                drawerController.selectItem('1');
+                Astro.registerRpcMethod(AppRpc.names.navigateToNewRootView, ['url', 'title'], function(res, url, title) {
+                    drawerController.navigateToNewRootView(url, title);
+                    res.send(null, 'success');
+                });
                 registerCanGoBackRpc(drawerController);
 
                 return drawerController;
             });
         };
 
-        var counterBadgeControllerPromise = CounterBadgeController.init(
-            HeaderConfig.cartHeaderContent.imageUrl,
-            HeaderConfig.cartHeaderContent.id
-        ).then(function(counterBadgeController) {
-            counterBadgeController.updateCounterValue(3);
-            return counterBadgeController;
-        });
-
-        welcomeModalControllerPromise.then(function(welcomeModalController) {
-            // The welcome modal can be configured to show only
-            // once -- on initial startup, by passing in the
-            // parameter `{forced: false}` below
-            welcomeModalController.show({forced: true});
-        });
-
-        Application.getOSInformation().then(function(osInfo) {
+        var appLayoutPromise = Application.getOSInformation().then(function(osInfo) {
             if (osInfo.os === Astro.platforms.ios && BaseConfig.iosUsingTabLayout) {
                 return createTabBarLayout(counterBadgeControllerPromise);
             }
             return createDrawerLayout(counterBadgeControllerPromise);
-        }).then(function(menuController) {
+        });
+
+        // Show welcome modal only after layout is created for proper
+        // bookkeeping of the active view.
+        Promise.join(
+            appLayoutPromise,
+            welcomeModalControllerPromise,
+        function(menuController, welcomeModalController) {
+            // The welcome modal can be configured to show only
+            // once -- on initial startup, by passing in the
+            // parameter `{forced: false}` below
+            welcomeModalController.show({forced: true});
+
             // Deep linking services will enable deep linking on startup
             // and while running
             // It will open the deep link in the current active tab

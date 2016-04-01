@@ -1,4 +1,7 @@
 ## To be released
+- Event bus added for communication between app components on the js side
+- Replaced drawer layout with a multi-level drawer navigation (Navitron)
+- TabBar item configuration moved to `tabConfig.js`
 - Add a search bar which can be opened with the search icon
 - Add double icons custom plugin. Add a search icon and cart icon on the right side of the header
 - Error modal is now configurable through the `errorConfig.js` file

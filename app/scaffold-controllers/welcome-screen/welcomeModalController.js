@@ -1,5 +1,6 @@
 define([
     'astro-full',
+    'app-events',
     'app-rpc',
     'bluebird',
     'plugins/modalViewPlugin',
@@ -9,6 +10,7 @@ define([
 /* eslint-disable */
 function(
     Astro,
+    AppEvents,
     AppRpc,
     Promise,
     ModalViewPlugin,
@@ -92,6 +94,7 @@ function(
             if (onboarded !== 'YES' || params.forced) {
                 self.isShowing = true;
                 self.modalView.show({animated: true});
+                AppEvents.trigger(AppEvents.names.welcomeShown);
                 self._secureStore.set('onboarded', 'YES');
             }
         });
@@ -101,6 +104,7 @@ function(
         var self = this;
         self.isShowing = false;
         self.modalView.hide({animated: true});
+        AppEvents.trigger(AppEvents.names.welcomeHidden);
     };
 
     WelcomeModalController.prototype.isActiveItem = function() {
