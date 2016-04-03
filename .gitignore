@@ -13,10 +13,6 @@ android/.idea/libraries
 android/build
 android/gradle.properties
 
-/app/scaffold-www/js/*
-!/app/scaffold-www/js/left-drawer.js
-!/app/scaffold-www/js/config.js
-
 ### Xcode ###
 build/
 *.pbxuser

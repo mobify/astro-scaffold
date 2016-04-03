@@ -1,7 +1,8 @@
-require(['config'], function() {
+require(['ui-config'], function() {
     require([
         '$',
-        'navitron'
+        'navitron',
+        'astro-client'
     ],
     function($) {
 

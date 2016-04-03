@@ -31,6 +31,6 @@ module.exports = function(grunt) {
 
     grunt.initConfig(config);
 
-    grunt.registerTask('build', ['lint', 'requirejs:worker']);
+    grunt.registerTask('build', ['lint', 'requirejs']);
     grunt.registerTask('preview', ['build', 'watch']);
 };
