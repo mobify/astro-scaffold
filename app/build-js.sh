@@ -41,5 +41,5 @@ grunt build_astro_client
 #cp js/build/astro-client.js $MYPATH/scaffold-www/js
 popd
 
-# Build app.js.
+# Build app.js + ui.js
 grunt build

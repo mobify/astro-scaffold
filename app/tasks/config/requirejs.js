@@ -2,10 +2,10 @@ module.exports = function(grunt) {
     var wwwUiOptions = {
         almond: true,
         wrap: true,
-        mainConfigFile: './scaffold-www/js/ui-config.js',
+        mainConfigFile: './require-config.js',
         optimize: 'none',
         keepBuildDir: true,
-        name: './app/scaffold-www/js/ui.js',
+        name: './scaffold-www/js/ui.js',
         out: './scaffold-www/js/dist/ui.js'
     };
 
@@ -14,7 +14,7 @@ module.exports = function(grunt) {
             options: {
                 almond: true,
                 wrap: true,
-                mainConfigFile: './config.js',
+                mainConfigFile: './require-config.js',
                 optimize: 'none',
                 keepBuildDir: true,
                 name: 'app.js',

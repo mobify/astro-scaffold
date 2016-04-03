@@ -1,4 +1,4 @@
-require(['ui-config'], function() {
+require(['require-config'], function() {
     require([
         '$',
         'navitron',
