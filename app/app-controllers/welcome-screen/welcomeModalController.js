@@ -5,7 +5,7 @@ define([
     'bluebird',
     'plugins/modalViewPlugin',
     'plugins/secureStorePlugin',
-    'scaffold-controllers/welcome-screen/welcomeController'
+    'app-controllers/welcome-screen/welcomeController'
 ],
 /* eslint-disable */
 function(

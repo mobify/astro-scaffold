@@ -5,7 +5,7 @@ define([
     'plugins/webViewPlugin',
     'config/baseConfig',
     'config/menuConfig',
-    'scaffold-controllers/navigationController',
+    'app-controllers/navigationController',
     'bluebird'
 ],
 function(
@@ -30,7 +30,7 @@ function(
             res.send(null, MenuConfig.menuItems);
         });
 
-        leftMenu.navigate('file:///scaffold-www/html/left-drawer.html');
+        leftMenu.navigate('file:///app-www/html/left-drawer.html');
         leftMenu.disableScrolling();
         drawer.setLeftMenu(leftMenu);
 

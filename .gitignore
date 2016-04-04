@@ -13,9 +13,9 @@ android/.idea/libraries
 android/build
 android/gradle.properties
 
-/app/scaffold-www/js/*
-!/app/scaffold-www/js/left-drawer.js
-!/app/scaffold-www/js/config.js
+/app/app-www/js/*
+!/app/app-www/js/left-drawer.js
+!/app/app-www/js/config.js
 
 ### Xcode ###
 build/

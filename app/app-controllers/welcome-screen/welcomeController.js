@@ -7,7 +7,7 @@ define([
     'plugins/WebViewPlugin',
     'plugins/navigationPlugin',
     'plugins/anchoredLayoutPlugin',
-    'scaffold-controllers/welcome-screen/welcomeHeaderController'
+    'app-controllers/welcome-screen/welcomeHeaderController'
 ],
 /* eslint-disable */
 function(
