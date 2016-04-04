@@ -7,5 +7,7 @@ require(
         leftDrawerUI
     ) {
         // Noop for now
-    }
+    },
+    null,
+    true // force sync
 );
