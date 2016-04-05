@@ -1,7 +1,7 @@
 define([
     'plugins/tabBarPlugin',
     'config/tabConfig',
-    'scaffold-controllers/navigationController',
+    'app-controllers/navigationController',
     'bluebird'
 ],
 function(

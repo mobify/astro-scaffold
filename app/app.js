@@ -10,12 +10,12 @@ window.run = function() {
         'config/headerConfig',
         'plugins/anchoredLayoutPlugin',
         'controllers/counterBadgeController',
-        'scaffold-components/deepLinkingServices',
-        'scaffold-controllers/tabBarController',
-        'scaffold-controllers/drawerController',
-        'scaffold-controllers/cart/cartModalController',
-        'scaffold-controllers/error-screen/errorController',
-        'scaffold-controllers/welcome-screen/welcomeModalController'
+        'app-components/deepLinkingServices',
+        'app-controllers/tabBarController',
+        'app-controllers/drawerController',
+        'app-controllers/cart/cartModalController',
+        'app-controllers/error-screen/errorController',
+        'app-controllers/welcome-screen/welcomeModalController'
     ],
     function(
         Astro,

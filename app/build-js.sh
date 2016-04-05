@@ -24,21 +24,19 @@ fi
 # Add navitron & its dependencies to the app bundle
 pushd $ROOT/node_modules/navitron
 bower install
-cp bower_components/requirejs/require.js $MYPATH/scaffold-www/js
-cp bower_components/plugin/src/js/plugin.js $MYPATH/scaffold-www/js
-cp bower_components/mobify-velocity/velocity.min.js $MYPATH/scaffold-www/js
-cp dist/navitron.min.js $MYPATH/scaffold-www/js
+cp bower_components/requirejs/require.js $MYPATH/app-www/js
+cp bower_components/plugin/src/js/plugin.js $MYPATH/app-www/js
+cp bower_components/mobify-velocity/velocity.min.js $MYPATH/app-www/js
+cp dist/navitron.min.js $MYPATH/app-www/js
 popd
 
-pushd $ROOT/node_modules/jquery/dist
-cp jquery.min.js $MYPATH/scaffold-www/js
-popd
+cp $ROOT/node_modules/jquery/dist/jquery.min.js $MYPATH/app-www/js
 
 # Build astro-client.js
 pushd $ROOT/node_modules/astro-sdk
 npm install
 grunt build_astro_client
-cp js/build/astro-client.js $MYPATH/scaffold-www/js
+cp js/build/astro-client.js $MYPATH/app-www/js
 popd
 
 # Build app.js.

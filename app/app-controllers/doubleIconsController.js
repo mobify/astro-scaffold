@@ -2,7 +2,7 @@ define([
     'astro-full',
     'bluebird',
     'vendor/backbone-events',
-    'scaffold-plugins/doubleIconsPlugin'
+    'app-plugins/doubleIconsPlugin'
     ],
 function(Astro, Promise, BackboneEvents, DoubleIconsPlugin) {
     var DoubleIconsController = function(headerId, generateLeftIcon, generateRightIcon) {
