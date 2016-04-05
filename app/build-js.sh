@@ -30,9 +30,7 @@ cp bower_components/mobify-velocity/velocity.min.js $MYPATH/app-www/js
 cp dist/navitron.min.js $MYPATH/app-www/js
 popd
 
-pushd $ROOT/node_modules/jquery/dist
-cp jquery.min.js $MYPATH/app-www/js
-popd
+cp $ROOT/node_modules/jquery/dist/jquery.min.js $MYPATH/app-www/js
 
 # Build astro-client.js
 pushd $ROOT/node_modules/astro-sdk
