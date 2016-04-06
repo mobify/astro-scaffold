@@ -18,7 +18,7 @@ If node.js isn't installed in `/usr/local/bin`, run:
 
 ```bash
 cp app/user-env.sh.example app/user-env.sh && \
-    sed -i '' '/export PATH="/d"' app/user-env.sh && \
+    sed -i '' '/export PATH="/d' app/user-env.sh && \
     echo "export PATH=\$PATH:\"$(which npm | sed 's/\/npm//')\"" >> app/user-env.sh && \
     chmod +x app/user-env.sh
 ```
