@@ -13,6 +13,10 @@ android/.idea/libraries
 android/build
 android/gradle.properties
 
+/app/app-www/js/*
+!/app/app-www/js/left-drawer.js
+!/app/app-www/js/config.js
+
 ### Xcode ###
 build/
 *.pbxuser

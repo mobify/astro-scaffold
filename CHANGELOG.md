@@ -1,3 +1,19 @@
+## v0.9.0
+- Event bus added for communication between app components on the js side
+- Replaced drawer layout with a multi-level drawer navigation (Navitron)
+- TabBar item configuration moved to `tabConfig.js`
+- Add a search bar which can be opened with the search icon
+- Add double icons custom plugin. Add a search icon and cart icon on the right side of the header
+- Error modal is now configurable through the `errorConfig.js` file
+- Error modal displays when navigating with no connectivity or when page times out
+- iOS layout is now configurable through the `baseConfig.js` file
+- Welcome modal styling is now configurable through the `welcomeConfig.js` file
+- Welcome modal with toggle-able header displays on startup
+- Header content propagated while navigating
+- Cart styling is now configurable through the `cartConfig.js` file
+- Cart is in modal for both Android and iOS devices
+- Use UIWebView for Appium tests until Appium supports WKWebView
+
 ## v0.8.0
 - Update to use backButtonPressed event and ensure application closes at appropriate times in Android.
 - Added automated system tests
