@@ -3,7 +3,7 @@ define([
     'config/headerConfig',
     'plugins/headerBarPlugin',
     'plugins/imageViewPlugin',
-    'scaffold-controllers/doubleIconsController'
+    'app-controllers/doubleIconsController'
 ],
 /* eslint-disable */
 function(

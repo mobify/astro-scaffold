@@ -76,39 +76,39 @@ Astro defines a controller inside of a requirejs module. The module exposes a pr
 * `app/global` contains files that provide a common interface for communication between controller objects
   * `app/global/app-events.js` is an event bus that is used to communicate between app components
   * `app/global/app-rpc.js` is an RPC bus that contains registered methods exposed to Astro
-* `app/scaffold-config/` contains configuration files aiding in the centralization of app styling and content customization
-  * `app/scaffold-config/baseConfig.js` configures application-level styling & content
-  * `app/scaffold-config/cartConfig.js` configures modal cart styling & content
-  * `app/scaffold-config/errorConfig.js` configures error modal styling & content
-  * `app/scaffold-config/headerConfig.js` configures header styling & icon
-  * `app/scaffold-config/menuConfig.js` configures left drawer menu items
-  * `app/scaffold-config/searchConfig.js` configures search bar
-  * `app/scaffold-config/tabConfig.js` configures tab bar items
-  * `app/scaffold-config/welcomeConfig.js` configures welcome modal styling & content
-* `app/scaffold-components/` contains helper objects which allow the app to maintain a clean architecture
-  * `app/scaffold-components/deepLinkingServices.js` allows the app to configure deep linking functionality
-* `app/scaffold-controllers/` contains controller objects which manage the business logic of the UI components
-  * `app/scaffold-controllers/cart` contains controller objects which manage the cart modal logic
-    * `app/scaffold-controllers/cart/cartController.js` manages the webview which contains the cart page
-    * `app/scaffold-controllers/cart/cartHeaderController.js` manages the header bar which is displayed in the cart modal
-    * `app/scaffold-controllers/cart/cartModalController.js` manages the cart modal which contains a header bar and the cart webview
-  * `app/scaffold-controllers/error-screen` contains the controller object which manages error modal logic
-    * `app/scaffold-controllers/errorController.js` manages event handling for triggered errors
-  * `app/scaffold-controllers/welcome-screen` contains controller objects which manage welcome modal logic
-    * `app/scaffold-controllers/welcome-screen/welcomeController.js` manages the navigation and layout of the welcome screen
-    * `app/scaffold-controllers/welcome-screen/welcomeHeaderController.js` manages the header bar which is displayed in the welcome screen
-    * `app/scaffold-controllers/welcome-screen/welcomeModalController.js` manages the modal logic for the welcome screen
-  * `app/scaffold-controllers/doubleIconsController.js` coordinates a set of double icon plugins. Ensures the icons displayed in all the double icon plugins stay in-sync.
-  * `app/scaffold-controllers/drawerController.js` manages the drawer layout which is used in the Android version of the app. Coordinates behavior between the menu in the left drawer, navigation components in the main content view of the drawer and the cart in the right drawer.
-  * `app/scaffold-controllers/navigationController.js` manages the navigation component for a menu item. Coordinates behavior between the navigation plugin and the header bar for the menu item.
-  * `app/scaffold-controllers/navigationHeaderController.js` manages the header bars which are displayed in the navigation components
-  * `app/scaffold-controllers/searchBarController.js` manages the search bar. Allows the search bar to hide and show in a parent view. Allows search request to be handled by the app.
-  * `app/scaffold-controllers/tabBarController.js` manages the tab bar layout which is used in the iOS version of the app. Coordinates the behavior of the tab bar buttons, navigation components and the cart which is displayed in a modal view.
-* `app/scaffold-www/` contains assets/css/html/js files needed for the apps embedded webpages - allows for these pages to be accessible offline
-  * `app/scaffold-www/assets/` contains assets for embedded web content
-  * `app/scaffold-www/css/` contains style sheets for embedded web content
-  * `app/scaffold-www/html/` contains html files for embedded web content
-  * `app/scaffold-www/js/` contains JavaScript files for embedded web content
+* `app/app-config/` contains configuration files aiding in the centralization of app styling and content customization
+  * `app/app-config/baseConfig.js` configures application-level styling & content
+  * `app/app-config/cartConfig.js` configures modal cart styling & content
+  * `app/app-config/errorConfig.js` configures error modal styling & content
+  * `app/app-config/headerConfig.js` configures header styling & icon
+  * `app/app-config/menuConfig.js` configures left drawer menu items
+  * `app/app-config/searchConfig.js` configures search bar
+  * `app/app-config/tabConfig.js` configures tab bar items
+  * `app/app-config/welcomeConfig.js` configures welcome modal styling & content
+* `app/app-components/` contains helper objects which allow the app to maintain a clean architecture
+  * `app/app-components/deepLinkingServices.js` allows the app to configure deep linking functionality
+* `app/app-controllers/` contains controller objects which manage the business logic of the UI components
+  * `app/app-controllers/cart` contains controller objects which manage the cart modal logic
+    * `app/app-controllers/cart/cartController.js` manages the webview which contains the cart page
+    * `app/app-controllers/cart/cartHeaderController.js` manages the header bar which is displayed in the cart modal
+    * `app/app-controllers/cart/cartModalController.js` manages the cart modal which contains a header bar and the cart webview
+  * `app/app-controllers/error-screen` contains the controller object which manages error modal logic
+    * `app/app-controllers/errorController.js` manages event handling for triggered errors
+  * `app/app-controllers/welcome-screen` contains controller objects which manage welcome modal logic
+    * `app/app-controllers/welcome-screen/welcomeController.js` manages the navigation and layout of the welcome screen
+    * `app/app-controllers/welcome-screen/welcomeHeaderController.js` manages the header bar which is displayed in the welcome screen
+    * `app/app-controllers/welcome-screen/welcomeModalController.js` manages the modal logic for the welcome screen
+  * `app/app-controllers/doubleIconsController.js` coordinates a set of double icon plugins. Ensures the icons displayed in all the double icon plugins stay in-sync.
+  * `app/app-controllers/drawerController.js` manages the drawer layout which is used in the Android version of the app. Coordinates behavior between the menu in the left drawer, navigation components in the main content view of the drawer and the cart in the right drawer.
+  * `app/app-controllers/navigationController.js` manages the navigation component for a menu item. Coordinates behavior between the navigation plugin and the header bar for the menu item.
+  * `app/app-controllers/navigationHeaderController.js` manages the header bars which are displayed in the navigation components
+  * `app/app-controllers/searchBarController.js` manages the search bar. Allows the search bar to hide and show in a parent view. Allows search request to be handled by the app.
+  * `app/app-controllers/tabBarController.js` manages the tab bar layout which is used in the iOS version of the app. Coordinates the behavior of the tab bar buttons, navigation components and the cart which is displayed in a modal view.
+* `app/app-www/` contains assets/css/html/js files needed for the apps embedded webpages - allows for these pages to be accessible offline
+  * `app/app-www/assets/` contains assets for embedded web content
+  * `app/app-www/css/` contains style sheets for embedded web content
+  * `app/app-www/html/` contains html files for embedded web content
+  * `app/app-www/js/` contains JavaScript files for embedded web content
 
 # Running Tests
 

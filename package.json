@@ -1,9 +1,9 @@
 {
   "name": "astro-scaffold",
-  "version": "0.8.0",
+  "version": "0.0.1",
   "author": "Mobify",
   "dependencies": {
-    "astro-sdk": "^0.9.0-dev",
+    "astro-sdk": "^0.9.0",
     "bluebird": "~2.9.24",
     "jquery": "^2.2.2",
     "navitron": "mobify/navitron#develop"

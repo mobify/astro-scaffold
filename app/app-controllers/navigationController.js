@@ -6,8 +6,8 @@ define([
     'config/baseConfig',
     'plugins/anchoredLayoutPlugin',
     'plugins/navigationPlugin',
-    'scaffold-controllers/navigationHeaderController',
-    'scaffold-controllers/searchBarController',
+    'app-controllers/navigationHeaderController',
+    'app-controllers/searchBarController',
     'config/searchConfig'
 ],
 /* eslint-disable */

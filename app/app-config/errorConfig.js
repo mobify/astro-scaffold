@@ -1,7 +1,7 @@
 define([], function() {
 /* eslint-enable max-statements */
 
-    var url = 'file:///scaffold-www/html/error.html';
+    var url = 'file:///app-www/html/error.html';
 
     // Define/modify content for displayed error screens belonging to triggered
     // errors. Triggered errors are watched for in `errorController.js`.
@@ -13,14 +13,14 @@ define([], function() {
         noInternetConnection: {
             title: 'Connectivity Title',
             message: 'To configure the contents of this error screen, \
-                     modify the scaffold-config/errorConfig.js file.',
+                     modify the app-config/errorConfig.js file.',
             imageUrl: '../assets/error__image.png'
         },
 
         pageTimeout: {
             title: 'Timeout Title',
             message: 'To configure the contents of this error screen, \
-                     modify the scaffold-config/errorConfig.js file.',
+                     modify the app-config/errorConfig.js file.',
             imageUrl: '../assets/error__image.png'
         }
     };

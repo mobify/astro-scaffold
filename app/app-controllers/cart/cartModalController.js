@@ -4,7 +4,7 @@ define([
     'app-rpc',
     'bluebird',
     'plugins/modalViewPlugin',
-    'scaffold-controllers/cart/cartController'
+    'app-controllers/cart/cartController'
 ],
 /* eslint-disable */
 function(

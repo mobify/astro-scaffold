@@ -8,7 +8,7 @@ require.config({
         'app-rpc': 'global/app-rpc',
         'application': '../node_modules/astro-sdk/js/src/application',
         'bluebird': '../node_modules/bluebird/js/browser/bluebird',
-        'config': 'scaffold-config',
+        'config': 'app-config',
         'plugins': '../node_modules/astro-sdk/js/src/plugins',
         'controllers': '../node_modules/astro-sdk/js/src/controllers',
         'plugin-manager': '../node_modules/astro-sdk/js/src/plugin-manager',
