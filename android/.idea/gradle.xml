@@ -13,6 +13,13 @@
             <option value="$PROJECT_DIR$/../node_modules/astro-sdk/android" />
           </set>
         </option>
+        <option name="myModules">
+          <set>
+            <option value="$PROJECT_DIR$" />
+            <option value="$PROJECT_DIR$/scaffold" />
+            <option value="$PROJECT_DIR$/../node_modules/astro-sdk/android" />
+          </set>
+        </option>
       </GradleProjectSettings>
     </option>
   </component>
