@@ -32,6 +32,7 @@ public class MainActivity extends AstroActivity {
         pluginManager.register(TabBarPlugin.class);
         pluginManager.register(WebViewPlugin.class);
         pluginManager.register(SharingPlugin.class);
+        pluginManager.register(ReviewShieldPlugin.class);
 
         // Register custom plugins.
         pluginManager.register(DoubleIconsPlugin.class);

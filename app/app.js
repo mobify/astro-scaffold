@@ -8,6 +8,7 @@ window.run = function() {
         'application',
         'config/baseConfig',
         'config/headerConfig',
+        'config/reviewShieldConfig',
         'plugins/anchoredLayoutPlugin',
         'controllers/counterBadgeController',
         'app-components/deepLinkingServices',
@@ -15,7 +16,8 @@ window.run = function() {
         'app-controllers/drawerController',
         'app-controllers/cart/cartModalController',
         'app-controllers/error-screen/errorController',
-        'app-controllers/welcome-screen/welcomeModalController'
+        'app-controllers/welcome-screen/welcomeModalController',
+        'plugins/reviewShieldPlugin'
     ],
     function(
         Astro,
@@ -24,6 +26,7 @@ window.run = function() {
         Application,
         BaseConfig,
         HeaderConfig,
+        ReviewShieldConfig,
         AnchoredLayoutPlugin,
         CounterBadgeController,
         DeepLinkingServices,
@@ -31,8 +34,11 @@ window.run = function() {
         DrawerController,
         CartModalController,
         ErrorController,
-        WelcomeModalController
+        WelcomeModalController,
+        ReviewShieldPlugin
     ) {
+        var reviewShieldPromise = ReviewShieldPlugin.init(ReviewShieldConfig);
+
         var deepLinkingServices = null;
         var errorControllerPromise = ErrorController.init();
         var welcomeModalControllerPromise = WelcomeModalController.init(errorControllerPromise);
@@ -147,11 +153,12 @@ window.run = function() {
         // Show welcome modal only after layout is created for proper
         // bookkeeping of the active view.
         Promise.join(
+            reviewShieldPromise,
             appLayoutPromise,
             welcomeModalControllerPromise,
-        function(menuController, welcomeModalController) {
+        function(reviewShield, menuController, welcomeModalController) {
             // The welcome modal can be configured to show only
-            // once -- on initial startup, by passing in the
+            // once -- on initial startup -- by passing in the
             // parameter `{forced: false}` below
             welcomeModalController.show({forced: true});
 
@@ -159,6 +166,19 @@ window.run = function() {
             // and while running
             // It will open the deep link in the current active tab
             deepLinkingServices = new DeepLinkingServices(menuController);
+
+            Astro.registerRpcMethod('reviewShieldAddPoints', ['points', 'milliseconds'], function(res, points, milliseconds) {
+                reviewShield.addPoints(points, milliseconds);
+            });
+
+            Astro.registerRpcMethod('reviewShieldShow', ['milliseconds'], function(res, milliseconds) {
+                reviewShield.show(milliseconds);
+            });
+
+            Astro.registerRpcMethod('reviewShieldOpportunity', ['milliseconds'], function(res, milliseconds) {
+                reviewShield.opportunity(milliseconds);
+            });
+            //reviewShield.show(3000);
         });
 
     }, undefined, true);
