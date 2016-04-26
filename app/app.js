@@ -178,7 +178,7 @@ window.run = function() {
             Astro.registerRpcMethod('reviewShieldOpportunity', ['milliseconds'], function(res, milliseconds) {
                 reviewShield.opportunity(milliseconds);
             });
-            //reviewShield.show(3000);
+            reviewShield.show(3000);
         });
 
     }, undefined, true);
