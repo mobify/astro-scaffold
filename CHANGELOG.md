@@ -1,3 +1,6 @@
+## v0.10.1
+- Upgrade to use Android Studio 2.0
+
 ## v0.9.0
 - Event bus added for communication between app components on the js side
 - Replaced drawer layout with a multi-level drawer navigation (Navitron)
