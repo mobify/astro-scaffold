@@ -1,4 +1,6 @@
 ## To be released
+- Add support for buddybuild
+- Update scripts depending on a globally-installed version of grunt to use a local version (and updated package.json to install it locally)
 
 ## v0.10.1
 - Upgrade to use Android Studio 2.0
