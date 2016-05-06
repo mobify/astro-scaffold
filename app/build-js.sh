@@ -40,5 +40,4 @@ cp js/build/astro-client.js $MYPATH/app-www/js
 popd
 
 # Build app.js.
-grunt build
 $MYPATH/node_modules/grunt-cli/bin/grunt build
