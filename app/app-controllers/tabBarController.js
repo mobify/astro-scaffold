@@ -93,10 +93,14 @@ function(
                 this.tabBar.NavigationControllers[this.activeTabId].isActive = false;
             }
 
+            // Highlight selected tab when tab switch is
+            // made programatically
+            this.tabBar.selectItem(tabId);
             this.viewPlugin.setContentView(this.tabBar.tabViews[tabId]);
+            this.activeTabId = tabId;
+
             var selectedTab = this.tabBar.NavigationControllers[tabId];
             selectedTab.isActive = true;
-            this.activeTabId = tabId;
         }
     };
 
