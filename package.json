@@ -6,7 +6,7 @@
     "astro-sdk": "^0.10.1",
     "bluebird": "~2.9.24",
     "jquery": "^2.2.2",
-    "navitron": "mobify/navitron#modern-standards"
+    "navitron": "^1.0.0"
   },
   "devDependencies": {
     "grunt": "^0.4.5",
