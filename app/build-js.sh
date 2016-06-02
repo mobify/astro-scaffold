@@ -22,12 +22,10 @@ if ! which npm 1>/dev/null 2>&1; then
 fi
 
 # Add navitron & its dependencies to the app bundle
-pushd $ROOT/node_modules/navitron
-bower install
-cp bower_components/requirejs/require.js $MYPATH/app-www/js
-cp bower_components/plugin/src/js/plugin.js $MYPATH/app-www/js
-cp bower_components/mobify-velocity/velocity.min.js $MYPATH/app-www/js
-cp dist/navitron.min.js $MYPATH/app-www/js
+cp $MYPATH/node_modules/grunt-requirejs/node_modules/requirejs/require.js $MYPATH/app-www/js
+cp $MYPATH/node_modules/navitron/node_modules/plugin/dist/plugin*.js $MYPATH/app-www/js
+cp $MYPATH/node_modules/navitron/node_modules/velocity-animate/velocity.* $MYPATH/app-www/js
+cp $MYPATH/node_modules/navitron/dist/navitron*.js $MYPATH/app-www/js
 popd
 
 cp $ROOT/node_modules/jquery/dist/jquery.min.js $MYPATH/app-www/js
