@@ -26,7 +26,6 @@ cp $MYPATH/node_modules/grunt-requirejs/node_modules/requirejs/require.js $MYPAT
 cp $MYPATH/node_modules/navitron/node_modules/plugin/dist/plugin*.js $MYPATH/app-www/js
 cp $MYPATH/node_modules/navitron/node_modules/velocity-animate/velocity.* $MYPATH/app-www/js
 cp $MYPATH/node_modules/navitron/dist/navitron*.js $MYPATH/app-www/js
-popd
 
 cp $ROOT/node_modules/jquery/dist/jquery.min.js $MYPATH/app-www/js
 
@@ -38,4 +37,6 @@ cp js/build/astro-client.js $MYPATH/app-www/js
 popd
 
 # Build app.js.
+pushd $MYPATH
 $MYPATH/node_modules/grunt-cli/bin/grunt build
+popd $MYPATH
