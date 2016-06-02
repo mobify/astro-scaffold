@@ -19,8 +19,7 @@
     "nightwatch-commands": "1.5.0"
   },
   "scripts": {
-    "test": "./scripts/ios-appium.sh",
-    "install-dependencies": "./scripts/install-dependencies.sh"
+    "test": "./scripts/ios-appium.sh"
   },
   "license": "SEE LICENSE IN LICENSE"
 }
