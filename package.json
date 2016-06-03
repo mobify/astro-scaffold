@@ -3,13 +3,14 @@
   "version": "0.0.1",
   "author": "Mobify",
   "dependencies": {
-    "astro-sdk": "^0.10.1",
+    "astro-sdk": "^0.11.0",
     "bluebird": "~2.9.24",
     "jquery": "^2.2.2",
-    "navitron": "mobify/navitron#develop"
+    "navitron": "^1.0.0"
   },
   "devDependencies": {
     "grunt": "^0.4.5",
+    "grunt-cli": "^1.1.0",
     "grunt-contrib-watch": "^0.6.1",
     "grunt-eslint": "^13.0.0",
     "grunt-requirejs": "^0.4.2",
@@ -18,8 +19,7 @@
     "nightwatch-commands": "1.5.0"
   },
   "scripts": {
-    "test": "./scripts/ios-appium.sh",
-    "install-dependencies": "./scripts/install-dependencies.sh"
+    "test": "./scripts/ios-appium.sh"
   },
   "license": "SEE LICENSE IN LICENSE"
 }

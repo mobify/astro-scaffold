@@ -22,22 +22,21 @@ if ! which npm 1>/dev/null 2>&1; then
 fi
 
 # Add navitron & its dependencies to the app bundle
-pushd $ROOT/node_modules/navitron
-bower install
-cp bower_components/requirejs/require.js $MYPATH/app-www/js
-cp bower_components/plugin/src/js/plugin.js $MYPATH/app-www/js
-cp bower_components/mobify-velocity/velocity.min.js $MYPATH/app-www/js
-cp dist/navitron.min.js $MYPATH/app-www/js
-popd
+cp $MYPATH/node_modules/grunt-requirejs/node_modules/requirejs/require.js $MYPATH/app-www/js
+cp $MYPATH/node_modules/navitron/node_modules/plugin/dist/plugin*.js $MYPATH/app-www/js
+cp $MYPATH/node_modules/navitron/node_modules/velocity-animate/velocity.* $MYPATH/app-www/js
+cp $MYPATH/node_modules/navitron/dist/navitron*.js $MYPATH/app-www/js
 
 cp $ROOT/node_modules/jquery/dist/jquery.min.js $MYPATH/app-www/js
 
 # Build astro-client.js
 pushd $ROOT/node_modules/astro-sdk
 npm install
-grunt build_astro_client
+$MYPATH/node_modules/grunt-cli/bin/grunt build_astro_client
 cp js/build/astro-client.js $MYPATH/app-www/js
 popd
 
 # Build app.js.
-grunt build
+pushd $MYPATH
+$MYPATH/node_modules/grunt-cli/bin/grunt build
+popd $MYPATH
