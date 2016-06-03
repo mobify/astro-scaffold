@@ -1,4 +1,4 @@
-## To be released
+## v0.11.0
 - Update to navitron 1.0
 - Add support for buddybuild
 - Update scripts depending on a globally-installed version of grunt to use a local version (and updated package.json to install it locally)
