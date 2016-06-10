@@ -122,15 +122,15 @@
 		87C6A8881B43044D001876CE /* scaffold */ = {
 			isa = PBXGroup;
 			children = (
-				6E4715201CA1DAA500A359FE /* Plugins */,
-				87C6A88B1B43044D001876CE /* AppDelegate.swift */,
-				87C6A8F71B430FA2001876CE /* app.js */,
-				87C6A88D1B43044D001876CE /* ViewController.swift */,
-				87C6A88F1B43044D001876CE /* Main.storyboard */,
-				87C6A8921B43044D001876CE /* Images.xcassets */,
 				B12FAF511C9751BC00F254BD /* app-www */,
-				87C6A8941B43044D001876CE /* LaunchScreen.xib */,
+				6E4715201CA1DAA500A359FE /* Plugins */,
 				87C6A8891B43044D001876CE /* Supporting Files */,
+				87C6A8F71B430FA2001876CE /* app.js */,
+				87C6A88B1B43044D001876CE /* AppDelegate.swift */,
+				87C6A8921B43044D001876CE /* Images.xcassets */,
+				87C6A8941B43044D001876CE /* LaunchScreen.xib */,
+				87C6A88F1B43044D001876CE /* Main.storyboard */,
+				87C6A88D1B43044D001876CE /* ViewController.swift */,
 			);
 			path = scaffold;
 			sourceTree = "<group>";
@@ -164,9 +164,9 @@
 		87C6A8D61B430E15001876CE /* Cordova */ = {
 			isa = PBXGroup;
 			children = (
-				87C6A8D71B430E15001876CE /* config.xml */,
-				87C6A8F51B430EDD001876CE /* www */,
 				87C6A8D81B430E15001876CE /* Plugins */,
+				87C6A8F51B430EDD001876CE /* www */,
+				87C6A8D71B430E15001876CE /* config.xml */,
 			);
 			path = Cordova;
 			sourceTree = "<group>";
@@ -262,13 +262,13 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				87C6A8F61B430EDD001876CE /* www in Resources */,
+				87C6A8E91B430E15001876CE /* config.xml in Resources */,
 				B12FAF521C9751BC00F254BD /* app-www in Resources */,
 				96C2AD861B62B6180032A784 /* app.js in Resources */,
 				87C6A8911B43044D001876CE /* Main.storyboard in Resources */,
 				87C6A8961B43044D001876CE /* LaunchScreen.xib in Resources */,
 				87C6A8931B43044D001876CE /* Images.xcassets in Resources */,
-				87C6A8F61B430EDD001876CE /* www in Resources */,
-				87C6A8E91B430E15001876CE /* config.xml in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

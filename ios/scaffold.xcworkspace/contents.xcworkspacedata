@@ -1,12 +1,16 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <Workspace
    version = "1.0">
-   <FileRef
-      location = "group:../node_modules/astro-sdk/ios/vendor/CordovaLib/CordovaLib.xcodeproj">
-   </FileRef>
-   <FileRef
-      location = "group:../node_modules/astro-sdk/ios/Astro.xcodeproj">
-   </FileRef>
+   <Group
+      location = "container:"
+      name = "Astro">
+      <FileRef
+         location = "group:../node_modules/astro-sdk/ios/Astro.xcodeproj">
+      </FileRef>
+      <FileRef
+         location = "group:../node_modules/astro-sdk/ios/vendor/CordovaLib/CordovaLib.xcodeproj">
+      </FileRef>
+   </Group>
    <FileRef
       location = "group:scaffold.xcodeproj">
    </FileRef>
