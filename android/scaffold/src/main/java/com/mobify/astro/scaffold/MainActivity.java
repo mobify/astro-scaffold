@@ -20,18 +20,21 @@ public class MainActivity extends AstroActivity {
         super.onCreate(savedInstanceState);
 
         // Register Astro plugins.
+        pluginManager.register(AlertViewPlugin.class);
         pluginManager.register(AnchoredLayoutPlugin.class);
         pluginManager.register(CounterBadgePlugin.class);
         pluginManager.register(DefaultLoaderPlugin.class);
         pluginManager.register(DrawerPlugin.class);
         pluginManager.register(HeaderBarPlugin.class);
         pluginManager.register(ImageViewPlugin.class);
+        pluginManager.register(ListSelectPlugin.class);
         pluginManager.register(ModalViewPlugin.class);
         pluginManager.register(NavigationPlugin.class);
+        pluginManager.register(PromptViewPlugin.class);
         pluginManager.register(SecureStorePlugin.class);
+        pluginManager.register(SharingPlugin.class);
         pluginManager.register(TabBarPlugin.class);
         pluginManager.register(WebViewPlugin.class);
-        pluginManager.register(SharingPlugin.class);
 
         // Register custom plugins.
         pluginManager.register(DoubleIconsPlugin.class);
