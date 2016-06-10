@@ -1,4 +1,5 @@
-## To be released
+## v0.12.0
+- Update app icon resource for Xcode 7
 
 ## v0.11.0
 - Update to navitron 1.0
