@@ -1,4 +1,5 @@
 ## To be released
+- Updated to be compatible with Android Cordova v5.1.1
 
 ## v0.12.0
 - Update app icon resource for Xcode 7
