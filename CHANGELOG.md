@@ -1,4 +1,5 @@
 ## To be released
+- Include pushclient module in android build
 
 ## v0.12.0
 - Update app icon resource for Xcode 7
