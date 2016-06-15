@@ -1,3 +1,3 @@
 include ':scaffold', ':astro', ':astro:pushclient'
 project(':astro').projectDir = new File(settingsDir, '../node_modules/astro-sdk/android')
-project(':astro:pushclient').projectDir = new File(settingsDir, '../node_modules/mobify-push-android-client/pushclient')
+project(':astro:pushclient').projectDir = new File(settingsDir, '../node_modules/astro-sdk/node_modules/mobify-push-android-client/pushclient')

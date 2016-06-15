@@ -10,7 +10,7 @@
             <option value="$PROJECT_DIR$" />
             <option value="$PROJECT_DIR$/scaffold" />
             <option value="$PROJECT_DIR$/../node_modules/astro-sdk/android" />
-            <option value="$PROJECT_DIR$/../node_modules/mobify-push-android-client/pushclient" />
+            <option value="$PROJECT_DIR$/../node_modules/astro-sdk/node_modules/mobify-push-android-client/pushclient" />
           </set>
         </option>
         <option name="myModules">
@@ -18,7 +18,7 @@
             <option value="$PROJECT_DIR$" />
             <option value="$PROJECT_DIR$/scaffold" />
             <option value="$PROJECT_DIR$/../node_modules/astro-sdk/android" />
-            <option value="$PROJECT_DIR$/../node_modules/mobify-push-android-client/pushclient" />
+            <option value="$PROJECT_DIR$/../node_modules/astro-sdk/node_modules/mobify-push-android-client/pushclient" />
           </set>
         </option>
       </GradleProjectSettings>
