@@ -175,6 +175,10 @@ function(
             });
     };
 
+    NavigationController.prototype.popToRoot = function(params) {
+        return this.navigationView.popToRoot(params);
+    };
+
     NavigationController.prototype.back = function() {
         var self = this;
         self.navigationView.canGoBack().then(function(canGoBack) {
