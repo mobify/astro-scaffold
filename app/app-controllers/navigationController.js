@@ -158,7 +158,7 @@ function(
 
     NavigationController.prototype.navigateMainViewToNewRoot = function(url, title) {
         var self = this;
-        this.navigationView.popToRoot({animated: true})
+        this.popToRoot({animated: true})
             .then(function() {
                 return self.navigationView.getTopPlugin();
             })
