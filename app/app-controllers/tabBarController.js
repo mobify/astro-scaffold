@@ -100,8 +100,7 @@ function(
             this.viewPlugin.setContentView(this.tabBar.tabViews[tabId]);
             this.activeTabId = tabId;
 
-            var selectedTab = this.tabBar.NavigationControllers[tabId];
-            selectedTab.isActive = true;
+            this.getActiveNavigationView().isActive = true;
         } else {
             this.getActiveNavigationView().popToRoot({animated: true});
         }
