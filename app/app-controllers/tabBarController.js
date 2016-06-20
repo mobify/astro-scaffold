@@ -87,21 +87,27 @@ function(
     };
 
     TabBarController.prototype.selectTab = function(tabId) {
+        return this.tabBar.selectItem(tabId);
+    };
+
+    TabBarController.prototype._selectTabHandler = function(tabId) {
         if (this.activeTabId !== tabId) {
             // activeTabId is undefined during startup
             if (this.activeTabId) {
-                this.tabBar.NavigationControllers[this.activeTabId].isActive = false;
+                this.getActiveNavigationView().isActive = false;
             }
 
-            // Highlight selected tab when tab switch is
-            // made programatically
-            this.tabBar.selectItem(tabId);
             this.viewPlugin.setContentView(this.tabBar.tabViews[tabId]);
             this.activeTabId = tabId;
 
-            var selectedTab = this.tabBar.NavigationControllers[tabId];
-            selectedTab.isActive = true;
+            this.getActiveNavigationView().isActive = true;
+        } else {
+            this.getActiveNavigationView().popToRoot({animated: true});
         }
+    };
+
+    TabBarController.prototype.getActiveNavigationView = function() {
+        return this.tabBar.NavigationControllers[this.activeTabId];
     };
 
     TabBarController.prototype._bindEvents = function() {
@@ -109,7 +115,7 @@ function(
 
         // Select Tab
         this.tabBar.on('itemSelect', function(data) {
-            self.selectTab(data.id);
+            self._selectTabHandler(data.id);
         });
     };
 
