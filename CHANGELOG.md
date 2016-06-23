@@ -1,5 +1,6 @@
 ## To be released
 - Include pushclient module in android build
+- Include PushClient module in iOS build
 - [iOS] set app to portrait-only
 - [iOS] implement pop-to-root on re-selection of currently displaying tab item
 
