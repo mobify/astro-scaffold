@@ -19,31 +19,7 @@ public class MainActivity extends AstroActivity {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        // Register Astro plugins.
-        pluginManager.register(AlertViewPlugin.class);
-        pluginManager.register(AnchoredLayoutPlugin.class);
-        pluginManager.register(CounterBadgePlugin.class);
-        pluginManager.register(DefaultLoaderPlugin.class);
-        pluginManager.register(DrawerPlugin.class);
-        pluginManager.register(HeaderBarPlugin.class);
-        pluginManager.register(ImageViewPlugin.class);
-        pluginManager.register(ListSelectPlugin.class);
-        pluginManager.register(ModalViewPlugin.class);
-        pluginManager.register(NavigationPlugin.class);
-        pluginManager.register(PromptViewPlugin.class);
-        pluginManager.register(SecureStorePlugin.class);
-        pluginManager.register(SharingPlugin.class);
-        pluginManager.register(TabBarPlugin.class);
-        pluginManager.register(WebViewPlugin.class);
-
-        // Register custom plugins.
-        pluginManager.register(DoubleIconsPlugin.class);
-
         // Create the initial worker.
         worker = new AstroWorker(this, pluginManager);
-
-        // Enable Cordova plugins by associating the worker's Cordova webview with the activity.
-        CordovaWebView webView = (CordovaWebView)worker.getView();
-        setCordovaWebView(webView);
     }
 }
