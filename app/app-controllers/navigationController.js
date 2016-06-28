@@ -158,7 +158,7 @@ function(
 
     NavigationController.prototype.navigateMainViewToNewRoot = function(url, title) {
         var self = this;
-        this.navigationView.popToRoot({animated: true})
+        this.popToRoot({animated: true})
             .then(function() {
                 return self.navigationView.getTopPlugin();
             })
@@ -173,6 +173,10 @@ function(
                     return self.navigate(url, true);
                 }
             });
+    };
+
+    NavigationController.prototype.popToRoot = function(params) {
+        return this.navigationView.popToRoot(params);
     };
 
     NavigationController.prototype.back = function() {
