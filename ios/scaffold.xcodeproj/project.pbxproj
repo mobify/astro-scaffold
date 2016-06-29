@@ -22,6 +22,8 @@
 		87C6A8F61B430EDD001876CE /* www in Resources */ = {isa = PBXBuildFile; fileRef = 87C6A8F51B430EDD001876CE /* www */; };
 		96C2AD861B62B6180032A784 /* app.js in Resources */ = {isa = PBXBuildFile; fileRef = 87C6A8F91B430FB7001876CE /* app.js */; };
 		B12FAF521C9751BC00F254BD /* app-www in Resources */ = {isa = PBXBuildFile; fileRef = B12FAF511C9751BC00F254BD /* app-www */; };
+		CBC6D60C1D19B7E900DC3785 /* PushClient.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = CBC6D60B1D19B7E900DC3785 /* PushClient.framework */; };
+		CBC6D60D1D19B7EF00DC3785 /* PushClient.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = CBC6D60B1D19B7E900DC3785 /* PushClient.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -41,6 +43,7 @@
 			dstPath = "";
 			dstSubfolderSpec = 10;
 			files = (
+				CBC6D60D1D19B7EF00DC3785 /* PushClient.framework in Embed Frameworks */,
 				87132A211B6016FF00FC74A4 /* Astro.framework in Embed Frameworks */,
 				87132A231B6016FF00FC74A4 /* Cordova.framework in Embed Frameworks */,
 			);
@@ -68,6 +71,7 @@
 		87C6A8F71B430FA2001876CE /* app.js */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.javascript; name = app.js; path = ../../app/app.js; sourceTree = "<group>"; };
 		87C6A8F91B430FB7001876CE /* app.js */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.javascript; name = app.js; path = ../../app/build/app.js; sourceTree = "<group>"; };
 		B12FAF511C9751BC00F254BD /* app-www */ = {isa = PBXFileReference; lastKnownFileType = folder; name = "app-www"; path = "../../app/app-www"; sourceTree = "<group>"; };
+		CBC6D60B1D19B7E900DC3785 /* PushClient.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = PushClient.framework; path = "$(CONFIGURATION_BUILD_DIR)/PushClient.framework"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -75,6 +79,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				CBC6D60C1D19B7E900DC3785 /* PushClient.framework in Frameworks */,
 				87132A201B6016FF00FC74A4 /* Astro.framework in Frameworks */,
 				87132A221B6016FF00FC74A4 /* Cordova.framework in Frameworks */,
 			);
@@ -101,6 +106,7 @@
 		87C6A87D1B43044D001876CE = {
 			isa = PBXGroup;
 			children = (
+				CBC6D60B1D19B7E900DC3785 /* PushClient.framework */,
 				87132A1E1B6016FF00FC74A4 /* Astro.framework */,
 				87132A1F1B6016FF00FC74A4 /* Cordova.framework */,
 				87C6A8D61B430E15001876CE /* Cordova */,

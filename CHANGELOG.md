@@ -1,4 +1,5 @@
 ## To be released
+- Include pushclient module in iOS build
 
 ## v0.13.0
 - Include pushclient module in android build
