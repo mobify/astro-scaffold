@@ -1,4 +1,6 @@
 ## To be released
+
+## v0.13.0
 - Include pushclient module in android build
 - Include pushclient module in iOS build
 - [iOS] set app to portrait-only
