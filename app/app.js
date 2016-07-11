@@ -60,6 +60,11 @@ window.run = function() {
         };
 
         var softAskControllerPromise = SoftAskController.init(Promise.resolve(mockPushPlugin));
+        setTimeout(function() {
+            softAskControllerPromise.then(function(softAskController) {
+                softAskController.showSoftAsk('50% off', 'Would you like to receive sale notifications?');
+            });
+        }, 30000);
 
         // Register RPC to expose whether it is possible to go back.
         // This is necessary to determine whether to show/hide
@@ -158,8 +163,7 @@ window.run = function() {
         Promise.join(
             appLayoutPromise,
             welcomeModalControllerPromise,
-            softAskControllerPromise,
-        function(menuController, welcomeModalController, softAskController) {
+        function(menuController, welcomeModalController) {
             // The welcome modal can be configured to show only
             // once -- on initial startup, by passing in the
             // parameter `{forced: false}` below
@@ -169,8 +173,6 @@ window.run = function() {
             // and while running
             // It will open the deep link in the current active tab
             deepLinkingServices = new DeepLinkingServices(menuController);
-
-            softAskController.showSoftAsk('50% off', 'Would you like to receive sale notifications?');
         });
 
     }, undefined, true);
