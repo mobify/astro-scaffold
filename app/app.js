@@ -15,7 +15,8 @@ window.run = function() {
         'app-controllers/drawerController',
         'app-controllers/cart/cartModalController',
         'app-controllers/error-screen/errorController',
-        'app-controllers/welcome-screen/welcomeModalController'
+        'app-controllers/welcome-screen/welcomeModalController',
+        'app-controllers/softAskController'
     ],
     function(
         Astro,
@@ -31,7 +32,8 @@ window.run = function() {
         DrawerController,
         CartModalController,
         ErrorController,
-        WelcomeModalController
+        WelcomeModalController,
+        SoftAskController
     ) {
         var deepLinkingServices = null;
         var errorControllerPromise = ErrorController.init();
@@ -51,6 +53,13 @@ window.run = function() {
             counterBadgeController.updateCounterValue(3);
             return counterBadgeController;
         });
+
+        var mockPushPlugin = {};
+        mockPushPlugin.subscribe = function() {
+            console.log('subscribe for push');
+        };
+
+        var softAskControllerPromise = SoftAskController.init(Promise.resolve(mockPushPlugin));
 
         // Register RPC to expose whether it is possible to go back.
         // This is necessary to determine whether to show/hide
@@ -149,7 +158,8 @@ window.run = function() {
         Promise.join(
             appLayoutPromise,
             welcomeModalControllerPromise,
-        function(menuController, welcomeModalController) {
+            softAskControllerPromise,
+        function(menuController, welcomeModalController, softAskController) {
             // The welcome modal can be configured to show only
             // once -- on initial startup, by passing in the
             // parameter `{forced: false}` below
@@ -159,6 +169,8 @@ window.run = function() {
             // and while running
             // It will open the deep link in the current active tab
             deepLinkingServices = new DeepLinkingServices(menuController);
+
+            softAskController.showSoftAsk('50% off', 'Would you like to receive sale notifications?');
         });
 
     }, undefined, true);
