@@ -1,5 +1,6 @@
 ## To be released
 - Include pushclient module in iOS build
+- Add support for iOS universal deeplinking
 
 ## v0.13.0
 - Include pushclient module in android build
