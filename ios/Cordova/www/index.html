@@ -29,6 +29,10 @@
                 * Enable inline JS: add 'unsafe-inline' to default-src
         -->
         <meta http-equiv="Content-Security-Policy" content="default-src 'self' data: gap: astro: https://ssl.gstatic.com https: 'unsafe-eval'; style-src 'self' 'unsafe-inline'; media-src *">
+
+        <!-- Allows emojis to be passed from worker to native iOS  -->
+        <meta charset="utf-8" />
+
         <title>Hello World</title>
     </head>
     <body>

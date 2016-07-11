@@ -1,5 +1,11 @@
 ## To be released
-- Updated to be compatible with Android Cordova v5.1.1
+- [Android] Updated to be compatible with Android Cordova v5.1.1
+- [iOS] Include pushclient module in iOS build
+
+## v0.13.0
+- Include pushclient module in android build
+- [iOS] set app to portrait-only
+- [iOS] implement pop-to-root on re-selection of currently displaying tab item
 
 ## v0.12.0
 - Update app icon resource for Xcode 7
