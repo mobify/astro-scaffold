@@ -1,5 +1,6 @@
 ## To be released
-- Include pushclient module in iOS build
+- [Android] Updated to be compatible with Android Cordova v5.1.1
+- [iOS] Include pushclient module in iOS build
 
 ## v0.13.0
 - Include pushclient module in android build
