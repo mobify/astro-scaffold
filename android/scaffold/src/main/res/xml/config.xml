@@ -9,7 +9,7 @@
         <param name="android-package" value="com.phonegap.plugins.barcodescanner.BarcodeScanner" />
     </feature>
     <allow-intent href="market:*" />
-    <name>eXtra</name>
+    <name>Astro App</name>
     <description />
     <author email="info@mobify.com" href="https://mobify.com">
         Mobify
