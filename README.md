@@ -103,6 +103,7 @@ Astro defines a controller inside of a requirejs module. The module exposes a pr
   * `app/app-controllers/navigationController.js` manages the navigation component for a menu item. Coordinates behavior between the navigation plugin and the header bar for the menu item.
   * `app/app-controllers/navigationHeaderController.js` manages the header bars which are displayed in the navigation components
   * `app/app-controllers/searchBarController.js` manages the search bar. Allows the search bar to hide and show in a parent view. Allows search request to be handled by the app.
+  * `app/app-controllers/softAskController.js` manages a soft ask dialog to prompt for enabling Mobify Push. Interacts with a PushPlugin to subscribe for Mobify Push. Note: A PushPlugin is not currently initialized in `app.js`
   * `app/app-controllers/tabBarController.js` manages the tab bar layout which is used in the iOS version of the app. Coordinates the behavior of the tab bar buttons, navigation components and the cart which is displayed in a modal view.
 * `app/app-www/` contains assets/css/html/js files needed for the apps embedded webpages - allows for these pages to be accessible offline
   * `app/app-www/assets/` contains assets for embedded web content
