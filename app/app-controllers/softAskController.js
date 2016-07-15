@@ -18,16 +18,19 @@ function(
 
     SoftAskController.prototype.showSoftAsk = function(title, message) {
         var self = this;
-        AlertViewPlugin.init().then(function(alertView) {
-            alertView.setTitle(title);
-            alertView.setText(message);
-            alertView.addOkButton("Yes");
-            alertView.addCancelButton();
-            alertView.show().then(function(okPressed) {
-                if (okPressed) {
-                    self.pushPlugin.subscribe();
-                }
-            });
+        var alertViewShowPromise = AlertViewPlugin.init().then(
+            function(alertView) {
+                alertView.setTitle(title);
+                alertView.setText(message);
+                alertView.addOkButton('Yes');
+                alertView.addCancelButton();
+                return alertView.show();
+            }
+        );
+        alertViewShowPromise.then(function(okPressed) {
+            if (okPressed) {
+                self.pushPlugin.subscribe();
+            }
         });
     };
 
