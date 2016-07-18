@@ -6,7 +6,7 @@
 	<string>com.mobify.astro.scaffold</string>
 	<key>com.apple.developer.associated-domains</key>
 	<array>
-		<string>applinks:app-deeplinks.herokuapp.com</string>
+		<string>applinks:deeplink.mobify.net</string>
 	</array>
 </dict>
 </plist>
