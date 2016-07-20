@@ -48,9 +48,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     // Called on receiving deep links unless prevented by didFinish/willFinish
     // didFinish/willFinish are only called if the appplication is not already running
     func application(application: UIApplication, openURL url: NSURL, sourceApplication: String?, annotation: AnyObject) -> Bool {
-        if let astroViewController = astroViewController {
-            astroViewController.receivedDeeplink(url)
-        }
+        astroViewController?.receivedDeeplink(url)
         return true
     }
 
@@ -77,11 +75,6 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     }
 
     func application(application: UIApplication, continueUserActivity userActivity: NSUserActivity, restorationHandler: ([AnyObject]?) -> Void) -> Bool {
-        if let astroViewController = astroViewController {
-            return astroViewController.continueUserActivity(userActivity)
-        }
-
-        return false
+        return astroViewController?.continueUserActivity(userActivity) ?? false
     }
 }
-
