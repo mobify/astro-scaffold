@@ -1,6 +1,7 @@
 ## To be released
 - [Android] Updated to be compatible with Android Cordova v5.1.1
 - [iOS] Include pushclient module in iOS build
+- [iOS] Add support for universal deeplinking
 
 ## v0.13.0
 - Include pushclient module in android build
