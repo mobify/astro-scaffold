@@ -26,6 +26,8 @@
                     android:host="www.mobify.com" />
                 <data android:scheme="https"
                     android:host="www.mobify.com" />
+                <data android:scheme="https"
+                    android:host="deeplink.mobify.net" />
             </intent-filter>
         </activity>
     </application>

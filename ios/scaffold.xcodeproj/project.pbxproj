@@ -71,6 +71,7 @@
 		87C6A8F71B430FA2001876CE /* app.js */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.javascript; name = app.js; path = ../../app/app.js; sourceTree = "<group>"; };
 		87C6A8F91B430FB7001876CE /* app.js */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.javascript; name = app.js; path = ../../app/build/app.js; sourceTree = "<group>"; };
 		B12FAF511C9751BC00F254BD /* app-www */ = {isa = PBXFileReference; lastKnownFileType = folder; name = "app-www"; path = "../../app/app-www"; sourceTree = "<group>"; };
+		CB4448E01D3011B900D31824 /* scaffold.entitlements */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xml; path = scaffold.entitlements; sourceTree = "<group>"; };
 		CBC6D60B1D19B7E900DC3785 /* PushClient.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = PushClient.framework; path = "$(CONFIGURATION_BUILD_DIR)/PushClient.framework"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -132,6 +133,7 @@
 				6E4715201CA1DAA500A359FE /* Plugins */,
 				87C6A8891B43044D001876CE /* Supporting Files */,
 				87C6A8F71B430FA2001876CE /* app.js */,
+				CB4448E01D3011B900D31824 /* scaffold.entitlements */,
 				87C6A88B1B43044D001876CE /* AppDelegate.swift */,
 				87C6A8921B43044D001876CE /* Images.xcassets */,
 				87C6A8941B43044D001876CE /* LaunchScreen.xib */,
@@ -410,6 +412,7 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				CODE_SIGN_ENTITLEMENTS = scaffold/scaffold.entitlements;
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
 					"$(CONFIGURATION_BUILD_DIR)",
@@ -527,6 +530,7 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				CODE_SIGN_ENTITLEMENTS = scaffold/scaffold.entitlements;
 				EMBEDDED_CONTENT_CONTAINS_SWIFT = YES;
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
@@ -543,6 +547,7 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				CODE_SIGN_ENTITLEMENTS = scaffold/scaffold.entitlements;
 				EMBEDDED_CONTENT_CONTAINS_SWIFT = YES;
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
