@@ -39,4 +39,4 @@ popd
 # Build app.js.
 pushd $MYPATH
 $MYPATH/node_modules/grunt-cli/bin/grunt build
-popd $MYPATH
+popd

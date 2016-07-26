@@ -4,7 +4,7 @@ define([
     'bluebird',
     'config/baseConfig',
     'config/welcomeConfig',
-    'plugins/WebViewPlugin',
+    'plugins/webViewPlugin',
     'plugins/navigationPlugin',
     'plugins/anchoredLayoutPlugin',
     'app-controllers/welcome-screen/welcomeHeaderController'
