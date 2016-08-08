@@ -18,4 +18,4 @@ Linked PRs: **(links to corresponding PRs, optional)**
 - [ ] CHANGELOG.md has been updated.
 - [ ] Run the generator to make sure it still functions correctly.
 - [ ] +1 from an engineer on the Astro team.
-- [ ] Both tab layout and drawer layout are fully functional in ios. (Set `iosUsingTabLayout` in `baseConfig`)
+- [ ] Both tab layout and drawer layout are fully functional in ios. (Set `useTabLayout` in `baseConfig`)

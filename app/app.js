@@ -138,10 +138,11 @@ window.run = function() {
         };
 
         var appLayoutPromise = Application.getOSInformation().then(function(osInfo) {
-            if (osInfo.os === Astro.platforms.ios && BaseConfig.iosUsingTabLayout) {
+            if (BaseConfig.useTabLayout) {
                 return createTabBarLayout(counterBadgeControllerPromise);
+            } else {
+                return createDrawerLayout(counterBadgeControllerPromise);
             }
-            return createDrawerLayout(counterBadgeControllerPromise);
         });
 
         // Show welcome modal only after layout is created for proper

@@ -2,6 +2,7 @@
 - [Android] Updated to be compatible with Android Cordova v5.1.1
 - [iOS] Include pushclient module in iOS build
 - [iOS] Add support for universal deeplinking
+- [Both] Tab Navigation for both iOS and Android - disallow one platform using one navigation type while the other platform use the other navigation type
 
 ## v0.13.0
 - Include pushclient module in android build
