@@ -29,11 +29,11 @@ GlobalAssertions.prototype.assertPortrait = function() {
                 .execute(function() {
                     return window.orientation;
                 }, function(result) {
-                        var rotation = result.value;
-                        self.browser.log('Window orientation should be portrait.');
-                        this.assert.equal(rotation, orientations.portrait);
-                    }
-                );
+                    var rotation = result.value;
+                    self.browser.log('Window orientation should be portrait.');
+                    this.assert.equal(rotation, orientations.portrait);
+                }
+            );
         });
     return this;
 };
@@ -54,12 +54,12 @@ GlobalAssertions.prototype.assertLandscape = function() {
                 .execute(function() {
                     return window.orientation;
                 }, function(result) {
-                        var rotation = result.value;
-                        self.browser.log('Window orientation should be (counter)clockwise.');
-                        this.assert.notEqual(rotation, orientations.portrait);
-                        this.assert.notEqual(rotation, orientations.upsideDown);
-                    }
-                );
+                    var rotation = result.value;
+                    self.browser.log('Window orientation should be (counter)clockwise.');
+                    this.assert.notEqual(rotation, orientations.portrait);
+                    this.assert.notEqual(rotation, orientations.upsideDown);
+                }
+            );
         });
     return this;
 };
