@@ -8,6 +8,7 @@ npm-debug.log
 
 android/.gradle
 android/local.properties
+android/.idea/vcs.xml
 android/.idea/workspace.xml
 android/.idea/libraries
 android/build
