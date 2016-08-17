@@ -5,19 +5,35 @@ set -e
 MYPATH=$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )
 ROOT=$MYPATH/..
 
+function findNode() {
+    return $(which npm 1>/dev/null 2>&1)
+}
+
 pushd "$MYPATH"
 
 # Force supporting Homebrew installations of npm.
 export PATH=$PATH:/usr/local/bin
 
-# Source additional configuration from `user-env.sh` in Astro's root.
-if [ -f user-env.sh ]; then
-    echo "Found user-env.sh"
-    source user-env.sh
+if ! findNode; then
+    echo "Cannot find 'npm'. Trying via nvm..."
+    # Find node with nvm
+    if [ -d "$HOME/.nvm" ]; then
+        echo " ↳  Found $HOME/.nvm  Sourcing and retrying build..."
+        . "$HOME/.nvm/nvm.sh"
+    fi
 fi
 
-if ! which npm 1>/dev/null 2>&1; then
-    echo "Cannot find 'npm'.  Please ensure 'npm' is in your PATH."
+if ! findNode; then
+    echo "Cannot find 'npm'. Trying via user-env.sh..."
+    # Source additional configuration from `user-env.sh` in Astro's root.
+    if [ -f user-env.sh ]; then
+        echo " ↳  Found user-env.sh  Sourcing and retrying build..."
+        source user-env.sh
+    fi
+fi
+
+if ! findNode; then
+    echo "Cannot find 'npm'. Aborting. Add your npm path to \`user-env.sh\` and retry."
     exit 1
 fi
 
