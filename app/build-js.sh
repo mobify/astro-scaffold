@@ -4,10 +4,17 @@ set -e
 
 MYPATH=$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )
 ROOT=$MYPATH/..
+EXTRA_NPM_ARGS=""
+EXTRA_GRUNT_ARGS=""
 
 function findNode() {
     return $(which npm 1>/dev/null 2>&1)
 }
+
+if [ "$1" == "--no-color" ]; then
+    EXTRA_NPM_ARGS="--no-color $EXTRA_NPM_ARGS"
+    EXTRA_GRUNT_ARGS="--no-color $EXTRA_GRUNT_ARGS"
+fi
 
 pushd "$MYPATH"
 
@@ -47,12 +54,12 @@ cp $ROOT/node_modules/jquery/dist/jquery.min.js $MYPATH/app-www/js
 
 # Build astro-client.js
 pushd $ROOT/node_modules/astro-sdk
-npm install --no-progress --no-spin
-$MYPATH/node_modules/grunt-cli/bin/grunt build_astro_client
+npm install --no-progress --no-spin $EXTRA_NPM_ARGS
+$MYPATH/node_modules/grunt-cli/bin/grunt $EXTRA_GRUNT_ARGS build_astro_client
 cp js/build/astro-client.js $MYPATH/app-www/js
 popd
 
 # Build app.js.
 pushd $MYPATH
-$MYPATH/node_modules/grunt-cli/bin/grunt build
+$MYPATH/node_modules/grunt-cli/bin/grunt $EXTRA_GRUNT_ARGS build
 popd
