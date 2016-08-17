@@ -47,7 +47,7 @@ cp $ROOT/node_modules/jquery/dist/jquery.min.js $MYPATH/app-www/js
 
 # Build astro-client.js
 pushd $ROOT/node_modules/astro-sdk
-npm install
+npm install --no-progress --no-spin
 $MYPATH/node_modules/grunt-cli/bin/grunt build_astro_client
 cp js/build/astro-client.js $MYPATH/app-www/js
 popd
