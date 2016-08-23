@@ -5,7 +5,7 @@ set -o pipefail
 MYPATH=$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )
 ROOT=$MYPATH/..
 export IOS_DEVICE_NAME="iPhone 6"
-export IOS_VERSION="9.2"
+export IOS_VERSION="9.3"
 
 # Kill background processes when this script exits.
 trap 'kill $(jobs -p)' EXIT
