@@ -1,4 +1,4 @@
-## To be released
+## v0.14.0
 - `build-js.sh` is much smarter and looks for npm in `.nvm` now!
 - Updated `grunt-eslint` to v19.0.0
 - [Android] Updated to be compatible with Android Cordova v5.1.1
