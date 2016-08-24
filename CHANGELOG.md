@@ -1,4 +1,5 @@
 ## To be released
+- [iOS] Remove update bundle version build phase
 
 ## v0.14.0
 - `build-js.sh` is much smarter and looks for npm in `.nvm` now!

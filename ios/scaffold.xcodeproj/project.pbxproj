@@ -198,7 +198,6 @@
 				87C6A8831B43044D001876CE /* Frameworks */,
 				87C6A8841B43044D001876CE /* Resources */,
 				87132A241B6016FF00FC74A4 /* Embed Frameworks */,
-				4924F0D41BC83D9100C3B23C /* Update Bundle Version */,
 			);
 			buildRules = (
 			);
@@ -290,20 +289,6 @@
 /* End PBXResourcesBuildPhase section */
 
 /* Begin PBXShellScriptBuildPhase section */
-		4924F0D41BC83D9100C3B23C /* Update Bundle Version */ = {
-			isa = PBXShellScriptBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			inputPaths = (
-			);
-			name = "Update Bundle Version";
-			outputPaths = (
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-			shellPath = /bin/sh;
-			shellScript = "set -e\nif [[ $CONFIGURATION != Debug ]]; then\necho \"Updating Info.plist version to: $VERSION\"\n/usr/libexec/PlistBuddy -c \"Set :CFBundleVersion $BUNDLE_VERSION\" \"$TARGET_BUILD_DIR/$INFOPLIST_PATH\"\n/usr/bin/plutil -convert ${INFOPLIST_OUTPUT_FORMAT}1 \"$TARGET_BUILD_DIR/$INFOPLIST_PATH\"\n/usr/libexec/PlistBuddy -c \"Set :CFBundleVersion $BUNDLE_VERSION\" \"$DWARF_DSYM_FOLDER_PATH/$DWARF_DSYM_FILE_NAME/Contents/Info.plist\"\nfi";
-		};
 		87C6A8FB1B430FD2001876CE /* Build app.js */ = {
 			isa = PBXShellScriptBuildPhase;
 			buildActionMask = 2147483647;
