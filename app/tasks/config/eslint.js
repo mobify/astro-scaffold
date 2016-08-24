@@ -6,14 +6,14 @@ module.exports = function(grunt) {
             src: lint.targets,
             options: {
                 reset: true,
-                config: 'node_modules/mobify-code-style/javascript/.eslintrc'
+                configFile: 'node_modules/mobify-code-style/es5/mobify-es5.yml'
             }
         },
         prod: {
             src: lint.targets,
             options: {
                 reset: true,
-                config: 'node_modules/mobify-code-style/javascript/.eslintrc'
+                configFile: 'node_modules/mobify-code-style/es5/mobify-es5.yml'
             }
         }
     };
