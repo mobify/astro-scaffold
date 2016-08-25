@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		2CC92E1E1D6FAA2800F23E21 /* SearchBarPlugin.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2CC92E1D1D6FAA2800F23E21 /* SearchBarPlugin.swift */; };
 		6E4715221CA1DB2600A359FE /* DoubleIconsPlugin.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6E4715211CA1DB2600A359FE /* DoubleIconsPlugin.swift */; };
 		87132A201B6016FF00FC74A4 /* Astro.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 87132A1E1B6016FF00FC74A4 /* Astro.framework */; };
 		87132A211B6016FF00FC74A4 /* Astro.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 87132A1E1B6016FF00FC74A4 /* Astro.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
@@ -53,6 +54,7 @@
 /* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
+		2CC92E1D1D6FAA2800F23E21 /* SearchBarPlugin.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SearchBarPlugin.swift; sourceTree = "<group>"; };
 		6E4715211CA1DB2600A359FE /* DoubleIconsPlugin.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = DoubleIconsPlugin.swift; path = Plugins/DoubleIconsPlugin.swift; sourceTree = "<group>"; };
 		87132A1E1B6016FF00FC74A4 /* Astro.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Astro.framework; path = "$(CONFIGURATION_BUILD_DIR)/Astro.framework"; sourceTree = "<group>"; };
 		87132A1F1B6016FF00FC74A4 /* Cordova.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Cordova.framework; path = "$(CONFIGURATION_BUILD_DIR)/Cordova.framework"; sourceTree = "<group>"; };
@@ -100,6 +102,7 @@
 			isa = PBXGroup;
 			children = (
 				6E4715211CA1DB2600A359FE /* DoubleIconsPlugin.swift */,
+				2CC92E1D1D6FAA2800F23E21 /* SearchBarPlugin.swift */,
 			);
 			name = Plugins;
 			sourceTree = "<group>";
@@ -312,6 +315,7 @@
 			files = (
 				87C6A88E1B43044D001876CE /* ViewController.swift in Sources */,
 				6E4715221CA1DB2600A359FE /* DoubleIconsPlugin.swift in Sources */,
+				2CC92E1E1D6FAA2800F23E21 /* SearchBarPlugin.swift in Sources */,
 				87C6A88C1B43044D001876CE /* AppDelegate.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
