@@ -55,77 +55,101 @@ function(
             layoutPromise,
             NavigationHeaderController.init(counterBadgeController),
             NavigationPlugin.init(),
-            SearchBarController.init(layoutPromise, SearchConfig),
-        function(layout, navigationHeaderController, navigationView,  searchBarController) {
-            var loader = navigationView.getLoader();
-            loader.setColor(BaseConfig.loaderColor);
-            // Set layout
-            layout.setContentView(navigationView);
-            layout.addTopView(navigationHeaderController.viewPlugin);
-            navigationView.setHeaderBar(navigationHeaderController.viewPlugin);
-            navigationHeaderController.registerBackEvents(function() {
-                navigationView.back();
-            });
+        function(layout, navigationHeaderController, navigationView) {
 
-            navigationHeaderController.registerCartEvents(cartEventHandler);
+            var searchBarControllerPromise = SearchBarController.init(layoutPromise, navigationHeaderController, navigationView);
 
-            var drawerIconEnabled = drawerEventHandler !== undefined;
-            if (drawerIconEnabled) {
-                navigationHeaderController.registerDrawerEvents(drawerEventHandler);
-            }
+            return searchBarControllerPromise.then(function(searchBarController) {
+                var loader = navigationView.getLoader();
+                loader.setColor(BaseConfig.loaderColor);
+                // Set layout
+                layout.setContentView(navigationView);
+                layout.addTopView(navigationHeaderController.viewPlugin).then(function() {
+                    searchBarController.addToLayout();
+                    var searchBarToggleCallback = searchBarController.toggle.bind(searchBarController, {animated: true});
+                    navigationHeaderController.registerSearchBarEvents(searchBarToggleCallback);
+                });
+                navigationView.setHeaderBar(navigationHeaderController.viewPlugin);
+                navigationHeaderController.registerBackEvents(function() {
+                    navigationView.back();
+                });
 
-            searchBarController.addToLayout();
+                navigationHeaderController.registerCartEvents(cartEventHandler);
 
-            var searchBarToggleCallback = searchBarController.toggle.bind(searchBarController, {animated: true});
-            navigationHeaderController.registerSearchBarEvents(searchBarToggleCallback);
-
-            var navigationController = new NavigationController(
-                id,
-                url,
-                layout,
-                navigationView,
-                navigationHeaderController,
-                searchBarController,
-                drawerIconEnabled
-            );
-            var handleActiveState = function(event) {
-                if (navigationController.isActive) {
-                    AppEvents.once(event, function() {
-                        navigationController.isActive = true;
-                    });
+                var drawerIconEnabled = drawerEventHandler !== undefined;
+                if (drawerIconEnabled) {
+                    navigationHeaderController.registerDrawerEvents(drawerEventHandler);
                 }
-                navigationController.isActive = false;
-            };
 
-            AppEvents.on(AppEvents.names.welcomeShown, function() {
-                handleActiveState(AppEvents.names.welcomeHidden);
-            });
-
-            AppEvents.on(AppEvents.names.cartShown, function() {
-                handleActiveState(AppEvents.names.cartHidden);
-            });
-
-            var backHandler = function() {
-                navigationView.back();
-            };
-
-            var retryHandler = function(params) {
-                if (!params.url) {
-                    return;
-                }
-                var navigate = function(eventPlugin) {
-                    eventPlugin.navigate(params.url);
+                var navigationController = new NavigationController(
+                    id,
+                    url,
+                    layout,
+                    navigationView,
+                    navigationHeaderController,
+                    searchBarController,
+                    drawerIconEnabled
+                );
+                var handleActiveState = function(event) {
+                    if (navigationController.isActive) {
+                        AppEvents.once(event, function() {
+                            navigationController.isActive = true;
+                        });
+                    }
+                    navigationController.isActive = false;
                 };
-                navigationView.getEventPluginPromise(params).then(navigate);
-            };
+                AppEvents.on(AppEvents.names.welcomeShown, function() {
+                    handleActiveState(AppEvents.names.welcomeHidden);
+                });
 
-            errorController.bindToNavigator({
-                navigator: navigationView,
-                backHandler: backHandler,
-                retryHandler: retryHandler,
-                isActiveItem: navigationController.isActiveItem.bind(navigationController)
+                AppEvents.on(AppEvents.names.cartShown, function() {
+                    handleActiveState(AppEvents.names.cartHidden);
+                });
+
+                navigationController._bindSearchEvents();
+
+                var backHandler = function() {
+                    navigationView.back();
+                };
+
+                var retryHandler = function(params) {
+                    if (!params.url) {
+                        return;
+                    }
+                    var navigate = function(eventPlugin) {
+                        eventPlugin.navigate(params.url);
+                    };
+                    navigationView.getEventPluginPromise(params).then(navigate);
+                };
+
+                errorController.bindToNavigator({
+                    navigator: navigationView,
+                    backHandler: backHandler,
+                    retryHandler: retryHandler,
+                    isActiveItem: navigationController.isActiveItem.bind(navigationController)
+                });
+                return navigationController;
             });
-            return navigationController;
+        });
+    };
+
+    NavigationController.prototype._bindSearchEvents = function() {
+        var self = this;
+
+        AppEvents.on(AppEvents.names.searchHidden, function() {
+            self.navigationView.getTopPlugin().then(function(webView) {
+                webView.trigger(AppEvents.names.searchHidden);
+            });
+        });
+
+        AppEvents.on(AppEvents.names.searchShown, function() {
+            self.navigationView.getTopPlugin().then(function(webView) {
+                webView.trigger(AppEvents.names.searchShown);
+            });
+        });
+
+        AppEvents.on(AppEvents.names.headerBarBorderShown, function() {
+            self.navigationStack[self.navigationStack.length -1].headerShowingBottomBorder = true;
         });
     };
 
@@ -157,6 +181,10 @@ function(
     };
 
     NavigationController.prototype.navigateMainViewToNewRoot = function(url, title) {
+        if (this.searchBarController && this.searchBarController.isShowing()) {
+            this.searchBarController.hide({animated: true});
+        }
+
         var self = this;
         this.popToRoot({animated: true})
             .then(function() {
@@ -181,13 +209,17 @@ function(
 
     NavigationController.prototype.back = function() {
         var self = this;
-        self.navigationView.canGoBack().then(function(canGoBack) {
-            if (canGoBack) {
-                self.navigationView.back();
-            } else {
-                Application.closeApp();
-            }
-        });
+        if (self.searchBarController && self.searchBarController.isShowing()) {
+            self.searchBarController.hide({animated: true});
+        } else {
+            self.navigationView.canGoBack().then(function(canGoBack) {
+                if (canGoBack) {
+                    self.navigationView.back();
+                } else {
+                    Application.closeApp();
+                }
+            });
+        }
     };
 
     NavigationController.prototype.canGoBack = function() {
@@ -196,6 +228,10 @@ function(
 
     NavigationController.prototype.isActiveItem = function() {
         return this.isActive;
+    };
+
+    NavigationController.prototype.getTopPlugin = function() {
+        return this.navigationView.getTopPlugin();
     };
 
     return NavigationController;

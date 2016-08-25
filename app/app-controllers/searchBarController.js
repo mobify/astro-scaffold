@@ -1,34 +1,53 @@
 define([
+    'application',
+    'app-events',
+    'app-rpc',
     'bluebird',
+    'config/baseConfig',
+    'config/searchConfig',
+    'app-plugins/searchBarPlugin',
+    'plugins/anchoredLayoutPlugin',
     'plugins/webViewPlugin'
 ],
 function(
+    Application,
+    AppEvents,
+    AppRpc,
     Promise,
+    BaseConfig,
+    SearchConfig,
+    SearchBarPlugin,
+    AnchoredLayoutPlugin,
     WebViewPlugin
 ) {
-    var SearchBarController = function(webView, layout, searchConfig) {
-        this.viewPlugin = webView;
+    var SearchBarController = function(
+        searchBar,
+        internalLayout,
+        layout,
+        headerController,
+        bottomView
+    ) {
+        this.viewPlugin = searchBar;
+        this.internalLayout = internalLayout;
         this.layout = layout;
-        this.searchConfig = searchConfig;
+        this.headerController = headerController;
+        this.showBottomBorderOnHide = true;
+        this.bottomView = bottomView;
 
         // Track the state to show.hide keyboard on toggle
-        //
-        // Set to true because the 'addToLayout' method hides
-        // the search bar (sets isVisible to false) when it is
-        // being added to the anchored layout
-        // By default views added to the anchored layout are visible
-        this.isVisible = true;
+        this.isVisible = false;
 
-        this._registerEvents();
-
-        this.viewPlugin.navigate(this.searchConfig.uiSource);
-        this.viewPlugin.disableScrolling();
+        registerEvents(this);
+        registerRpcs(this);
     };
 
-    SearchBarController.init = function(layoutPromise, searchConfig) {
-        return Promise.join(layoutPromise, WebViewPlugin.init(),
-            function(layout, webView) {
-                return new SearchBarController(webView, layout, searchConfig);
+    SearchBarController.init = function(layoutPromise, headerController, bottomView) {
+        return Promise.join(
+            SearchBarPlugin.init(),
+            AnchoredLayoutPlugin.init(),
+            layoutPromise,
+            function(searchBar, internalLayout, layout) {
+                return new SearchBarController(searchBar, internalLayout, layout, headerController, bottomView);
             }
         );
     };
@@ -36,29 +55,71 @@ function(
     // Returns queryUrl with the string "<search_terms>" replaced with the
     // URI-encoded version of searchTerms
     SearchBarController.prototype.generateSearchUrl = function(searchTerms) {
-        return this.searchConfig.queryUrl.replace('<search_terms>', encodeURIComponent(searchTerms));
+        return SearchConfig.queryUrl.replace('<search_terms>', encodeURIComponent(searchTerms));
     };
 
     // You must manually call this for the search bar to be visible
     SearchBarController.prototype.addToLayout = function() {
-        this.layout.addTopView(this.viewPlugin, {height: 52});
-        this.hide({animated: false}); // don't show it by default
+
+        // We may have to fiddle with these heights going forward once we have
+        // test devices for what we need to support for Android. On the ones I'm
+        // testing now, this looks good on iOS and Android.
+        var barHeight;
+        if (AstroNative.OSInfo.os === Astro.platforms.ios) {
+            barHeight = 68;
+            this.internalLayout.addTopView(this.viewPlugin);
+            this.layout.addTopView(this.internalLayout);
+        } else {
+            barHeight = 60;
+            this.internalLayout.addTopView(this.viewPlugin, {height: barHeight});
+            this.layout.addTopView(this.internalLayout);
+        }
+
+        this.layout.hideView(this.internalLayout, {animated: false});
     };
 
-    SearchBarController.prototype._registerEvents = function() {
-        var self = this;
+    var registerRpcs = function(self) {
+        Astro.registerRpcMethod(AppRpc.names.searchHide, ['params'], function(res, params) {
+            self.hide(params)
+                .then(function() {
+                    res.send(null, true);
+                });
+        });
 
+        Astro.registerRpcMethod(AppRpc.names.searchIsShowing, [], function(res) {
+            res.send(null, self.isShowing());
+        });
+    };
+
+    var registerEvents = function(self) {
         // Users of SearchBarController can also hook this event
         // to instruct the desired view to act on the search being performed
         // The search terms are expected to be in a string found in
         // params['searchTerms']
-        this.viewPlugin.on('search:submitted', function(params) {
+        self.viewPlugin.on(AppEvents.names.searchSubmitted, function(params) {
             self.hide({animated: true});
         });
 
-        this.viewPlugin.on('search:cancelled', function(params) {
+        self.viewPlugin.on(AppEvents.names.searchCancelled, function(params) {
             self.hide({animated: true});
+            self.setText('');
         });
+    };
+
+    SearchBarController.prototype.blur = function() {
+        this.viewPlugin.blur();
+    };
+
+    SearchBarController.prototype.focus = function() {
+        this.viewPlugin.focus();
+    };
+
+    SearchBarController.prototype.setText = function(text) {
+        this.viewPlugin.setText(text);
+    };
+
+    SearchBarController.prototype.isShowing = function() {
+        return this.isVisible;
     };
 
     SearchBarController.prototype.show = function(options) {
@@ -66,17 +127,58 @@ function(
             return;
         }
 
-        this.layout.showView(this.viewPlugin, options);
+        if (AstroNative.OSInfo.os === Astro.platforms.android) {
+            var self = this;
+            this.headerController.isShowingBottomBorder().then(function(isShowing) {
+                self.showBottomBorderOnHide = isShowing;
+                if (isShowing) {
+                    Astro.jsRpcMethod(AppRpc.names.headerHideBottomBorder, [])();
+                }
+            });
+        }
+
+        Astro.jsRpcMethod(AppRpc.names.layoutHideBottomViews, ['params'])({animated: true});
+        this.layout.showView(this.internalLayout, options);
+        this.focus();
         this.isVisible = true;
+        this.bottomView.disableScrolling();
+        AppEvents.trigger(AppEvents.names.searchShown);
     };
 
     SearchBarController.prototype.hide = function(options) {
         if (!this.isVisible) {
-            return;
+            return Promise.resolve(true);
         }
 
-        this.layout.hideView(this.viewPlugin, options);
-        this.isVisible = false;
+        var self = this;
+        self.blur();
+        self.isVisible = false;
+        Astro.jsRpcMethod(AppRpc.names.layoutShowBottomViews, ['params'])({animated: true});
+        if (AstroNative.OSInfo.os === Astro.platforms.ios) {
+            // Enable scrolling for the underlying content before
+            // dismissing so that they animate properly and resturn
+            // their previous state.
+            return self.bottomView.enableScrolling().then(function() {
+                AppEvents.trigger(AppEvents.names.searchHidden);
+                return self.layout.hideView(self.internalLayout, options);
+            });
+        } else {
+            if (self.showBottomBorderOnHide) {
+                Astro.jsRpcMethod(AppRpc.names.headerShowBottomBorder, [])();
+            }
+
+            // Animating the keyboard away at the same time as hiding the
+            // layout results in a janky keyboard animation on Android.
+            // Delaying it a bit makes it look much smoother.
+            return self.bottomView.enableScrolling().then(function() {
+                AppEvents.trigger(AppEvents.names.searchHidden);
+                return new Promise(function(resolve, reject) {
+                    setTimeout(function() {
+                        resolve(self.layout.hideView(self.internalLayout, options));
+                    }, 200);
+                });
+            });
+        }
     };
 
     SearchBarController.prototype.toggle = function(options) {
@@ -92,7 +194,15 @@ function(
             return;
         }
 
-        this.viewPlugin.on('search:submitted', callback);
+        var self = this;
+        this.viewPlugin.on(AppEvents.names.searchSubmitted, function(params) {
+            // Restore state of stack frame before navigating to
+            // search results.
+            if (self.showBottomBorderOnHide) {
+                AppEvents.trigger(AppEvents.names.headerBarBorderShown);
+            }
+            callback(params);
+        });
     };
 
     return SearchBarController;

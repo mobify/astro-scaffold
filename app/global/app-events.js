@@ -15,6 +15,13 @@ define([
         // raised when cart modal is hidden
         cartHidden: 'cart:hidden',
 
+        headerBarBorderShown: 'headerbar:border-shown',
+
+        searchCancelled: 'search:cancelled',
+        searchHidden: 'search:hidden',
+        searchShown: 'search:shown',
+        searchSubmitted: 'search:submitted',
+
         // raised when welcome modal is displayed
         welcomeShown: 'welcome:shown',
 

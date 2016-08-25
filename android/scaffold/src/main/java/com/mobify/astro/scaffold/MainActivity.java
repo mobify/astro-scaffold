@@ -9,6 +9,7 @@ import com.mobify.astro.plugins.loaders.*;
 import com.mobify.astro.plugins.headerbarplugin.HeaderBarPlugin;
 import com.mobify.astro.plugins.webviewplugin.WebViewPlugin;
 import com.mobify.astro.scaffold.plugins.DoubleIconsPlugin;
+import com.mobify.astro.scaffold.plugins.SearchBarPlugin;
 
 import org.apache.cordova.CordovaWebView;
 
