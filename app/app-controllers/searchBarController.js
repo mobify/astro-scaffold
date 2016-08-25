@@ -31,7 +31,6 @@ function(
         this.internalLayout = internalLayout;
         this.layout = layout;
         this.headerController = headerController;
-        this.showBottomBorderOnHide = true;
         this.bottomView = bottomView;
 
         // Track the state to show.hide keyboard on toggle
@@ -127,16 +126,6 @@ function(
             return;
         }
 
-        if (AstroNative.OSInfo.os === Astro.platforms.android) {
-            var self = this;
-            this.headerController.isShowingBottomBorder().then(function(isShowing) {
-                self.showBottomBorderOnHide = isShowing;
-                if (isShowing) {
-                    Astro.jsRpcMethod(AppRpc.names.headerHideBottomBorder, [])();
-                }
-            });
-        }
-
         Astro.jsRpcMethod(AppRpc.names.layoutHideBottomViews, ['params'])({animated: true});
         this.layout.showView(this.internalLayout, options);
         this.focus();
@@ -163,10 +152,6 @@ function(
                 return self.layout.hideView(self.internalLayout, options);
             });
         } else {
-            if (self.showBottomBorderOnHide) {
-                Astro.jsRpcMethod(AppRpc.names.headerShowBottomBorder, [])();
-            }
-
             // Animating the keyboard away at the same time as hiding the
             // layout results in a janky keyboard animation on Android.
             // Delaying it a bit makes it look much smoother.
@@ -196,11 +181,6 @@ function(
 
         var self = this;
         this.viewPlugin.on(AppEvents.names.searchSubmitted, function(params) {
-            // Restore state of stack frame before navigating to
-            // search results.
-            if (self.showBottomBorderOnHide) {
-                AppEvents.trigger(AppEvents.names.headerBarBorderShown);
-            }
             callback(params);
         });
     };

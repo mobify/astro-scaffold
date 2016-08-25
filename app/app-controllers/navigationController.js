@@ -147,10 +147,6 @@ function(
                 webView.trigger(AppEvents.names.searchShown);
             });
         });
-
-        AppEvents.on(AppEvents.names.headerBarBorderShown, function() {
-            self.navigationStack[self.navigationStack.length -1].headerShowingBottomBorder = true;
-        });
     };
 
     NavigationController.prototype.navigate = function(url, includeDrawerIcon) {

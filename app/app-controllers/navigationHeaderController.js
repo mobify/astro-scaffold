@@ -103,9 +103,5 @@ function(
         this.viewPlugin.setCenterTitle(titleHeaderContent.title, titleHeaderContent.id);
     };
 
-    NavigationHeaderController.prototype.isShowingBottomBorder = function() {
-        return this.viewPlugin.isShowingBottomBorder();
-    };
-
     return NavigationHeaderController;
 });

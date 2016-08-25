@@ -11,8 +11,6 @@ function(
         cartShow: 'cartShow',
         cartHide: 'cartHide',
         errorContent: 'errorContent',
-        headerHideBottomBorder: 'headerHideBottomBorder',
-        headerShowBottomBorder: 'headerShowBottomBorder',
         layoutHideBottomViews: 'layoutHideBottomViews',
         layoutShowBottomViews: 'layoutShowBottomViews',
         menuItems: 'menuItems',
@@ -35,8 +33,6 @@ function(
     AppRpc.welcomeHide = Astro.jsRpcMethod(AppRpc.names.welcomeHide, []);
     AppRpc.welcomeHasHeader = Astro.jsRpcMethod(AppRpc.names.welcomeHasHeader, []);
     AppRpc.navigateToNewRootView = Astro.jsRpcMethod(AppRpc.names.navigateToNewRootView, ['url', 'title']);
-    AppRpc.headerHideBottomBorder = Astro.jsRpcMethod(AppRpc.names.headerHideBottomBorder, []);
-    AppRpc.headerShowBottomBorder = Astro.jsRpcMethod(AppRpc.names.headerShowBottomBorder, []);
     AppRpc.layoutHideBottomViews = Astro.jsRpcMethod(AppRpc.names.layoutHideBottomViews, ['params']);
     AppRpc.layoutShowBottomViews = Astro.jsRpcMethod(AppRpc.names.layoutShowBottomViews, ['params']);
     AppRpc.searchHide = Astro.jsRpcMethod(AppRpc.names.searchHide, ['params']);
