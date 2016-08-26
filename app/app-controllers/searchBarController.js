@@ -126,7 +126,6 @@ function(
             return;
         }
 
-        Astro.jsRpcMethod(AppRpc.names.layoutHideBottomViews, ['params'])({animated: true});
         this.layout.showView(this.internalLayout, options);
         this.focus();
         this.isVisible = true;
@@ -142,7 +141,6 @@ function(
         var self = this;
         self.blur();
         self.isVisible = false;
-        Astro.jsRpcMethod(AppRpc.names.layoutShowBottomViews, ['params'])({animated: true});
         if (AstroNative.OSInfo.os === Astro.platforms.ios) {
             // Enable scrolling for the underlying content before
             // dismissing so that they animate properly and resturn
