@@ -57,18 +57,18 @@ public class SearchBarPlugin extends AstroPlugin {
 
     private void setupTextInput() {
         textInput = new EditText(activity);
-        // setTextInputLayout();
+        setTextInputLayout();
 
         // Styling
         textInput.setGravity(Gravity.CENTER_VERTICAL);
         // textInput.setBackground(ResourcesCompat.getDrawable(activity.getResources(), R.drawable.rounded_edittext, null));
         // textInput.setHintTextColor(ContextCompat.getColor(activity.getApplicationContext(), R.color.grey_70));
-        // setTextInputPadding();
+        setTextInputPadding();
 
         // Search icon
-        // Drawable searchIcon = ResourcesCompat.getDrawable(activity.getResources(), R.drawable.icon__search, null);
-        // textInput.setCompoundDrawablePadding(activity.getResources().getDimensionPixelSize(R.dimen.search_bar_icon_right_padding));
-        // textInput.setCompoundDrawablesRelativeWithIntrinsicBounds(searchIcon, null, null, null);
+        Drawable searchIcon = ResourcesCompat.getDrawable(activity.getResources(), R.drawable.icon__search, null);
+        textInput.setCompoundDrawablePadding(activity.getResources().getDimensionPixelSize(R.dimen.search_bar_icon_right_padding));
+        textInput.setCompoundDrawablesRelativeWithIntrinsicBounds(searchIcon, null, null, null);
 
         // Setup keyboard button to perform search instead of "enter"
         textInput.setImeOptions(EditorInfo.IME_ACTION_SEARCH);
@@ -86,19 +86,19 @@ public class SearchBarPlugin extends AstroPlugin {
         });
     }
 
-    // private void setTextInputPadding() {
-    //     textInput.setPadding(activity.getResources().getDimensionPixelSize(R.dimen.search_bar_left_padding), 0, textInput.getPaddingRight(), 0);
-    // }
+    private void setTextInputPadding() {
+        textInput.setPadding(activity.getResources().getDimensionPixelSize(R.dimen.search_bar_left_padding), 0, textInput.getPaddingRight(), 0);
+    }
 
-    // private void setTextInputLayout() {
-    //     LinearLayout.LayoutParams textInputLayoutParams = new LinearLayout.LayoutParams(
-    //             0, LinearLayout.LayoutParams.MATCH_PARENT
-    //     );
-    //     textInputLayoutParams.weight = 1;
-    //     int containerMargin = activity.getResources().getDimensionPixelSize(R.dimen.search_bar_plugin_outer_margin);
-    //     textInputLayoutParams.setMargins(containerMargin, containerMargin, 0, containerMargin);
-    //     textInput.setLayoutParams(textInputLayoutParams);
-    // }
+    private void setTextInputLayout() {
+        LinearLayout.LayoutParams textInputLayoutParams = new LinearLayout.LayoutParams(
+                0, LinearLayout.LayoutParams.MATCH_PARENT
+        );
+        textInputLayoutParams.weight = 1;
+        int containerMargin = activity.getResources().getDimensionPixelSize(R.dimen.search_bar_plugin_outer_margin);
+        textInputLayoutParams.setMargins(containerMargin, containerMargin, 0, containerMargin);
+        textInput.setLayoutParams(textInputLayoutParams);
+    }
 
     private void setupCancelButton() {
         cancelButton = new Button(activity);
