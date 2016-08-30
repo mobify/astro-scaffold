@@ -22,16 +22,14 @@ function(
 ) {
     var SearchBarController = function(
         searchBar,
-        internalLayout,
-        layout,
-        headerController,
-        bottomView
+        parentLayout,
+        parentHeaderController,
+        parentNavigationView
     ) {
         this.viewPlugin = searchBar;
-        this.internalLayout = internalLayout;
-        this.layout = layout;
-        this.headerController = headerController;
-        this.bottomView = bottomView;
+        this.parentLayout = parentLayout;
+        this.parentHeaderController = parentHeaderController;
+        this.parentNavigationView = parentNavigationView;
 
         // Track the state to show.hide keyboard on toggle
         this.isVisible = false;
@@ -40,13 +38,12 @@ function(
         registerRpcs(this);
     };
 
-    SearchBarController.init = function(layoutPromise, headerController, bottomView) {
+    SearchBarController.init = function(parentLayoutPromise, parentHeaderController, parentNavigationView) {
         return Promise.join(
             SearchBarPlugin.init(),
-            AnchoredLayoutPlugin.init(),
-            layoutPromise,
-            function(searchBar, internalLayout, layout) {
-                return new SearchBarController(searchBar, internalLayout, layout, headerController, bottomView);
+            parentLayoutPromise,
+            function(searchBar, parentLayout) {
+                return new SearchBarController(searchBar, parentLayout, parentHeaderController, parentNavigationView);
             }
         );
     };
@@ -59,22 +56,17 @@ function(
 
     // You must manually call this for the search bar to be visible
     SearchBarController.prototype.addToLayout = function() {
-
         // We may have to fiddle with these heights going forward once we have
         // test devices for what we need to support for Android. On the ones I'm
         // testing now, this looks good on iOS and Android.
         var barHeight;
         if (AstroNative.OSInfo.os === Astro.platforms.ios) {
             barHeight = 68;
-            this.internalLayout.addTopView(this.viewPlugin);
-            this.layout.addTopView(this.internalLayout);
         } else {
             barHeight = 60;
-            this.internalLayout.addTopView(this.viewPlugin, {height: barHeight});
-            this.layout.addTopView(this.internalLayout);
         }
-
-        this.layout.hideView(this.internalLayout, {animated: false});
+        this.parentLayout.addTopView(this.viewPlugin, {height: barHeight});
+        this.parentLayout.hideView(this.viewPlugin, {animated: false});
     };
 
     var registerRpcs = function(self) {
@@ -126,11 +118,20 @@ function(
             return;
         }
 
-        this.layout.showView(this.internalLayout, options);
-        this.focus();
-        this.isVisible = true;
-        this.bottomView.disableScrolling();
-        AppEvents.trigger(AppEvents.names.searchShown);
+        var self = this;
+
+        WebViewPlugin.init().then(function(contentWebView) {
+            if (AstroNative.OSInfo.os === Astro.platforms.android) {
+                self.parentLayout.hideView(self.parentHeaderController.viewPlugin, options);
+            }
+            self.parentLayout.showView(self.viewPlugin, options);
+            contentWebView.setBackgroundColor('#E6E6E6');
+            self.parentLayout.setContentView(contentWebView);
+            self.focus();
+            self.isVisible = true;
+            // self.parentNavigationView.disableScrolling();
+            AppEvents.trigger(AppEvents.names.searchShown);
+        });
     };
 
     SearchBarController.prototype.hide = function(options) {
@@ -141,27 +142,26 @@ function(
         var self = this;
         self.blur();
         self.isVisible = false;
-        if (AstroNative.OSInfo.os === Astro.platforms.ios) {
-            // Enable scrolling for the underlying content before
-            // dismissing so that they animate properly and resturn
-            // their previous state.
-            return self.bottomView.enableScrolling().then(function() {
-                AppEvents.trigger(AppEvents.names.searchHidden);
-                return self.layout.hideView(self.internalLayout, options);
-            });
-        } else {
-            // Animating the keyboard away at the same time as hiding the
-            // layout results in a janky keyboard animation on Android.
-            // Delaying it a bit makes it look much smoother.
-            return self.bottomView.enableScrolling().then(function() {
-                AppEvents.trigger(AppEvents.names.searchHidden);
-                return new Promise(function(resolve, reject) {
-                    setTimeout(function() {
-                        resolve(self.layout.hideView(self.internalLayout, options));
-                    }, 200);
-                });
-            });
-        }
+
+        // Enable scrolling for the underlying content before
+        // dismissing so that they animate properly and resturn
+        // their previous state.
+        // self.parentNavigationView.enableScrolling().then(function() {
+            AppEvents.trigger(AppEvents.names.searchHidden);
+            if (AstroNative.OSInfo.os === Astro.platforms.ios) {
+                self.parentLayout.hideView(self.viewPlugin, options);
+                self.parentLayout.setContentView(self.parentNavigationView);
+            } else {
+                // Animating the keyboard away at the same time as hiding the
+                // layout results in a janky keyboard animation on Android.
+                // Delaying it a bit makes it look much smoother.
+                setTimeout(function() {
+                    self.parentLayout.hideView(self.viewPlugin, options);
+                    self.parentLayout.showView(self.parentHeaderController.viewPlugin, options);
+                    self.parentLayout.setContentView(self.parentNavigationView);
+                }, 200);
+            }
+        // });
     };
 
     SearchBarController.prototype.toggle = function(options) {

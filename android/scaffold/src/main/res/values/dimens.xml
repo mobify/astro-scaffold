@@ -7,4 +7,9 @@
     <dimen name="search_bar_icon_right_padding">8dp</dimen>
     <dimen name="search_bar_left_padding">12dp</dimen>
     <dimen name="search_bar_plugin_outer_margin">8dp</dimen>
+
+    <dimen name="search_card_margin">8dp</dimen>
+    <dimen name="search_card_elevation">2dp</dimen>
+    <dimen name="search_card_max_elevation">2dp</dimen>
+    <dimen name="search_card_padding">16dp</dimen>
 </resources>

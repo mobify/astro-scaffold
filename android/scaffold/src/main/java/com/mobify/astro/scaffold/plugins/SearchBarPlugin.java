@@ -20,6 +20,7 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.LinearLayout;
 import android.widget.TextView;
+import android.support.v7.widget.CardView;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -35,24 +36,45 @@ public class SearchBarPlugin extends AstroPlugin {
 
     public SearchBarPlugin(AstroActivity activity, PluginResolver pluginResolver) {
         super(activity, pluginResolver);
-        setupContainerView();
+
         setupTextInput();
         setupCancelButton();
-        textInput.setHint("Search");
-        cancelButton.setText("Cancel");
-        containerView.addView(textInput);
-        containerView.addView(cancelButton);
+        setupContainerView();
     }
 
     private void setupContainerView() {
         containerView = new LinearLayout(activity);
+        containerView.setBackgroundColor(Color.parseColor("#E6E6E6"));
+        int padding = activity.getResources().getDimensionPixelSize(R.dimen.search_card_margin);
+        containerView.setPadding(padding, padding, padding, padding);
         LinearLayout.LayoutParams containerParams = new LinearLayout.LayoutParams(
-                LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.MATCH_PARENT
+            LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT
         );
         containerView.setLayoutParams(containerParams);
+
+        CardView card = new CardView(activity);
+        card.setCardBackgroundColor(Color.parseColor("#FFFFFF"));
+        card.setUseCompatPadding(true);
+        card.setCardElevation(activity.getResources().getDimensionPixelSize(R.dimen.search_card_elevation));
+        card.setMaxCardElevation(activity.getResources().getDimensionPixelSize(R.dimen.search_card_elevation));
+        CardView.LayoutParams cardParams = new CardView.LayoutParams(
+            CardView.LayoutParams.MATCH_PARENT, CardView.LayoutParams.WRAP_CONTENT
+        );
+        card.setLayoutParams(cardParams);
+
+        LinearLayout innerView = new LinearLayout(activity);
+        LinearLayout.LayoutParams innerParams = new LinearLayout.LayoutParams(
+            LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT
+        );
+        innerView.setLayoutParams(innerParams);
+
         // containerView.setBackgroundColor(ContextCompat.getColor(activity.getApplicationContext(), R.color.grey_95));
         // containerView.setBackground(ResourcesCompat.getDrawable(activity.getResources(), R.drawable.bottom_border, null));
-        containerView.setLayoutDirection(View.LAYOUT_DIRECTION_LTR);
+
+        innerView.addView(textInput);
+        innerView.addView(cancelButton);
+        card.addView(innerView);
+        containerView.addView(card);
     }
 
     private void setupTextInput() {
@@ -84,6 +106,9 @@ public class SearchBarPlugin extends AstroPlugin {
                 return handled;
             }
         });
+
+        // Text
+        textInput.setHint("Search");
     }
 
     private void setTextInputPadding() {
@@ -92,7 +117,7 @@ public class SearchBarPlugin extends AstroPlugin {
 
     private void setTextInputLayout() {
         LinearLayout.LayoutParams textInputLayoutParams = new LinearLayout.LayoutParams(
-                0, LinearLayout.LayoutParams.MATCH_PARENT
+                0, LinearLayout.LayoutParams.WRAP_CONTENT
         );
         textInputLayoutParams.weight = 1;
         int containerMargin = activity.getResources().getDimensionPixelSize(R.dimen.search_bar_plugin_outer_margin);
@@ -104,7 +129,7 @@ public class SearchBarPlugin extends AstroPlugin {
         cancelButton = new Button(activity);
         LinearLayout.LayoutParams cancelButtonLayoutParams = new LinearLayout.LayoutParams(
                 LinearLayout.LayoutParams.WRAP_CONTENT,
-                LinearLayout.LayoutParams.MATCH_PARENT
+                LinearLayout.LayoutParams.WRAP_CONTENT
         );
         cancelButton.setLayoutParams(cancelButtonLayoutParams);
         cancelButton.setBackgroundColor(Color.TRANSPARENT);
@@ -114,6 +139,8 @@ public class SearchBarPlugin extends AstroPlugin {
                 searchCancelled();
             }
         });
+
+        cancelButton.setText("Cancel");
     }
 
     @Override
