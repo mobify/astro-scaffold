@@ -62,10 +62,11 @@ function(
         var barHeight;
         if (AstroNative.OSInfo.os === Astro.platforms.ios) {
             barHeight = 68;
+            this.parentLayout.addTopView(this.viewPlugin, {height: barHeight});
         } else {
-            barHeight = 60;
+            this.parentLayout.addTopView(this.viewPlugin);
         }
-        this.parentLayout.addTopView(this.viewPlugin, {height: barHeight});
+
         this.parentLayout.hideView(this.viewPlugin, {animated: false});
     };
 

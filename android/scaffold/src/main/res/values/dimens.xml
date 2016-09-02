@@ -3,13 +3,11 @@
     <dimen name="activity_horizontal_margin">16dp</dimen>
     <dimen name="activity_vertical_margin">16dp</dimen>
 
-    <dimen name="search_bar_edit_text_margin">8dp</dimen>
-    <dimen name="search_bar_icon_right_padding">8dp</dimen>
-    <dimen name="search_bar_left_padding">12dp</dimen>
-    <dimen name="search_bar_plugin_outer_margin">8dp</dimen>
-
+    <dimen name="search_bar_text_size">24dp</dimen>
+    <dimen name="search_bar_spacing_between">32dp</dimen>
+    <dimen name="search_card_padding_left_right">16dp</dimen>
+    <dimen name="search_card_padding_top_bottom">4dp</dimen>
     <dimen name="search_card_margin">8dp</dimen>
     <dimen name="search_card_elevation">2dp</dimen>
     <dimen name="search_card_max_elevation">2dp</dimen>
-    <dimen name="search_card_padding">16dp</dimen>
 </resources>
