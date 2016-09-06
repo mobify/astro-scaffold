@@ -56,17 +56,7 @@ function(
 
     // You must manually call this for the search bar to be visible
     SearchBarController.prototype.addToLayout = function() {
-        // We may have to fiddle with these heights going forward once we have
-        // test devices for what we need to support for Android. On the ones I'm
-        // testing now, this looks good on iOS and Android.
-        var barHeight;
-        if (AstroNative.OSInfo.os === Astro.platforms.ios) {
-            barHeight = 68;
-            this.parentLayout.addTopView(this.viewPlugin, {height: barHeight});
-        } else {
-            this.parentLayout.addTopView(this.viewPlugin);
-        }
-
+        this.parentLayout.addTopView(this.viewPlugin);
         this.parentLayout.hideView(this.viewPlugin, {animated: false});
     };
 
