@@ -7,6 +7,8 @@ import android.graphics.drawable.Drawable;
 import android.net.Uri;
 import android.util.Log;
 import android.util.TypedValue;
+import android.support.v4.content.ContextCompat;
+import android.support.v4.content.res.ResourcesCompat;
 import android.view.Gravity;
 import android.view.KeyEvent;
 import android.view.View;
@@ -42,7 +44,6 @@ public class SearchBarPlugin extends AstroPlugin implements LocaleChangedListene
     private FrameLayout containerView;
     private LinearLayout innerView;
     private EditText textInput;
-    private ImageButton backButton;
 
     public SearchBarPlugin(AstroActivity activity, PluginResolver pluginResolver) {
         super(activity, pluginResolver);
@@ -52,53 +53,46 @@ public class SearchBarPlugin extends AstroPlugin implements LocaleChangedListene
         setupContainerView();
         // Setup a view to hold the input and cancel button
         setupInnerView();
-        // Setup input and cancel button
+        // Setup input and back button and clear button
         setupTextInput();
-        setupBackButton();
+        ImageButton backButton = createBackButton();
+        ImageButton clearButton = createClearButton();
         setLocalizedText();
         // Create a card view to sit in the middle for style
         CardView card = createCardView();
         // Put it all together
         innerView.addView(backButton);
         innerView.addView(textInput);
+        innerView.addView(clearButton);
         card.addView(innerView);
         containerView.addView(card);
     }
 
     private void setupContainerView() {
         containerView = new FrameLayout(activity);
-        containerView.setBackgroundColor(Color.parseColor("#E6E6E6"));
+        containerView.setBackgroundColor(ContextCompat.getColor(activity.getApplicationContext(), R.color.light_grey));
         int padding = activity.getResources().getDimensionPixelSize(R.dimen.search_card_margin);
         containerView.setPadding(padding, padding, padding, padding);
-        FrameLayout.LayoutParams param = new FrameLayout.LayoutParams(
-            FrameLayout.LayoutParams.MATCH_PARENT, FrameLayout.LayoutParams.WRAP_CONTENT
-        );
-        containerView.setLayoutParams(param);
+        setDefaultLayoutParams(containerView);
     }
 
 
     private CardView createCardView() {
         CardView card = new CardView(activity);
-        card.setCardBackgroundColor(Color.parseColor("#FFFFFF"));
+        card.setCardBackgroundColor(Color.WHITE);
         card.setUseCompatPadding(true);
         int leftRightPadding = activity.getResources().getDimensionPixelSize(R.dimen.search_card_padding_left_right);
         int topBottomPadding = activity.getResources().getDimensionPixelSize(R.dimen.search_card_padding_top_bottom);
         card.setContentPadding(leftRightPadding, topBottomPadding, leftRightPadding, topBottomPadding);
         card.setCardElevation(activity.getResources().getDimensionPixelSize(R.dimen.search_card_elevation));
         card.setMaxCardElevation(activity.getResources().getDimensionPixelSize(R.dimen.search_card_elevation));
-        CardView.LayoutParams cardParams = new CardView.LayoutParams(
-            CardView.LayoutParams.MATCH_PARENT, CardView.LayoutParams.WRAP_CONTENT
-        );
-        card.setLayoutParams(cardParams);
+        setDefaultLayoutParams(card);
         return card;
     }
 
     private void setupInnerView() {
         innerView = new LinearLayout(activity);
-        LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(
-                LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT
-        );
-        innerView.setLayoutParams(params);
+        setDefaultLayoutParams(innerView);
         innerView.setLayoutDirection(View.LAYOUT_DIRECTION_LOCALE);
     }
 
@@ -110,8 +104,6 @@ public class SearchBarPlugin extends AstroPlugin implements LocaleChangedListene
         textInput.setGravity(Gravity.CENTER_VERTICAL);
         // textInput.setBackground(ResourcesCompat.getDrawable(activity.getResources(), R.drawable.rounded_edittext, null));
         // textInput.setHintTextColor(ContextCompat.getColor(activity.getApplicationContext(), R.color.grey_70));
-
-        textInput.setTextSize(TypedValue.COMPLEX_UNIT_PX , activity.getResources().getDimensionPixelSize(R.dimen.search_bar_text_size));
 
         // Setup keyboard button to perform search instead of "enter"
         textInput.setImeOptions(EditorInfo.IME_ACTION_SEARCH);
@@ -143,27 +135,55 @@ public class SearchBarPlugin extends AstroPlugin implements LocaleChangedListene
         textInput.setLayoutParams(textInputLayoutParams);
     }
 
-    private void setupBackButton() {
-        backButton = new ImageButton(activity);
-        LinearLayout.LayoutParams cancelButtonLayoutParams = new LinearLayout.LayoutParams(
-                LinearLayout.LayoutParams.WRAP_CONTENT,
-                LinearLayout.LayoutParams.MATCH_PARENT
-        );
-        backButton.setLayoutParams(cancelButtonLayoutParams);
+    private ImageButton createBackButton() {
+        ImageButton backButton = new ImageButton(activity);
         backButton.setBackgroundColor(Color.TRANSPARENT);
         DrawableUriResolver drawableResolver = new DrawableUriResolver(activity);
         try {
             Drawable backDrawable = drawableResolver.getLocalDrawable(Uri.parse(BACK_BUTTON_URI));
-            backDrawable.setColorFilter(0xFF737373, PorterDuff.Mode.SRC_IN);
+            backDrawable.setColorFilter(ContextCompat.getColor(activity.getApplicationContext(), R.color.dark_grey), PorterDuff.Mode.SRC_IN);
             backButton.setImageDrawable(backDrawable);
         } catch (Exception e) {
             Log.e(TAG, "Could not load back button drawable.", e);
         }
+        LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(
+                LinearLayout.LayoutParams.WRAP_CONTENT, LinearLayout.LayoutParams.MATCH_PARENT
+        );
+        backButton.setLayoutParams(params);
+
         backButton.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
                 searchCancelled();
             }
         });
+        return backButton;
+    }
+
+    private ImageButton createClearButton() {
+        ImageButton clearButton = new ImageButton(activity);
+        clearButton.setBackgroundColor(Color.TRANSPARENT);
+        Drawable closeDrawable = ResourcesCompat.getDrawable(activity.getResources(), R.drawable.icon__close, null);
+        closeDrawable.setColorFilter(ContextCompat.getColor(activity.getApplicationContext(), R.color.dark_grey), PorterDuff.Mode.SRC_IN);
+        clearButton.setImageDrawable(closeDrawable);
+
+        LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(
+                LinearLayout.LayoutParams.WRAP_CONTENT, LinearLayout.LayoutParams.MATCH_PARENT
+        );
+        clearButton.setLayoutParams(params);
+
+        clearButton.setOnClickListener(new View.OnClickListener() {
+            public void onClick(View v) {
+                textInput.setText("");
+            }
+        });
+        return clearButton;
+    }
+
+    private void setDefaultLayoutParams(View thing) {
+        LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(
+                LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT
+        );
+        thing.setLayoutParams(params);
     }
 
     private void setLocalizedText() {
@@ -185,7 +205,7 @@ public class SearchBarPlugin extends AstroPlugin implements LocaleChangedListene
     @RpcMethod(methodName = "focus")
     public void focus() {
         textInput.requestFocus();
-        textInput.getBackground().setColorFilter(0x00FFFFFF, PorterDuff.Mode.SRC_IN);
+        textInput.getBackground().setColorFilter(Color.TRANSPARENT, PorterDuff.Mode.SRC_IN);
         InputMethodManager imm = (InputMethodManager) activity.getSystemService(Context.INPUT_METHOD_SERVICE);
         imm.showSoftInput(textInput, InputMethodManager.SHOW_IMPLICIT);
     }
