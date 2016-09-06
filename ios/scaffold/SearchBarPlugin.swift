@@ -33,14 +33,13 @@ class SearchBarViewController: UIViewController {
         
         let barHeight = view.frame.size.height
         searchIconButton.frame = CGRectMake(0, 0, barHeight, barHeight)
-        
+
         styleContainer()
         styleContainerIconTextField()
         styleSearchIconButton("icon__search")
         styleSearchTextField()
-
-        searchTextField.attributedPlaceholder = NSAttributedString(string: "Search")
-        searchCancelButton.setTitle("Cancel", forState: UIControlState.Normal)
+        styleSearchCancelButton()
+        setLocalizedText()
         
         bindSearchEvents()
         
@@ -72,18 +71,22 @@ class SearchBarViewController: UIViewController {
         containerIconTextField.layer.cornerRadius = 5;
         containerIconTextField.layer.masksToBounds = true;
         containerIconTextField.layer.borderWidth = 1;
+        containerIconTextField.layer.borderColor = AppColours.grey_70.CGColor
         containerIconTextField.backgroundColor = UIColor.whiteColor()
     }
     
     func styleSearchIconButton(name: String) {
-        searchIconButton.setImage(UIImage(named: name), forState: UIControlState.Normal)
+        let icon = UIImage(named: name)?.imageWithRenderingMode(UIImageRenderingMode.AlwaysTemplate)
+        searchIconButton.setImage(icon, forState: UIControlState.Normal)
         searchIconButton.adjustsImageWhenHighlighted = false
         searchIconButton.contentMode = UIViewContentMode.Center
         searchIconButton.backgroundColor = UIColor.whiteColor()
+        searchIconButton.tintColor = AppColours.blueLinkText
     }
     
     func styleContainer() {
         let layer = containerView.layer
+        containerView.backgroundColor = AppColours.grey_95
         
         // Add shadow
         layer.shadowColor = UIColor.blackColor().CGColor
@@ -96,6 +99,18 @@ class SearchBarViewController: UIViewController {
         searchTextField.clearButtonMode = UITextFieldViewMode.Always;
         searchTextField.keyboardType = UIKeyboardType.WebSearch;
         searchTextField.backgroundColor = UIColor.whiteColor()
+        searchTextField.textColor = AppColours.blackText
+    }
+
+    func styleSearchCancelButton() {
+        searchCancelButton.backgroundColor = AppColours.grey_95
+        searchCancelButton.setTitleColor(AppColours.blueLinkText, forState: UIControlState.Normal)
+    }
+
+    func setLocalizedText() {
+        let hintText = Localization.translate("search_bar_hint")
+        searchTextField.attributedPlaceholder = NSAttributedString(string: hintText, attributes: [NSForegroundColorAttributeName: AppColours.grey_70])
+        searchCancelButton.setTitle(Localization.translate("search_bar_cancel"), forState: UIControlState.Normal)
     }
     
     func bindSearchEvents() {
@@ -128,7 +143,7 @@ protocol SearchBarViewControllerProtocol: class {
     func searchSubmitted(text: String)
 }
 
-public class SearchBarPlugin: Plugin, ViewPlugin, SearchBarViewControllerProtocol {
+public class SearchBarPlugin: Plugin, ViewPlugin, SearchBarViewControllerProtocol, LocaleChangedListener {
     let typedViewController = SearchBarViewController()
     
     public var viewController: UIViewController {
@@ -158,6 +173,7 @@ public class SearchBarPlugin: Plugin, ViewPlugin, SearchBarViewControllerProtoco
             /////////////////////////////////////////////////////////////
         }
 
+        Localization.addLocaleChangedListener(self)
         typedViewController.delegate = self
     }
     
@@ -186,5 +202,9 @@ public class SearchBarPlugin: Plugin, ViewPlugin, SearchBarViewControllerProtoco
     
     func searchSubmitted(searchText: String) {
         trigger("search:submitted", params:["searchTerms": searchText])
+    }
+
+    public func localeDidChange() {
+        typedViewController.setLocalizedText()
     }
 }
