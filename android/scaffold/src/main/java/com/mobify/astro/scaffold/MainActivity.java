@@ -4,13 +4,6 @@ import android.os.Bundle;
 
 import com.mobify.astro.AstroActivity;
 import com.mobify.astro.plugins.*;
-import com.mobify.astro.plugins.counterbadgeplugin.CounterBadgePlugin;
-import com.mobify.astro.plugins.loaders.*;
-import com.mobify.astro.plugins.headerbarplugin.HeaderBarPlugin;
-import com.mobify.astro.plugins.webviewplugin.WebViewPlugin;
-import com.mobify.astro.scaffold.plugins.DoubleIconsPlugin;
-
-import org.apache.cordova.CordovaWebView;
 
 public class MainActivity extends AstroActivity {
     protected AstroWorker worker;
