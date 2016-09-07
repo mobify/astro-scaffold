@@ -112,9 +112,6 @@ function(
         var self = this;
 
         WebViewPlugin.init().then(function(contentWebView) {
-            if (AstroNative.OSInfo.os === Astro.platforms.android) {
-                self.parentLayout.hideView(self.parentHeaderController.viewPlugin, options);
-            }
             self.parentLayout.showView(self.viewPlugin, options);
             contentWebView.setBackgroundColor('#E6E6E6');
             self.parentLayout.setContentView(contentWebView);
@@ -148,7 +145,6 @@ function(
                 // Delaying it a bit makes it look much smoother.
                 setTimeout(function() {
                     self.parentLayout.hideView(self.viewPlugin, options);
-                    self.parentLayout.showView(self.parentHeaderController.viewPlugin, options);
                     self.parentLayout.setContentView(self.parentNavigationView);
                 }, 200);
             }
