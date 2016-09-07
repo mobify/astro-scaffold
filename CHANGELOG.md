@@ -1,3 +1,6 @@
+## v0.15.0 
+- [iOS] Remove update bundle version build phase
+
 ## v0.14.0
 - `build-js.sh` is much smarter and looks for npm in `.nvm` now!
 - Updated `grunt-eslint` to v19.0.0
