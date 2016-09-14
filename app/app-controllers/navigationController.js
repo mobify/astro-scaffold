@@ -76,7 +76,7 @@ function(
 
             searchBarController.addToLayout();
 
-            var searchBarToggleCallback = searchBarController.toggle.bind(searchBarController, {animated: true});
+            var searchBarToggleCallback = searchBarController.toggle.bind(searchBarController);
             navigationHeaderController.registerSearchBarEvents(searchBarToggleCallback);
 
             var navigationController = new NavigationController(
