@@ -11,30 +11,8 @@ import Astro
 
 public class DoubleIconsPlugin: Plugin, ViewPlugin, HandlesUserInteraction {
     public let viewController = UIViewController()
-
-    var leftIconViewController: UIViewController? {
-        willSet {
-            if let leftIconViewController = leftIconViewController {
-                removeViewController(leftIconViewController)
-            }
-        }
-    }
-
-    var rightIconViewController: UIViewController? {
-        willSet {
-            if let rightIconViewController = rightIconViewController {
-                removeViewController(rightIconViewController)
-            }
-        }
-    }
-
-    func removeViewController(iconViewController: UIViewController) {
-        iconViewController.view.removeFromSuperview()
-
-        // these two methods must be called together
-        iconViewController.willMoveToParentViewController(nil)
-        iconViewController.removeFromParentViewController()
-    }
+    let leftButton: UIControl = UIControl()
+    let rightButton: UIControl = UIControl()
 
     public required init(address: MessageAddress, messageBus: MessageBus, pluginResolver: PluginResolver, options: JsonObject?) {
         super.init(address: address, messageBus: messageBus, pluginResolver: pluginResolver, options: options)
@@ -55,68 +33,72 @@ public class DoubleIconsPlugin: Plugin, ViewPlugin, HandlesUserInteraction {
             /////////////////////////////////////////////////////////////
         }
 
-        viewController.view.frame = CGRect(x: 0, y: 0, width: 88.0, height: 44.0)
+        leftButton.translatesAutoresizingMaskIntoConstraints = false
+        rightButton.translatesAutoresizingMaskIntoConstraints = false
+
+        viewController.view.frame = CGRectMake(0, 0, 88, 44)
+        viewController.view.addSubview(leftButton)
+        viewController.view.addSubview(rightButton)
+
+        let views = [
+            "leftButton": leftButton,
+            "rightButton": rightButton
+        ]
+
+        //  We use the leftButton & rightButton as reusable containers for the icons
+        //  that are set. Icon assets are recommended to be 22×22 for this plugin.
+        //
+        //  +----------88---------+
+        //  |+--------+ +---44---+|
+        //  ||        | |        ||     L == self.leftButton
+        //  ||    L  44 |    R   |44    R == self.rightButton
+        //  ||        | |        ||
+        //  |+--------+ +--------+|
+        //  +---------------------+
+        //             ^
+        //    self.viewController
+
+        viewController.view.addConstraints(NSLayoutConstraint.constraintsWithVisualFormat("H:|[leftButton(44)][rightButton(44)]|", options: [], metrics: nil, views: views ))
+        viewController.view.addConstraints(NSLayoutConstraint.constraintsWithVisualFormat("V:|[leftButton(44)]|", options: [], metrics: nil, views: views))
+        viewController.view.addConstraints(NSLayoutConstraint.constraintsWithVisualFormat("V:|[rightButton(44)]|", options: [], metrics: nil, views: views))
+
+        leftButton.addTarget(self, action: #selector(tapLeftButton), forControlEvents: .TouchUpInside)
+        rightButton.addTarget(self, action: #selector(tapRightButton), forControlEvents: .TouchUpInside)
+    }
+
+    func tapLeftButton(sender: UIControl) {
+        trigger("click:doubleIcons_left")
+    }
+
+    func tapRightButton(sender: UIControl) {
+        trigger("click:doubleIcons_right")
+    }
+
+    private func setPluginInContainer(plugin: ViewPlugin, buttonContainer: UIControl) {
+        let pluginView = plugin.viewController.view
+        pluginView.userInteractionEnabled = false
+        pluginView.translatesAutoresizingMaskIntoConstraints = false
+
+        buttonContainer.subviews.forEach({ $0.removeFromSuperview() })
+        buttonContainer.addSubview(pluginView)
+        pluginView.pinToSuperviewEdges()
+
+        // these two methods must be called together
+        viewController.addChildViewController(plugin.viewController)
+        plugin.viewController.didMoveToParentViewController(self.viewController)
     }
 
     // @RpcMethod
     func setLeftIcon(address: MessageAddress, respond: RpcMethodCallback) {
         if let plugin: ViewPlugin = pluginResolver.pluginInstanceByAddress(address, respond: respond) {
-            leftIconViewController = plugin.viewController
-            setIcon(plugin, triggerFunctionName: "tapLeftButton:", visualConstraintFormat: "H:|[view]")
+            setPluginInContainer(plugin, buttonContainer: leftButton)
         }
     }
 
     // @RpcMethod
     func setRightIcon(address: MessageAddress, respond: RpcMethodCallback) {
         if let plugin: ViewPlugin = pluginResolver.pluginInstanceByAddress(address, respond: respond) {
-            rightIconViewController = plugin.viewController
-            setIcon(plugin, triggerFunctionName: "tapRightButton:", visualConstraintFormat: "H:[view]|")
+            setPluginInContainer(plugin, buttonContainer: rightButton)
         }
     }
-
-    private func setIcon(plugin: ViewPlugin, triggerFunctionName: String, visualConstraintFormat: String) {
-        let pluginViewController = plugin.viewController
-
-        pluginViewController.view.userInteractionEnabled = false
-        let pluginView = wrapInUIControl(pluginViewController.view, triggerFunctionName: triggerFunctionName)
-
-        // these two methods must be called together
-        viewController.addChildViewController(pluginViewController)
-        pluginViewController.didMoveToParentViewController(viewController)
-
-        viewController.view.addSubview(pluginView)
-
-        let widthContraint = NSLayoutConstraint(item: pluginView, attribute: NSLayoutAttribute.Width, relatedBy: NSLayoutRelation.Equal, toItem: viewController.view, attribute: NSLayoutAttribute.Width, multiplier: 0.5, constant: 0)
-        let heightContraint = NSLayoutConstraint(item: pluginView, attribute: NSLayoutAttribute.Height, relatedBy: NSLayoutRelation.Equal, toItem: viewController.view, attribute: NSLayoutAttribute.Height, multiplier: 1, constant: 0)
-
-        viewController.view.addConstraint(widthContraint)
-        viewController.view.addConstraint(heightContraint)
-
-        viewController.view.addConstraints(NSLayoutConstraint.constraintsWithVisualFormat(visualConstraintFormat, options: [], metrics: nil, views: ["view":pluginView]))
-    }
-
-    private func wrapInUIControl(view: UIView, triggerFunctionName: String) -> UIControl {
-        let subViewSize = view.frame.size
-        let viewRect = CGRect(x: CGFloat(0), y: CGFloat(0), width: subViewSize.width, height: subViewSize.height)
-
-        let uiControl = UIControl(frame: viewRect)
-        uiControl.translatesAutoresizingMaskIntoConstraints = false
-
-        uiControl.addSubview(view)
-
-        view.pinToSuperviewEdges()
-
-        uiControl.addTarget(self, action: NSSelectorFromString(triggerFunctionName), forControlEvents: UIControlEvents.TouchUpInside)
-
-        return uiControl
-    }
-
-    func tapLeftButton(sender: UIControl) {
-        trigger("click:doubleIcons_left")
-    }
-    
-    func tapRightButton(sender: UIControl) {
-        trigger("click:doubleIcons_right")
-    }
-    
 }
