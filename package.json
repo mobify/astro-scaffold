@@ -18,6 +18,9 @@
     "nightwatch": "0.9.6",
     "nightwatch-commands": "1.7.0"
   },
+  "engines": {
+      "node": "^4.0.0"
+  },
   "scripts": {
     "test": "./scripts/ios-appium.sh"
   },
