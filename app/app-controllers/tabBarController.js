@@ -100,7 +100,18 @@ function(
             this.viewPlugin.setContentView(this.tabBar.tabViews[tabId]);
             this.activeTabId = tabId;
 
-            this.getActiveNavigationView().isActive = true;
+            var selectedTab = this.getActiveNavigationView();
+            selectedTab.isActive = true;
+
+            // TODO: Rethink isLoaded exposure
+            if (!selectedTab.isLoaded()) {
+                var tabItem = TabConfig.tabItems[tabId - 1];
+                selectedTab.navigationView.getTopPlugin()
+                    .then(function(topView) {
+                        topView.navigate(tabItem.url);
+                        selectedTab.navigationView.loaded = true;
+                    });
+            }
         } else {
             this.getActiveNavigationView().popToRoot({animated: true});
         }
@@ -125,7 +136,6 @@ function(
 
     TabBarController.prototype.canGoBack = function() {
         var activeTab = this.tabBar.NavigationControllers[this.activeTabId];
-        window.message = [activeTab];
         return activeTab.canGoBack();
     };
 

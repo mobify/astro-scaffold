@@ -76,11 +76,20 @@ function(
                     navigator.navigate(params.url);
                 }
             };
+
+            // Welcome modal should never dismiss unless the user has
+            // completed the welcome flow.
+            var canGoBack = function() {
+                return Promise.resolve(false);
+            };
+
             errorController.bindToNavigator({
                 navigator: navigator,
                 backHandler: backHandler,
                 retryHandler: retryHandler,
-                isActiveItem: welcomeModalController.isActiveItem.bind(welcomeModalController)
+                isActiveItem: welcomeModalController.isActiveItem.bind(welcomeModalController),
+                canGoBack: canGoBack
+
             });
             return welcomeModalController;
         });

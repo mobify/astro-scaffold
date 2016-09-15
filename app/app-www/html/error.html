@@ -2,49 +2,21 @@
     <head>
         <meta name="viewport" content="width=device-width, initial-scale=1">
         <script src="../js/astro-client.js"></script>
+        <link rel="stylesheet" href="../css/shared.css">
         <link rel="stylesheet" href="../css/error__style.css">
     </head>
     <body>
-        <div class="t-connectivity-error">
-
-            <header class="connectivity-error__header">
-                <h1 id="title">ERROR_TITLE</h1>
-                <p id="message">ERROR_MESSAGE</p>
-            </header>
-
-            <img class="connectivity-error__image" id="image" src="../assets/error__image.png" alt="logo">
-            <div class="connectivity-error__buttons">
-                <button class="c-button c--cta" id="retry">Retry</button>
-                <button class="c-button" id="back">Back</button>
+        <div class="t-error">
+        <section class="t-error__content-wrapper">
+            <img id="image" class="t-error__image t--offline" src="../assets/error__offline.png" aria-role="presentation" alt="Offline Error Image">
+            <h1 id="title" class="t-error__heading">You're Offline</h1>
+            <p id="text" class="t-error__text">It looks like you're not connected to the internet.</p>
+            <div class="t-error__buttons">
+                <button class="c-button c--accent" id="retry">Retry</button>
+                <button class="t-error__back-button c-button c--link" id="back" aria-role="button">Back</button>
             </div>
+        </section>
         </div>
-        <script>
-            // Back button can be hidden or shown depending availability
-            // of a previous page.
-            Astro.jsRpcMethod('appCanGoBack', [])().then(function(canGoBack) {
-                if (canGoBack) {
-                    document.getElementById('back').style.visibility = "visible";
-                } else {
-                    document.getElementById('back').style.visibility = "hidden";
-                }
-
-                return Astro.jsRpcMethod('errorContent', [])();
-            }).then(function(errorContent) {
-                // Modify error page based on type of error
-                document.getElementById('title').innerHTML = errorContent.title;
-                document.getElementById('message').innerHTML = errorContent.message;
-                document.getElementById('image').src = errorContent.imageUrl;
-
-                Astro.trigger('error:loaded')
-            });
-
-            document.getElementById('retry').addEventListener('click', function() {
-                Astro.trigger('retry');
-            });
-            document.getElementById('back').addEventListener('click', function() {
-                Astro.trigger('back');
-            });
-
-        </script>
+        <script data-main="../js/error.js" src="../js/require.js"></script>
     </body>
 </html>

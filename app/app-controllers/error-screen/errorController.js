@@ -23,6 +23,9 @@ define([
         this.viewPlugin = webView;
         this.modalView = modalView;
         this.errorType = null;
+        this.canGoBack = false;
+
+        this.viewPlugin.navigate(ErrorConfig.url);
     };
 
     ErrorController.init = function() {
@@ -60,7 +63,11 @@ define([
         if (!this.errorType) {
             return null;
         }
-        return ErrorConfig.errors[this.errorType];
+
+        var errorContent = ErrorConfig.errors[this.errorType];
+        errorContent.canGoBack = this.canGoBack;
+
+        return errorContent;
     };
 
     // Remove the events when the modal is hidden otherwise untriggered
@@ -73,24 +80,37 @@ define([
 
     ErrorController.prototype._generateErrorCallback = function(errorType, params) {
         var self = this;
+        var navigator = params.navigator;
         var backHandler = params.backHandler;
         var retryHandler = params.retryHandler;
         var isActiveItem = params.isActiveItem;
+        var canGoBack = params.canGoBack;
 
         return function(eventArgs) {
+            navigator.loaded = false;
+
             if (isActiveItem()) {
                 self.viewPlugin.once('back', function() {
                     self.hide();
                     self._removeModalEvents();
                     backHandler();
                 });
+
+                // Wait until the error page is loaded before showing
+                self.viewPlugin.on('error:loaded', function() {
+                    self.show();
+                });
+
+                self.errorType = errorType;
+                canGoBack().then(function(canGoBack) {
+                    self.canGoBack = canGoBack;
+                    var loadParams = {
+                        errorContent: self.errorContent()
+                    };
+
+                    self.viewPlugin.trigger('error:should-load', loadParams);
+                });
             }
-            // Wait until the error page is loaded before showing
-            self.viewPlugin.on('error:loaded', function() {
-                self.show();
-            });
-            self.errorType = errorType;
-            self.viewPlugin.navigate(ErrorConfig.url);
 
             // We allow all views that triggered this modal to listen for
             // `retry` so that they will reload when the error modal's retry

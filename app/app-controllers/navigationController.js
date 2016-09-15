@@ -107,6 +107,7 @@ function(
 
             var backHandler = function() {
                 navigationView.back();
+                navigationView.loaded = true;
             };
 
             var retryHandler = function(params) {
@@ -115,6 +116,7 @@ function(
                 }
                 var navigate = function(eventPlugin) {
                     eventPlugin.navigate(params.url);
+                    navigationView.loaded = true;
                 };
                 navigationView.getEventPluginPromise(params).then(navigate);
             };
@@ -123,7 +125,8 @@ function(
                 navigator: navigationView,
                 backHandler: backHandler,
                 retryHandler: retryHandler,
-                isActiveItem: navigationController.isActiveItem.bind(navigationController)
+                isActiveItem: navigationController.isActiveItem.bind(navigationController),
+                canGoBack: navigationController.canGoBack.bind(navigationController)
             });
             return navigationController;
         });
