@@ -97,11 +97,11 @@ window.run = function() {
             // Tab layout must be added as the mainViewPlugin before
             // The first tab is selected or else the navigation does
             // not complete correctly
+            // Note: The first tab will be pre-selected by tabBarPlugin by default
             return Promise.join(
                 tabBarControllerPromise,
                 layoutSetupPromise,
             function(tabBarController) {
-                tabBarController.selectTab('1');
                 registerCanGoBackRpc(tabBarController);
 
                 return tabBarController;
@@ -138,10 +138,11 @@ window.run = function() {
         };
 
         var appLayoutPromise = Application.getOSInformation().then(function(osInfo) {
-            if (osInfo.os === Astro.platforms.ios && BaseConfig.iosUsingTabLayout) {
+            if (BaseConfig.useTabLayout) {
                 return createTabBarLayout(counterBadgeControllerPromise);
+            } else {
+                return createDrawerLayout(counterBadgeControllerPromise);
             }
-            return createDrawerLayout(counterBadgeControllerPromise);
         });
 
         // Show welcome modal only after layout is created for proper

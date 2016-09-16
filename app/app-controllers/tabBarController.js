@@ -16,27 +16,23 @@ function(
         this.viewPlugin = layout;
         this.activeTabId = null;
 
+        // Set up regular tabs' layouts
+        this._tabViews = {};
+        this._navigationControllers = {};
+
+        this.tabBar.setOpaque();
+
+        // Needs to happen before tabBar is set up so we can receive the first itemSelect event
         this._bindEvents();
     };
 
-    var configTabBar = function(tabBar, tabItems) {
-        tabBar.setItems(tabItems);
-        tabBar.setOpaque();
-
-        return tabBar;
-    };
-
     var initRegularTabs = function(
-        tabBar,
+        controller,
         tabItems,
         cartEventHandler,
         counterBadgeController,
         errorController
     ) {
-        // Set up regular tabs' layouts
-        tabBar.tabViews = {};
-        tabBar.NavigationControllers = {};
-
         // Make sure all tabViews are set up
         return Promise.all(tabItems.map(function(tab) {
             // Init a new NavigationController
@@ -48,13 +44,12 @@ function(
                 errorController
             );
             return navigationControllerPromise.then(function(navigationController) {
-                tabBar.NavigationControllers[tab.id] = navigationController;
-                tabBar.tabViews[tab.id] = navigationController.viewPlugin;
-
-                return tabBar;
+                controller._navigationControllers[tab.id] = navigationController;
+                controller._tabViews[tab.id] = navigationController.viewPlugin;
             });
         })).then(function() {
-            return tabBar;
+            controller.tabBar.setItems(tabItems);
+            return controller;
         });
     };
 
@@ -64,25 +59,25 @@ function(
         counterBadgeControllerPromise,
         errorControllerPromise
     ) {
+        var controllerPromise = Promise.join(
+            TabBarPlugin.init(),
+            layoutPromise,
+            function(tabBar, layout) {
+                return new TabBarController(tabBar, layout);
+            }
+        );
+
         var constructTabItemsPromise = Promise.resolve(TabConfig.tabItems);
 
-        var initTabBarPromise = Promise.join(
-            TabBarPlugin.init(),
-            constructTabItemsPromise,
-            configTabBar);
-
-        var initRegularTabsPromise = Promise.join(
-            initTabBarPromise,
+        return Promise.join(
+            controllerPromise,
             constructTabItemsPromise,
             cartEventHandlerPromise,
             counterBadgeControllerPromise,
             errorControllerPromise,
-            initRegularTabs);
-
-        return Promise.all([initRegularTabsPromise]).then(function() {
-            return Promise.join(initTabBarPromise, layoutPromise, function(tabBar, layout) {
-                return new TabBarController(tabBar, layout);
-            });
+            initRegularTabs
+        ).then(function(controller) {
+            return controller;
         });
     };
 
@@ -97,7 +92,7 @@ function(
                 this.getActiveNavigationView().isActive = false;
             }
 
-            this.viewPlugin.setContentView(this.tabBar.tabViews[tabId]);
+            this.viewPlugin.setContentView(this._tabViews[tabId]);
             this.activeTabId = tabId;
 
             this.getActiveNavigationView().isActive = true;
@@ -107,7 +102,7 @@ function(
     };
 
     TabBarController.prototype.getActiveNavigationView = function() {
-        return this.tabBar.NavigationControllers[this.activeTabId];
+        return this._navigationControllers[this.activeTabId];
     };
 
     TabBarController.prototype._bindEvents = function() {
@@ -120,11 +115,11 @@ function(
     };
 
     TabBarController.prototype.navigateActiveItem = function(url) {
-        this.tabBar.NavigationControllers[this.activeTabId].navigate(url);
+        this._navigationControllers[this.activeTabId].navigate(url);
     };
 
     TabBarController.prototype.canGoBack = function() {
-        var activeTab = this.tabBar.NavigationControllers[this.activeTabId];
+        var activeTab = this._navigationControllers[this.activeTabId];
         window.message = [activeTab];
         return activeTab.canGoBack();
     };
