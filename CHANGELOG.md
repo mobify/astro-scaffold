@@ -1,7 +1,7 @@
 ## To be released
--
+- Welcome modal now relies on installationId to determine whether to show
 
-## v0.15.0 
+## v0.15.0
 - [iOS] Remove update bundle version build phase
 
 ## v0.14.0
