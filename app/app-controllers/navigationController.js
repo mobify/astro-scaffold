@@ -33,6 +33,7 @@ function(
         this.searchBarController = searchBarController;
 
         this.navigate(url, includeDrawerIcon);
+        this.navigationView.loaded = true;
 
         var self = this;
         this.searchBarController.registerSearchSubmittedEvents(function(params) {
