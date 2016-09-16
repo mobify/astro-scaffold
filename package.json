@@ -18,6 +18,7 @@
     "nightwatch": "0.9.6",
     "nightwatch-commands": "1.7.0"
   },
+  "engineStrict": true,
   "engines": {
       "node": "^4.0.0"
   },
