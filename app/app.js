@@ -137,31 +137,33 @@ window.run = function() {
             });
         };
 
-        var appLayoutPromise = Application.getOSInformation().then(function(osInfo) {
-            if (BaseConfig.useTabLayout) {
-                return createTabBarLayout(counterBadgeControllerPromise);
-            } else {
-                return createDrawerLayout(counterBadgeControllerPromise);
-            }
-        });
+        var createLayout = function() {
+            return BaseConfig.useTabLayout
+                ? createTabBarLayout()
+                : createDrawerLayout();
+        };
 
-        // Show welcome modal only after layout is created for proper
-        // bookkeeping of the active view.
-        Promise.join(
-            appLayoutPromise,
-            welcomeModalControllerPromise,
-        function(menuController, welcomeModalController) {
-            // The welcome modal can be configured to show only
-            // once -- on initial startup, by passing in the
-            // parameter `{forced: false}` below
-            welcomeModalController.show({forced: true});
+        var initMainLayout = function() {
+            return createLayout().then(function(menuController) {
+                // Deep linking services will enable deep linking on startup
+                // and while running it will open the deep link in the current
+                // active tab
+                deepLinkingServices = new DeepLinkingServices(menuController);
+            });
+        };
 
-            // Deep linking services will enable deep linking on startup
-            // and while running
-            // It will open the deep link in the current active tab
-            deepLinkingServices = new DeepLinkingServices(menuController);
-        });
+        var runApp = function() {
+            welcomeModalControllerPromise.then(function(welcomeModalController) {
+                // The welcome modal can be configured to show only once
+                // (on first launch) by setting `{forced: false}` as the
+                // parameter for welcomeModalController.show()
+                welcomeModalController
+                    .show({forced: true})
+                    .finally(initMainLayout);
+            });
+        };
 
+        runApp();
     }, undefined, true);
 };
 // Comment out next line for JS debugging
