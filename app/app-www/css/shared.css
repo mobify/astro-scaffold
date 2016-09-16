@@ -6,22 +6,6 @@
 //
 */
 
-@font-face {
-    font-family: "Droid Kufi";
-    font-weight: normal;
-
-    src: url('../assets/fonts/droid-kufi/DroidKufi-Regular.woff') format('woff'),
-    url('../assets/fonts/droid-kufi/DroidKufi-Regular.ttf') format('truetype');
-}
-
-@font-face {
-    font-family: "Droid Kufi";
-    font-weight: 600;
-
-    src: url('../assets/fonts/droid-kufi/DroidKufi-Bold.woff') format('woff'),
-    url('../assets/fonts/droid-kufi/DroidKufi-Bold.ttf') format('truetype');
-}
-
 * {
     box-sizing: border-box; /* 1 */
 }
@@ -87,8 +71,7 @@ a {
 
     color: #4d4d4d;
 }
-.astro-android .c-button,
-.astro-locale-ar .c-button {
+.astro-android .c-button {
     font-weight: 600;
 }
 
@@ -129,10 +112,6 @@ a {
     display: -webkit-flex;
     display: flex;
     justify-content: space-between;
-}
-
-.u-droid-kufi {
-    font-family: "Droid Kufi", "Helvetica Neue", Helvetica, Arial, sans-serif !important;
 }
 
 .u-padding-top {

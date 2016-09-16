@@ -25,6 +25,8 @@ define([
         this.errorType = null;
         this.canGoBack = false;
 
+        // Navigate to the error page so that event
+        // listeners/handlers are set up.
         this.viewPlugin.navigate(ErrorConfig.url);
     };
 
