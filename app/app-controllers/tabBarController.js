@@ -103,14 +103,24 @@ function(
             var selectedTab = this.getActiveNavigationView();
             selectedTab.isActive = true;
 
-            // TODO: Rethink isLoaded exposure
-            if (!selectedTab.isLoaded()) {
-                var tabItem = TabConfig.tabItems[tabId - 1];
-                selectedTab.navigationView.getTopPlugin()
-                    .then(function(topView) {
-                        topView.navigate(tabItem.url);
-                        selectedTab.navigationView.loaded = true;
-                    });
+            if (selectedTab.needsReload()) {
+                var selectedNavigationView = selectedTab.navigationView;
+                Promise.join(
+                    selectedNavigationView.canGoBack(),
+                    selectedNavigationView.getTopPlugin(),
+                    function(tabCanGoBack, topPlugin) {
+                        // In the case where a tab failed its initial navigation
+                        // a reload is insufficient so instead, we navigate to
+                        // the tab's root URL.
+                        if (!tabCanGoBack && typeof topPlugin.navigate === 'function') {
+                            var tabItem = TabConfig.tabItems[tabId - 1];
+                            topPlugin.navigate(tabItem.url);
+                        } else {
+                            topPlugin.reload();
+                        }
+                        selectedNavigationView.loaded = true;
+                    }
+                );
             }
         } else {
             this.getActiveNavigationView().popToRoot({animated: true});
