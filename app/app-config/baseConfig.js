@@ -2,7 +2,7 @@ define([], function() {
 /* eslint-enable max-statements */
     var baseURL = 'https://webpush-you-host.mobifydemo.io';
     // Line altered by generator. If changing please change generator as well!!
-    var iosUsingTabLayout = true;
+    var useTabLayout = false;
 
     var colors = {
         primaryColor: '#007ba7',
@@ -15,7 +15,7 @@ define([], function() {
     return {
         baseURL: baseURL,
         colors: colors,
-        iosUsingTabLayout: iosUsingTabLayout,
+        useTabLayout: useTabLayout,
         loaderColor: loaderColor
     };
 });
