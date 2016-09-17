@@ -7,7 +7,6 @@ function(
     var AppRpc = {};
 
     AppRpc.names = {
-        appCanGoBack: 'appCanGoBack',
         cartShow: 'cartShow',
         cartHide: 'cartHide',
         errorContent: 'errorContent',
@@ -19,7 +18,6 @@ function(
         navigateToNewRootView: 'navigateToNewRootView'
     };
 
-    AppRpc.appCanGoBack = Astro.jsRpcMethod(AppRpc.names.appCanGoBack, []);
     AppRpc.cartShow = Astro.jsRpcMethod(AppRpc.names.cartShow, []);
     AppRpc.cartHide = Astro.jsRpcMethod(AppRpc.names.cartHide, []);
     AppRpc.errorContent = Astro.jsRpcMethod(AppRpc.names.errorContent, []);

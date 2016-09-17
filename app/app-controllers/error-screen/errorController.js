@@ -99,7 +99,7 @@ define([
                 });
 
                 // Wait until the error page is loaded before showing
-                self.viewPlugin.on('error:loaded', function() {
+                self.viewPlugin.on('astro:page-loaded', function() {
                     self.show();
                 });
 

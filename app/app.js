@@ -35,7 +35,6 @@ window.run = function() {
     ) {
         var deepLinkingServices = null;
         var errorControllerPromise = ErrorController.init();
-        var welcomeModalControllerPromise = WelcomeModalController.init(errorControllerPromise);
         var cartModalControllerPromise = CartModalController.init(errorControllerPromise);
         var cartEventHandlerPromise = cartModalControllerPromise.then(
             function(cartModalController) {
@@ -51,30 +50,6 @@ window.run = function() {
             counterBadgeController.updateCounterValue(3);
             return counterBadgeController;
         });
-
-        // Register RPC to expose whether it is possible to go back.
-        // This is necessary to determine whether to show/hide
-        // the back button on the error modal
-        var registerCanGoBackRpc = function(controller) {
-            Promise.join(welcomeModalControllerPromise, cartModalControllerPromise,
-            function(welcomeModal, cartModal) {
-                Astro.registerRpcMethod(AppRpc.names.appCanGoBack, [], function(res) {
-                    // We want to return true when the cart is showing since
-                    // calling `back` is equivalent to dismissing the cart
-                    if (cartModal.isShowing) {
-                        res.send(null, true);
-                    } else if (welcomeModal.isShowing) {
-                        welcomeModal.canGoBack().then(function(canGoBack) {
-                            res.send(null, canGoBack);
-                        });
-                    } else {
-                        controller.canGoBack().then(function(canGoBack) {
-                            res.send(null, canGoBack);
-                        });
-                    }
-                });
-            });
-        };
 
         var createTabBarLayout = function() {
             var layoutPromise = AnchoredLayoutPlugin.init();
@@ -102,8 +77,6 @@ window.run = function() {
                 tabBarControllerPromise,
                 layoutSetupPromise,
             function(tabBarController) {
-                registerCanGoBackRpc(tabBarController);
-
                 return tabBarController;
             });
         };
@@ -131,8 +104,6 @@ window.run = function() {
                     drawerController.navigateToNewRootView(url, title);
                     res.send(null, 'success');
                 });
-                registerCanGoBackRpc(drawerController);
-
                 return drawerController;
             });
         };
@@ -153,14 +124,15 @@ window.run = function() {
         };
 
         var runApp = function() {
-            welcomeModalControllerPromise.then(function(welcomeModalController) {
-                // The welcome modal can be configured to show only once
-                // (on first launch) by setting `{forced: false}` as the
-                // parameter for welcomeModalController.show()
-                welcomeModalController
-                    .show({forced: true})
-                    .finally(initMainLayout);
-            });
+            WelcomeModalController.init(errorControllerPromise)
+                .then(function(welcomeModalController) {
+                    // The welcome modal can be configured to show only once
+                    // (on first launch) by setting `{forced: false}` as the
+                    // parameter for welcomeModalController.show()
+                    welcomeModalController
+                        .show({forced: true})
+                        .finally(initMainLayout);
+                });
         };
 
         runApp();
