@@ -17,6 +17,7 @@ android/gradle.properties
 /app/app-www/js/*
 !/app/app-www/js/left-drawer.js
 !/app/app-www/js/config.js
+!/app/app-www/js/global.js
 
 ### Xcode ###
 build/
