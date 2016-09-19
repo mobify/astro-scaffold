@@ -1,6 +1,5 @@
 define([
     'astro-full',
-    'app-rpc',
     'bluebird',
     'config/errorConfig',
     'config/baseConfig',
@@ -9,7 +8,6 @@ define([
 /* eslint-disable */
 ], function(
     Astro,
-    AppRpc,
     Promise,
     ErrorConfig,
     BaseConfig,
@@ -25,8 +23,8 @@ define([
         this.errorType = null;
         this.canGoBack = false;
 
-        // Navigate to the error page so that event
-        // listeners/handlers are set up.
+        // Navigate to the error page to set up event
+        // listeners/handlers on the web side.
         this.viewPlugin.navigate(ErrorConfig.url);
     };
 
@@ -35,16 +33,11 @@ define([
             WebViewPlugin.init(),
             ModalViewPlugin.init(),
         function(webView, modalView) {
-            var loader = webView.getLoader();
-            loader.setColor(BaseConfig.loaderColor);
+            webView.getLoader().setColor(BaseConfig.loaderColor);
             webView.disableScrollBounce();
             modalView.setContentView(webView);
 
-            var errorController = new ErrorController(modalView, webView);
-            Astro.registerRpcMethod(AppRpc.names.errorContent, [], function(res) {
-                res.send(null, errorController.errorContent());
-            });
-            return errorController;
+            return new ErrorController(modalView, webView);;
         });
     };
 
