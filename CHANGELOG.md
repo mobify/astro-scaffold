@@ -1,4 +1,5 @@
 ## To be released
+- Integrate the Mobify preview plugin
 - Welcome modal now relies on installationId to determine whether to show
 
 ## v0.15.0
