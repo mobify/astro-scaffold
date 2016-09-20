@@ -8,9 +8,9 @@ function(
     SearchBarPlugin,
     AnchoredLayoutPlugin
 ) {
-    var SearchBarController = function(searchBarPlugin, layout, internalLayout, searchConfig) {
+    var SearchBarController = function(internalLayout, parentLayout, searchBarPlugin, searchConfig) {
         this.viewPlugin = internalLayout;
-        this.layout = layout;
+        this.parentLayout = parentLayout;
         this.searchBar = searchBarPlugin;
         this.searchConfig = searchConfig;
 
@@ -26,10 +26,10 @@ function(
     };
 
     SearchBarController.init = function(layoutPromise, searchConfig) {
-        return Promise.join(layoutPromise, SearchBarPlugin.init(), AnchoredLayoutPlugin.init(),
-            function(layout, searchBarPlugin, internalLayout) {
+        return Promise.join(AnchoredLayoutPlugin.init(), layoutPromise, SearchBarPlugin.init(),
+            function(internalLayout, parentLayout, searchBarPlugin) {
                 internalLayout.addTopView(searchBarPlugin);
-                return new SearchBarController(searchBarPlugin, layout, internalLayout, searchConfig);
+                return new SearchBarController(internalLayout, parentLayout, searchBarPlugin, searchConfig);
             }
         );
     };
@@ -42,7 +42,7 @@ function(
 
     // You must manually call this for the search bar to be visible
     SearchBarController.prototype.addToLayout = function() {
-        this.layout.addTopView(this.viewPlugin);
+        this.parentLayout.addTopView(this.viewPlugin);
         this.hide({animated: false}); // don't show it by default
     };
 
@@ -69,7 +69,7 @@ function(
         }
 
         this.searchBar.focus();
-        this.layout.showView(this.viewPlugin, options);
+        this.parentLayout.showView(this.viewPlugin, options);
         this.isVisible = true;
     };
 
@@ -80,7 +80,7 @@ function(
             return;
         }
 
-        this.layout.hideView(this.viewPlugin, options);
+        this.parentLayout.hideView(this.viewPlugin, options);
         this.isVisible = false;
     };
 
