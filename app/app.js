@@ -9,6 +9,7 @@ window.run = function() {
         'config/baseConfig',
         'config/headerConfig',
         'plugins/anchoredLayoutPlugin',
+        'plugins/mobifyPreviewPlugin',
         'controllers/counterBadgeController',
         'app-components/deepLinkingServices',
         'app-controllers/tabBarController',
@@ -25,6 +26,7 @@ window.run = function() {
         BaseConfig,
         HeaderConfig,
         AnchoredLayoutPlugin,
+        MobifyPreviewPlugin,
         CounterBadgeController,
         DeepLinkingServices,
         TabBarController,
@@ -163,7 +165,19 @@ window.run = function() {
             });
         };
 
-        runApp();
+        var runAppPreview = function () {
+            MobifyPreviewPlugin.init()
+            .then(function(previewPlugin) {
+                previewPlugin
+                    .preview(BaseConfig.baseURL, BaseConfig.previewBundle)
+                    .then(runApp);
+            });
+        };
+
+        // Configure the useAppPreview flag located in baseConfig.js
+        // to enable/disable app preview
+        BaseConfig.useAppPreview ? runAppPreview() : runApp();
+
     }, undefined, true);
 };
 // Comment out next line for JS debugging
