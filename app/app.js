@@ -165,7 +165,7 @@ window.run = function() {
             });
         };
 
-        var runAppPreview = function () {
+        var runAppPreview = function() {
             MobifyPreviewPlugin.init()
             .then(function(previewPlugin) {
                 previewPlugin

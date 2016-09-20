@@ -1,11 +1,11 @@
 define([], function() {
 /* eslint-enable max-statements */
     var baseURL = 'https://webpush-you-host.mobifydemo.io';
-    var previewBundle = '';
+    var previewBundle = 'https://localhost:8443/adaptive.js';
 
     // Line altered by generator. If changing please change generator as well!!
     var useTabLayout = false;
-    var useAppPreview = true;
+    var useAppPreview = false;
 
     var colors = {
         primaryColor: '#007ba7',
