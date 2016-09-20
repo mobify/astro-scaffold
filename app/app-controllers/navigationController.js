@@ -122,7 +122,7 @@ function(
 
     NavigationController.prototype.navigate = function(url, includeDrawerIcon) {
         if (!url) {
-            return;
+            return Promise.reject();
         }
 
         var self = this;
@@ -133,11 +133,11 @@ function(
             // url and the web view isn't in the process of redirecting (i.e.
             // `params.isCurrentlyLoading` is not set).
             if (!!url && !params.isCurrentlyLoading) {
-                self.navigate(url);
+                return self.navigate(url);
             }
         };
 
-        self.navigationHeaderController.generateContent(includeDrawerIcon)
+        return self.navigationHeaderController.generateContent(includeDrawerIcon)
             .then(function(headerContent) {
                 return self.navigationView.navigateToUrl(
                     url, headerContent, {navigationHandler: navigationHandler});
