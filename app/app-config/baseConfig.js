@@ -1,11 +1,11 @@
 define([], function() {
 /* eslint-enable max-statements */
     var baseURL = 'https://webpush-you-host.mobifydemo.io';
-    var previewBundle = 'https://localhost:8443/adaptive.js';
 
-    // Line altered by generator. If changing please change generator as well!!
+    // Lines altered by generator. If changing please change generator as well!!
     var useTabLayout = false;
-    var useAppPreview = false;
+    var previewEnabled = false;
+    var previewBundle = '<preview_bundle>';
 
     var colors = {
         primaryColor: '#007ba7',
@@ -20,7 +20,7 @@ define([], function() {
         colors: colors,
         loaderColor: loaderColor,
         previewBundle: previewBundle,
-        useAppPreview: useAppPreview,
+        previewEnabled: previewEnabled,
         useTabLayout: useTabLayout
     };
 });

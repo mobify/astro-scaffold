@@ -174,9 +174,9 @@ window.run = function() {
             });
         };
 
-        // Configure the useAppPreview flag located in baseConfig.js
+        // Configure the previewEnabled flag located in baseConfig.js
         // to enable/disable app preview
-        BaseConfig.useAppPreview ? runAppPreview() : runApp();
+        BaseConfig.previewEnabled ? runAppPreview() : runApp();
 
     }, undefined, true);
 };
