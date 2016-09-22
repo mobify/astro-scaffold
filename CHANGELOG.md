@@ -1,7 +1,7 @@
 ## To be released
--
+- Add Requirements to README, and "engines" field to package.json
 
-## v0.15.0 
+## v0.15.0
 - [iOS] Remove update bundle version build phase
 
 ## v0.14.0
