@@ -71,7 +71,7 @@ define([
         this.viewPlugin.off('back');
     };
 
-    ErrorController.prototype._generateErrorCallback = function(errorType, params) {
+    ErrorController.prototype._generateErrorCallback = function(params) {
         var self = this;
         var backHandler = params.backHandler;
         var retryHandler = params.retryHandler;
@@ -89,7 +89,13 @@ define([
             self.viewPlugin.on('error:loaded', function() {
                 self.show();
             });
-            self.errorType = errorType;
+
+            if (eventArgs.error.code == -1001) { //timeout
+                self.errorType = "pageTimeout";
+            } else if (error.code == -1009) { //No internet
+                self.errorType = "noInternetConnection";
+            }
+
             self.viewPlugin.navigate(ErrorConfig.url);
 
             // We allow all views that triggered this modal to listen for
@@ -107,8 +113,7 @@ define([
         var navigator = params.navigator;
 
         // Listen for triggered events emitted by the navigator
-        navigator.on('pageTimeout', this._generateErrorCallback('pageTimeout', params));
-        navigator.on('noInternetConnection', this._generateErrorCallback('noInternetConnection', params));
+        navigator.on('navigationFailed', this._generateErrorCallback(params));
     };
 
     return ErrorController;
