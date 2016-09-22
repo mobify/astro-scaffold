@@ -92,7 +92,7 @@ define([
 
             if (eventArgs.error.code == -1001) { //timeout
                 self.errorType = "pageTimeout";
-            } else if (error.code == -1009) { //No internet
+            } else if (eventArgs.error.code == -1009) { //No internet
                 self.errorType = "noInternetConnection";
             }
 
