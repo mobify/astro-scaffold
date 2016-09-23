@@ -4,7 +4,7 @@ define([
     'plugins/drawerPlugin',
     'plugins/webViewPlugin',
     'config/baseConfig',
-    'config/menuConfig',
+    'config/drawerMenuConfig',
     'app-controllers/navigationController',
     'bluebird'
 ],
@@ -14,7 +14,7 @@ function(
     DrawerPlugin,
     WebViewPlugin,
     BaseConfig,
-    MenuConfig,
+    DrawerMenuConfig,
     NavigationController,
     Promise
 ) {
@@ -27,7 +27,7 @@ function(
 
     var initLeftMenu = function(drawer, leftMenu) {
         Astro.registerRpcMethod(AppRpc.names.menuItems, [], function(res) {
-            res.send(null, MenuConfig.menuItems);
+            res.send(null, DrawerMenuConfig.menuItems);
         });
 
         leftMenu.navigate('file:///app-www/html/left-drawer.html');
