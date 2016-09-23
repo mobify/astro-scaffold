@@ -44,6 +44,10 @@ if ! findNode; then
     exit 1
 fi
 
+if [ ! -d $MYPATH/app-www/js/build ] ; then
+    mkdir $MYPATH/app-www/js/build
+fi
+
 # Add navitron & its dependencies to the app bundle
 cp $MYPATH/node_modules/grunt-requirejs/node_modules/requirejs/require.js $MYPATH/app-www/js/build
 cp $MYPATH/node_modules/navitron/node_modules/plugin/dist/plugin*.js $MYPATH/app-www/js/build
