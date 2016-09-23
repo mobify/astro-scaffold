@@ -2,10 +2,10 @@ require.config({
     baseUrl: '../js',
     deps: ['global'],
     paths: {
-        '$': 'jquery.min',
-        'velocity': 'velocity.min',
-        'navitron': 'navitron.min',
-        'plugin': 'plugin.min'
+        '$': 'build/jquery.min',
+        'velocity': 'build/velocity.min',
+        'navitron': 'build/navitron.min',
+        'plugin': 'build/plugin.min'
     },
     'shim': {
         '$': {
