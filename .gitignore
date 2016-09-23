@@ -14,11 +14,7 @@ android/.idea/libraries
 android/build
 android/gradle.properties
 
-/app/app-www/js/*
-!/app/app-www/js/left-drawer.js
-!/app/app-www/js/config.js
-!/app/app-www/js/error.js
-!/app/app-www/js/global.js
+/app/app-www/js/build
 
 ### Xcode ###
 build/
