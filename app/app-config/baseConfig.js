@@ -2,10 +2,14 @@ define([], function() {
 /* eslint-enable max-statements */
     var baseURL = 'https://webpush-you-host.mobifydemo.io';
 
-    // Lines altered by generator. If changing please change generator as well!!
+    // If any changes are made to the following lines
+    // affected by the generator, make sure to update
+    // the generator as well! 🙏🏻
+    // start: lines altered by generator
     var useTabLayout = false;
     var previewEnabled = false;
     var previewBundle = '<preview_bundle>';
+    // end: lines altered by generator
 
     var colors = {
         primaryColor: '#007ba7',
