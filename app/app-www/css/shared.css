@@ -1,0 +1,135 @@
+/* Shared
+// ===
+//
+// 1. Behold my awesome normalizers! 👷
+// 2. Disable long tap menu callout
+//
+*/
+
+* {
+    box-sizing: border-box; /* 1 */
+}
+
+body {
+    -webkit-touch-callout: none; /* 2 */
+    margin: 0; /* 1 */
+
+    background-color: #f2f2f2;
+
+    color: #1a1a1a;
+    font-family: "Helvetica Neue", "Helvetica", sans-serif;
+    font-weight: normal;
+    font-size: 15px;
+    line-height: 1.4;
+}
+
+a {
+    font-weight: 500;
+}
+
+.astro-android a {
+    font-weight: bold;
+}
+
+/* Button */
+/* --- */
+
+.c-button {
+    width: 100%;
+    min-width: 45px;
+    min-height: 45px;
+    margin: 0;
+    padding: 0.5rem 0.75rem;
+    border: 1px solid rgba(0, 0, 0, 0.25);
+
+    border-radius: 4px;
+    background-color: white;
+    box-shadow: 0 1px 2px rgba(0, 0, 0, 0.125);
+
+    font-family: "Helvetica Neue", "Helvetica", sans-serif;
+    font-weight: 500;
+    font-size: 13px;
+    line-height: 18px;
+    letter-spacing: 0.05em;
+    text-align: center;
+    text-transform: uppercase;
+
+    cursor: pointer;
+    user-select: none;
+
+    -webkit-appearance: none;
+    -webkit-tap-highlight-color: transparent;
+
+    -webkit-user-select: none;
+    -webkit-box-shadow: 0 1px 2px rgba(0, 0, 0, 0.125);
+}
+
+.c-button.c--accent {
+    border-color: #e6b905;
+
+    background-color: #ffe701;
+
+    color: #4d4d4d;
+}
+.astro-android .c-button {
+    font-weight: 600;
+}
+
+.c-button.c--neutral {
+    border-color: rgba(1, 102, 104, 0.4);
+
+    background-color: #01989b;
+
+    color: #fff;
+}
+
+.c-button.c--outline {
+    border-color: #0065a5;
+
+    background: transparent;
+
+    color: #0065a5;
+}
+
+.c-button.c--link {
+    padding: 0;
+    border: 0;
+
+    background: transparent;
+    box-shadow: none;
+
+    color: #0c7ff2;
+
+    -webkit-appearance: none;
+}
+
+
+/* Utilities
+// ---
+ */
+
+.u-arrange {
+    display: -webkit-flex;
+    display: flex;
+    justify-content: space-between;
+}
+
+.u-padding-top {
+    padding-top: 15px;
+}
+
+.u-margin-0 {
+    margin: 0;
+}
+
+.u-margin-left {
+    margin-left: 15px;
+}
+
+.u-margin-bottom {
+    margin-bottom: 15px;
+}
+
+.u-margin-top {
+    margin-top: 15px;
+}
