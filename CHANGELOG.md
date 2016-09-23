@@ -1,6 +1,7 @@
 ## To be released
 - Integrate the Mobify preview plugin
 - Welcome modal now relies on installationId to determine whether to show
+- Add Requirements to README, and "engines" field to package.json
 
 ## v0.15.0
 - [iOS] Remove update bundle version build phase

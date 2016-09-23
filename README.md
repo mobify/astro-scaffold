@@ -1,5 +1,13 @@
 # Setup
 
+## Requirements
+
+- [Git](https://git-scm.com/)
+- We recommend you use [nvm](https://github.com/creationix/nvm#installation) to
+manage node and npm versions.
+- node ^4.0.0 LTS
+- npm ^2.0.0
+
 To get up and running with scaffold, ensure the dependencies are installed:
 
 ```bash
@@ -77,7 +85,6 @@ To enable Mobify Preview for Adaptive.js and Mobify.js projects, go into the `ba
 Astro uses a controller pattern to manage the business logic of UI components. Controllers can manage a single Astro plugin or coordinate the behavior of several astro plugins which make up a single UI component in the app.
 
 Astro defines a controller inside of a requirejs module. The module exposes a prototype object as well as a factory method (`init`) which can be used to instantiate controllers with the prototype. The `init` method returns a promise which resolves to the newly created object.
-
 
 # Running Tests
 
