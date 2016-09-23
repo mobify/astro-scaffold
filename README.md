@@ -1,5 +1,13 @@
 # Setup
 
+## Requirements
+
+- [Git](https://git-scm.com/)
+- We recommend you use [nvm](https://github.com/creationix/nvm#installation) to
+manage node and npm versions.
+- node ^4.0.0 LTS
+- npm ^2.0.0
+
 To get up and running with scaffold, ensure the dependencies are installed:
 
 ```bash
@@ -81,7 +89,7 @@ Astro defines a controller inside of a requirejs module. The module exposes a pr
   * `app/app-config/cartConfig.js` configures modal cart styling & content
   * `app/app-config/errorConfig.js` configures error modal styling & content
   * `app/app-config/headerConfig.js` configures header styling & icon
-  * `app/app-config/menuConfig.js` configures left drawer menu items
+  * `app/app-config/drawerMenuConfig.js` configures left drawer menu items
   * `app/app-config/searchConfig.js` configures search bar
   * `app/app-config/tabConfig.js` configures tab bar items
   * `app/app-config/welcomeConfig.js` configures welcome modal styling & content
