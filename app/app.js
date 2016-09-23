@@ -9,6 +9,7 @@ window.run = function() {
         'config/baseConfig',
         'config/headerConfig',
         'plugins/anchoredLayoutPlugin',
+        'plugins/mobifyPreviewPlugin',
         'controllers/counterBadgeController',
         'app-components/deepLinkingServices',
         'app-controllers/tabBarController',
@@ -25,6 +26,7 @@ window.run = function() {
         BaseConfig,
         HeaderConfig,
         AnchoredLayoutPlugin,
+        MobifyPreviewPlugin,
         CounterBadgeController,
         DeepLinkingServices,
         TabBarController,
@@ -152,7 +154,10 @@ window.run = function() {
             });
         };
 
-        var runApp = function() {
+        var runApp = function(previewedUrl) {
+            // TODO: [HYB-884] As a Scaffold developer,
+            // I would like for the baseURL to be set to the previewed URL
+
             welcomeModalControllerPromise.then(function(welcomeModalController) {
                 // The welcome modal can be configured to show only once
                 // (on first launch) by setting `{forced: false}` as the
@@ -163,7 +168,19 @@ window.run = function() {
             });
         };
 
-        runApp();
+        var runAppPreview = function() {
+            MobifyPreviewPlugin.init()
+                .then(function(previewPlugin) {
+                    previewPlugin
+                        .preview(BaseConfig.baseURL, BaseConfig.previewBundle)
+                        .then(runApp);
+                });
+        };
+
+        // Configure the previewEnabled flag located in baseConfig.js
+        // to enable/disable app preview
+        BaseConfig.previewEnabled ? runAppPreview() : runApp();
+
     }, undefined, true);
 };
 // Comment out next line for JS debugging
