@@ -167,11 +167,11 @@ window.run = function() {
 
         var runAppPreview = function() {
             MobifyPreviewPlugin.init()
-            .then(function(previewPlugin) {
-                previewPlugin
-                    .preview(BaseConfig.baseURL, BaseConfig.previewBundle)
-                    .then(runApp);
-            });
+                .then(function(previewPlugin) {
+                    previewPlugin
+                        .preview(BaseConfig.baseURL, BaseConfig.previewBundle)
+                        .then(runApp);
+                });
         };
 
         // Configure the previewEnabled flag located in baseConfig.js
