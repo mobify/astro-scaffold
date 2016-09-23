@@ -8,6 +8,7 @@ define([
     'plugins/navigationPlugin',
     'app-controllers/navigationHeaderController',
     'app-controllers/searchBarController',
+    'app-controllers/segmentedController',
     'config/searchConfig'
 ],
 /* eslint-disable */
@@ -21,16 +22,18 @@ function(
     NavigationPlugin,
     NavigationHeaderController,
     SearchBarController,
+    SegmentedController,
     SearchConfig
 ) {
 /* eslint-enable */
-    var NavigationController = function(id, url, layout, navigationView, navigationHeaderController, searchBarController, includeDrawerIcon) {
+    var NavigationController = function(id, url, layout, navigationView, navigationHeaderController, searchBarController, includeDrawerIcon, segmentedController) {
         this.id = id;
         this.isActive = false;
         this.viewPlugin = layout;
         this.navigationView = navigationView;
         this.navigationHeaderController = navigationHeaderController;
         this.searchBarController = searchBarController;
+        this.segmentedController = segmentedController;
 
         this.navigate(url, includeDrawerIcon);
 
@@ -50,17 +53,22 @@ function(
         drawerEventHandler
     ) {
         var layoutPromise = AnchoredLayoutPlugin.init();
+        var navigationPromise = NavigationPlugin.init();
+        var navigationContainerPromise = AnchoredLayoutPlugin.init();
 
         return Promise.join(
             layoutPromise,
             NavigationHeaderController.init(counterBadgeController),
-            NavigationPlugin.init(),
+            navigationPromise,
+            navigationContainerPromise,
             SearchBarController.init(layoutPromise, SearchConfig),
-        function(layout, navigationHeaderController, navigationView,  searchBarController) {
+            SegmentedController.init(navigationContainerPromise, navigationPromise),
+        function(layout, navigationHeaderController, navigationView, navigationViewContainer, searchBarController, segmentedController) {
             var loader = navigationView.getLoader();
             loader.setColor(BaseConfig.loaderColor);
             // Set layout
-            layout.setContentView(navigationView);
+            navigationViewContainer.setContentView(navigationView);
+            layout.setContentView(navigationViewContainer);
             layout.addTopView(navigationHeaderController.viewPlugin);
             navigationView.setHeaderBar(navigationHeaderController.viewPlugin);
             navigationHeaderController.registerBackEvents(function() {
@@ -86,7 +94,8 @@ function(
                 navigationView,
                 navigationHeaderController,
                 searchBarController,
-                drawerIconEnabled
+                drawerIconEnabled,
+                segmentedController
             );
             var handleActiveState = function(event) {
                 if (navigationController.isActive) {
@@ -144,6 +153,8 @@ function(
             if (!!url && !params.isCurrentlyLoading) {
                 self.navigate(url);
             }
+
+            self.segmentedController.loadSegments(url);
         };
 
         self.navigationHeaderController.generateContent(includeDrawerIcon)
@@ -152,6 +163,7 @@ function(
                     url, headerContent, {navigationHandler: navigationHandler});
             })
             .then(function() {
+                self.segmentedController.loadSegments(url);
                 return self.navigationHeaderController.setTitle();
             });
     };
@@ -164,6 +176,7 @@ function(
             })
             .then(function(rootWebView) {
                 self.navigationHeaderController.setTitle(title);
+                self.segmentedController.loadSegments(url);
                 if (typeof rootWebView.navigate === 'function') {
                     return rootWebView.navigate(url);
                 } else {
