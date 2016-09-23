@@ -1,3 +1,4 @@
+
 define([
     'astro-full',
     'app-events',
@@ -91,7 +92,6 @@ function(
                 retryHandler: retryHandler,
                 isActiveItem: welcomeModalController.isActiveItem.bind(welcomeModalController),
                 canGoBack: canGoBack
-
             });
             return welcomeModalController;
         });
