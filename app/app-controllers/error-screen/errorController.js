@@ -37,7 +37,7 @@ define([
             webView.disableScrollBounce();
             modalView.setContentView(webView);
 
-            return new ErrorController(modalView, webView);;
+            return new ErrorController(modalView, webView);
         });
     };
 
