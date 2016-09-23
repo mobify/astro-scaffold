@@ -154,7 +154,10 @@ window.run = function() {
             });
         };
 
-        var runApp = function() {
+        var runApp = function(previewedUrl) {
+            // TODO: [HYB-884] As a Scaffold developer,
+            // I would like for the baseURL to be set to the previewed URL
+
             welcomeModalControllerPromise.then(function(welcomeModalController) {
                 // The welcome modal can be configured to show only once
                 // (on first launch) by setting `{forced: false}` as the
