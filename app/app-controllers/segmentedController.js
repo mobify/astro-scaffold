@@ -18,6 +18,7 @@ function(
         this.config = config;
         this.urlMap = urlMap;
         this.currentSegments = null;
+        this.registerEvents();
     };
 
     SegmentedController.init = function(layoutPromise, navigationViewPromise) {
@@ -64,6 +65,13 @@ function(
         } else {
             return false;
         }
+    };
+
+    SegmentedController.prototype.registerEvents = function() {
+        var self = this;
+        this.navigationView.on('back', function(params) {
+            self.loadSegments(params.url);
+        });
     };
 
     return SegmentedController;
