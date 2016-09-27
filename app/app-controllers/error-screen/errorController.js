@@ -90,9 +90,9 @@ define([
                 self.show();
             });
 
-            if (eventArgs.error.code == -1001) { //timeout
+            if (eventArgs.error.code == WebViewPlugin.errorCodes.PageTimeout) {
                 self.errorType = "pageTimeout";
-            } else if (eventArgs.error.code == -1009) { //No internet
+            } else if (eventArgs.error.code == WebViewPlugin.errorCodes.NoInternetConnection) {
                 self.errorType = "noInternetConnection";
             }
 
