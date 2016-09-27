@@ -95,7 +95,28 @@ function(
             this.viewPlugin.setContentView(this._tabViews[tabId]);
             this.activeTabId = tabId;
 
-            this.getActiveNavigationView().isActive = true;
+            var selectedTab = this.getActiveNavigationView();
+            selectedTab.isActive = true;
+
+            if (selectedTab.needsReload()) {
+                var selectedNavigationView = selectedTab.navigationView;
+                Promise.join(
+                    selectedNavigationView.canGoBack(),
+                    selectedNavigationView.getTopPlugin(),
+                    function(tabCanGoBack, topPlugin) {
+                        // In the case where a tab failed its initial navigation
+                        // a reload is insufficient so instead, we navigate to
+                        // the tab's root URL.
+                        if (!tabCanGoBack && typeof topPlugin.navigate === 'function') {
+                            var tabItem = TabConfig.tabItems[tabId - 1];
+                            topPlugin.navigate(tabItem.url);
+                        } else {
+                            topPlugin.reload();
+                        }
+                        selectedNavigationView.loaded = true;
+                    }
+                );
+            }
         } else {
             this.getActiveNavigationView().popToRoot({animated: true});
         }
@@ -115,12 +136,11 @@ function(
     };
 
     TabBarController.prototype.navigateActiveItem = function(url) {
-        this._navigationControllers[this.activeTabId].navigate(url);
+        return this.getActiveNavigationView().navigate(url);
     };
 
     TabBarController.prototype.canGoBack = function() {
-        var activeTab = this._navigationControllers[this.activeTabId];
-        window.message = [activeTab];
+        var activeTab = this.getActiveNavigationView();
         return activeTab.canGoBack();
     };
 
