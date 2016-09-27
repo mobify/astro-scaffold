@@ -100,7 +100,7 @@ function(
 
     NavigationHeaderController.prototype.setTitle = function() {
         var titleHeaderContent = HeaderConfig.titleHeaderContent;
-        this.viewPlugin.setCenterTitle(titleHeaderContent.title, titleHeaderContent.id);
+        return this.viewPlugin.setCenterTitle(titleHeaderContent.title, titleHeaderContent.id);
     };
 
     return NavigationHeaderController;

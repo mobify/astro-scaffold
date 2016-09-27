@@ -21,6 +21,7 @@ function(
     };
 
     DeepLinkingServices.prototype._bindRunning = function() {
+        var self = this;
         // Listen for deep link events once app is running
         Application.on('receivedDeepLink', function(params) {
             var uri = params.uri;
