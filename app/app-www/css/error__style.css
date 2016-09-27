@@ -1,98 +1,68 @@
-/* Connectivity Error Page
+/* Error Template Styles
+// ===
 //
-// Layout
-// ---
-//
-// 1. Behold my awesome normalizer! 👷
-// 2. So last flex-box item will be aligned with the bottom of the viewport
-// 3. Analguous to $neutral-80
-// 4. Maintain image ratio
-// 5. Making sure Timmy doesn't get too big for his britches
-// 6. Centering Timmy
-// 7. Margin here instead of padding on wrapper so flexbox doesn't doesn't
-//    cause the page to scroll
+// 1. Vertically align error content on page
+// 2. Style caret that appears in back button
+// 3. Align caret horizontally with text
 */
 
-body {
-    margin: 0; /* 1 */
-}
-
-.t-connectivity-error {
-    display: -webkit-flex;
+.t-error {
     display: flex;
-    -webkit-flex-direction: column;
-            flex-direction: column;
-    -webkit-justify-content: space-between;
-            justify-content: space-between;
+    display: -webkit-flex;
+    flex-direction: column;
+    justify-content: center; /* 1 */
+    height: 100%;
 
-    height: 100%; /* 2 */
-    padding: 0 15px;
-
-    font-family: Lato, sans-serif;
+    color: #808080;
+    font-size: 18px;
     text-align: center;
+
+    -webkit-justify-content: center; /* 1 */
+    -webkit-flex-direction: column;
 }
 
-.connectivity-error__image {
-    flex: 0 0 auto; /* 4 */
-
-    width: 75%;
-    max-width: 200px; /* 5 */
-    height: auto;
-    margin: auto; /* 6 */
-    margin0-top: 30px
-    margin-bottom: 30px;
-}
-
-.connectivity-error__header {
-    color: #60616a; /* 3 */
-    margin-top: 44px;
-
-}
-
-    .connectivity-error__header h1 {
-        margin-top: 15px;
-        margin-bottom: 15px;
-
-        font-size: 25px;
-        font-weight: 900;
-        text-transform: uppercase;
-    }
-
-    .connectivity-error__header p {
-        margin: 0;
-        margin-bottom: 30px;
-
-        font-size: 18px;
-    }
-
-.connectivity-error__buttons {
-    margin-bottom: 15px; /* 7 */
-}
-
-/* Button
-// --
-//
-// Note: These styles differ slightly from the main component styling.
-*/
-
-.c-button {
-    display: block;
-    width: 100%;
+.t-error__content-wrapper {
     padding: 15px;
-    border: 0;
-    border-radius: 3px 0;
+}
 
-    background-color: #007ba7;
-    color: #fff;
-    font-size: 16px;
-    font-weight: 700;
+.t-error__image {
+    margin: 0 auto;
+}
+.t-error__image.t--timeout {
+    width: 100px;
+    margin-bottom: 20px;
+}
+.t-error__image.t--offline {
+    width: 179px;
+    margin-bottom: 25px;
+}
+
+.t-error__heading {
+    font-weight: 600px;
     text-transform: uppercase;
 }
 
-.c-button.c--cta {
-    background-color: 007ba7;
+.t-error__text {
+    margin-bottom: 20px;
+    padding: 0 10%;
 }
 
-.c-button + .c-button {
-    margin-top: 5px;
+.t-error__back-button {
+    margin-top: 15px;
+}
+
+.t-error__back-button::before {
+    content: ''; /* 2 */
+
+    position: relative;
+    top: 1px; /* 3 */
+
+    display: inline-block;
+    width: 7px;
+    height: 12px;
+    margin-right: 10px;
+
+    background-image: url(../assets/caret.png);
+    background-repeat: no-repeat;
+    background-size: contain;
 }

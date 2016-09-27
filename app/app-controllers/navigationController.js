@@ -33,12 +33,15 @@ function(
         this.searchBarController = searchBarController;
 
         this.navigate(url, includeDrawerIcon);
+        this.navigationView.loaded = true;
 
         var self = this;
         this.searchBarController.registerSearchSubmittedEvents(function(params) {
             var searchUrl = self.searchBarController.generateSearchUrl(params.searchTerms);
             self.navigate(searchUrl);
         });
+
+        bindEvents(this);
     };
 
     NavigationController.init = function(
@@ -56,82 +59,70 @@ function(
             NavigationHeaderController.init(counterBadgeController),
             NavigationPlugin.init(),
             SearchBarController.init(layoutPromise, SearchConfig),
-        function(layout, navigationHeaderController, navigationView,  searchBarController) {
-            var loader = navigationView.getLoader();
-            loader.setColor(BaseConfig.loaderColor);
-            // Set layout
-            layout.setContentView(navigationView);
-            layout.addTopView(navigationHeaderController.viewPlugin);
-            navigationView.setHeaderBar(navigationHeaderController.viewPlugin);
-            navigationHeaderController.registerBackEvents(function() {
-                navigationView.back();
-            });
+            function(layout, navigationHeaderController, navigationView, searchBarController) {
+                navigationView.getLoader().setColor(BaseConfig.loaderColor);
 
-            navigationHeaderController.registerCartEvents(cartEventHandler);
+                // Set layout
+                layout.setContentView(navigationView);
+                layout.addTopView(navigationHeaderController.viewPlugin);
+                navigationView.setHeaderBar(navigationHeaderController.viewPlugin);
+                navigationHeaderController.registerBackEvents(function() {
+                    navigationView.back();
+                });
 
-            var drawerIconEnabled = drawerEventHandler !== undefined;
-            if (drawerIconEnabled) {
-                navigationHeaderController.registerDrawerEvents(drawerEventHandler);
-            }
+                navigationHeaderController.registerCartEvents(cartEventHandler);
 
-            searchBarController.addToLayout();
-
-            var searchBarToggleCallback = searchBarController.toggle.bind(searchBarController);
-            navigationHeaderController.registerSearchBarEvents(searchBarToggleCallback);
-
-            var navigationController = new NavigationController(
-                id,
-                url,
-                layout,
-                navigationView,
-                navigationHeaderController,
-                searchBarController,
-                drawerIconEnabled
-            );
-            var handleActiveState = function(event) {
-                if (navigationController.isActive) {
-                    AppEvents.once(event, function() {
-                        navigationController.isActive = true;
-                    });
+                var drawerIconEnabled = drawerEventHandler !== undefined;
+                if (drawerIconEnabled) {
+                    navigationHeaderController.registerDrawerEvents(drawerEventHandler);
                 }
-                navigationController.isActive = false;
-            };
 
-            AppEvents.on(AppEvents.names.welcomeShown, function() {
-                handleActiveState(AppEvents.names.welcomeHidden);
-            });
+                searchBarController.addToLayout();
 
-            AppEvents.on(AppEvents.names.cartShown, function() {
-                handleActiveState(AppEvents.names.cartHidden);
-            });
+                var searchBarToggleCallback = searchBarController.toggle.bind(searchBarController);
+                navigationHeaderController.registerSearchBarEvents(searchBarToggleCallback);
 
-            var backHandler = function() {
-                navigationView.back();
-            };
+                var navigationController = new NavigationController(
+                    id,
+                    url,
+                    layout,
+                    navigationView,
+                    navigationHeaderController,
+                    searchBarController,
+                    drawerIconEnabled
+                );
 
-            var retryHandler = function(params) {
-                if (!params.url) {
-                    return;
-                }
-                var navigate = function(eventPlugin) {
-                    eventPlugin.navigate(params.url);
+                var backHandler = function() {
+                    navigationView.back();
+                    navigationView.loaded = true;
                 };
-                navigationView.getEventPluginPromise(params).then(navigate);
-            };
 
-            errorController.bindToNavigator({
-                navigator: navigationView,
-                backHandler: backHandler,
-                retryHandler: retryHandler,
-                isActiveItem: navigationController.isActiveItem.bind(navigationController)
-            });
-            return navigationController;
-        });
+                var retryHandler = function(params) {
+                    if (!params.url) {
+                        return;
+                    }
+                    var navigate = function(eventPlugin) {
+                        eventPlugin.navigate(params.url);
+                        navigationView.loaded = true;
+                    };
+                    navigationView.getEventPluginPromise(params).then(navigate);
+                };
+
+                errorController.bindToNavigator({
+                    navigator: navigationView,
+                    backHandler: backHandler,
+                    retryHandler: retryHandler,
+                    isActiveItem: navigationController.isActiveItem.bind(navigationController),
+                    canGoBack: navigationController.canGoBack.bind(navigationController)
+                });
+                return navigationController;
+            }
+        );
     };
 
     NavigationController.prototype.navigate = function(url, includeDrawerIcon) {
         if (!url) {
-            return;
+            return Promise.reject();
         }
 
         var self = this;
@@ -142,11 +133,11 @@ function(
             // url and the web view isn't in the process of redirecting (i.e.
             // `params.isCurrentlyLoading` is not set).
             if (!!url && !params.isCurrentlyLoading) {
-                self.navigate(url);
+                return self.navigate(url);
             }
         };
 
-        self.navigationHeaderController.generateContent(includeDrawerIcon)
+        return self.navigationHeaderController.generateContent(includeDrawerIcon)
             .then(function(headerContent) {
                 return self.navigationView.navigateToUrl(
                     url, headerContent, {navigationHandler: navigationHandler});
@@ -196,6 +187,29 @@ function(
 
     NavigationController.prototype.isActiveItem = function() {
         return this.isActive;
+    };
+
+    NavigationController.prototype.needsReload = function() {
+        return !this.navigationView.loaded;
+    };
+
+    var bindEvents = function(self) {
+        var handleActiveState = function(event) {
+            if (self.isActive) {
+                AppEvents.once(event, function() {
+                    self.isActive = true;
+                });
+            }
+            self.isActive = false;
+        };
+
+        AppEvents.on(AppEvents.names.welcomeShown, function() {
+            handleActiveState(AppEvents.names.welcomeHidden);
+        });
+
+        AppEvents.on(AppEvents.names.cartShown, function() {
+            handleActiveState(AppEvents.names.cartHidden);
+        });
     };
 
     return NavigationController;

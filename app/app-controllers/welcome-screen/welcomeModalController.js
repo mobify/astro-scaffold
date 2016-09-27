@@ -1,7 +1,9 @@
+
 define([
     'astro-full',
     'app-events',
     'app-rpc',
+    'application',
     'bluebird',
     'plugins/modalViewPlugin',
     'plugins/secureStorePlugin',
@@ -12,6 +14,7 @@ function(
     Astro,
     AppEvents,
     AppRpc,
+    Application,
     Promise,
     ModalViewPlugin,
     SecureStorePlugin,
@@ -76,11 +79,19 @@ function(
                     navigator.navigate(params.url);
                 }
             };
+
+            // Welcome modal should never dismiss unless the user has
+            // completed the welcome flow.
+            var canGoBack = function() {
+                return Promise.resolve(false);
+            };
+
             errorController.bindToNavigator({
                 navigator: navigator,
                 backHandler: backHandler,
                 retryHandler: retryHandler,
-                isActiveItem: welcomeModalController.isActiveItem.bind(welcomeModalController)
+                isActiveItem: welcomeModalController.isActiveItem.bind(welcomeModalController),
+                canGoBack: canGoBack
             });
             return welcomeModalController;
         });
@@ -90,14 +101,30 @@ function(
         var self = this;
         params = Astro.Utils.extend({forced: false}, params);
 
-        self._secureStore.get('onboarded').then(function(onboarded) {
-            if (onboarded !== 'YES' || params.forced) {
-                self.isShowing = true;
-                self.modalView.show({animated: true});
-                AppEvents.trigger(AppEvents.names.welcomeShown);
-                self._secureStore.set('onboarded', 'YES');
+        return Promise.join(
+            Application.getAppInformation(),
+            self._secureStore.get('installationID'),
+            function(appInfo, previousInstallationID) {
+                // Welcome modal should be triggered when installationID changes
+                // NOTE: appInfo.installationID appears to be different on each app run
+                // on the iOS Simulator, but on real devices they will persist.
+                return new Promise(function(resolve, reject) {
+                    if (appInfo.installationID !== previousInstallationID || params.forced) {
+                            self.isShowing = true;
+                            self.modalView.show({animated: true});
+
+                            // Promise will be resolved when welcome modal is dismissed
+                            AppEvents.on(AppEvents.names.welcomeHidden, function() {
+                                self._secureStore.set('installationID', appInfo.installationID);
+                                resolve();
+                            });
+                            AppEvents.trigger(AppEvents.names.welcomeShown);
+                    } else {
+                        reject();
+                    }
+                });
             }
-        });
+        );
     };
 
     WelcomeModalController.prototype.hide = function() {

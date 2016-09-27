@@ -64,6 +64,12 @@ function(
                 cartController.navigate(params.url);
             };
 
+            // Modals will always be able to go back. At it's root, the modal
+            // will dismiss.
+            var canGoBack = function() {
+                return Promise.resolve(true);
+            };
+
             errorController.bindToNavigator({
                 navigator: cartController.webView,
                 backHandler: backHandler,
