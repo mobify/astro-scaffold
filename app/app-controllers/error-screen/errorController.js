@@ -84,6 +84,12 @@ define([
         return function(eventArgs) {
             navigator.loaded = false;
 
+            if (eventArgs.error.code == WebViewPlugin.errorCodes.PageTimeout) {
+                self.errorType = "pageTimeout";
+            } else if (eventArgs.error.code == WebViewPlugin.errorCodes.NoInternetConnection) {
+                self.errorType = "noInternetConnection";
+            }
+
             if (isActiveItem()) {
                 self.viewPlugin.once('back', function() {
                     self.hide();
@@ -110,12 +116,6 @@ define([
             self.viewPlugin.on('error:loaded', function() {
                 self.show();
             });
-
-            if (eventArgs.error.code == WebViewPlugin.errorCodes.PageTimeout) {
-                self.errorType = "pageTimeout";
-            } else if (eventArgs.error.code == WebViewPlugin.errorCodes.NoInternetConnection) {
-                self.errorType = "noInternetConnection";
-            }
 
             self.viewPlugin.navigate(ErrorConfig.url);
 
