@@ -1,14 +1,17 @@
 define([
     'bluebird',
-    'plugins/webViewPlugin'
+    'plugins/searchBarPlugin',
+    'plugins/anchoredLayoutPlugin'
 ],
 function(
     Promise,
-    WebViewPlugin
+    SearchBarPlugin,
+    AnchoredLayoutPlugin
 ) {
-    var SearchBarController = function(webView, layout, searchConfig) {
-        this.viewPlugin = webView;
-        this.layout = layout;
+    var SearchBarController = function(internalLayout, parentLayout, searchBarPlugin, searchConfig) {
+        this.viewPlugin = internalLayout;
+        this.parentLayout = parentLayout;
+        this.searchBar = searchBarPlugin;
         this.searchConfig = searchConfig;
 
         // Track the state to show.hide keyboard on toggle
@@ -20,15 +23,13 @@ function(
         this.isVisible = true;
 
         this._registerEvents();
-
-        this.viewPlugin.navigate(this.searchConfig.uiSource);
-        this.viewPlugin.disableScrolling();
     };
 
     SearchBarController.init = function(layoutPromise, searchConfig) {
-        return Promise.join(layoutPromise, WebViewPlugin.init(),
-            function(layout, webView) {
-                return new SearchBarController(webView, layout, searchConfig);
+        return Promise.join(AnchoredLayoutPlugin.init(), layoutPromise, SearchBarPlugin.init(),
+            function(internalLayout, parentLayout, searchBarPlugin) {
+                internalLayout.addTopView(searchBarPlugin);
+                return new SearchBarController(internalLayout, parentLayout, searchBarPlugin, searchConfig);
             }
         );
     };
@@ -41,49 +42,53 @@ function(
 
     // You must manually call this for the search bar to be visible
     SearchBarController.prototype.addToLayout = function() {
-        this.layout.addTopView(this.viewPlugin, {height: 52});
+        this.parentLayout.addTopView(this.viewPlugin);
         this.hide({animated: false}); // don't show it by default
     };
 
     SearchBarController.prototype._registerEvents = function() {
         var self = this;
-
         // Users of SearchBarController can also hook this event
         // to instruct the desired view to act on the search being performed
         // The search terms are expected to be in a string found in
         // params['searchTerms']
-        this.viewPlugin.on('search:submitted', function(params) {
-            self.hide({animated: true});
+        this.searchBar.on('search:submitted', function(params) {
+            self.hide();
         });
 
-        this.viewPlugin.on('search:cancelled', function(params) {
-            self.hide({animated: true});
+        this.searchBar.on('search:cancelled', function(params) {
+            self.hide();
         });
     };
 
     SearchBarController.prototype.show = function(options) {
+        options = options || (Astro.isRunningInIOSApp() ? {animated: true} : {animated: false});
+
         if (this.isVisible) {
             return;
         }
 
-        this.layout.showView(this.viewPlugin, options);
+        this.searchBar.focus();
+        this.parentLayout.showView(this.viewPlugin, options);
         this.isVisible = true;
     };
 
     SearchBarController.prototype.hide = function(options) {
+        options = options || (Astro.isRunningInIOSApp() ? {animated: true} : {animated: false});
+
         if (!this.isVisible) {
             return;
         }
 
-        this.layout.hideView(this.viewPlugin, options);
+        this.parentLayout.hideView(this.viewPlugin, options);
         this.isVisible = false;
     };
 
-    SearchBarController.prototype.toggle = function(options) {
+    SearchBarController.prototype.toggle = function() {
         if (this.isVisible) {
-            this.hide(options);
+            this.hide();
         } else {
-            this.show(options);
+            this.show();
         }
     };
 
@@ -92,7 +97,7 @@ function(
             return;
         }
 
-        this.viewPlugin.on('search:submitted', callback);
+        this.searchBar.on('search:submitted', callback);
     };
 
     return SearchBarController;
