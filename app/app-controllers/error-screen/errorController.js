@@ -73,7 +73,7 @@ define([
         this.viewPlugin.off('back');
     };
 
-    ErrorController.prototype._generateErrorCallback = function(errorType, params) {
+    ErrorController.prototype._generateErrorCallback = function(params) {
         var self = this;
         var navigator = params.navigator;
         var backHandler = params.backHandler;
@@ -83,6 +83,12 @@ define([
 
         return function(eventArgs) {
             navigator.loaded = false;
+
+            if (eventArgs.error.code == WebViewPlugin.errorCodes.PageTimeout) {
+                self.errorType = "pageTimeout";
+            } else if (eventArgs.error.code == WebViewPlugin.errorCodes.NoInternetConnection) {
+                self.errorType = "noInternetConnection";
+            }
 
             if (isActiveItem()) {
                 self.viewPlugin.once('back', function() {
@@ -96,7 +102,6 @@ define([
                     self.show();
                 });
 
-                self.errorType = errorType;
                 canGoBack().then(function(canGoBack) {
                     self.canGoBack = canGoBack;
                     var loadParams = {
@@ -106,6 +111,13 @@ define([
                     self.viewPlugin.trigger('error:should-load', loadParams);
                 });
             }
+
+            // Wait until the error page is loaded before showing
+            self.viewPlugin.on('error:loaded', function() {
+                self.show();
+            });
+
+            self.viewPlugin.navigate(ErrorConfig.url);
 
             // We allow all views that triggered this modal to listen for
             // `retry` so that they will reload when the error modal's retry
@@ -122,8 +134,7 @@ define([
         var navigator = params.navigator;
 
         // Listen for triggered events emitted by the navigator
-        navigator.on('pageTimeout', this._generateErrorCallback('pageTimeout', params));
-        navigator.on('noInternetConnection', this._generateErrorCallback('noInternetConnection', params));
+        navigator.on('navigationFailed', this._generateErrorCallback(params));
     };
 
     return ErrorController;
