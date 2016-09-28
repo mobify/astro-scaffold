@@ -144,8 +144,6 @@ function(
             if (!!url && !params.isCurrentlyLoading) {
                 return self.navigate(url);
             }
-
-            self.segmentedController.loadSegments(url);
         };
 
         return self.navigationHeaderController.generateContent(includeDrawerIcon)
@@ -154,7 +152,6 @@ function(
                     url, headerContent, {navigationHandler: navigationHandler});
             })
             .then(function() {
-                self.segmentedController.loadSegments(url);
                 return self.navigationHeaderController.setTitle();
             });
     };
@@ -167,7 +164,6 @@ function(
             })
             .then(function(rootWebView) {
                 self.navigationHeaderController.setTitle(title);
-                self.segmentedController.loadSegments(url);
                 if (typeof rootWebView.navigate === 'function') {
                     return rootWebView.navigate(url);
                 } else {

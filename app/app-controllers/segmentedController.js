@@ -32,6 +32,9 @@ function(
                         return SegmentedPlugin.init().then(function(segmentedControls) {
                             segmentedControls.setColor(BaseConfig.colors.primaryColor);
                             segmentedControls.setItems(page.items);
+                            segmentedControls.on('itemSelect', function(params) {
+                                navigationView.trigger('segmented:' + params.key);
+                            });
                             layout.addTopView(segmentedControls, {height: 44});
                             layout.hideView(segmentedControls, {animated: false});
                             urlMap[page.url] = segmentedControls;
@@ -45,14 +48,20 @@ function(
     };
 
     SegmentedController.prototype.loadSegments = function(url) {
-        if (this.currentSegments) {
-            this.parentLayout.hideView(this.currentSegments);
+        var self = this;
+        if (self.currentSegments) {
+            self.parentLayout.hideView(this.currentSegments);
         }
         var urlObject = new URL(url);
-        var segments = this.getSegmentsByUrl(url);
+        var segments = self.getSegmentsByUrl(url);
         if (segments) {
-            this.parentLayout.showView(segments, {animated: false});
-            this.currentSegments = segments;
+            self.parentLayout.showView(segments, {animated: false});
+            self.currentSegments = segments;
+            // Must re-trigger the currently selected segment for 
+            // client-side js to run again
+            self.currentSegments.getSelectedItem().then(function(key) {
+                self.navigationView.trigger('segmented:' + key);
+            });
         }
     };
 
@@ -70,6 +79,9 @@ function(
     SegmentedController.prototype.registerEvents = function() {
         var self = this;
         this.navigationView.on('back', function(params) {
+            self.loadSegments(params.url);
+        });
+        this.navigationView.on('segmented:reload', function(params) {
             self.loadSegments(params.url);
         });
     };
