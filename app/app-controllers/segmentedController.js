@@ -18,7 +18,7 @@ function(
         this.config = config;
         this.urlMap = urlMap;
         this.currentSegments = null;
-        this.registerEvents();
+        this._registerEvents();
     };
 
     SegmentedController.init = function(layoutPromise, navigationViewPromise) {
@@ -29,15 +29,15 @@ function(
             function(layout, navigationView) {
                 return Promise.all(
                     SegmentsConfig.map(function(page, _) {
-                        return SegmentedPlugin.init().then(function(segmentedControls) {
-                            segmentedControls.setColor(BaseConfig.colors.primaryColor);
-                            segmentedControls.setItems(page.items);
-                            segmentedControls.on('itemSelect', function(params) {
+                        return SegmentedPlugin.init().then(function(segmentedControl) {
+                            segmentedControl.setColor(BaseConfig.colors.primaryColor);
+                            segmentedControl.setItems(page.items);
+                            segmentedControl.on('itemSelect', function(params) {
                                 navigationView.trigger('segmented:' + params.key);
                             });
-                            layout.addTopView(segmentedControls, {height: 44});
-                            layout.hideView(segmentedControls, {animated: false});
-                            urlMap[page.url] = segmentedControls;
+                            layout.addTopView(segmentedControl);
+                            layout.hideView(segmentedControl, {animated: false});
+                            urlMap[page.url] = segmentedControl;
                         });
                     })
                 ).then(function() {
@@ -47,13 +47,13 @@ function(
         );
     };
 
-    SegmentedController.prototype.loadSegments = function(url) {
+    SegmentedController.prototype.showSegmentsForUrl = function(url) {
         var self = this;
         if (self.currentSegments) {
             self.parentLayout.hideView(this.currentSegments);
         }
         var urlObject = new URL(url);
-        var segments = self.getSegmentsByUrl(url);
+        var segments = self._getSegmentsByUrl(url);
         if (segments) {
             self.parentLayout.showView(segments, {animated: false});
             self.currentSegments = segments;
@@ -65,7 +65,7 @@ function(
         }
     };
 
-    SegmentedController.prototype.getSegmentsByUrl = function(url) {
+    SegmentedController.prototype._getSegmentsByUrl = function(url) {
         var urlObject = new URL(url);
         if (urlObject.pathname in this.urlMap) {
             return this.urlMap[urlObject.pathname];
@@ -76,13 +76,13 @@ function(
         }
     };
 
-    SegmentedController.prototype.registerEvents = function() {
+    SegmentedController.prototype._registerEvents = function() {
         var self = this;
         this.navigationView.on('back', function(params) {
-            self.loadSegments(params.url);
+            self.showSegmentsForUrl(params.url);
         });
         this.navigationView.on('segmented:reload', function(params) {
-            self.loadSegments(params.url);
+            self.showSegmentsForUrl(params.url);
         });
     };
 
