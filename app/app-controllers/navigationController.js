@@ -41,6 +41,7 @@ function(
         var self = this;
         this.searchBarController.registerSearchSubmittedEvents(function(params) {
             var searchUrl = self.searchBarController.generateSearchUrl(params.searchTerms);
+            self.segmentedController.showSegmentsForUrl(searchUrl);
             self.navigate(searchUrl);
         });
 
