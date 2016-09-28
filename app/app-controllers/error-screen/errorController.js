@@ -96,7 +96,6 @@ define([
                     self.show();
                 });
 
-                self.errorType = errorType;
                 canGoBack().then(function(canGoBack) {
                     self.canGoBack = canGoBack;
                     var loadParams = {
