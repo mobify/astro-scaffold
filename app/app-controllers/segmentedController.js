@@ -1,21 +1,20 @@
 define([
     'bluebird',
-    'plugins/anchoredLayoutPlugin',
-    'plugins/segmentedPlugin',
     'config/baseConfig',
-    'config/segmentsConfig'
+    'config/segmentsConfig',
+    'plugins/anchoredLayoutPlugin',
+    'plugins/segmentedPlugin'
 ],
 function(
     Promise,
-    AnchoredLayoutPlugin,
-    SegmentedPlugin,
     BaseConfig,
-    SegmentsConfig
+    SegmentsConfig,
+    AnchoredLayoutPlugin,
+    SegmentedPlugin
 ) {
-    var SegmentedController = function(layout, navigationView, config, urlMap) {
+    var SegmentedController = function(layout, navigationView, urlMap) {
         this.parentLayout = layout;
         this.navigationView = navigationView;
-        this.config = config;
         this.urlMap = urlMap;
         this.currentSegments = null;
         this._registerEvents();
@@ -41,7 +40,7 @@ function(
                         });
                     })
                 ).then(function() {
-                    return new SegmentedController(layout, navigationView, SegmentsConfig, urlMap);
+                    return new SegmentedController(layout, navigationView, urlMap);
                 });
             }
         );
