@@ -21,7 +21,8 @@ android {
 }
 
 task buildJS(type:Exec) {
-    commandLine "../../app/build-js.sh"
+    commandLine "../../node_modules/astro-sdk/scripts/build-js.sh", "../.."
+    workingDir "."
 }
 
 preBuild.dependsOn buildJS
