@@ -2,6 +2,7 @@
 - Integrate the Mobify preview plugin
 - Welcome modal now relies on installationId to determine whether to show
 - Add Requirements to README, and "engines" field to package.json
+- Use global `build-js.sh` file from Astro
 
 ## v0.15.0
 - [iOS] Remove update bundle version build phase
