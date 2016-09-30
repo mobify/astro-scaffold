@@ -301,7 +301,7 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
-			shellScript = "../app/build-js.sh --no-color";
+			shellScript = "../node_modules/astro-sdk/scripts/build-js.sh --no-color ../";
 		};
 /* End PBXShellScriptBuildPhase section */
 
