@@ -11,13 +11,7 @@ manage node and npm versions.
 To get up and running with scaffold, ensure the dependencies are installed:
 
 ```bash
-npm install
-```
-
-During the first build in Xcode or Android Studio, the npm dependencies for astro-sdk are installed. This takes some time, so you can install them manually:
-
-```bash
-pushd node_modules/astro-sdk && npm install && popd
+npm run depends
 ```
 
 **Note**: The `app/build-js.sh` script automatically builds app.js.
