@@ -4,6 +4,7 @@
 - Add Requirements to README, and "engines" field to package.json
 - Add Segmented Plugin
 - Replace WebView search bar with Search Bar Plugin
+- Add previewController to enable preview by shaking
 
 ## v0.15.0
 - [iOS] Remove update bundle version build phase
