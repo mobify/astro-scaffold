@@ -133,6 +133,10 @@ npm test
 - For Android, create a `HOCKEYAPP_TOKEN_ANDROID` key in Account Settings -> API Tokens. Copy & Paste the token into the `HOCKEYAPP_TOKEN_ANDROID` environment variable in CircleCI described in
  the above section CircleCI Setup
 
+# Universal Deep Linking iOS
+
+In order for the iOS app to support universal deep linking. The site which will be deeplinked from needs to host a `apple-app-site-association` file. The scaffold includes an example of this file at `ios/scaffold/apple-app-site-association`. Please see [Universal Linking Setup](https://developer.apple.com/library/ios/documentation/General/Conceptual/AppSearch/UniversalLinks.html) for more information.
+
 # Troubleshooting
 
 ![Screenshot of no available devices error](https://s3.amazonaws.com/uploads.hipchat.com/15359/58433/ACnytly3S1nHHkb/2015-08-12%2011.59.25%20am.png)
