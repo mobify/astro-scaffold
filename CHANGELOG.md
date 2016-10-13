@@ -4,6 +4,7 @@
 - Add Requirements to README, and "engines" field to package.json
 - Add Segmented Plugin
 - Replace WebView search bar with Search Bar Plugin
+- Set iOS projects to 'iPhone' instead of 'Universal' by default
 
 ## v0.15.0
 - [iOS] Remove update bundle version build phase
