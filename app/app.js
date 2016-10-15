@@ -53,6 +53,25 @@ window.run = function() {
             return counterBadgeController;
         });
 
+        // Android hardware back
+        // TODO jason - test with tab layout
+        var setupHardwareBackButton = function(alternativeBackFunction) {
+            Application.on('backButtonPressed', function() {
+                Promise.join(
+                    cartModalControllerPromise,
+                    errorControllerPromise,
+                function(cartModalController, errorController) {
+                    if (cartModalController.isShowing) {
+                        cartModalController.hide();
+                    } else if (errorController.isShowing) {
+                        errorController.handleHardwareBackButtonPress();
+                    } else {
+                        alternativeBackFunction();
+                    }
+                });
+            });
+        };
+
         var createTabBarLayout = function() {
             var layoutPromise = AnchoredLayoutPlugin.init();
             var tabBarControllerPromise = TabBarController.init(
@@ -79,6 +98,7 @@ window.run = function() {
                 tabBarControllerPromise,
                 layoutSetupPromise,
             function(tabBarController) {
+                setupHardwareBackButton(tabBarController.backActiveItem.bind(tabBarController));
                 return tabBarController;
             });
         };
@@ -90,17 +110,7 @@ window.run = function() {
                 errorControllerPromise
             ).then(function(drawerController) {
                 Application.setMainViewPlugin(drawerController.drawer);
-
-                // Wiring up the hardware back button for Android
-                Application.on('backButtonPressed', function() {
-                    cartModalControllerPromise.then(function(cartModalController) {
-                        if (cartModalController.isShowing) {
-                            cartModalController.hide();
-                        } else {
-                            drawerController.backActiveItem();
-                        }
-                    });
-                });
+                setupHardwareBackButton(drawerController.backActiveItem.bind(drawerController));
 
                 Astro.registerRpcMethod(AppRpc.names.navigateToNewRootView, ['url', 'title'], function(res, url, title) {
                     drawerController.navigateToNewRootView(url, title);

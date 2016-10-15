@@ -1,6 +1,7 @@
 define([
     'astro-full',
     'bluebird',
+    'application',
     'config/errorConfig',
     'config/baseConfig',
     'plugins/webViewPlugin',
@@ -9,6 +10,7 @@ define([
 ], function(
     Astro,
     Promise,
+    Application,
     ErrorConfig,
     BaseConfig,
     WebViewPlugin,
@@ -39,6 +41,10 @@ define([
 
             return new ErrorController(modalView, webView);
         });
+    };
+
+    ErrorController.prototype.handleHardwareBackButtonPress = function() {
+        this.viewPlugin.events.trigger('back');
     };
 
     ErrorController.prototype.show = function() {
@@ -90,11 +96,15 @@ define([
                 self.errorType = "noInternetConnection";
             }
 
+            // Only trigger the error modal if the active navigation view is
+            // the one that failed to load.
             if (isActiveItem()) {
                 self.viewPlugin.once('back', function() {
-                    self.hide();
-                    self._removeModalEvents();
-                    backHandler();
+                    if (self.canGoBack) {
+                        self.hide();
+                        self._removeModalEvents();
+                        backHandler();
+                    }
                 });
 
                 // Wait until the error page is loaded before showing
@@ -107,17 +117,9 @@ define([
                     var loadParams = {
                         errorContent: self.errorContent()
                     };
-
                     self.viewPlugin.trigger('error:should-load', loadParams);
                 });
             }
-
-            // Wait until the error page is loaded before showing
-            self.viewPlugin.on('error:loaded', function() {
-                self.show();
-            });
-
-            self.viewPlugin.navigate(ErrorConfig.url);
 
             // We allow all views that triggered this modal to listen for
             // `retry` so that they will reload when the error modal's retry
