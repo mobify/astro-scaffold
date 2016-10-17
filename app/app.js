@@ -54,7 +54,6 @@ window.run = function() {
         });
 
         // Android hardware back
-        // TODO jason - test with tab layout
         var setupHardwareBackButton = function(alternativeBackFunction) {
             Application.on('backButtonPressed', function() {
                 Promise.join(
