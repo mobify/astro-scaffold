@@ -5,6 +5,8 @@
 - Add Segmented Plugin
 - Replace WebView search bar with Search Bar Plugin
 - Set iOS projects to 'iPhone' instead of 'Universal' by default
+- Fix up error controller and error modal text
+- [Android] setup hardware back button and fix for both tab layout and left-nav layout
 
 ## v0.15.0
 - [iOS] Remove update bundle version build phase
