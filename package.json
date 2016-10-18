@@ -3,7 +3,7 @@
   "version": "0.0.1",
   "author": "Mobify",
   "dependencies": {
-    "astro-sdk": "mobify/astro.git#develop",
+    "astro-sdk": "mobify/astro.git#eded8186a3a9e86462ad0b509ef0b4293254eb68",
     "bluebird": "~2.9.24",
     "jquery": "^2.2.2",
     "navitron": "^1.0.0",
