@@ -55,9 +55,10 @@ cp $MYPATH/node_modules/navitron/node_modules/velocity-animate/velocity.* $MYPAT
 cp $MYPATH/node_modules/navitron/dist/navitron*.js $MYPATH/app-www/js/build
 cp $MYPATH/node_modules/jquery/dist/jquery.min.js $MYPATH/app-www/js/build
 
-echo "Building astro-client.js"
 pushd $MYPATH/node_modules/astro-sdk
+    echo "Installing dependencies for astro-sdk"
     npm install --no-progress --no-spin $EXTRA_NPM_ARGS
+    echo "Building astro-client.js"
     $MYPATH/node_modules/grunt-cli/bin/grunt $EXTRA_GRUNT_ARGS build_astro_client
 popd
 
