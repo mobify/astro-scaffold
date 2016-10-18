@@ -8,6 +8,7 @@ define([
     'plugins/navigationPlugin',
     'app-controllers/navigationHeaderController',
     'app-controllers/searchBarController',
+    'app-controllers/segmentedController',
     'config/searchConfig'
 ],
 /* eslint-disable */
@@ -21,16 +22,18 @@ function(
     NavigationPlugin,
     NavigationHeaderController,
     SearchBarController,
+    SegmentedController,
     SearchConfig
 ) {
 /* eslint-enable */
-    var NavigationController = function(id, url, layout, navigationView, navigationHeaderController, searchBarController, includeDrawerIcon) {
+    var NavigationController = function(id, url, layout, navigationView, navigationHeaderController, searchBarController, includeDrawerIcon, segmentedController) {
         this.id = id;
         this.isActive = false;
         this.viewPlugin = layout;
         this.navigationView = navigationView;
         this.navigationHeaderController = navigationHeaderController;
         this.searchBarController = searchBarController;
+        this.segmentedController = segmentedController;
 
         this.navigate(url, includeDrawerIcon);
         this.navigationView.loaded = true;
@@ -38,6 +41,7 @@ function(
         var self = this;
         this.searchBarController.registerSearchSubmittedEvents(function(params) {
             var searchUrl = self.searchBarController.generateSearchUrl(params.searchTerms);
+            self.segmentedController.showSegmentsForUrl(searchUrl);
             self.navigate(searchUrl);
         });
 
@@ -53,17 +57,22 @@ function(
         drawerEventHandler
     ) {
         var layoutPromise = AnchoredLayoutPlugin.init();
+        var navigationPromise = NavigationPlugin.init();
+        var navigationContainerPromise = AnchoredLayoutPlugin.init();
 
         return Promise.join(
             layoutPromise,
             NavigationHeaderController.init(counterBadgeController),
-            NavigationPlugin.init(),
+            navigationPromise,
+            navigationContainerPromise,
             SearchBarController.init(layoutPromise, SearchConfig),
-            function(layout, navigationHeaderController, navigationView, searchBarController) {
+            SegmentedController.init(navigationContainerPromise, navigationPromise),
+            function(layout, navigationHeaderController, navigationView, navigationViewContainer, searchBarController, segmentedController) {
                 navigationView.getLoader().setColor(BaseConfig.loaderColor);
 
                 // Set layout
-                layout.setContentView(navigationView);
+                navigationViewContainer.setContentView(navigationView);
+                layout.setContentView(navigationViewContainer);
                 layout.addTopView(navigationHeaderController.viewPlugin);
                 navigationView.setHeaderBar(navigationHeaderController.viewPlugin);
                 navigationHeaderController.registerBackEvents(function() {
@@ -89,7 +98,8 @@ function(
                     navigationView,
                     navigationHeaderController,
                     searchBarController,
-                    drawerIconEnabled
+                    drawerIconEnabled,
+                    segmentedController
                 );
 
                 var backHandler = function() {

@@ -414,6 +414,7 @@
 				PRODUCT_BUNDLE_IDENTIFIER = "com.mobify.astro.$(PRODUCT_NAME:rfc1034identifier)";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_VERSION = 2.3;
+				TARGETED_DEVICE_FAMILY = 1;
 			};
 			name = UAT;
 		};
@@ -541,6 +542,7 @@
 				PRODUCT_BUNDLE_IDENTIFIER = "com.mobify.astro.$(PRODUCT_NAME:rfc1034identifier)";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_VERSION = 2.3;
+				TARGETED_DEVICE_FAMILY = 1;
 			};
 			name = Debug;
 		};
@@ -562,6 +564,7 @@
 				PRODUCT_BUNDLE_IDENTIFIER = "com.mobify.astro.$(PRODUCT_NAME:rfc1034identifier)";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_VERSION = 2.3;
+				TARGETED_DEVICE_FAMILY = 1;
 			};
 			name = Release;
 		};
