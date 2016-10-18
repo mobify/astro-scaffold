@@ -29,6 +29,7 @@ fi
 
 if [ ! -d "$SUPPLIED_APP_FOLDER_PATH" ]; then
     echo "cannot find supplied app_directory"
+    exit 1
 fi
 
 MYPATH=$( cd $SUPPLIED_APP_FOLDER_PATH && pwd )
