@@ -4,7 +4,6 @@ set -e
 
 echo "Setting up path variables and finding node"
 MYPATH=$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )
-ROOT=$MYPATH/..
 EXTRA_NPM_ARGS=""
 EXTRA_GRUNT_ARGS=""
 
@@ -43,14 +42,14 @@ if ! findNode; then
     exit 1
 fi
 
-echo "Create build directory"
+echo "Creating build directory"
 if [ ! -d $MYPATH/app-www/js/build ] ; then
     mkdir $MYPATH/app-www/js/build
 fi
 
-echo "build app.js"
+echo "Building app.js"
 pushd $MYPATH
-    $MYPATH/node_modules/grunt-cli/bin/grunt $EXTRA_GRUNT_ARGS build
+    $MYPATH/node_modules/.bin/grunt $EXTRA_GRUNT_ARGS build
 popd
 
 echo "SUCCESS: build app.js"

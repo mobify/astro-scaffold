@@ -11,7 +11,7 @@ manage node and npm versions.
 To get up and running with scaffold, ensure the dependencies are installed:
 
 ```bash
-npm run depends
+npm run deps
 ```
 
 **Note**: The `app/build-js.sh` script automatically builds app.js.
