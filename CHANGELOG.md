@@ -5,6 +5,8 @@
 - Add Segmented Plugin
 - Replace WebView search bar with Search Bar Plugin
 - Set iOS projects to 'iPhone' instead of 'Universal' by default
+- Upgrade to support Xcode 8 & Swift 2.3
+- Update build scripts to separate dependency build from app.js build
 
 ## v0.15.0
 - [iOS] Remove update bundle version build phase
