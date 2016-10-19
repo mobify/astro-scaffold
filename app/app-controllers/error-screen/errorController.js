@@ -1,6 +1,5 @@
 define([
     'astro-full',
-    'app-rpc',
     'bluebird',
     'config/errorConfig',
     'config/baseConfig',
@@ -9,7 +8,6 @@ define([
 /* eslint-disable */
 ], function(
     Astro,
-    AppRpc,
     Promise,
     ErrorConfig,
     BaseConfig,
@@ -23,6 +21,11 @@ define([
         this.viewPlugin = webView;
         this.modalView = modalView;
         this.errorType = null;
+        this.canGoBack = false;
+
+        // Navigate to the error page to set up event
+        // listeners/handlers on the web side.
+        this.viewPlugin.navigate(ErrorConfig.url);
     };
 
     ErrorController.init = function() {
@@ -30,16 +33,11 @@ define([
             WebViewPlugin.init(),
             ModalViewPlugin.init(),
         function(webView, modalView) {
-            var loader = webView.getLoader();
-            loader.setColor(BaseConfig.loaderColor);
+            webView.getLoader().setColor(BaseConfig.loaderColor);
             webView.disableScrollBounce();
             modalView.setContentView(webView);
 
-            var errorController = new ErrorController(modalView, webView);
-            Astro.registerRpcMethod(AppRpc.names.errorContent, [], function(res) {
-                res.send(null, errorController.errorContent());
-            });
-            return errorController;
+            return new ErrorController(modalView, webView);
         });
     };
 
@@ -60,7 +58,11 @@ define([
         if (!this.errorType) {
             return null;
         }
-        return ErrorConfig.errors[this.errorType];
+
+        var errorContent = ErrorConfig.errors[this.errorType];
+        errorContent.canGoBack = this.canGoBack;
+
+        return errorContent;
     };
 
     // Remove the events when the modal is hidden otherwise untriggered
@@ -71,25 +73,50 @@ define([
         this.viewPlugin.off('back');
     };
 
-    ErrorController.prototype._generateErrorCallback = function(errorType, params) {
+    ErrorController.prototype._generateErrorCallback = function(params) {
         var self = this;
+        var navigator = params.navigator;
         var backHandler = params.backHandler;
         var retryHandler = params.retryHandler;
         var isActiveItem = params.isActiveItem;
+        var canGoBack = params.canGoBack;
 
         return function(eventArgs) {
+            navigator.loaded = false;
+
+            if (eventArgs.error.code == WebViewPlugin.errorCodes.PageTimeout) {
+                self.errorType = "pageTimeout";
+            } else if (eventArgs.error.code == WebViewPlugin.errorCodes.NoInternetConnection) {
+                self.errorType = "noInternetConnection";
+            }
+
             if (isActiveItem()) {
                 self.viewPlugin.once('back', function() {
                     self.hide();
                     self._removeModalEvents();
                     backHandler();
                 });
+
+                // Wait until the error page is loaded before showing
+                self.viewPlugin.on('astro:page-loaded', function() {
+                    self.show();
+                });
+
+                canGoBack().then(function(canGoBack) {
+                    self.canGoBack = canGoBack;
+                    var loadParams = {
+                        errorContent: self.errorContent()
+                    };
+
+                    self.viewPlugin.trigger('error:should-load', loadParams);
+                });
             }
+
             // Wait until the error page is loaded before showing
             self.viewPlugin.on('error:loaded', function() {
                 self.show();
             });
-            self.errorType = errorType;
+
             self.viewPlugin.navigate(ErrorConfig.url);
 
             // We allow all views that triggered this modal to listen for
@@ -107,8 +134,7 @@ define([
         var navigator = params.navigator;
 
         // Listen for triggered events emitted by the navigator
-        navigator.on('pageTimeout', this._generateErrorCallback('pageTimeout', params));
-        navigator.on('noInternetConnection', this._generateErrorCallback('noInternetConnection', params));
+        navigator.on('navigationFailed', this._generateErrorCallback(params));
     };
 
     return ErrorController;

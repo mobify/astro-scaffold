@@ -3,7 +3,7 @@
   "version": "0.0.1",
   "author": "Mobify",
   "dependencies": {
-    "astro-sdk": "~0.15.0",
+    "astro-sdk": "v0.16.1",
     "bluebird": "~2.9.24",
     "jquery": "^2.2.2",
     "navitron": "^1.0.0",
@@ -18,7 +18,13 @@
     "nightwatch": "0.9.6",
     "nightwatch-commands": "1.7.0"
   },
+  "engineStrict": true,
+  "engines": {
+      "node": "^4.0.0",
+      "npm": "^2.0.0"
+  },
   "scripts": {
+    "deps": "./scripts/build-dependencies.sh ./app",
     "test": "./scripts/ios-appium.sh"
   },
   "license": "SEE LICENSE IN LICENSE"

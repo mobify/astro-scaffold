@@ -1,4 +1,14 @@
-## v0.15.0 
+## v0.16.1
+- Integrate the Mobify preview plugin
+- Welcome modal now relies on installationId to determine whether to show
+- Add Requirements to README, and "engines" field to package.json
+- Add Segmented Plugin
+- Replace WebView search bar with Search Bar Plugin
+- Set iOS projects to 'iPhone' instead of 'Universal' by default
+- Upgrade to support Xcode 8 & Swift 2.3
+- Update build scripts to separate dependency build from app.js build
+
+## v0.15.0
 - [iOS] Remove update bundle version build phase
 
 ## v0.14.0
@@ -7,6 +17,7 @@
 - [Android] Updated to be compatible with Android Cordova v5.1.1
 - [iOS] Include pushclient module in iOS build
 - [iOS] Add support for universal deeplinking
+- [Both] Tab Navigation for both iOS and Android - disallow one platform using one navigation type while the other platform use the other navigation type
 
 ## v0.13.0
 - Include pushclient module in android build
