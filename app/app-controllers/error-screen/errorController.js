@@ -1,7 +1,6 @@
 define([
     'astro-full',
     'bluebird',
-    'application',
     'config/errorConfig',
     'config/baseConfig',
     'plugins/webViewPlugin',
@@ -10,7 +9,6 @@ define([
 ], function(
     Astro,
     Promise,
-    Application,
     ErrorConfig,
     BaseConfig,
     WebViewPlugin,
