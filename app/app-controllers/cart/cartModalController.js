@@ -17,11 +17,10 @@ function(
 ) {
 /* eslint-enable */
 
-    var CartModalController = function(modalView, cartController, errorController) {
+    var CartModalController = function(modalView, cartController) {
         this.isShowing = false;
         this.viewPlugin = modalView;
         this.cartController = cartController;
-        this.errorController = errorController;
 
         // Privileged methods
         this._reload = function() {
@@ -41,7 +40,7 @@ function(
         function(cartController, modalView, errorController) {
             modalView.setContentView(cartController.viewPlugin);
 
-            var cartModalController = new CartModalController(modalView, cartController, errorController);
+            var cartModalController = new CartModalController(modalView, cartController);
             cartController.registerCloseEventHandler(function() {
                 cartModalController.hide();
             });
@@ -95,10 +94,6 @@ function(
     };
 
     CartModalController.prototype.hide = function() {
-        if (this.errorController.isShowing) {
-            this.errorController.hide();
-        }
-
         // We load a blank page upon hide to prevent displaying
         // previously loaded content when we open the cart
         AppEvents.trigger(AppEvents.names.cartHidden);
