@@ -1,12 +1,16 @@
 ## To be released
+- Fix up error controller and error modal text
+- [Android] setup hardware back button and fix for both tab layout and left-nav layout
+
+## v0.16.1
 - Integrate the Mobify preview plugin
 - Welcome modal now relies on installationId to determine whether to show
 - Add Requirements to README, and "engines" field to package.json
 - Add Segmented Plugin
 - Replace WebView search bar with Search Bar Plugin
 - Set iOS projects to 'iPhone' instead of 'Universal' by default
-- Fix up error controller and error modal text
-- [Android] setup hardware back button and fix for both tab layout and left-nav layout
+- Upgrade to support Xcode 8 & Swift 2.3
+- Update build scripts to separate dependency build from app.js build
 
 ## v0.15.0
 - [iOS] Remove update bundle version build phase
