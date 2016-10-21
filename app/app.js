@@ -156,10 +156,10 @@ window.run = function() {
                 previewController.presentPreviewAlert();
             });
 
-            previewController.getPreviewStatus().then(function(status) {
+            previewController.isPreviewEnabled().then(function(enabled) {
                 // Configure the previewEnabled flag located in baseConfig.js
                 // to enable/disable app preview
-                if (status === 'on' && BaseConfig.previewEnabled) {
+                if (enabled === true && BaseConfig.previewEnabled) {
                     runAppPreview();
                 } else {
                     runApp();
