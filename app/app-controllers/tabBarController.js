@@ -139,6 +139,13 @@ function(
         return this.getActiveNavigationView().navigate(url);
     };
 
+    TabBarController.prototype.backActiveItem = function() {
+        if (this.canGoBack()) {
+            var activeTab = this.getActiveNavigationView()
+            activeTab.back();
+        }
+    };
+
     TabBarController.prototype.canGoBack = function() {
         var activeTab = this.getActiveNavigationView();
         return activeTab.canGoBack();

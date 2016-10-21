@@ -1,4 +1,6 @@
 ## To be released
+- Fix up error controller and error modal text
+- [Android] setup hardware back button and fix for both tab layout and left-nav layout
 
 ## v0.16.1
 - Integrate the Mobify preview plugin
