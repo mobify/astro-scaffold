@@ -1,0 +1,21 @@
+{
+    "applinks": {
+        "apps": [],
+        "details": [
+            {
+                "appID": "DEV_TEAM_ID.com.mobify.astro.scaffold",
+                "paths": [
+                    "/",
+                    "*"
+                ]
+            },
+            {
+                "appID": "RELEASE_TEAM_ID.com.releaseOrg.appName",
+                "paths": [
+                    "/",
+                    "*"
+                ]
+            }
+        ]
+    }
+}

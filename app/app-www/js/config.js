@@ -1,6 +1,6 @@
 require.config({
     baseUrl: '../js/build',
-    deps: ['global'],
+    deps: ['../global'],
     paths: {
         '$': 'jquery.min',
         'velocity': 'velocity.min',

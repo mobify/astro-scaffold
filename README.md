@@ -11,13 +11,7 @@ manage node and npm versions.
 To get up and running with scaffold, ensure the dependencies are installed:
 
 ```bash
-npm install
-```
-
-During the first build in Xcode or Android Studio, the npm dependencies for astro-sdk are installed. This takes some time, so you can install them manually:
-
-```bash
-pushd node_modules/astro-sdk && npm install && popd
+npm run deps
 ```
 
 **Note**: The `app/build-js.sh` script automatically builds app.js.
@@ -132,6 +126,10 @@ npm test
 - For iOS, create a `HOCKEYAPP_TOKEN` key in Account Settings -> API Tokens. Copy & Paste the token into the `HOCKEYAPP_TOKEN` environment variable in CircleCI described in
 - For Android, create a `HOCKEYAPP_TOKEN_ANDROID` key in Account Settings -> API Tokens. Copy & Paste the token into the `HOCKEYAPP_TOKEN_ANDROID` environment variable in CircleCI described in
  the above section CircleCI Setup
+
+# Universal Deep Linking iOS
+
+In order for the iOS app to support universal deep linking. The site which will be deeplinked from needs to host a `apple-app-site-association` file. The scaffold includes an example of this file at `ios/scaffold/apple-app-site-association`. Please see [Universal Linking Setup](https://developer.apple.com/library/ios/documentation/General/Conceptual/AppSearch/UniversalLinks.html) for more information.
 
 # Troubleshooting
 
