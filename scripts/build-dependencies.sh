@@ -54,6 +54,7 @@ cp $MYPATH/node_modules/navitron/node_modules/plugin/dist/plugin*.js $MYPATH/app
 cp $MYPATH/node_modules/navitron/node_modules/velocity-animate/velocity.* $MYPATH/app-www/js/build
 cp $MYPATH/node_modules/navitron/dist/navitron*.js $MYPATH/app-www/js/build
 cp $MYPATH/node_modules/jquery/dist/jquery.min.js $MYPATH/app-www/js/build
+cp $MYPATH/node_modules/bluebird/js/browser/bluebird*.js $MYPATH/app-www/js/build
 
 pushd $MYPATH/node_modules/astro-sdk
     echo "Installing dependencies for astro-sdk"

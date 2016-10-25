@@ -42,11 +42,6 @@ if ! findNode; then
     exit 1
 fi
 
-echo "Creating build directory"
-if [ ! -d $MYPATH/app-www/js/build ] ; then
-    mkdir $MYPATH/app-www/js/build
-fi
-
 echo "Building app.js"
 pushd $MYPATH
     $MYPATH/node_modules/.bin/grunt $EXTRA_GRUNT_ARGS build
