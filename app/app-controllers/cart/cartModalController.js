@@ -74,7 +74,8 @@ function(
                 navigator: cartController.webView,
                 backHandler: backHandler,
                 retryHandler: retryHandler,
-                isActiveItem: cartModalController.isActiveItem.bind(cartModalController)
+                isActiveItem: cartModalController.isActiveItem.bind(cartModalController),
+                canGoBack: canGoBack
             });
 
             return cartModalController;
