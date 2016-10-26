@@ -1,6 +1,7 @@
 ## To be released
 - Fix up error controller and error modal text
 - [Android] setup hardware back button and fix for both tab layout and left-nav layout
+- Add previewController to enable preview by shaking
 
 ## v0.16.1
 - Integrate the Mobify preview plugin

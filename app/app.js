@@ -11,6 +11,7 @@ window.run = function() {
         'plugins/anchoredLayoutPlugin',
         'plugins/mobifyPreviewPlugin',
         'controllers/counterBadgeController',
+        'controllers/previewController',
         'app-components/deepLinkingServices',
         'app-controllers/tabBarController',
         'app-controllers/drawerController',
@@ -28,6 +29,7 @@ window.run = function() {
         AnchoredLayoutPlugin,
         MobifyPreviewPlugin,
         CounterBadgeController,
+        PreviewController,
         DeepLinkingServices,
         TabBarController,
         DrawerController,
@@ -158,10 +160,21 @@ window.run = function() {
                 });
         };
 
-        // Configure the previewEnabled flag located in baseConfig.js
-        // to enable/disable app preview
-        BaseConfig.previewEnabled ? runAppPreview() : runApp();
+        PreviewController.init().then(function(previewController) {
+            Application.on('previewToggled', function() {
+                previewController.presentPreviewAlert();
+            });
 
+            previewController.isPreviewEnabled().then(function(enabled) {
+                // Configure the previewEnabled flag located in baseConfig.js
+                // to enable/disable app preview
+                if (enabled && BaseConfig.previewEnabled) {
+                    runAppPreview();
+                } else {
+                    runApp();
+                }
+            });
+        });
     }, undefined, true);
 };
 // Comment out next line for JS debugging
