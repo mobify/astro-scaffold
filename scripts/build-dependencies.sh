@@ -2,10 +2,6 @@
 
 set -e
 
-function findNode() {
-    return $(which npm 1>/dev/null 2>&1)
-}
-
 while [[ $# -gt 0 ]]
 do
 key="$1"

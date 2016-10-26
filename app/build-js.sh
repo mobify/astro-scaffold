@@ -16,9 +16,6 @@ if [ "$1" == "--no-color" ]; then
     EXTRA_GRUNT_ARGS="--no-color $EXTRA_GRUNT_ARGS"
 fi
 
-# Force supporting Homebrew installations of npm.
-export PATH=$PATH:/usr/local/bin
-
 if ! findNode; then
     echo "Cannot find 'npm'. Trying via nvm..."
     # Find node with nvm
@@ -36,6 +33,9 @@ if ! findNode; then
         source user-env.sh
     fi
 fi
+
+# Force supporting Homebrew installations of npm.
+export PATH=$PATH:/usr/local/bin
 
 if ! findNode; then
     echo "Cannot find 'npm'. Aborting. Add your npm path to \`user-env.sh\` and retry."
