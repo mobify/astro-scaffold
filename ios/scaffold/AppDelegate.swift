@@ -34,13 +34,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         
         window?.rootViewController = astroViewController
         window?.makeKeyAndVisible()
-        
-        // This is as sketchy as it appears.  We want to let the main thread run loop
-        // run so that the AstroViewController can spin up and get app.js executing.
-        // This allows any splash screen presented to be displayed before the Launch Image
-        // is dismissed (at the end of didFinishLaunchingWithOptions).
-        RunLoop.main.run(until: Date().addingTimeInterval(1.0))
-        
+
         // Return false to avoid calling openURL. The deeplink url has already been handled in Astro.
         return false
     }
