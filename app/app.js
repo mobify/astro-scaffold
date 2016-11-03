@@ -11,6 +11,7 @@ window.run = function() {
         'plugins/anchoredLayoutPlugin',
         'plugins/mobifyPreviewPlugin',
         'controllers/counterBadgeController',
+        'controllers/previewController',
         'app-components/deepLinkingServices',
         'app-controllers/tabBarController',
         'app-controllers/drawerController',
@@ -28,6 +29,7 @@ window.run = function() {
         AnchoredLayoutPlugin,
         MobifyPreviewPlugin,
         CounterBadgeController,
+        PreviewController,
         DeepLinkingServices,
         TabBarController,
         DrawerController,
@@ -52,6 +54,24 @@ window.run = function() {
             counterBadgeController.updateCounterValue(3);
             return counterBadgeController;
         });
+
+        // Android hardware back
+        var setupHardwareBackButton = function(alternativeBackFunction) {
+            Application.on('backButtonPressed', function() {
+                Promise.join(
+                    cartModalControllerPromise,
+                    errorControllerPromise,
+                function(cartModalController, errorController) {
+                    if (cartModalController.isShowing) {
+                        cartModalController.hide();
+                    } else if (errorController.isShowing) {
+                        errorController.handleHardwareBackButtonPress();
+                    } else {
+                        alternativeBackFunction();
+                    }
+                });
+            });
+        };
 
         var createTabBarLayout = function() {
             var layoutPromise = AnchoredLayoutPlugin.init();
@@ -79,6 +99,7 @@ window.run = function() {
                 tabBarControllerPromise,
                 layoutSetupPromise,
             function(tabBarController) {
+                setupHardwareBackButton(tabBarController.backActiveItem.bind(tabBarController));
                 return tabBarController;
             });
         };
@@ -90,17 +111,7 @@ window.run = function() {
                 errorControllerPromise
             ).then(function(drawerController) {
                 Application.setMainViewPlugin(drawerController.drawer);
-
-                // Wiring up the hardware back button for Android
-                Application.on('backButtonPressed', function() {
-                    cartModalControllerPromise.then(function(cartModalController) {
-                        if (cartModalController.isShowing) {
-                            cartModalController.hide();
-                        } else {
-                            drawerController.backActiveItem();
-                        }
-                    });
-                });
+                setupHardwareBackButton(drawerController.backActiveItem.bind(drawerController));
 
                 Astro.registerRpcMethod(AppRpc.names.navigateToNewRootView, ['url', 'title'], function(res, url, title) {
                     drawerController.navigateToNewRootView(url, title);
@@ -149,10 +160,21 @@ window.run = function() {
                 });
         };
 
-        // Configure the previewEnabled flag located in baseConfig.js
-        // to enable/disable app preview
-        BaseConfig.previewEnabled ? runAppPreview() : runApp();
+        PreviewController.init().then(function(previewController) {
+            Application.on('previewToggled', function() {
+                previewController.presentPreviewAlert();
+            });
 
+            previewController.isPreviewEnabled().then(function(enabled) {
+                // Configure the previewEnabled flag located in baseConfig.js
+                // to enable/disable app preview
+                if (enabled && BaseConfig.previewEnabled) {
+                    runAppPreview();
+                } else {
+                    runApp();
+                }
+            });
+        });
     }, undefined, true);
 };
 // Comment out next line for JS debugging

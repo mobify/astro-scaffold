@@ -16,9 +16,6 @@ if [ "$1" == "--no-color" ]; then
     EXTRA_GRUNT_ARGS="--no-color $EXTRA_GRUNT_ARGS"
 fi
 
-# Force supporting Homebrew installations of npm.
-export PATH=$PATH:/usr/local/bin
-
 if ! findNode; then
     echo "Cannot find 'npm'. Trying via nvm..."
     # Find node with nvm
@@ -37,14 +34,12 @@ if ! findNode; then
     fi
 fi
 
+# Force supporting Homebrew installations of npm.
+export PATH=$PATH:/usr/local/bin
+
 if ! findNode; then
     echo "Cannot find 'npm'. Aborting. Add your npm path to \`user-env.sh\` and retry."
     exit 1
-fi
-
-echo "Creating build directory"
-if [ ! -d $MYPATH/app-www/js/build ] ; then
-    mkdir $MYPATH/app-www/js/build
 fi
 
 echo "Building app.js"
