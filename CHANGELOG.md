@@ -1,4 +1,4 @@
-## To be released
+## v0.17.0
 - Fix up error controller and error modal text
 - [Android] setup hardware back button and fix for both tab layout and left-nav layout
 - Add previewController to enable preview by shaking
