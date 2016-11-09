@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		5BFB5A541DD256FC00C3A22F /* Launch Screen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 5BFB5A531DD256FC00C3A22F /* Launch Screen.storyboard */; };
 		6E4715221CA1DB2600A359FE /* DoubleIconsPlugin.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6E4715211CA1DB2600A359FE /* DoubleIconsPlugin.swift */; };
 		87132A201B6016FF00FC74A4 /* Astro.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 87132A1E1B6016FF00FC74A4 /* Astro.framework */; };
 		87132A211B6016FF00FC74A4 /* Astro.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 87132A1E1B6016FF00FC74A4 /* Astro.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
@@ -16,7 +17,6 @@
 		87C6A88E1B43044D001876CE /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 87C6A88D1B43044D001876CE /* ViewController.swift */; };
 		87C6A8911B43044D001876CE /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 87C6A88F1B43044D001876CE /* Main.storyboard */; };
 		87C6A8931B43044D001876CE /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 87C6A8921B43044D001876CE /* Images.xcassets */; };
-		87C6A8961B43044D001876CE /* LaunchScreen.xib in Resources */ = {isa = PBXBuildFile; fileRef = 87C6A8941B43044D001876CE /* LaunchScreen.xib */; };
 		87C6A8A21B43044D001876CE /* scaffoldTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 87C6A8A11B43044D001876CE /* scaffoldTests.swift */; };
 		87C6A8E91B430E15001876CE /* config.xml in Resources */ = {isa = PBXBuildFile; fileRef = 87C6A8D71B430E15001876CE /* config.xml */; };
 		87C6A8F61B430EDD001876CE /* www in Resources */ = {isa = PBXBuildFile; fileRef = 87C6A8F51B430EDD001876CE /* www */; };
@@ -53,6 +53,7 @@
 /* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
+		5BFB5A531DD256FC00C3A22F /* Launch Screen.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; path = "Launch Screen.storyboard"; sourceTree = "<group>"; };
 		6E4715211CA1DB2600A359FE /* DoubleIconsPlugin.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = DoubleIconsPlugin.swift; path = Plugins/DoubleIconsPlugin.swift; sourceTree = "<group>"; };
 		87132A1E1B6016FF00FC74A4 /* Astro.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Astro.framework; path = "$(CONFIGURATION_BUILD_DIR)/Astro.framework"; sourceTree = "<group>"; };
 		87132A1F1B6016FF00FC74A4 /* Cordova.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Cordova.framework; path = "$(CONFIGURATION_BUILD_DIR)/Cordova.framework"; sourceTree = "<group>"; };
@@ -62,7 +63,6 @@
 		87C6A88D1B43044D001876CE /* ViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewController.swift; sourceTree = "<group>"; };
 		87C6A8901B43044D001876CE /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
 		87C6A8921B43044D001876CE /* Images.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Images.xcassets; sourceTree = "<group>"; };
-		87C6A8951B43044D001876CE /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = Base; path = Base.lproj/LaunchScreen.xib; sourceTree = "<group>"; };
 		87C6A89B1B43044D001876CE /* scaffoldTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = scaffoldTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		87C6A8A01B43044D001876CE /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		87C6A8A11B43044D001876CE /* scaffoldTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = scaffoldTests.swift; sourceTree = "<group>"; };
@@ -136,9 +136,9 @@
 				CB4448E01D3011B900D31824 /* scaffold.entitlements */,
 				87C6A88B1B43044D001876CE /* AppDelegate.swift */,
 				87C6A8921B43044D001876CE /* Images.xcassets */,
-				87C6A8941B43044D001876CE /* LaunchScreen.xib */,
 				87C6A88F1B43044D001876CE /* Main.storyboard */,
 				87C6A88D1B43044D001876CE /* ViewController.swift */,
+				5BFB5A531DD256FC00C3A22F /* Launch Screen.storyboard */,
 			);
 			path = scaffold;
 			sourceTree = "<group>";
@@ -275,10 +275,10 @@
 			files = (
 				87C6A8F61B430EDD001876CE /* www in Resources */,
 				87C6A8E91B430E15001876CE /* config.xml in Resources */,
+				5BFB5A541DD256FC00C3A22F /* Launch Screen.storyboard in Resources */,
 				B12FAF521C9751BC00F254BD /* app-www in Resources */,
 				96C2AD861B62B6180032A784 /* app.js in Resources */,
 				87C6A8911B43044D001876CE /* Main.storyboard in Resources */,
-				87C6A8961B43044D001876CE /* LaunchScreen.xib in Resources */,
 				87C6A8931B43044D001876CE /* Images.xcassets in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -345,14 +345,6 @@
 				87C6A8901B43044D001876CE /* Base */,
 			);
 			name = Main.storyboard;
-			sourceTree = "<group>";
-		};
-		87C6A8941B43044D001876CE /* LaunchScreen.xib */ = {
-			isa = PBXVariantGroup;
-			children = (
-				87C6A8951B43044D001876CE /* Base */,
-			);
-			name = LaunchScreen.xib;
 			sourceTree = "<group>";
 		};
 /* End PBXVariantGroup section */
