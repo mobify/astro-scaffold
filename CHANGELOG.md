@@ -1,6 +1,5 @@
 ## To be released
 - [Android] Update to Gradle 2.14, update project to Android Studio 2.2
-- dismiss launch screen when needed
 
 ## v0.17.3
 - Manually dismiss launch image
