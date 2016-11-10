@@ -34,8 +34,10 @@ function(
                             segmentedControl.on('itemSelect', function(params) {
                                 navigationView.trigger('segmented:' + params.key);
                             });
-                            layout.addTopView(segmentedControl);
-                            layout.hideView(segmentedControl, {animated: false});
+                            layout.addTopView(segmentedControl, {
+                                animated: false,
+                                visible: false
+                            });
                             urlMap[page.url] = segmentedControl;
                         });
                     })
@@ -56,7 +58,7 @@ function(
         if (segments) {
             self.parentLayout.showView(segments, {animated: false});
             self.currentSegments = segments;
-            // Must re-trigger the currently selected segment for 
+            // Must re-trigger the currently selected segment for
             // client-side js to run again
             self.currentSegments.getSelectedItem().then(function(key) {
                 self.navigationView.trigger('segmented:' + key);
