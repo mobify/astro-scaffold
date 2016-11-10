@@ -74,6 +74,9 @@ function(
                 WebViewPlugin.init(),
                 AnchoredLayoutPlugin.init(),
             function(webView, layout) {
+                // Disable webview loader when first loading welcome page
+                webView.disableLoader();
+
                 var loader = webView.getLoader();
                 loader.setColor(BaseConfig.loaderColor);
                 layout.setContentView(webView);
@@ -131,7 +134,11 @@ function(
         };
 
         self.headerController.generateContent().then(function(headerContent) {
-            return self.navigationView.navigateToUrl(url, headerContent, {navigationHandler: navigationHandler});
+            var webViewPluginOptions = {
+                navigationHandler: navigationHandler,
+                enableLoader: []
+            };
+            return self.navigationView.navigateToUrl(url, headerContent, webViewPluginOptions);
         });
     };
 
