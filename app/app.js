@@ -129,6 +129,8 @@ window.run = function() {
 
         var initMainLayout = function() {
             return createLayout().then(function(layoutController) {
+                Application.dismissLaunchImage();
+
                 // Deep linking services will enable deep linking on startup
                 // and while running it will open the deep link in the current
                 // active tab

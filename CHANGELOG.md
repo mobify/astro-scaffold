@@ -1,4 +1,6 @@
 ## To be released
+- [Android] Update to Gradle 2.14, update project to Android Studio 2.2
+- dismiss launch screen when needed
 
 ## v0.17.0
 - Fix up error controller and error modal text
