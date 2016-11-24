@@ -1,107 +1,95 @@
-define([
-    'bluebird',
-    'config/headerConfig',
-    'plugins/headerBarPlugin',
-    'plugins/imageViewPlugin',
-    'app-controllers/doubleIconsController'
-],
-/* eslint-disable */
-function(
-    Promise,
-    HeaderConfig,
-    HeaderBarPlugin,
-    ImageViewPlugin,
-    DoubleIconsController
-) {
-/* eslint-enable */
+import Promise from 'bluebird';
+import HeaderBarPlugin from 'astro/plugins/headerBarPlugin';
+import ImageViewPlugin from 'astro/plugins/imageViewPlugin';
+import HeaderConfig from '../app-config/headerConfig';
+import DoubleIconsController from './doubleIconsController';
 
-    var NavigationHeaderController = function(headerBar, doubleIconsController) {
-        this.viewPlugin = headerBar;
-        this.doubleIconsController = doubleIconsController;
+var NavigationHeaderController = function(headerBar, doubleIconsController) {
+    this.viewPlugin = headerBar;
+    this.doubleIconsController = doubleIconsController;
+};
+
+var _createDrawerHeaderContent = function() {
+    return HeaderConfig.drawerHeaderContent;
+};
+
+NavigationHeaderController.init = function(counterBadgeController) {
+    var generateSearchIcon = function() {
+        return ImageViewPlugin.init().then(function(searchIcon) {
+            searchIcon.setImagePath(HeaderConfig.searchHeaderContent.imageUrl);
+            return searchIcon;
+        });
     };
 
-    var _createDrawerHeaderContent = function() {
-        return HeaderConfig.drawerHeaderContent;
-    };
+    var generateCartIcon =
+        counterBadgeController.generatePlugin.bind(counterBadgeController);
 
-    NavigationHeaderController.init = function(counterBadgeController) {
-        var generateSearchIcon = function() {
-            return ImageViewPlugin.init().then(function(searchIcon) {
-                searchIcon.setImagePath(HeaderConfig.searchHeaderContent.imageUrl);
-                return searchIcon;
-            });
+    return Promise.join(
+        HeaderBarPlugin.init(),
+        DoubleIconsController.init(
+            HeaderConfig.searchCartHeaderContent.id,
+            generateSearchIcon,
+            generateCartIcon),
+    function(headerBar, doubleIconsController) {
+        headerBar.hideBackButtonText();
+        headerBar.setTextColor(HeaderConfig.colors.textColor);
+        headerBar.setBackgroundColor(HeaderConfig.colors.backgroundColor);
+
+        return new NavigationHeaderController(headerBar, doubleIconsController);
+    });
+};
+
+NavigationHeaderController.prototype.generateContent = function(includeDrawer) {
+    return this.doubleIconsController.generateContent().then(function(doubleIconsHeaderContent) {
+        var headerContent = {
+            header: {
+                rightIcon: doubleIconsHeaderContent
+            }
         };
 
-        var generateCartIcon =
-            counterBadgeController.generatePlugin.bind(counterBadgeController);
-
-        return Promise.join(
-            HeaderBarPlugin.init(),
-            DoubleIconsController.init(
-                HeaderConfig.searchCartHeaderContent.id,
-                generateSearchIcon,
-                generateCartIcon),
-        function(headerBar, doubleIconsController) {
-            headerBar.hideBackButtonText();
-            headerBar.setTextColor(HeaderConfig.colors.textColor);
-            headerBar.setBackgroundColor(HeaderConfig.colors.backgroundColor);
-
-            return new NavigationHeaderController(headerBar, doubleIconsController);
-        });
-    };
-
-    NavigationHeaderController.prototype.generateContent = function(includeDrawer) {
-        return this.doubleIconsController.generateContent().then(function(doubleIconsHeaderContent) {
-            var headerContent = {
-                header: {
-                    rightIcon: doubleIconsHeaderContent
-                }
-            };
-
-            if (includeDrawer !== undefined && includeDrawer) {
-                headerContent.header.leftIcon = _createDrawerHeaderContent();
-            }
-
-            return headerContent;
-        });
-    };
-
-    NavigationHeaderController.prototype.registerBackEvents = function(callback) {
-        if (!callback) {
-            return;
+        if (includeDrawer !== undefined && includeDrawer) {
+            headerContent.header.leftIcon = _createDrawerHeaderContent();
         }
 
-        this.viewPlugin.on('click:back', callback);
-    };
+        return headerContent;
+    });
+};
 
-    NavigationHeaderController.prototype.registerDrawerEvents = function(callback) {
-        if (!callback) {
-            return;
-        }
+NavigationHeaderController.prototype.registerBackEvents = function(callback) {
+    if (!callback) {
+        return;
+    }
 
-        this.viewPlugin.on('click:' + HeaderConfig.drawerHeaderContent.id, callback);
-    };
+    this.viewPlugin.on('click:back', callback);
+};
 
-    NavigationHeaderController.prototype.registerSearchBarEvents = function(callback) {
-        if (!callback) {
-            return;
-        }
+NavigationHeaderController.prototype.registerDrawerEvents = function(callback) {
+    if (!callback) {
+        return;
+    }
 
-        this.doubleIconsController.on('click:doubleIcons_left', callback);
-    };
+    this.viewPlugin.on('click:' + HeaderConfig.drawerHeaderContent.id, callback);
+};
 
-    NavigationHeaderController.prototype.registerCartEvents = function(callback) {
-        if (!callback) {
-            return;
-        }
+NavigationHeaderController.prototype.registerSearchBarEvents = function(callback) {
+    if (!callback) {
+        return;
+    }
 
-        this.doubleIconsController.on('click:doubleIcons_right', callback);
-    };
+    this.doubleIconsController.on('click:doubleIcons_left', callback);
+};
 
-    NavigationHeaderController.prototype.setTitle = function() {
-        var titleHeaderContent = HeaderConfig.titleHeaderContent;
-        return this.viewPlugin.setCenterTitle(titleHeaderContent.title, titleHeaderContent.id);
-    };
+NavigationHeaderController.prototype.registerCartEvents = function(callback) {
+    if (!callback) {
+        return;
+    }
 
-    return NavigationHeaderController;
-});
+    this.doubleIconsController.on('click:doubleIcons_right', callback);
+};
+
+NavigationHeaderController.prototype.setTitle = function() {
+    var titleHeaderContent = HeaderConfig.titleHeaderContent;
+    return this.viewPlugin.setCenterTitle(titleHeaderContent.title, titleHeaderContent.id);
+};
+
+module.exports = NavigationHeaderController;
