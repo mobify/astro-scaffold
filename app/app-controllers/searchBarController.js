@@ -1,5 +1,5 @@
 import Promise from 'bluebird';
-import Astrom from 'astro/astro-full';
+import Astro from 'astro/astro-full';
 import SearchBarPlugin from 'astro/plugins/searchBarPlugin';
 import AnchoredLayoutPlugin from 'astro/plugins/anchoredLayoutPlugin';
 

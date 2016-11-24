@@ -12,15 +12,15 @@ var url = 'file:///app-www/html/error.html';
 var errors = {
     noInternetConnection: {
         title: 'Connectivity Title',
-        text: 'To configure the contents of this error screen, \
-                 modify the app-config/errorConfig.js file.',
+        text: 'To configure the contents of this error screen, '
+                + 'modify the app-config/errorConfig.js file.',
         imgSrc: '../assets/error__offline.png'
     },
 
     pageTimeout: {
         title: 'Timeout Title',
-        text: 'To configure the contents of this error screen, \
-                 modify the app-config/errorConfig.js file.',
+        text: 'To configure the contents of this error screen,'
+                + 'modify the app-config/errorConfig.js file.',
         imgSrc: '../assets/error__timeout.png'
     }
 };

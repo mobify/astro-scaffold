@@ -133,7 +133,7 @@ TabBarController.prototype.navigateActiveItem = function(url) {
 
 TabBarController.prototype.backActiveItem = function() {
     if (this.canGoBack()) {
-        var activeTab = this.getActiveNavigationView()
+        var activeTab = this.getActiveNavigationView();
         activeTab.back();
     }
 };

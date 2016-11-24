@@ -10,6 +10,25 @@ import NavigationHeaderController from './navigationHeaderController';
 import SearchBarController from './searchBarController';
 import SegmentedController from './segmentedController';
 
+var bindEvents = function(self) {
+    var handleActiveState = function(event) {
+        if (self.isActive) {
+            AppEvents.once(event, function() {
+                self.isActive = true;
+            });
+        }
+        self.isActive = false;
+    };
+
+    AppEvents.on(AppEvents.names.welcomeShown, function() {
+        handleActiveState(AppEvents.names.welcomeHidden);
+    });
+
+    AppEvents.on(AppEvents.names.cartShown, function() {
+        handleActiveState(AppEvents.names.cartHidden);
+    });
+};
+
 var NavigationController = function(id, url, layout, navigationView, navigationHeaderController, searchBarController, includeDrawerIcon, segmentedController) {
     this.id = id;
     this.isActive = false;
@@ -185,25 +204,6 @@ NavigationController.prototype.isActiveItem = function() {
 
 NavigationController.prototype.needsReload = function() {
     return !this.navigationView.loaded;
-};
-
-var bindEvents = function(self) {
-    var handleActiveState = function(event) {
-        if (self.isActive) {
-            AppEvents.once(event, function() {
-                self.isActive = true;
-            });
-        }
-        self.isActive = false;
-    };
-
-    AppEvents.on(AppEvents.names.welcomeShown, function() {
-        handleActiveState(AppEvents.names.welcomeHidden);
-    });
-
-    AppEvents.on(AppEvents.names.cartShown, function() {
-        handleActiveState(AppEvents.names.cartHidden);
-    });
 };
 
 module.exports = NavigationController;

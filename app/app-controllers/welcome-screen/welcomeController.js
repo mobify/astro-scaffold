@@ -3,6 +3,7 @@ import Astro from 'astro/astro-full';
 import WebViewPlugin from 'astro/plugins/webViewPlugin';
 import NavigationPlugin from 'astro/plugins/navigationPlugin';
 import AnchoredLayoutPlugin from 'astro/plugins/anchoredLayoutPlugin';
+import BaseConfig from '../../app-config/baseConfig';
 import AppRpc from '../../global/app-rpc';
 import WelcomeConfig from '../../app-config/welcomeConfig';
 import WelcomeHeaderController from './welcomeHeaderController';
@@ -85,7 +86,7 @@ WelcomeController.init = function() {
         : initWithoutHeader();
 };
 
-WelcomeController.prototype.registerCloseEventHandler = function (callback) {
+WelcomeController.prototype.registerCloseEventHandler = function(callback) {
     if (!callback) {
         return;
     }

@@ -77,10 +77,10 @@ ErrorController.prototype._generateErrorCallback = function(params) {
     return function(eventArgs) {
         navigator.loaded = false;
 
-        if (eventArgs.error.code == WebViewPlugin.errorCodes.PageTimeout) {
-            self.errorType = "pageTimeout";
-        } else if (eventArgs.error.code == WebViewPlugin.errorCodes.NoInternetConnection) {
-            self.errorType = "noInternetConnection";
+        if (eventArgs.error.code === WebViewPlugin.errorCodes.PageTimeout) {
+            self.errorType = 'pageTimeout';
+        } else if (eventArgs.error.code === WebViewPlugin.errorCodes.NoInternetConnection) {
+            self.errorType = 'noInternetConnection';
         }
 
         // Only trigger the error modal if the active navigation view is

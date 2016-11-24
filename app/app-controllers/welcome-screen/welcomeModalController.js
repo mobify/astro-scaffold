@@ -95,15 +95,15 @@ WelcomeModalController.prototype.show = function(params) {
             // on the iOS Simulator, but on real devices they will persist.
             return new Promise(function(resolve, reject) {
                 if (appInfo.installationID !== previousInstallationID || params.forced) {
-                        self.isShowing = true;
-                        self.modalView.show({animated: true});
+                    self.isShowing = true;
+                    self.modalView.show({animated: true});
 
-                        // Promise will be resolved when welcome modal is dismissed
-                        AppEvents.on(AppEvents.names.welcomeHidden, function() {
-                            self._secureStore.set('installationID', appInfo.installationID);
-                            resolve();
-                        });
-                        AppEvents.trigger(AppEvents.names.welcomeShown);
+                    // Promise will be resolved when welcome modal is dismissed
+                    AppEvents.on(AppEvents.names.welcomeHidden, function() {
+                        self._secureStore.set('installationID', appInfo.installationID);
+                        resolve();
+                    });
+                    AppEvents.trigger(AppEvents.names.welcomeShown);
                 } else {
                     reject();
                 }
