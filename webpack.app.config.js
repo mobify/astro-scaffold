@@ -16,17 +16,9 @@ var config = {
         path: outDir
     },
     resolve: {
-        modules: [
-            path.resolve(rootDir),
-            path.resolve(rootDir, 'vendor/astro/src'),
-            path.resolve(rootDir, 'vendor/astro/src/global'),
-            path.resolve(rootDir, 'vendor/astro'),
-            'node_modules'
-        ],
         alias: {
             astro: path.resolve(rootDir, 'node_modules/astro-sdk/js/src/'),
-            vendor: path.resolve(rootDir, 'node_modules/astro-sdk/js/vendor/'),
-            bluebird: path.resolve(rootDir, 'node_modules/astro-sdk/node_modules/bluebird')
+            vendor: path.resolve(rootDir, 'node_modules/astro-sdk/js/vendor/')
         }
     },
     plugins: [
