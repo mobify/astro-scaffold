@@ -30,7 +30,8 @@
   "scripts": {
     "deps": "./scripts/build-dependencies.sh ./app",
     "test": "./scripts/ios-appium.sh",
-    "pack:app": "webpack --config webpack.app.config.js"
+    "pack:app": "webpack --config webpack.app.config.js",
+    "pack:app-analyze": "NODE_ENV=Analyze npm run pack:app"
   },
   "license": "SEE LICENSE IN LICENSE"
 }
