@@ -14,7 +14,7 @@ open class DoubleIconsPlugin: Plugin, ViewPlugin, HandlesUserInteraction {
     let leftButton: UIControl = UIControl()
     let rightButton: UIControl = UIControl()
 
-    public required init(address: MessageAddress, messageBus: MessageBus, pluginResolver: PluginResolver, options: JsonObject?) {
+    public required init(address: MessageAddress, messageBus: MessageBus, pluginResolver: PluginResolver, options: JSONObject?) {
         super.init(address: address, messageBus: messageBus, pluginResolver: pluginResolver, options: options)
 
         self.addRpcMethodShim("setLeftIcon") { params, respond in
@@ -90,14 +90,14 @@ open class DoubleIconsPlugin: Plugin, ViewPlugin, HandlesUserInteraction {
     }
 
     // @RpcMethod
-    func setLeftIcon(_ address: MessageAddress, respond: RpcMethodCallback) {
+    func setLeftIcon(_ address: MessageAddress, respond: RPCMethodCallback) {
         if let plugin: ViewPlugin = pluginResolver.pluginInstanceByAddress(address, respond: respond) {
             setPluginInContainer(plugin, buttonContainer: leftButton)
         }
     }
 
     // @RpcMethod
-    func setRightIcon(_ address: MessageAddress, respond: RpcMethodCallback) {
+    func setRightIcon(_ address: MessageAddress, respond: RPCMethodCallback) {
         if let plugin: ViewPlugin = pluginResolver.pluginInstanceByAddress(address, respond: respond) {
             setPluginInContainer(plugin, buttonContainer: rightButton)
         }
