@@ -20,11 +20,21 @@ android {
     }
 }
 
-task buildJS(type:Exec) {
+task buildJSDebug(type:Exec) {
+    environment "NODE_ENV", "development"
     commandLine "../../app/build-js.sh"
 }
 
-preBuild.dependsOn buildJS
+task buildJSRelease(type:Exec) {
+    environment "NODE_ENV", "production"
+    commandLine "../../app/build-js.sh"
+}
+
+afterEvaluate {
+    android.applicationVariants.all { variant ->
+        variant.javaCompiler.dependsOn("buildJS${variant.name.capitalize()}")
+    }
+}
 
 dependencies {
     compile fileTree(dir: 'libs', include: ['*.jar'])
