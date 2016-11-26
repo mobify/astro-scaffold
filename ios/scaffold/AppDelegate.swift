@@ -27,7 +27,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
             AstroConfig.useWKWebView = false
         #endif
 
-        astroViewController = AstroViewController(appJsUrl: URL(string: "app.js")!, launchOptions: launchOptions,
+        astroViewController = AstroViewController(appJSURL: URL(string: "app.js")!, launchOptions: launchOptions,
             pluginRegistrations: { pluginRegistrar in
                 pluginRegistrar.registerPlugin(name: "DoubleIconsPlugin", type: DoubleIconsPlugin.self)
         })
