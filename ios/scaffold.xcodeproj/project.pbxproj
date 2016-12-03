@@ -350,7 +350,7 @@
 /* End PBXVariantGroup section */
 
 /* Begin XCBuildConfiguration section */
-		01BDD1941B87ABA500E4CB88 /* UAT */ = {
+		6EFD09EF1DEE499800BDD01E /* PreviewEnabledRelease */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
@@ -384,16 +384,18 @@
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
 				MTL_ENABLE_DEBUG_INFO = NO;
-				OTHER_SWIFT_FLAGS = "-D UAT";
+				OTHER_SWIFT_FLAGS = "-D RELEASE";
 				SDKROOT = iphoneos;
+				SWIFT_OPTIMIZATION_LEVEL = "-Owholemodule";
 				TARGETED_DEVICE_FAMILY = "1,2";
 				VALIDATE_PRODUCT = YES;
 			};
-			name = UAT;
+			name = PreviewEnabledRelease;
 		};
-		01BDD1951B87ABA500E4CB88 /* UAT */ = {
+		6EFD09F01DEE499800BDD01E /* PreviewEnabledRelease */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
+				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_ENTITLEMENTS = scaffold/scaffold.entitlements;
 				FRAMEWORK_SEARCH_PATHS = (
@@ -403,14 +405,15 @@
 				INFOPLIST_FILE = scaffold/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 8.1;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
-				PRODUCT_BUNDLE_IDENTIFIER = "com.mobify.astro.$(PRODUCT_NAME:rfc1034identifier)";
+				OTHER_SWIFT_FLAGS = "-D RELEASE";
+				PRODUCT_BUNDLE_IDENTIFIER = "com.mobify.astro.$(PRODUCT_NAME:rfc1034identifier)-preview";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_VERSION = 2.3;
 				TARGETED_DEVICE_FAMILY = 1;
 			};
-			name = UAT;
+			name = PreviewEnabledRelease;
 		};
-		01BDD1961B87ABA500E4CB88 /* UAT */ = {
+		6EFD09F11DEE499800BDD01E /* PreviewEnabledRelease */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				BUNDLE_LOADER = "$(TEST_HOST)";
@@ -425,7 +428,7 @@
 				SWIFT_VERSION = 2.3;
 				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/scaffold.app/scaffold";
 			};
-			name = UAT;
+			name = PreviewEnabledRelease;
 		};
 		87C6A8A31B43044D001876CE /* Debug */ = {
 			isa = XCBuildConfiguration;
@@ -604,7 +607,7 @@
 			buildConfigurations = (
 				87C6A8A31B43044D001876CE /* Debug */,
 				87C6A8A41B43044D001876CE /* Release */,
-				01BDD1941B87ABA500E4CB88 /* UAT */,
+				6EFD09EF1DEE499800BDD01E /* PreviewEnabledRelease */,
 			);
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
@@ -614,7 +617,7 @@
 			buildConfigurations = (
 				87C6A8A61B43044D001876CE /* Debug */,
 				87C6A8A71B43044D001876CE /* Release */,
-				01BDD1951B87ABA500E4CB88 /* UAT */,
+				6EFD09F01DEE499800BDD01E /* PreviewEnabledRelease */,
 			);
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
@@ -624,7 +627,7 @@
 			buildConfigurations = (
 				87C6A8A91B43044D001876CE /* Debug */,
 				87C6A8AA1B43044D001876CE /* Release */,
-				01BDD1961B87ABA500E4CB88 /* UAT */,
+				6EFD09F11DEE499800BDD01E /* PreviewEnabledRelease */,
 			);
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;

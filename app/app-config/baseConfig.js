@@ -7,7 +7,6 @@ define([], function() {
     // the generator as well! 🙏🏻
     // start: lines altered by generator
     var useTabLayout = false;
-    var previewEnabled = false;
     var previewBundle = '<preview_bundle>';
     // end: lines altered by generator
 
@@ -24,7 +23,6 @@ define([], function() {
         colors: colors,
         loaderColor: loaderColor,
         previewBundle: previewBundle,
-        previewEnabled: previewEnabled,
         useTabLayout: useTabLayout
     };
 });
