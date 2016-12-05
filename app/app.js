@@ -1,3 +1,4 @@
+/*global AstroNative*/
 window.AstroMessages = []; // For debugging messages
 
 // Astro
@@ -163,6 +164,28 @@ window.run = function() {
             }
         });
     });
+
+    var initalizeAppWithAstroPreview = function() {
+        PreviewController.init().then(function(previewController) {
+            Application.on('previewToggled', function() {
+                previewController.presentPreviewAlert();
+            });
+
+            return previewController.isPreviewEnabled();
+        }).then(function(previewEnabled) {
+            if (previewEnabled) {
+                runAppPreview();
+            } else {
+                runApp();
+            }
+        });
+    };
+
+    if (AstroNative.Configuration.ASTRO_PREVIEW) {
+        initalizeAppWithAstroPreview();
+    } else {
+        runApp();
+    }
 };
 // Comment out next line for JS debugging
 window.run();
