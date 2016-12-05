@@ -45,7 +45,7 @@ task buildJSRelease(type:Exec) {
 
 afterEvaluate {
     android.applicationVariants.all { variant ->
-        variant.javaCompiler.dependsOn("buildJS${variant.name.capitalize()}")
+        variant.javaCompiler.dependsOn("buildJS${variant.getBuildType().getName().capitalize()}")
     }
 }
 
