@@ -1,3 +1,4 @@
+/*global AstroNative*/
 window.AstroMessages = []; // For debugging messages
 
 window.run = function() {
@@ -162,21 +163,27 @@ window.run = function() {
                 });
         };
 
-        PreviewController.init().then(function(previewController) {
-            Application.on('previewToggled', function() {
-                previewController.presentPreviewAlert();
-            });
+        var initalizeAppWithAstroPreview = function() {
+            PreviewController.init().then(function(previewController) {
+                Application.on('previewToggled', function() {
+                    previewController.presentPreviewAlert();
+                });
 
-            previewController.isPreviewEnabled().then(function(enabled) {
-                // Configure the previewEnabled flag located in baseConfig.js
-                // to enable/disable app preview
-                if (enabled && BaseConfig.previewEnabled) {
+                return previewController.isPreviewEnabled();
+            }).then(function(previewEnabled) {
+                if (previewEnabled) {
                     runAppPreview();
                 } else {
                     runApp();
                 }
             });
-        });
+        };
+
+        if (AstroNative.Configuration.ASTRO_PREVIEW) {
+            initalizeAppWithAstroPreview();
+        } else {
+            runApp();
+        }
     }, undefined, true);
 };
 // Comment out next line for JS debugging

@@ -18,6 +18,19 @@ android {
         }
         debug {}
     }
+    productFlavors {
+        previewEnabled {
+            applicationId "com.mobify.astro.scaffold.preview"
+        }
+        previewDisabled {}
+    }
+}
+
+configurations {
+    previewEnabledDebugCompile
+    previewDisabledDebugCompile
+    previewEnabledReleaseCompile
+    previewDisabledReleaseCompile
 }
 
 task buildJS(type:Exec) {
@@ -29,6 +42,9 @@ preBuild.dependsOn buildJS
 dependencies {
     compile fileTree(dir: 'libs', include: ['*.jar'])
     compile 'com.android.support:appcompat-v7:23.3.0'
-    releaseCompile project(path: ':astro', configuration: 'release')
-    debugCompile project(path: ':astro', configuration: 'debug')
+
+    previewEnabledDebugCompile project(path: ':astro', configuration: 'previewEnabledDebug')
+    previewDisabledDebugCompile project(path: ':astro', configuration: 'previewDisabledDebug')
+    previewEnabledReleaseCompile project(path: ':astro', configuration: 'previewEnabledRelease')
+    previewDisabledReleaseCompile project(path: ':astro', configuration: 'previewDisabledRelease')
 }
