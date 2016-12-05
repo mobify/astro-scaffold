@@ -305,7 +305,7 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
-			shellScript = "../app/build-js.sh --no-color";
+			shellScript = "NODE_ENV=\"development\"\nif [[ $CONFIGURATION = \"Release\" ]]; then\nNODE_ENV=\"production\"\nfi\nNODE_ENV=$NODE_ENV ../app/build-js.sh --no-color;\n";
 		};
 /* End PBXShellScriptBuildPhase section */
 

@@ -5,27 +5,31 @@
   "dependencies": {
     "astro-sdk": "mobify/astro#develop",
     "bluebird": "~2.9.24",
+    "grunt-requirejs": "^0.4.2",
     "jquery": "^2.2.2",
     "navitron": "^1.0.0",
-    "grunt-requirejs": "^0.4.2"
+    "webpack": "^2.1.0-beta.27"
   },
   "devDependencies": {
+    "eslint": "^3.10.2",
+    "eslint-loader": "^1.6.1",
     "grunt": "^0.4.5",
     "grunt-cli": "^1.1.0",
-    "grunt-contrib-watch": "^0.6.1",
-    "grunt-eslint": "^19.0.0",
     "mobify-code-style": "^2.2.1",
     "nightwatch": "0.9.6",
-    "nightwatch-commands": "1.7.0"
+    "nightwatch-commands": "1.7.0",
+    "webpack-bundle-analyzer": "^1.5.3"
   },
   "engineStrict": true,
   "engines": {
-      "node": "^4.0.0",
-      "npm": "^2.0.0"
+    "node": "^4.0.0",
+    "npm": "^2.0.0"
   },
   "scripts": {
     "deps": "./scripts/build-dependencies.sh ./app",
-    "test": "./scripts/ios-appium.sh"
+    "test": "./scripts/ios-appium.sh",
+    "build": "webpack --config webpack.app.config.js",
+    "build-analyze": "NODE_ENV=Analyze npm run build"
   },
   "license": "SEE LICENSE IN LICENSE"
 }

@@ -56,7 +56,7 @@ pushd $MYPATH/node_modules/astro-sdk
     echo "Installing dependencies for astro-sdk"
     npm install --no-progress --no-spin $EXTRA_NPM_ARGS
     echo "Building astro-client.js"
-    $MYPATH/node_modules/grunt-cli/bin/grunt $EXTRA_GRUNT_ARGS build_astro_client
+    npm run pack:astro_client
 popd
 
 echo "Copying astro-client.js into app bundle"

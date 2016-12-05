@@ -1,28 +1,22 @@
-define([
-    'astro-full',
-    'plugin-manager'
-],
-function(
-    Astro,
-    PluginManager
-) {
-    /**
-    * Constructor
-    */
-    var DoubleIconsPlugin = function() {};
+import Astro from 'astro/astro-full';
+import PluginManager from 'astro/plugin-manager';
 
-    /**
-    * Defines the plugin name, which is necessary for
-    * initialization of the plugin on the native side.
-    */
-    DoubleIconsPlugin.pluginName = 'DoubleIconsPlugin';
+/**
+* Constructor
+*/
+var DoubleIconsPlugin = function() {};
 
-    DoubleIconsPlugin.init = function(callback) {
-        return PluginManager.createPlugin(DoubleIconsPlugin, callback);
-    };
+/**
+* Defines the plugin name, which is necessary for
+* initialization of the plugin on the native side.
+*/
+DoubleIconsPlugin.pluginName = 'DoubleIconsPlugin';
 
-    DoubleIconsPlugin.prototype.setLeftIcon = Astro.nativeRpcMethod('setLeftIcon', ['address']);
-    DoubleIconsPlugin.prototype.setRightIcon = Astro.nativeRpcMethod('setRightIcon', ['address']);
+DoubleIconsPlugin.init = function(callback) {
+    return PluginManager.createPlugin(DoubleIconsPlugin, callback);
+};
 
-    return  DoubleIconsPlugin;
-});
+DoubleIconsPlugin.prototype.setLeftIcon = Astro.nativeRpcMethod('setLeftIcon', ['address']);
+DoubleIconsPlugin.prototype.setRightIcon = Astro.nativeRpcMethod('setRightIcon', ['address']);
+
+module.exports = DoubleIconsPlugin;
