@@ -18,4 +18,4 @@ AppEvents.names = {
     welcomeHidden: 'welcome:hidden'
 };
 
-module.epxorts = AppEvents;
+module.exports = AppEvents;
