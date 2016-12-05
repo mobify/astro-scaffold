@@ -1,3 +1,6 @@
+## v0.17.6
+- Add multiple build configurations to support enabling/disabling Mobify Preview
+
 ## v0.17.3
 - Manually dismiss launch image
 
