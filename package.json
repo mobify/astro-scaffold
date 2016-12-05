@@ -3,7 +3,7 @@
   "version": "0.0.1",
   "author": "Mobify",
   "dependencies": {
-    "astro-sdk": "mobify/astro#webpack",
+    "astro-sdk": "mobify/astro#develop",
     "bluebird": "~2.9.24",
     "grunt-requirejs": "^0.4.2",
     "jquery": "^2.2.2",
@@ -28,8 +28,8 @@
   "scripts": {
     "deps": "./scripts/build-dependencies.sh ./app",
     "test": "./scripts/ios-appium.sh",
-    "pack:app": "webpack --config webpack.app.config.js",
-    "pack:app-analyze": "NODE_ENV=Analyze npm run pack:app"
+    "build": "webpack --config webpack.app.config.js",
+    "build-analyze": "NODE_ENV=Analyze npm run build"
   },
   "license": "SEE LICENSE IN LICENSE"
 }

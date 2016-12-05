@@ -45,7 +45,7 @@ fi
 
 echo "Building app.js"
 pushd $ROOT
-    npm run pack:app -- $EXTRA_WEBPACK_ARGS
+    npm run build -- $EXTRA_WEBPACK_ARGS
 popd
 
 echo "SUCCESS: build app.js"
