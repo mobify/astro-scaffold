@@ -1,5 +1,6 @@
 ## To be released
 - [Android] Update to Gradle 2.14, update project to Android Studio 2.2
+- [iOS] Enable install of preview-enabled and app store versions of generated apps
 
 ## v0.17.6
 - Add multiple build configurations to support enabling/disabling Mobify Preview
