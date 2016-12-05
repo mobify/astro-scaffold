@@ -1,5 +1,6 @@
 ## To be released
 - [Android] Update to Gradle 2.14, update project to Android Studio 2.2
+- [Android] Scaffold app only support handsets
 
 ## v0.17.6
 - Add multiple build configurations to support enabling/disabling Mobify Preview
