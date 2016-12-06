@@ -5,7 +5,7 @@ import AppEvents from '../../global/app-events';
 import AppRpc from '../../global/app-rpc';
 import CartController from './cartController';
 
-var CartModalController = function(modalView, cartController) {
+const CartModalController = function(modalView, cartController) {
     this.isShowing = false;
     this.viewPlugin = modalView;
     this.cartController = cartController;
@@ -25,27 +25,27 @@ CartModalController.init = function(errorControllerPromise) {
         CartController.init(),
         ModalViewPlugin.init(),
         errorControllerPromise,
-    function(cartController, modalView, errorController) {
+    (cartController, modalView, errorController) => {
         modalView.setContentView(cartController.viewPlugin);
 
-        var cartModalController = new CartModalController(modalView, cartController);
-        cartController.registerCloseEventHandler(function() {
+        const cartModalController = new CartModalController(modalView, cartController);
+        cartController.registerCloseEventHandler(() => {
             cartModalController.hide();
         });
 
         // Register RPC methods
-        Astro.registerRpcMethod(AppRpc.names.cartShow, [], function(res) {
+        Astro.registerRpcMethod(AppRpc.names.cartShow, [], () => {
             cartModalController.show();
         });
-        Astro.registerRpcMethod(AppRpc.names.cartHide, [], function(res) {
+        Astro.registerRpcMethod(AppRpc.names.cartHide, [], () => {
             cartModalController.hide();
         });
 
-        var backHandler = function() {
+        const backHandler = function() {
             cartModalController.hide();
         };
 
-        var retryHandler = function(params) {
+        const retryHandler = function(params) {
             if (!params.url) {
                 return;
             }
@@ -54,16 +54,16 @@ CartModalController.init = function(errorControllerPromise) {
 
         // Modals will always be able to go back. At it's root, the modal
         // will dismiss.
-        var canGoBack = function() {
+        const canGoBack = function() {
             return Promise.resolve(true);
         };
 
         errorController.bindToNavigator({
             navigator: cartController.webView,
-            backHandler: backHandler,
-            retryHandler: retryHandler,
+            backHandler,
+            retryHandler,
             isActiveItem: cartModalController.isActiveItem.bind(cartModalController),
-            canGoBack: canGoBack
+            canGoBack
         });
 
         return cartModalController;
@@ -98,4 +98,4 @@ CartModalController.prototype.isActiveItem = function() {
     return this.isShowing;
 };
 
-module.exports = CartModalController;
+export default CartModalController;

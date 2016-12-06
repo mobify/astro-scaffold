@@ -3,7 +3,7 @@
   "version": "0.0.1",
   "author": "Mobify",
   "dependencies": {
-    "astro-sdk": "mobify/astro#develop",
+    "astro-sdk": "mobify/astro#tests-es6",
     "bluebird": "~2.9.24",
     "grunt-requirejs": "^0.4.2",
     "jquery": "^2.2.2",
@@ -11,8 +11,16 @@
     "webpack": "^2.1.0-beta.27"
   },
   "devDependencies": {
+    "babel-core": "^6.18.2",
+    "babel-eslint": "^7.1.1",
+    "babel-loader": "^6.2.8",
+    "babel-plugin-syntax-async-functions": "^6.13.0",
+    "babel-plugin-transform-async-to-module-method": "^6.16.0",
+    "babel-plugin-transform-runtime": "^6.15.0",
+    "babel-preset-es2015": "^6.18.0",
     "eslint": "^3.10.2",
     "eslint-loader": "^1.6.1",
+    "eslint-plugin-import": "^2.2.0",
     "grunt": "^0.4.5",
     "grunt-cli": "^1.1.0",
     "mobify-code-style": "^2.2.1",
@@ -29,7 +37,7 @@
     "deps": "./scripts/build-dependencies.sh ./app",
     "test": "./scripts/ios-appium.sh",
     "build": "webpack --config webpack.app.config.js",
-    "build-analyze": "NODE_ENV=Analyze npm run build"
+    "build-analyze": "ASTRO_ANALYZE=true npm run build"
   },
   "license": "SEE LICENSE IN LICENSE"
 }

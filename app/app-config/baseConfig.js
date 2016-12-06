@@ -1,25 +1,25 @@
-var baseURL = 'https://webpush-you-host.mobifydemo.io';
+const baseURL = 'https://webpush-you-host.mobifydemo.io';
 
 // If any changes are made to the following lines
 // affected by the generator, make sure to update
 // the generator as well! 🙏🏻
 // start: lines altered by generator
-var useTabLayout = false;
-var previewBundle = '<preview_bundle>';
+const useTabLayout = false;
+const previewBundle = '<preview_bundle>';
 // end: lines altered by generator
 
-var colors = {
+const colors = {
     primaryColor: '#007ba7',
     secondaryColor: '#007ba7',
     whiteColor: '#ffffff'
 };
 
-var loaderColor = colors.primaryColor;
+const loaderColor = colors.primaryColor;
 
-module.exports = {
-    baseURL: baseURL,
-    colors: colors,
-    loaderColor: loaderColor,
-    previewBundle: previewBundle,
-    useTabLayout: useTabLayout
+export default {
+    baseURL,
+    colors,
+    loaderColor,
+    previewBundle,
+    useTabLayout
 };

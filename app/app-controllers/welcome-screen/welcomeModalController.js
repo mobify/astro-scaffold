@@ -7,7 +7,7 @@ import AppEvents from '../../global/app-events';
 import AppRpc from '../../global/app-rpc';
 import WelcomeController from './welcomeController';
 
-var WelcomeModalController = function(modalView, welcomeController, secureStore) {
+const WelcomeModalController = function(modalView, welcomeController, secureStore) {
     this.isShowing = false;
     this.modalView = modalView;
     this._secureStore = secureStore;
@@ -20,30 +20,30 @@ WelcomeModalController.init = function(errorControllerPromise) {
         WelcomeController.init(),
         SecureStorePlugin.init(),
         errorControllerPromise,
-    function(modalView, welcomeController, secureStore, errorController) {
+    (modalView, welcomeController, secureStore, errorController) => {
         modalView.setContentView(welcomeController.viewPlugin);
 
         // This registers a close handler on the header bar to dismiss
         // the modal. Without a header bar, the developer is responsible
         // for implementing a way to dismiss the modal.
-        var welcomeModalController = new WelcomeModalController(modalView, welcomeController, secureStore);
-        welcomeController.registerCloseEventHandler(function() {
+        const welcomeModalController = new WelcomeModalController(modalView, welcomeController, secureStore);
+        welcomeController.registerCloseEventHandler(() => {
             welcomeModalController.hide();
         });
 
         // Welcome modal RPCs
-        Astro.registerRpcMethod(AppRpc.names.welcomeShow, [], function(res) {
+        Astro.registerRpcMethod(AppRpc.names.welcomeShow, [], () => {
             welcomeModalController.show({forced: true});
         });
 
-        Astro.registerRpcMethod(AppRpc.names.welcomeHide, [], function(res) {
+        Astro.registerRpcMethod(AppRpc.names.welcomeHide, [], () => {
             welcomeModalController.hide();
         });
 
         // If you have implemented your own custom native welcome plugin
         // you may also need to modify the following error modal handlers
-        var navigator = welcomeController.navigationView;
-        var backHandler = function() {
+        const navigator = welcomeController.navigationView;
+        const backHandler = function() {
             // We only navigate back if our navigator is a navigationView.
             // webViewPlugins do not complete navigation if they fail.
             if (typeof navigator.getEventPluginPromise === 'function') {
@@ -51,12 +51,12 @@ WelcomeModalController.init = function(errorControllerPromise) {
             }
         };
 
-        var retryHandler = function(params) {
+        const retryHandler = function(params) {
             if (!params.url) {
                 return;
             }
             if (typeof navigator.getEventPluginPromise === 'function') {
-                var navigate = function(eventPlugin) {
+                const navigate = function(eventPlugin) {
                     eventPlugin.navigate(params.url);
                 };
                 navigator.getEventPluginPromise(params).then(navigate);
@@ -67,39 +67,39 @@ WelcomeModalController.init = function(errorControllerPromise) {
 
         // Welcome modal should never dismiss unless the user has
         // completed the welcome flow.
-        var canGoBack = function() {
+        const canGoBack = function() {
             return Promise.resolve(false);
         };
 
         errorController.bindToNavigator({
-            navigator: navigator,
-            backHandler: backHandler,
-            retryHandler: retryHandler,
-            isActiveItem: welcomeModalController.isActiveItem.bind(welcomeModalController),
-            canGoBack: canGoBack
+            navigator,
+            backHandler,
+            retryHandler,
+            isActiveItem: welcomeModalController.isActiveItem,
+            canGoBack
         });
         return welcomeModalController;
     });
 };
 
 WelcomeModalController.prototype.show = function(params) {
-    var self = this;
+    const self = this;
     params = Astro.Utils.extend({forced: false}, params);
 
     return Promise.join(
         Application.getAppInformation(),
         self._secureStore.get('installationID'),
-        function(appInfo, previousInstallationID) {
+        (appInfo, previousInstallationID) => {
             // Welcome modal should be triggered when installationID changes
             // NOTE: appInfo.installationID appears to be different on each app run
             // on the iOS Simulator, but on real devices they will persist.
-            return new Promise(function(resolve, reject) {
+            return new Promise((resolve, reject) => {
                 if (appInfo.installationID !== previousInstallationID || params.forced) {
                     self.isShowing = true;
                     self.modalView.show({animated: true});
 
                     // Promise will be resolved when welcome modal is dismissed
-                    AppEvents.on(AppEvents.names.welcomeHidden, function() {
+                    AppEvents.on(AppEvents.names.welcomeHidden, () => {
                         self._secureStore.set('installationID', appInfo.installationID);
                         resolve();
                     });
@@ -113,7 +113,7 @@ WelcomeModalController.prototype.show = function(params) {
 };
 
 WelcomeModalController.prototype.hide = function() {
-    var self = this;
+    const self = this;
     self.isShowing = false;
     self.modalView.hide({animated: true});
     AppEvents.trigger(AppEvents.names.welcomeHidden);
@@ -127,4 +127,4 @@ WelcomeModalController.prototype.canGoBack = function() {
     return this.welcomeController.canGoBack();
 };
 
-module.exports = WelcomeModalController;
+export default WelcomeModalController;

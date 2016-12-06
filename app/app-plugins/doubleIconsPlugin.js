@@ -4,7 +4,7 @@ import PluginManager from 'astro/plugin-manager';
 /**
 * Constructor
 */
-var DoubleIconsPlugin = function() {};
+const DoubleIconsPlugin = function() {};
 
 /**
 * Defines the plugin name, which is necessary for
@@ -19,4 +19,4 @@ DoubleIconsPlugin.init = function(callback) {
 DoubleIconsPlugin.prototype.setLeftIcon = Astro.nativeRpcMethod('setLeftIcon', ['address']);
 DoubleIconsPlugin.prototype.setRightIcon = Astro.nativeRpcMethod('setRightIcon', ['address']);
 
-module.exports = DoubleIconsPlugin;
+export default DoubleIconsPlugin;

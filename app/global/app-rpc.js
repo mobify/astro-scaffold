@@ -1,6 +1,6 @@
 import Astro from 'astro/astro-full';
 
-var AppRpc = {};
+const AppRpc = {};
 
 AppRpc.names = {
     cartShow: 'cartShow',
@@ -22,4 +22,4 @@ AppRpc.welcomeHide = Astro.jsRpcMethod(AppRpc.names.welcomeHide, []);
 AppRpc.welcomeHasHeader = Astro.jsRpcMethod(AppRpc.names.welcomeHasHeader, []);
 AppRpc.navigateToNewRootView = Astro.jsRpcMethod(AppRpc.names.navigateToNewRootView, ['url', 'title']);
 
-module.exports = AppRpc;
+export default AppRpc;

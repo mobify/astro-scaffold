@@ -3,7 +3,7 @@ import TabBarPlugin from 'astro/plugins/tabBarPlugin';
 import TabConfig from '../app-config/tabConfig';
 import NavigationController from './navigationController';
 
-var TabBarController = function(tabBar, layout) {
+const TabBarController = function(tabBar, layout) {
     this.tabBar = tabBar;
     this.viewPlugin = layout;
     this.activeTabId = null;
@@ -18,7 +18,7 @@ var TabBarController = function(tabBar, layout) {
     this._bindEvents();
 };
 
-var initRegularTabs = function(
+const initRegularTabs = function(
     controller,
     tabItems,
     cartEventHandler,
@@ -26,20 +26,20 @@ var initRegularTabs = function(
     errorController
 ) {
     // Make sure all tabViews are set up
-    return Promise.all(tabItems.map(function(tab) {
+    return Promise.all(tabItems.map((tab) => {
         // Init a new NavigationController
-        var navigationControllerPromise = NavigationController.init(
+        const navigationControllerPromise = NavigationController.init(
             tab.id,
             tab.url,
             counterBadgeController,
             cartEventHandler,
             errorController
         );
-        return navigationControllerPromise.then(function(navigationController) {
+        return navigationControllerPromise.then((navigationController) => {
             controller._navigationControllers[tab.id] = navigationController;
             controller._tabViews[tab.id] = navigationController.viewPlugin;
         });
-    })).then(function() {
+    })).then(() => {
         controller.tabBar.setItems(tabItems);
         return controller;
     });
@@ -51,15 +51,15 @@ TabBarController.init = function(
     counterBadgeControllerPromise,
     errorControllerPromise
 ) {
-    var controllerPromise = Promise.join(
+    const controllerPromise = Promise.join(
         TabBarPlugin.init(),
         layoutPromise,
-        function(tabBar, layout) {
+        (tabBar, layout) => {
             return new TabBarController(tabBar, layout);
         }
     );
 
-    var constructTabItemsPromise = Promise.resolve(TabConfig.tabItems);
+    const constructTabItemsPromise = Promise.resolve(TabConfig.tabItems);
 
     return Promise.join(
         controllerPromise,
@@ -68,7 +68,7 @@ TabBarController.init = function(
         counterBadgeControllerPromise,
         errorControllerPromise,
         initRegularTabs
-    ).then(function(controller) {
+    ).then((controller) => {
         return controller;
     });
 };
@@ -87,20 +87,20 @@ TabBarController.prototype._selectTabHandler = function(tabId) {
         this.viewPlugin.setContentView(this._tabViews[tabId]);
         this.activeTabId = tabId;
 
-        var selectedTab = this.getActiveNavigationView();
+        const selectedTab = this.getActiveNavigationView();
         selectedTab.isActive = true;
 
         if (selectedTab.needsReload()) {
-            var selectedNavigationView = selectedTab.navigationView;
+            const selectedNavigationView = selectedTab.navigationView;
             Promise.join(
                 selectedNavigationView.canGoBack(),
                 selectedNavigationView.getTopPlugin(),
-                function(tabCanGoBack, topPlugin) {
+                (tabCanGoBack, topPlugin) => {
                     // In the case where a tab failed its initial navigation
                     // a reload is insufficient so instead, we navigate to
                     // the tab's root URL.
                     if (!tabCanGoBack && typeof topPlugin.navigate === 'function') {
-                        var tabItem = TabConfig.tabItems[tabId - 1];
+                        const tabItem = TabConfig.tabItems[tabId - 1];
                         topPlugin.navigate(tabItem.url);
                     } else {
                         topPlugin.reload();
@@ -119,12 +119,8 @@ TabBarController.prototype.getActiveNavigationView = function() {
 };
 
 TabBarController.prototype._bindEvents = function() {
-    var self = this;
-
     // Select Tab
-    this.tabBar.on('itemSelect', function(data) {
-        self._selectTabHandler(data.id);
-    });
+    this.tabBar.on('itemSelect', (data) => this._selectTabHandler(data.id));
 };
 
 TabBarController.prototype.navigateActiveItem = function(url) {
@@ -133,14 +129,14 @@ TabBarController.prototype.navigateActiveItem = function(url) {
 
 TabBarController.prototype.backActiveItem = function() {
     if (this.canGoBack()) {
-        var activeTab = this.getActiveNavigationView();
+        const activeTab = this.getActiveNavigationView();
         activeTab.back();
     }
 };
 
 TabBarController.prototype.canGoBack = function() {
-    var activeTab = this.getActiveNavigationView();
+    const activeTab = this.getActiveNavigationView();
     return activeTab.canGoBack();
 };
 
-module.exports = TabBarController;
+export default TabBarController;

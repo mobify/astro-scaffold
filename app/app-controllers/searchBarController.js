@@ -3,7 +3,7 @@ import Astro from 'astro/astro-full';
 import SearchBarPlugin from 'astro/plugins/searchBarPlugin';
 import AnchoredLayoutPlugin from 'astro/plugins/anchoredLayoutPlugin';
 
-var SearchBarController = function(internalLayout, parentLayout, searchBarPlugin, searchConfig) {
+const SearchBarController = function(internalLayout, parentLayout, searchBarPlugin, searchConfig) {
     this.viewPlugin = internalLayout;
     this.parentLayout = parentLayout;
     this.searchBar = searchBarPlugin;
@@ -22,7 +22,7 @@ var SearchBarController = function(internalLayout, parentLayout, searchBarPlugin
 
 SearchBarController.init = function(layoutPromise, searchConfig) {
     return Promise.join(AnchoredLayoutPlugin.init(), layoutPromise, SearchBarPlugin.init(),
-        function(internalLayout, parentLayout, searchBarPlugin) {
+        (internalLayout, parentLayout, searchBarPlugin) => {
             internalLayout.addTopView(searchBarPlugin);
             return new SearchBarController(internalLayout, parentLayout, searchBarPlugin, searchConfig);
         }
@@ -42,18 +42,12 @@ SearchBarController.prototype.addToLayout = function() {
 };
 
 SearchBarController.prototype._registerEvents = function() {
-    var self = this;
     // Users of SearchBarController can also hook this event
     // to instruct the desired view to act on the search being performed
     // The search terms are expected to be in a string found in
     // params['searchTerms']
-    this.searchBar.on('search:submitted', function(params) {
-        self.hide();
-    });
-
-    this.searchBar.on('search:cancelled', function(params) {
-        self.hide();
-    });
+    this.searchBar.on('search:submitted', () => this.hide());
+    this.searchBar.on('search:cancelled', () => this.hide());
 };
 
 SearchBarController.prototype.show = function(options) {
@@ -95,4 +89,4 @@ SearchBarController.prototype.registerSearchSubmittedEvents = function(callback)
     this.searchBar.on('search:submitted', callback);
 };
 
-module.exports = SearchBarController;
+export default SearchBarController;

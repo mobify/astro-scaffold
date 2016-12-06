@@ -1,12 +1,11 @@
 import Promise from 'bluebird';
 import WebViewPlugin from 'astro/plugins/webViewPlugin';
 import AnchoredLayoutPlugin from 'astro/plugins/anchoredLayoutPlugin';
-import DefaultLoaderPlugin from 'astro/plugins/loaders/defaultLoaderPlugin';
 import BaseConfig from '../../app-config/baseConfig';
 import CartConfig from '../../app-config/cartConfig';
 import CartHeaderController from './cartHeaderController';
 
-var CartController = function(headerController, layout, webView) {
+const CartController = function(headerController, layout, webView) {
     this.viewPlugin = layout;
 
     this.webView = webView;
@@ -14,13 +13,12 @@ var CartController = function(headerController, layout, webView) {
 };
 
 CartController.init = function() {
-    var webViewPromise = WebViewPlugin.init();
     return Promise.join(
         CartHeaderController.init(),
         AnchoredLayoutPlugin.init(),
         WebViewPlugin.init(),
-    function(headerController, layout, webView) {
-        var loader = webView.getLoader();
+    (headerController, layout, webView) => {
+        const loader = webView.getLoader();
         loader.setColor(BaseConfig.loaderColor);
         webView.navigate(CartConfig.url);
 
@@ -50,4 +48,4 @@ CartController.prototype.back = function() {
     return this.webView.back();
 };
 
-module.exports = CartController;
+export default CartController;

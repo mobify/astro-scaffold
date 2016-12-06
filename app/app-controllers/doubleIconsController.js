@@ -3,17 +3,17 @@ import Astro from 'astro/astro-full';
 import BackboneEvents from 'vendor/backbone-events';
 import DoubleIconsPlugin from '../app-plugins/doubleIconsPlugin';
 
-var DoubleIconsController = function(headerId, generateLeftIcon, generateRightIcon) {
+const DoubleIconsController = function(headerId, generateLeftIcon, generateRightIcon) {
     this.headerId = headerId;
     this.generateLeftIcon = generateLeftIcon;
     this.generateRightIcon = generateRightIcon;
 };
 
-var _setLeftIcon = function(doubleIcons, address) {
+const _setLeftIcon = function(doubleIcons, address) {
     doubleIcons.setLeftIcon(address);
 };
 
-var _setRightIcon = function(doubleIcons, address) {
+const _setRightIcon = function(doubleIcons, address) {
     doubleIcons.setRightIcon(address);
 };
 
@@ -24,17 +24,12 @@ DoubleIconsController.prototype._createDoubleIcons = function(doubleIcons) {
     // registers for an event which gets triggered when the function for
     // generating new plugins for that icon changes
     // (ie. icon is being changed to display a different image)
-    this.on('updateLeftIcon', function(param) {
-        _setLeftIcon(doubleIcons, param.generateLeftIcon());
-    });
-
-    this.on('updateRightIcon', function(param) {
-        _setRightIcon(doubleIcons, param.generateRightIcon());
-    });
+    this.on('updateLeftIcon', (param) => _setLeftIcon(doubleIcons, param.generateLeftIcon()));
+    this.on('updateRightIcon', (param) => _setRightIcon(doubleIcons, param.generateRightIcon()));
 
     return Promise.join(this.generateLeftIcon(),
                         this.generateRightIcon(),
-        function(leftIcon, rightIcon) {
+        (leftIcon, rightIcon) => {
             _setLeftIcon(doubleIcons, leftIcon);
             _setRightIcon(doubleIcons, rightIcon);
         });
@@ -48,21 +43,13 @@ DoubleIconsController.prototype._createDoubleIconHeaderContent = function(double
 };
 
 DoubleIconsController.prototype.generateContent = function() {
-    var self = this;
+    const self = this;
 
     return DoubleIconsPlugin.init().then(
-        function(doubleIcons) {
-            doubleIcons.on('click:doubleIcons_left', function(param) {
-                self.trigger('click:doubleIcons_left', param);
-            });
-
-            doubleIcons.on('click:doubleIcons_right', function(param) {
-                self.trigger('click:doubleIcons_right', param);
-            });
-
-            return self._createDoubleIcons(doubleIcons).then(function() {
-                return self._createDoubleIconHeaderContent(doubleIcons);
-            });
+        (doubleIcons) => {
+            doubleIcons.on('click:doubleIcons_left', (param) => self.trigger('click:doubleIcons_left', param));
+            doubleIcons.on('click:doubleIcons_right', (param) => self.trigger('click:doubleIcons_right', param));
+            return self._createDoubleIcons(doubleIcons).then(() => self._createDoubleIconHeaderContent(doubleIcons));
         }
    );
 };
@@ -80,10 +67,10 @@ DoubleIconsController.prototype.updateGenerateRightIcon = function(generateRight
 };
 
 DoubleIconsController.init = function(headerId, generateLeftIcon, generateRightIcon) {
-    var doubleIconsController = new DoubleIconsController(headerId, generateLeftIcon, generateRightIcon);
+    let doubleIconsController = new DoubleIconsController(headerId, generateLeftIcon, generateRightIcon);
     doubleIconsController = Astro.Utils.extend(doubleIconsController, BackboneEvents);
 
     return Promise.resolve(doubleIconsController);
 };
 
-module.exports = DoubleIconsController;
+export default DoubleIconsController;

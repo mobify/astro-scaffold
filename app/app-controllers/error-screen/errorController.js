@@ -1,11 +1,10 @@
 import Promise from 'bluebird';
-import Astro from 'astro/astro-full';
 import WebViewPlugin from 'astro/plugins/webViewPlugin';
 import ModalViewPlugin from 'astro/plugins/modalViewPlugin';
 import ErrorConfig from '../../app-config/errorConfig';
 import BaseConfig from '../../app-config/baseConfig';
 
-var ErrorController = function(modalView, webView) {
+const ErrorController = function(modalView, webView) {
     this.isShowing = false;
     this.viewPlugin = webView;
     this.modalView = modalView;
@@ -21,7 +20,7 @@ ErrorController.init = function() {
     return Promise.join(
         WebViewPlugin.init(),
         ModalViewPlugin.init(),
-    function(webView, modalView) {
+    (webView, modalView) => {
         webView.getLoader().setColor(BaseConfig.loaderColor);
         webView.disableScrollBounce();
         modalView.setContentView(webView);
@@ -52,7 +51,7 @@ ErrorController.prototype.errorContent = function() {
         return null;
     }
 
-    var errorContent = ErrorConfig.errors[this.errorType];
+    const errorContent = ErrorConfig.errors[this.errorType];
     errorContent.canGoBack = this.canGoBack;
 
     return errorContent;
@@ -67,12 +66,12 @@ ErrorController.prototype._removeModalEvents = function() {
 };
 
 ErrorController.prototype._generateErrorCallback = function(params) {
-    var self = this;
-    var navigator = params.navigator;
-    var backHandler = params.backHandler;
-    var retryHandler = params.retryHandler;
-    var isActiveItem = params.isActiveItem;
-    var canGoBack = params.canGoBack;
+    const self = this;
+    const navigator = params.navigator;
+    const backHandler = params.backHandler;
+    const retryHandler = params.retryHandler;
+    const isActiveItem = params.isActiveItem;
+    const canGoBack = params.canGoBack;
 
     return function(eventArgs) {
         navigator.loaded = false;
@@ -86,7 +85,7 @@ ErrorController.prototype._generateErrorCallback = function(params) {
         // Only trigger the error modal if the active navigation view is
         // the one that failed to load.
         if (isActiveItem()) {
-            self.viewPlugin.once('back', function() {
+            self.viewPlugin.once('back', () => {
                 if (self.canGoBack) {
                     self.hide();
                     self._removeModalEvents();
@@ -95,13 +94,13 @@ ErrorController.prototype._generateErrorCallback = function(params) {
             });
 
             // Wait until the error page is loaded before showing
-            self.viewPlugin.on('astro:page-loaded', function() {
+            self.viewPlugin.on('astro:page-loaded', () => {
                 self.show();
             });
 
-            canGoBack().then(function(canGoBack) {
+            canGoBack().then((canGoBack) => {
                 self.canGoBack = canGoBack;
-                var loadParams = {
+                const loadParams = {
                     errorContent: self.errorContent()
                 };
                 self.viewPlugin.trigger('error:should-load', loadParams);
@@ -111,7 +110,7 @@ ErrorController.prototype._generateErrorCallback = function(params) {
         // We allow all views that triggered this modal to listen for
         // `retry` so that they will reload when the error modal's retry
         // button is pressed
-        self.viewPlugin.once('retry', function() {
+        self.viewPlugin.once('retry', () => {
             self.hide();
             self._removeModalEvents();
             retryHandler(eventArgs);
@@ -120,10 +119,10 @@ ErrorController.prototype._generateErrorCallback = function(params) {
 };
 
 ErrorController.prototype.bindToNavigator = function(params) {
-    var navigator = params.navigator;
+    const navigator = params.navigator;
 
     // Listen for triggered events emitted by the navigator
     navigator.on('navigationFailed', this._generateErrorCallback(params));
 };
 
-module.exports = ErrorController;
+export default ErrorController;

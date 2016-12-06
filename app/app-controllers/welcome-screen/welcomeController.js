@@ -8,7 +8,7 @@ import AppRpc from '../../global/app-rpc';
 import WelcomeConfig from '../../app-config/welcomeConfig';
 import WelcomeHeaderController from './welcomeHeaderController';
 
-var WelcomeController = function(navigationView, layout, headerController) {
+const WelcomeController = function(navigationView, layout, headerController) {
     this.viewPlugin = layout;
 
     this.navigationView = navigationView;
@@ -27,16 +27,16 @@ WelcomeController.init = function() {
 
     // With a header bar, we use a navigationPlugin to handle
     // navigation and stacking animations.
-    var initWithHeader = function() {
+    const initWithHeader = function() {
         return Promise.join(
             NavigationPlugin.init(),
             AnchoredLayoutPlugin.init(),
             WelcomeHeaderController.init(),
-        function(navigationView, layout, headerController) {
-            var loader = navigationView.getLoader();
+        (navigationView, layout, headerController) => {
+            const loader = navigationView.getLoader();
             loader.setColor(BaseConfig.loaderColor);
             navigationView.setHeaderBar(headerController.viewPlugin);
-            headerController.registerBackEventHandler(function() {
+            headerController.registerBackEventHandler(() => {
                 navigationView.back();
             });
 
@@ -47,7 +47,7 @@ WelcomeController.init = function() {
             layout.addTopView(headerController.viewPlugin);
             layout.setContentView(navigationView);
 
-            var welcomeController = new WelcomeController(navigationView, layout, headerController);
+            const welcomeController = new WelcomeController(navigationView, layout, headerController);
             welcomeController.navigate(WelcomeConfig.url);
             return welcomeController;
         });
@@ -55,29 +55,29 @@ WelcomeController.init = function() {
 
     // To navigate without stacking, we use a WebViewPlugin to
     // handle navigation -- desired behaviour w/o header
-    var initWithoutHeader = function() {
+    const initWithoutHeader = function() {
         return Promise.join(
             WebViewPlugin.init(),
             AnchoredLayoutPlugin.init(),
-        function(webView, layout) {
+        (webView, layout) => {
             // Disable webview loader when first loading welcome page
             webView.disableLoader();
 
-            var loader = webView.getLoader();
+            const loader = webView.getLoader();
             loader.setColor(BaseConfig.loaderColor);
             layout.setContentView(webView);
 
             // Remove this line to enable scrolling on welcome screen
             webView.disableScrolling();
 
-            var welcomeController = new WelcomeController(webView, layout);
+            const welcomeController = new WelcomeController(webView, layout);
             welcomeController.navigate(WelcomeConfig.url);
 
             return welcomeController;
         });
     };
 
-    Astro.registerRpcMethod(AppRpc.names.welcomeHasHeader, [], function(res) {
+    Astro.registerRpcMethod(AppRpc.names.welcomeHasHeader, [], (res) => {
         res.send(null, WelcomeConfig.showHeader);
     });
 
@@ -100,7 +100,7 @@ WelcomeController.prototype.navigate = function(url) {
         return;
     }
 
-    var self = this;
+    const self = this;
     // Without a header controller, we do not need to generate header
     // content for the navigation. Instead, we allow the webView to
     // simply navigate.
@@ -109,8 +109,8 @@ WelcomeController.prototype.navigate = function(url) {
         return;
     }
 
-    var navigationHandler = function(params) {
-        var url = params.url;
+    const navigationHandler = function(params) {
+        const url = params.url;
         // We're expected to navigate the web view if we're called with a
         // url and the web view isn't in the process of redirecting (i.e.
         // `params.isCurrentlyLoading` is not set).
@@ -119,9 +119,9 @@ WelcomeController.prototype.navigate = function(url) {
         }
     };
 
-    self.headerController.generateContent().then(function(headerContent) {
-        var webViewPluginOptions = {
-            navigationHandler: navigationHandler,
+    self.headerController.generateContent().then((headerContent) => {
+        const webViewPluginOptions = {
+            navigationHandler,
             enableLoader: []
         };
         return self.navigationView.navigateToUrl(url, headerContent, webViewPluginOptions);
@@ -136,4 +136,4 @@ WelcomeController.prototype.canGoBack = function() {
     return this.navigationView.canGoBack();
 };
 
-module.exports = WelcomeController;
+export default WelcomeController;

@@ -1,4 +1,4 @@
-var segmentData = [
+const segmentData = [
     {
         id: 'bikes',
         url: '/',
@@ -29,4 +29,4 @@ var segmentData = [
     }
 ];
 
-module.exports = segmentData;
+export default segmentData;

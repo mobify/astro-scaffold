@@ -1,13 +1,12 @@
-import Promise from 'bluebird';
 import HeaderBarPlugin from 'astro/plugins/headerBarPlugin';
 import CartConfig from '../../app-config/cartConfig';
 
-var CartHeaderController = function(headerBar) {
+const CartHeaderController = function(headerBar) {
     this.viewPlugin = headerBar;
 };
 
 CartHeaderController.init = function() {
-    return HeaderBarPlugin.init().then(function(headerBar) {
+    return HeaderBarPlugin.init().then((headerBar) => {
         headerBar.setTextColor(CartConfig.colors.textColor);
         headerBar.setBackgroundColor(CartConfig.colors.backgroundColor);
 
@@ -30,7 +29,7 @@ CartHeaderController.prototype.registerCloseEventHandler = function(callback) {
         return;
     }
 
-    this.viewPlugin.on('click:' + CartConfig.closeIcon.id, callback);
+    this.viewPlugin.on(`click:${CartConfig.closeIcon.id}`, callback);
 };
 
-module.exports = CartHeaderController;
+export default CartHeaderController;

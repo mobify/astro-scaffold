@@ -1,4 +1,4 @@
-/*global AstroNative*/
+/* global AstroNative */
 window.AstroMessages = []; // For debugging messages
 
 // Astro
@@ -24,31 +24,32 @@ import ErrorController from './app-controllers/error-screen/errorController';
 import WelcomeModalController from './app-controllers/welcome-screen/welcomeModalController';
 
 window.run = function() {
-    var deepLinkingServices = null;
-    var errorControllerPromise = ErrorController.init();
-    var cartModalControllerPromise = CartModalController.init(errorControllerPromise);
-    var cartEventHandlerPromise = cartModalControllerPromise.then(
-        function(cartModalController) {
+    // eslint-disable-next-line
+    let deepLinkingServices = null;
+    const errorControllerPromise = ErrorController.init();
+    const cartModalControllerPromise = CartModalController.init(errorControllerPromise);
+    const cartEventHandlerPromise = cartModalControllerPromise.then(
+        (cartModalController) => {
             return function() {
                 cartModalController.show();
             };
         });
 
-    var counterBadgeControllerPromise = CounterBadgeController.init(
+    const counterBadgeControllerPromise = CounterBadgeController.init(
         HeaderConfig.cartHeaderContent.imageUrl,
         HeaderConfig.cartHeaderContent.id
-    ).then(function(counterBadgeController) {
+    ).then((counterBadgeController) => {
         counterBadgeController.updateCounterValue(3);
         return counterBadgeController;
     });
 
     // Android hardware back
-    var setupHardwareBackButton = function(alternativeBackFunction) {
-        Application.on('backButtonPressed', function() {
+    const setupHardwareBackButton = function(alternativeBackFunction) {
+        Application.on('backButtonPressed', () => {
             Promise.join(
                 cartModalControllerPromise,
                 errorControllerPromise,
-            function(cartModalController, errorController) {
+            (cartModalController, errorController) => {
                 if (cartModalController.isShowing) {
                     cartModalController.hide();
                 } else if (errorController.isShowing) {
@@ -60,19 +61,19 @@ window.run = function() {
         });
     };
 
-    var createTabBarLayout = function() {
-        var layoutPromise = AnchoredLayoutPlugin.init();
-        var tabBarControllerPromise = TabBarController.init(
+    const createTabBarLayout = function() {
+        const layoutPromise = AnchoredLayoutPlugin.init();
+        const tabBarControllerPromise = TabBarController.init(
                 layoutPromise,
                 cartEventHandlerPromise,
                 counterBadgeControllerPromise,
                 errorControllerPromise
             );
 
-        var layoutSetupPromise = Promise.join(
+        const layoutSetupPromise = Promise.join(
             layoutPromise,
             tabBarControllerPromise,
-        function(layout, tabBarController) {
+        (layout, tabBarController) => {
             layout.addBottomView(tabBarController.tabBar);
 
             return Application.setMainViewPlugin(layout);
@@ -85,22 +86,22 @@ window.run = function() {
         return Promise.join(
             tabBarControllerPromise,
             layoutSetupPromise,
-        function(tabBarController) {
+        (tabBarController) => {
             setupHardwareBackButton(tabBarController.backActiveItem.bind(tabBarController));
             return tabBarController;
         });
     };
 
-    var createDrawerLayout = function() {
+    const createDrawerLayout = function() {
         return DrawerController.init(
             counterBadgeControllerPromise,
             cartEventHandlerPromise,
             errorControllerPromise
-        ).then(function(drawerController) {
+        ).then((drawerController) => {
             Application.setMainViewPlugin(drawerController.drawer);
             setupHardwareBackButton(drawerController.backActiveItem.bind(drawerController));
 
-            Astro.registerRpcMethod(AppRpc.names.navigateToNewRootView, ['url', 'title'], function(res, url, title) {
+            Astro.registerRpcMethod(AppRpc.names.navigateToNewRootView, ['url', 'title'], (res, url, title) => {
                 drawerController.navigateToNewRootView(url, title);
                 res.send(null, 'success');
             });
@@ -108,29 +109,30 @@ window.run = function() {
         });
     };
 
-    var createLayout = function() {
+    const createLayout = function() {
         return BaseConfig.useTabLayout
             ? createTabBarLayout()
             : createDrawerLayout();
     };
 
-    var initMainLayout = function() {
-        return createLayout().then(function(layoutController) {
+    const initMainLayout = function() {
+        return createLayout().then((layoutController) => {
             Application.dismissLaunchImage();
 
             // Deep linking services will enable deep linking on startup
             // and while running it will open the deep link in the current
             // active tab
+            // eslint-disable-no-unused-vars
             deepLinkingServices = new DeepLinkingServices(layoutController);
         });
     };
 
-    var runApp = function(previewedUrl) {
+    const runApp = function() {
         // TODO: [HYB-884] As a Scaffold developer,
         // I would like for the baseURL to be set to the previewed URL
 
         WelcomeModalController.init(errorControllerPromise)
-            .then(function(welcomeModalController) {
+            .then((welcomeModalController) => {
                 // The welcome modal can be configured to show only once
                 // (on first launch) by setting `{forced: false}` as the
                 // parameter for welcomeModalController.show()
@@ -140,39 +142,24 @@ window.run = function() {
             });
     };
 
-    var runAppPreview = function() {
+    const runAppPreview = function() {
         MobifyPreviewPlugin.init()
-            .then(function(previewPlugin) {
+            .then((previewPlugin) => {
                 previewPlugin
                     .preview(BaseConfig.baseURL, BaseConfig.previewBundle)
                     .then(runApp);
             });
     };
 
-    PreviewController.init().then(function(previewController) {
-        Application.on('previewToggled', function() {
-            previewController.presentPreviewAlert();
-        });
-
-        previewController.isPreviewEnabled().then(function(enabled) {
-            // Configure the previewEnabled flag located in baseConfig.js
-            // to enable/disable app preview
-            if (enabled && BaseConfig.previewEnabled) {
-                runAppPreview();
-            } else {
-                runApp();
-            }
-        });
-    });
-
-    var initalizeAppWithAstroPreview = function() {
-        PreviewController.init().then(function(previewController) {
-            Application.on('previewToggled', function() {
+    const initalizeAppWithAstroPreview = function() {
+        PreviewController.init().then((previewController) => {
+            Application.on('previewToggled', () => {
                 previewController.presentPreviewAlert();
             });
 
             return previewController.isPreviewEnabled();
-        }).then(function(previewEnabled) {
+        })
+        .then((previewEnabled) => {
             if (previewEnabled) {
                 runAppPreview();
             } else {
@@ -188,4 +175,4 @@ window.run = function() {
     }
 };
 // Comment out next line for JS debugging
-window.run();
+// window.run();

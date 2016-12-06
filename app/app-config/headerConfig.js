@@ -1,43 +1,43 @@
 import BaseConfig from './baseConfig';
 
-var cartHeaderContent = {
+const cartHeaderContent = {
     id: 'cart_id',
     imageUrl: 'file:///icon__cart.png'
 };
 
-var searchHeaderContent = {
+const searchHeaderContent = {
     id: 'search_id',
     imageUrl: 'file:///icon__search.png'
 };
 
-var drawerHeaderContent = {
+const drawerHeaderContent = {
     id: 'drawer_id',
     imageUrl: 'file:///icon__drawer.png'
 };
 
-var titleHeaderContent = {
+const titleHeaderContent = {
     id: 'header_id',
     title: 'Velo'
 };
 
-var cartTitleHeaderContent = {
+const cartTitleHeaderContent = {
     id: 'cartTitle_id',
     title: 'Cart'
 };
 
-var searchCartHeaderContent = {id: 'header__search_cart'};
+const searchCartHeaderContent = {id: 'header__search_cart'};
 
-var colors = {
+const colors = {
     textColor: BaseConfig.colors.whiteColor,
     backgroundColor: BaseConfig.colors.primaryColor
 };
 
-module.exports = {
-    cartHeaderContent: cartHeaderContent,
-    searchHeaderContent: searchHeaderContent,
-    drawerHeaderContent: drawerHeaderContent,
-    titleHeaderContent: titleHeaderContent,
-    cartTitleHeaderContent: cartTitleHeaderContent,
-    searchCartHeaderContent: searchCartHeaderContent,
-    colors: colors
+export default {
+    cartHeaderContent,
+    searchHeaderContent,
+    drawerHeaderContent,
+    titleHeaderContent,
+    cartTitleHeaderContent,
+    searchCartHeaderContent,
+    colors
 };
