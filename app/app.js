@@ -134,9 +134,8 @@ window.run = function() {
                 // The welcome modal can be configured to show only once
                 // (on first launch) by setting `{forced: false}` as the
                 // parameter for welcomeModalController.show()
-                welcomeModalController
-                    .show({forced: true})
-                    .finally(initMainLayout);
+                welcomeModalController.show({forced: true});
+                initMainLayout();
             });
     };
 
@@ -148,22 +147,6 @@ window.run = function() {
                     .then(runApp);
             });
     };
-
-    PreviewController.init().then(function(previewController) {
-        Application.on('previewToggled', function() {
-            previewController.presentPreviewAlert();
-        });
-
-        previewController.isPreviewEnabled().then(function(enabled) {
-            // Configure the previewEnabled flag located in baseConfig.js
-            // to enable/disable app preview
-            if (enabled && BaseConfig.previewEnabled) {
-                runAppPreview();
-            } else {
-                runApp();
-            }
-        });
-    });
 
     var initalizeAppWithAstroPreview = function() {
         PreviewController.init().then(function(previewController) {

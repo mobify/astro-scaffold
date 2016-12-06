@@ -4,7 +4,7 @@ var BundleAnalyzerPlugin = require('webpack-bundle-analyzer').BundleAnalyzerPlug
 
 var rootDir = process.cwd();
 var entry = path.resolve(rootDir, 'app/app.js');
-var outDir = path.resolve(rootDir, 'build');
+var outDir = path.resolve(rootDir, 'app/build');
 
 var isProd = process.env.NODE_ENV === 'production';
 var analyzeBundle = process.env.NODE_ENV === 'Analyze';
