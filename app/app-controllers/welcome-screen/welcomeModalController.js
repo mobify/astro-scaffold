@@ -14,13 +14,12 @@ const WelcomeModalController = function(modalView, welcomeController, secureStor
     this.welcomeController = welcomeController;
 };
 
-WelcomeModalController.init = function(errorControllerPromise) {
+WelcomeModalController.init = function(errorController) {
     return Promise.join(
         ModalViewPlugin.init(),
         WelcomeController.init(),
         SecureStorePlugin.init(),
-        errorControllerPromise,
-    (modalView, welcomeController, secureStore, errorController) => {
+    (modalView, welcomeController, secureStore) => {
         modalView.setContentView(welcomeController.viewPlugin);
 
         // This registers a close handler on the header bar to dismiss

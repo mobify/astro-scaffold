@@ -9,14 +9,14 @@ import NavigationHeaderController from './navigationHeaderController';
 import SearchBarController from './searchBarController';
 import SegmentedController from './segmentedController';
 
-const bindEvents = function() {
+const bindEvents = function(self) {
     const handleActiveState = (event) => {
-        if (this.isActive) {
-            AppEvents.once(event, function() {
-                this.isActive = true;
+        if (self.isActive) {
+            AppEvents.once(event, () => {
+                self.isActive = true
             });
         }
-        this.isActive = false;
+        self.isActive = false;
     };
 
     AppEvents.on(AppEvents.names.welcomeShown, () => handleActiveState(AppEvents.names.welcomeHidden));

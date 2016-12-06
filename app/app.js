@@ -9,9 +9,6 @@ import MobifyPreviewPlugin from 'astro/plugins/mobifyPreviewPlugin';
 import CounterBadgeController from 'astro/controllers/counterBadgeController';
 import PreviewController from 'astro/controllers/previewController';
 
-// Npm
-import Promise from 'bluebird';
-
 // Local
 import AppRpc from './global/app-rpc';
 import BaseConfig from './app-config/baseConfig';
@@ -26,96 +23,75 @@ import WelcomeModalController from './app-controllers/welcome-screen/welcomeModa
 window.run = async function() {
     // eslint-disable-next-line
     let deepLinkingServices = null;
-    const errorControllerPromise = ErrorController.init();
-    const cartModalControllerPromise = CartModalController.init(errorControllerPromise);
-    const cartEventHandlerPromise = cartModalControllerPromise.then(
-        (cartModalController) => {
-            return function() {
-                cartModalController.show();
-            };
-        });
 
-    const counterBadgeControllerPromise = CounterBadgeController.init(
+    const errorController = await ErrorController.init();
+    const cartModalController = await CartModalController.init(errorController);
+    const cartEventHandler = () => cartModalController.show();
+
+    const counterBadgeController = await CounterBadgeController.init(
         HeaderConfig.cartHeaderContent.imageUrl,
         HeaderConfig.cartHeaderContent.id
-    ).then((counterBadgeController) => {
-        counterBadgeController.updateCounterValue(3);
-        return counterBadgeController;
-    });
+    );
+    counterBadgeController.updateCounterValue(3);
 
     // Android hardware back
-    const setupHardwareBackButton = function(alternativeBackFunction) {
+    const setupHardwareBackButton = async (alternativeBackFunction) => {
         Application.on('backButtonPressed', () => {
-            Promise.join(
-                cartModalControllerPromise,
-                errorControllerPromise,
-            (cartModalController, errorController) => {
-                if (cartModalController.isShowing) {
-                    cartModalController.hide();
-                } else if (errorController.isShowing) {
-                    errorController.handleHardwareBackButtonPress();
-                } else {
-                    alternativeBackFunction();
-                }
-            });
+            if (cartModalController.isShowing) {
+                cartModalController.hide();
+            } else if (errorController.isShowing) {
+                errorController.handleHardwareBackButtonPress();
+            } else {
+                alternativeBackFunction();
+            }
         });
     };
 
-    const createTabBarLayout = function() {
-        const layoutPromise = AnchoredLayoutPlugin.init();
-        const tabBarControllerPromise = TabBarController.init(
-                layoutPromise,
-                cartEventHandlerPromise,
-                counterBadgeControllerPromise,
-                errorControllerPromise
-            );
+    const createTabBarLayout = async () => {
+        const layout = await AnchoredLayoutPlugin.init();
+        const tabBarController = await TabBarController.init(
+            layout,
+            cartEventHandler,
+            counterBadgeController,
+            errorController
+        );
 
-        const layoutSetupPromise = Promise.join(
-            layoutPromise,
-            tabBarControllerPromise,
-        (layout, tabBarController) => {
-            layout.addBottomView(tabBarController.tabBar);
-
-            return Application.setMainViewPlugin(layout);
-        });
+        layout.addBottomView(tabBarController.tabBar);
+        await Application.setMainViewPlugin(layout);
 
         // Tab layout must be added as the mainViewPlugin before
         // The first tab is selected or else the navigation does
         // not complete correctly
         // Note: The first tab will be pre-selected by tabBarPlugin by default
-        return Promise.join(
-            tabBarControllerPromise,
-            layoutSetupPromise,
-        (tabBarController) => {
-            setupHardwareBackButton(tabBarController.backActiveItem.bind(tabBarController));
-            return tabBarController;
-        });
+        setupHardwareBackButton(tabBarController.backActiveItem.bind(tabBarController));
+        return tabBarController;
     };
 
-    const createDrawerLayout = function() {
-        return DrawerController.init(
-            counterBadgeControllerPromise,
-            cartEventHandlerPromise,
-            errorControllerPromise
-        ).then((drawerController) => {
-            Application.setMainViewPlugin(drawerController.drawer);
-            setupHardwareBackButton(drawerController.backActiveItem.bind(drawerController));
+    const createDrawerLayout = async () => {
+        const drawerController = await DrawerController.init(
+            counterBadgeController,
+            cartEventHandler,
+            errorController
+        );
 
-            Astro.registerRpcMethod(AppRpc.names.navigateToNewRootView, ['url', 'title'], (res, url, title) => {
-                drawerController.navigateToNewRootView(url, title);
-                res.send(null, 'success');
-            });
-            return drawerController;
+        Application.setMainViewPlugin(drawerController.drawer);
+        setupHardwareBackButton(drawerController.backActiveItem.bind(drawerController));
+
+        Astro.registerRpcMethod(AppRpc.names.navigateToNewRootView, ['url', 'title'], (res, url, title) => {
+            drawerController.navigateToNewRootView(url, title);
+            res.send(null, 'success');
         });
+
+        return drawerController;
     };
 
-    const createLayout = async function() {
+    const createLayout = () => {
         return BaseConfig.useTabLayout
             ? createTabBarLayout()
             : createDrawerLayout();
     };
 
-    const initMainLayout = async function() {
+    const initMainLayout = async () => {
         const layoutController = await createLayout();
         Application.dismissLaunchImage();
 
@@ -126,8 +102,8 @@ window.run = async function() {
         deepLinkingServices = new DeepLinkingServices(layoutController);
     };
 
-    const runApp = async function() {
-        const welcomeModalController = await WelcomeModalController.init(errorControllerPromise);
+    const runApp = async () => {
+        const welcomeModalController = await WelcomeModalController.init(errorController);
 
         // The welcome modal can be configured to show only once
         // (on first launch) by setting `{forced: false}` as the
@@ -136,13 +112,13 @@ window.run = async function() {
         initMainLayout();
     };
 
-    const runAppPreview = async function() {
+    const runAppPreview = async () => {
         const previewPlugin = await MobifyPreviewPlugin.init();
         await previewPlugin.preview(BaseConfig.baseURL, BaseConfig.previewBundle);
         runApp();
     };
 
-    const initalizeAppWithAstroPreview = async function() {
+    const initalizeAppWithAstroPreview = async () => {
         const previewController = await PreviewController.init();
 
         Application.on('previewToggled', () => {

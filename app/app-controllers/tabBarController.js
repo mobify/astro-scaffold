@@ -45,32 +45,22 @@ const initRegularTabs = function(
     });
 };
 
-TabBarController.init = function(
-    layoutPromise,
-    cartEventHandlerPromise,
-    counterBadgeControllerPromise,
-    errorControllerPromise
+TabBarController.init = async function(
+    layout,
+    cartEventHandler,
+    counterBadgeController,
+    errorController
 ) {
-    const controllerPromise = Promise.join(
-        TabBarPlugin.init(),
-        layoutPromise,
-        (tabBar, layout) => {
-            return new TabBarController(tabBar, layout);
-        }
+    const tabBar = await TabBarPlugin.init();
+
+    const controller = new TabBarController(tabBar, layout);
+    return initRegularTabs(
+        controller,
+        TabConfig.tabItems,
+        cartEventHandler,
+        counterBadgeController,
+        errorController
     );
-
-    const constructTabItemsPromise = Promise.resolve(TabConfig.tabItems);
-
-    return Promise.join(
-        controllerPromise,
-        constructTabItemsPromise,
-        cartEventHandlerPromise,
-        counterBadgeControllerPromise,
-        errorControllerPromise,
-        initRegularTabs
-    ).then((controller) => {
-        return controller;
-    });
 };
 
 TabBarController.prototype.selectTab = function(tabId) {

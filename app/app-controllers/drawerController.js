@@ -1,4 +1,3 @@
-import Promise from 'bluebird';
 import Astro from 'astro/astro-full';
 import DrawerPlugin from 'astro/plugins/drawerPlugin';
 import WebViewPlugin from 'astro/plugins/webViewPlugin';
@@ -42,37 +41,23 @@ const initNavigationController = function(drawer, counterBadgeController, cartEv
         drawerEventHandler);
 };
 
-DrawerController.init = function(counterBadgeControllerPromise, cartEventHandlerPromise, errorControllerPromise) {
-    const webViewPromise = WebViewPlugin.init();
+DrawerController.init = async function(counterBadgeController, cartEventHandler, errorController) {
+    const leftMenu = await WebViewPlugin.init();
+    const drawer = await DrawerPlugin.init();
 
-    const initLeftMenuPromise = Promise.join(
-        DrawerPlugin.init(),
-        webViewPromise,
-        initLeftMenu);
+    initLeftMenu(drawer, leftMenu);
+    const navigationController = await initNavigationController(drawer, counterBadgeController, cartEventHandler, errorController);
 
-    const initNavigationControllerPromise = Promise.join(
-        initLeftMenuPromise,
-        counterBadgeControllerPromise,
-        cartEventHandlerPromise,
-        errorControllerPromise,
-        initNavigationController);
+    navigationController.isActive = true;
+    leftMenu.disableDefaultNavigationHandler();
+    drawer.setContentView(navigationController.viewPlugin);
+    const drawerController = new DrawerController(drawer, leftMenu, navigationController);
 
-    return Promise.join(
-        initLeftMenuPromise,
-        initNavigationControllerPromise,
-        webViewPromise,
-    (drawer, navigationController, leftMenu) => {
-        navigationController.isActive = true;
-        leftMenu.disableDefaultNavigationHandler();
-        drawer.setContentView(navigationController.viewPlugin);
-        const drawerController = new DrawerController(drawer, leftMenu, navigationController);
-
-        Astro.registerRpcMethod(AppRpc.names.renderLeftMenu, ['menuItems'], (res, menuItems) => {
-            drawerController.renderLeftMenu(menuItems);
-        });
-
-        return drawerController;
+    Astro.registerRpcMethod(AppRpc.names.renderLeftMenu, ['menuItems'], (res, menuItems) => {
+        drawerController.renderLeftMenu(menuItems);
     });
+
+    return drawerController;
 };
 
 DrawerController.prototype.navigateToNewRootView = function(url, title) {
