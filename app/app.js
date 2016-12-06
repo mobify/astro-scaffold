@@ -23,7 +23,7 @@ import CartModalController from './app-controllers/cart/cartModalController';
 import ErrorController from './app-controllers/error-screen/errorController';
 import WelcomeModalController from './app-controllers/welcome-screen/welcomeModalController';
 
-window.run = function() {
+window.run = async function() {
     // eslint-disable-next-line
     let deepLinkingServices = null;
     const errorControllerPromise = ErrorController.init();
@@ -109,63 +109,52 @@ window.run = function() {
         });
     };
 
-    const createLayout = function() {
+    const createLayout = async function() {
         return BaseConfig.useTabLayout
             ? createTabBarLayout()
             : createDrawerLayout();
     };
 
-    const initMainLayout = function() {
-        return createLayout().then((layoutController) => {
-            Application.dismissLaunchImage();
+    const initMainLayout = async function() {
+        const layoutController = await createLayout();
+        Application.dismissLaunchImage();
 
-            // Deep linking services will enable deep linking on startup
-            // and while running it will open the deep link in the current
-            // active tab
-            // eslint-disable-no-unused-vars
-            deepLinkingServices = new DeepLinkingServices(layoutController);
+        // Deep linking services will enable deep linking on startup
+        // and while running it will open the deep link in the current
+        // active tab
+        // eslint-disable-no-unused-vars
+        deepLinkingServices = new DeepLinkingServices(layoutController);
+    };
+
+    const runApp = async function() {
+        const welcomeModalController = await WelcomeModalController.init(errorControllerPromise);
+
+        // The welcome modal can be configured to show only once
+        // (on first launch) by setting `{forced: false}` as the
+        // parameter for welcomeModalController.show()
+        welcomeModalController.show({forced: true});
+        initMainLayout();
+    };
+
+    const runAppPreview = async function() {
+        const previewPlugin = await MobifyPreviewPlugin.init();
+        await previewPlugin.preview(BaseConfig.baseURL, BaseConfig.previewBundle);
+        runApp();
+    };
+
+    const initalizeAppWithAstroPreview = async function() {
+        const previewController = await PreviewController.init();
+
+        Application.on('previewToggled', () => {
+            previewController.presentPreviewAlert();
         });
-    };
 
-    const runApp = function() {
-        // TODO: [HYB-884] As a Scaffold developer,
-        // I would like for the baseURL to be set to the previewed URL
-
-        WelcomeModalController.init(errorControllerPromise)
-            .then((welcomeModalController) => {
-                // The welcome modal can be configured to show only once
-                // (on first launch) by setting `{forced: false}` as the
-                // parameter for welcomeModalController.show()
-                welcomeModalController
-                    .show({forced: true})
-                    .finally(initMainLayout);
-            });
-    };
-
-    const runAppPreview = function() {
-        MobifyPreviewPlugin.init()
-            .then((previewPlugin) => {
-                previewPlugin
-                    .preview(BaseConfig.baseURL, BaseConfig.previewBundle)
-                    .then(runApp);
-            });
-    };
-
-    const initalizeAppWithAstroPreview = function() {
-        PreviewController.init().then((previewController) => {
-            Application.on('previewToggled', () => {
-                previewController.presentPreviewAlert();
-            });
-
-            return previewController.isPreviewEnabled();
-        })
-        .then((previewEnabled) => {
-            if (previewEnabled) {
-                runAppPreview();
-            } else {
-                runApp();
-            }
-        });
+        const previewEnabled = await previewController.isPreviewEnabled();
+        if (previewEnabled) {
+            runAppPreview();
+        } else {
+            runApp();
+        }
     };
 
     if (AstroNative.Configuration.ASTRO_PREVIEW) {
@@ -174,5 +163,6 @@ window.run = function() {
         runApp();
     }
 };
+
 // Comment out next line for JS debugging
-// window.run();
+window.run();

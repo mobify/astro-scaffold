@@ -23,10 +23,7 @@ SegmentedController.init = function(layoutPromise, navigationViewPromise) {
                         segmentedControl.setColor(BaseConfig.colors.primaryColor);
                         segmentedControl.setItems(page.items);
                         // eslint-disable-next-line
-                        segmentedControl.on('itemSelect', (params) => {
-                            console.log('segmented Contoller caught an itemSelect event!!!');
-                            navigationView.trigger(`segmented:${params.key}`);
-                        });
+                        segmentedControl.on('itemSelect', (params) => navigationView.trigger(`segmented:${params.key}`));
                         layout.addTopView(segmentedControl, {
                             animated: false,
                             visible: false
