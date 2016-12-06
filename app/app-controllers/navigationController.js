@@ -13,7 +13,7 @@ const bindEvents = function(self) {
     const handleActiveState = (event) => {
         if (self.isActive) {
             AppEvents.once(event, () => {
-                self.isActive = true
+                self.isActive = true;
             });
         }
         self.isActive = false;
