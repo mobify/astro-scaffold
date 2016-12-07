@@ -18,15 +18,14 @@ const TabBarController = function(tabBar, layout) {
     this._bindEvents();
 };
 
-const initRegularTabs = function(
+const initRegularTabs = async function(
     controller,
     tabItems,
     cartEventHandler,
     counterBadgeController,
     errorController
 ) {
-    // Make sure all tabViews are set up
-    return Promise.all(tabItems.map((tab) => {
+    const tabItemPromises = tabItems.map((tab) => {
         // Init a new NavigationController
         const navigationControllerPromise = NavigationController.init(
             tab.id,
@@ -39,10 +38,11 @@ const initRegularTabs = function(
             controller._navigationControllers[tab.id] = navigationController;
             controller._tabViews[tab.id] = navigationController.viewPlugin;
         });
-    })).then(() => {
-        controller.tabBar.setItems(tabItems);
-        return controller;
     });
+    await Promise.all(tabItemPromises);
+
+    controller.tabBar.setItems(tabItems);
+    return controller;
 };
 
 TabBarController.init = async function(
@@ -67,7 +67,7 @@ TabBarController.prototype.selectTab = function(tabId) {
     return this.tabBar.selectItem(tabId);
 };
 
-TabBarController.prototype._selectTabHandler = function(tabId) {
+TabBarController.prototype._selectTabHandler = async function(tabId) {
     if (this.activeTabId !== tabId) {
         // activeTabId is undefined during startup
         if (this.activeTabId) {
@@ -80,24 +80,30 @@ TabBarController.prototype._selectTabHandler = function(tabId) {
         const selectedTab = this.getActiveNavigationView();
         selectedTab.isActive = true;
 
+        const reloadNavigationView = async (navigationView) => {
+            const [
+                tabCanGoBack,
+                topPlugin
+            ] = await Promise.all([
+                navigationView.canGoBack(),
+                navigationView.getTopPlugin(),
+            ]);
+
+            // In the case where a tab failed its initial navigation
+            // a reload is insufficient so instead, we navigate to
+            // the tab's root URL.
+            if (!tabCanGoBack && typeof topPlugin.navigate === 'function') {
+                const tabItem = TabConfig.tabItems[tabId - 1];
+                topPlugin.navigate(tabItem.url);
+            } else {
+                topPlugin.reload();
+            }
+            navigationView.loaded = true;
+        };
+
         if (selectedTab.needsReload()) {
             const selectedNavigationView = selectedTab.navigationView;
-            Promise.join(
-                selectedNavigationView.canGoBack(),
-                selectedNavigationView.getTopPlugin(),
-                (tabCanGoBack, topPlugin) => {
-                    // In the case where a tab failed its initial navigation
-                    // a reload is insufficient so instead, we navigate to
-                    // the tab's root URL.
-                    if (!tabCanGoBack && typeof topPlugin.navigate === 'function') {
-                        const tabItem = TabConfig.tabItems[tabId - 1];
-                        topPlugin.navigate(tabItem.url);
-                    } else {
-                        topPlugin.reload();
-                    }
-                    selectedNavigationView.loaded = true;
-                }
-            );
+            reloadNavigationView(selectedNavigationView);
         }
     } else {
         this.getActiveNavigationView().popToRoot({animated: true});

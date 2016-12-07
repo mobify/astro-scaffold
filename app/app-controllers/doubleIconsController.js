@@ -17,7 +17,7 @@ const _setRightIcon = function(doubleIcons, address) {
     doubleIcons.setRightIcon(address);
 };
 
-DoubleIconsController.prototype._createDoubleIcons = function(doubleIcons) {
+DoubleIconsController.prototype._createDoubleIcons = async function(doubleIcons) {
     // The double icons controller is responsible for managing
     // many instances of the left and right icons. To ensure that all
     // instances of the icons stay in sync each instance of the icon
@@ -27,12 +27,16 @@ DoubleIconsController.prototype._createDoubleIcons = function(doubleIcons) {
     this.on('updateLeftIcon', (param) => _setLeftIcon(doubleIcons, param.generateLeftIcon()));
     this.on('updateRightIcon', (param) => _setRightIcon(doubleIcons, param.generateRightIcon()));
 
-    return Promise.join(this.generateLeftIcon(),
-                        this.generateRightIcon(),
-        (leftIcon, rightIcon) => {
-            _setLeftIcon(doubleIcons, leftIcon);
-            _setRightIcon(doubleIcons, rightIcon);
-        });
+    const [
+        leftIcon,
+        rightIcon
+    ] = await Promise.all([
+        this.generateLeftIcon(),
+        this.generateRightIcon()
+    ]);
+
+    _setLeftIcon(doubleIcons, leftIcon);
+    _setRightIcon(doubleIcons, rightIcon);
 };
 
 DoubleIconsController.prototype._createDoubleIconHeaderContent = function(doubleIcons) {
@@ -42,16 +46,12 @@ DoubleIconsController.prototype._createDoubleIconHeaderContent = function(double
     };
 };
 
-DoubleIconsController.prototype.generateContent = function() {
-    const self = this;
+DoubleIconsController.prototype.generateContent = async function() {
+    const doubleIcons = await DoubleIconsPlugin.init();
 
-    return DoubleIconsPlugin.init().then(
-        (doubleIcons) => {
-            doubleIcons.on('click:doubleIcons_left', (param) => self.trigger('click:doubleIcons_left', param));
-            doubleIcons.on('click:doubleIcons_right', (param) => self.trigger('click:doubleIcons_right', param));
-            return self._createDoubleIcons(doubleIcons).then(() => self._createDoubleIconHeaderContent(doubleIcons));
-        }
-   );
+    doubleIcons.on('click:doubleIcons_left', (param) => this.trigger('click:doubleIcons_left', param));
+    doubleIcons.on('click:doubleIcons_right', (param) => this.trigger('click:doubleIcons_right', param));
+    return this._createDoubleIcons(doubleIcons).then(() => this._createDoubleIconHeaderContent(doubleIcons));
 };
 
 DoubleIconsController.prototype.updateGenerateLeftIcon = function(generateLeftIcon) {
