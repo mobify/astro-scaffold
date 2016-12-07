@@ -12,21 +12,25 @@ const CartController = function(headerController, layout, webView) {
     this.headerController = headerController;
 };
 
-CartController.init = function() {
-    return Promise.join(
+CartController.init = async function() {
+    const [
+        headerController,
+        layout,
+        webView
+    ] = await Promise.all([
         CartHeaderController.init(),
         AnchoredLayoutPlugin.init(),
-        WebViewPlugin.init(),
-    (headerController, layout, webView) => {
-        const loader = webView.getLoader();
-        loader.setColor(BaseConfig.loaderColor);
-        webView.navigate(CartConfig.url);
+        WebViewPlugin.init()
+    ]);
 
-        layout.addTopView(headerController.viewPlugin);
-        layout.setContentView(webView);
+    const loader = webView.getLoader();
+    loader.setColor(BaseConfig.loaderColor);
+    webView.navigate(CartConfig.url);
 
-        return new CartController(headerController, layout, webView);
-    });
+    layout.addTopView(headerController.viewPlugin);
+    layout.setContentView(webView);
+
+    return new CartController(headerController, layout, webView);
 };
 
 CartController.prototype.registerCloseEventHandler = function(callback) {

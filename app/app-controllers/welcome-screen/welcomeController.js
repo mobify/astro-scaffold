@@ -27,54 +27,61 @@ WelcomeController.init = function() {
 
     // With a header bar, we use a navigationPlugin to handle
     // navigation and stacking animations.
-    const initWithHeader = function() {
-        return Promise.join(
+    const initWithHeader = async function() {
+        const [
+            navigationView,
+            layout,
+            headerController
+        ] = await Promise.all([
             NavigationPlugin.init(),
             AnchoredLayoutPlugin.init(),
-            WelcomeHeaderController.init(),
-        (navigationView, layout, headerController) => {
-            const loader = navigationView.getLoader();
-            loader.setColor(BaseConfig.loaderColor);
-            navigationView.setHeaderBar(headerController.viewPlugin);
-            headerController.registerBackEventHandler(() => {
-                navigationView.back();
-            });
+            WelcomeHeaderController.init()
+        ]);
 
-            // Remove this line if you wish to enable scrolling
-            // in your welcome screen
-            navigationView.disableScrolling();
-
-            layout.addTopView(headerController.viewPlugin);
-            layout.setContentView(navigationView);
-
-            const welcomeController = new WelcomeController(navigationView, layout, headerController);
-            welcomeController.navigate(WelcomeConfig.url);
-            return welcomeController;
+        const loader = navigationView.getLoader();
+        loader.setColor(BaseConfig.loaderColor);
+        navigationView.setHeaderBar(headerController.viewPlugin);
+        headerController.registerBackEventHandler(() => {
+            navigationView.back();
         });
+
+        // Remove this line if you wish to enable scrolling
+        // in your welcome screen
+        navigationView.disableScrolling();
+
+        layout.addTopView(headerController.viewPlugin);
+        layout.setContentView(navigationView);
+
+        const welcomeController = new WelcomeController(navigationView, layout, headerController);
+        welcomeController.navigate(WelcomeConfig.url);
+        return welcomeController;
     };
 
     // To navigate without stacking, we use a WebViewPlugin to
     // handle navigation -- desired behaviour w/o header
-    const initWithoutHeader = function() {
-        return Promise.join(
+    const initWithoutHeader = async function() {
+        const [
+            webView,
+            layout
+        ] = await Promise.all([
             WebViewPlugin.init(),
-            AnchoredLayoutPlugin.init(),
-        (webView, layout) => {
-            // Disable webview loader when first loading welcome page
-            webView.disableLoader();
+            AnchoredLayoutPlugin.init()
+        ]);
 
-            const loader = webView.getLoader();
-            loader.setColor(BaseConfig.loaderColor);
-            layout.setContentView(webView);
+        // Disable webview loader when first loading welcome page
+        webView.disableLoader();
 
-            // Remove this line to enable scrolling on welcome screen
-            webView.disableScrolling();
+        const loader = webView.getLoader();
+        loader.setColor(BaseConfig.loaderColor);
+        layout.setContentView(webView);
 
-            const welcomeController = new WelcomeController(webView, layout);
-            welcomeController.navigate(WelcomeConfig.url);
+        // Remove this line to enable scrolling on welcome screen
+        webView.disableScrolling();
 
-            return welcomeController;
-        });
+        const welcomeController = new WelcomeController(webView, layout);
+        welcomeController.navigate(WelcomeConfig.url);
+
+        return welcomeController;
     };
 
     Astro.registerRpcMethod(AppRpc.names.welcomeHasHeader, [], (res) => {
@@ -95,9 +102,9 @@ WelcomeController.prototype.registerCloseEventHandler = function(callback) {
     }
 };
 
-WelcomeController.prototype.navigate = function(url) {
+WelcomeController.prototype.navigate = async function(url) {
     if (!url) {
-        return;
+        return null;
     }
 
     const self = this;
@@ -106,7 +113,7 @@ WelcomeController.prototype.navigate = function(url) {
     // simply navigate.
     if (!self.headerController) {
         self.navigationView.navigate(url);
-        return;
+        return null;
     }
 
     const navigationHandler = function(params) {
@@ -119,13 +126,12 @@ WelcomeController.prototype.navigate = function(url) {
         }
     };
 
-    self.headerController.generateContent().then((headerContent) => {
-        const webViewPluginOptions = {
-            navigationHandler,
-            enableLoader: []
-        };
-        return self.navigationView.navigateToUrl(url, headerContent, webViewPluginOptions);
-    });
+    const headerContent = await self.headerController.generateContent();
+    const webViewPluginOptions = {
+        navigationHandler,
+        enableLoader: []
+    };
+    return self.navigationView.navigateToUrl(url, headerContent, webViewPluginOptions);
 };
 
 WelcomeController.prototype.back = function() {

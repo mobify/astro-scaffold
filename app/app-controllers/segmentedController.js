@@ -11,31 +11,25 @@ const SegmentedController = function(layout, navigationView, urlMap) {
     this._registerEvents();
 };
 
-SegmentedController.init = function(layoutPromise, navigationViewPromise) {
+SegmentedController.init = async function(layout, navigationView) {
     const urlMap = {};
-    return Promise.join(
-        layoutPromise,
-        navigationViewPromise,
-        (layout, navigationView) => {
-            return Promise.all(
-                SegmentsConfig.map((page) => {
-                    return SegmentedPlugin.init().then((segmentedControl) => {
-                        segmentedControl.setColor(BaseConfig.colors.primaryColor);
-                        segmentedControl.setItems(page.items);
-                        // eslint-disable-next-line
-                        segmentedControl.on('itemSelect', (params) => navigationView.trigger(`segmented:${params.key}`));
-                        layout.addTopView(segmentedControl, {
-                            animated: false,
-                            visible: false
-                        });
-                        urlMap[page.url] = segmentedControl;
-                    });
-                })
-            ).then(() => {
-                return new SegmentedController(layout, navigationView, urlMap);
+
+    const segmentConfigPromises = SegmentsConfig.map((page) => {
+        return SegmentedPlugin.init().then((segmentedControl) => {
+            segmentedControl.setColor(BaseConfig.colors.primaryColor);
+            segmentedControl.setItems(page.items);
+            // eslint-disable-next-line
+            segmentedControl.on('itemSelect', (params) => navigationView.trigger(`segmented:${params.key}`));
+            layout.addTopView(segmentedControl, {
+                animated: false,
+                visible: false
             });
-        }
-    );
+            urlMap[page.url] = segmentedControl;
+        });
+    });
+
+    await Promise.all(segmentConfigPromises);
+    return new SegmentedController(layout, navigationView, urlMap);
 };
 
 SegmentedController.prototype.showSegmentsForUrl = function(url) {

@@ -1,4 +1,3 @@
-import Promise from 'bluebird';
 import Astro from 'astro/astro-full';
 import SearchBarPlugin from 'astro/plugins/searchBarPlugin';
 import AnchoredLayoutPlugin from 'astro/plugins/anchoredLayoutPlugin';
@@ -20,13 +19,11 @@ const SearchBarController = function(internalLayout, parentLayout, searchBarPlug
     this._registerEvents();
 };
 
-SearchBarController.init = function(layoutPromise, searchConfig) {
-    return Promise.join(AnchoredLayoutPlugin.init(), layoutPromise, SearchBarPlugin.init(),
-        (internalLayout, parentLayout, searchBarPlugin) => {
-            internalLayout.addTopView(searchBarPlugin);
-            return new SearchBarController(internalLayout, parentLayout, searchBarPlugin, searchConfig);
-        }
-    );
+SearchBarController.init = async function(parentLayout, searchConfig) {
+    const internalLayout = await AnchoredLayoutPlugin.init();
+    const searchBarPlugin = await SearchBarPlugin.init();
+    internalLayout.addTopView(searchBarPlugin);
+    return new SearchBarController(internalLayout, parentLayout, searchBarPlugin, searchConfig);
 };
 
 // Returns queryUrl with the string "<search_terms>" replaced with the

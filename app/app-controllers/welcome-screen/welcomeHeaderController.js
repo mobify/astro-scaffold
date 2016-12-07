@@ -6,14 +6,13 @@ const WelcomeHeaderController = function(headerBar) {
     this.viewPlugin = headerBar;
 };
 
-WelcomeHeaderController.init = function() {
-    return HeaderBarPlugin.init().then((headerBar) => {
-        headerBar.setTextColor(WelcomeConfig.colors.textColor);
-        headerBar.setBackgroundColor(WelcomeConfig.colors.backgroundColor);
-        headerBar.hideBackButtonText();
+WelcomeHeaderController.init = async function() {
+    const headerBar = await HeaderBarPlugin.init();
+    headerBar.setTextColor(WelcomeConfig.colors.textColor);
+    headerBar.setBackgroundColor(WelcomeConfig.colors.backgroundColor);
+    headerBar.hideBackButtonText();
 
-        return new WelcomeHeaderController(headerBar);
-    });
+    return new WelcomeHeaderController(headerBar);
 };
 
 WelcomeHeaderController.prototype.generateContent = function() {

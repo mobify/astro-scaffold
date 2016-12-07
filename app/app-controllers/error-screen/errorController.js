@@ -16,17 +16,20 @@ const ErrorController = function(modalView, webView) {
     this.viewPlugin.navigate(ErrorConfig.url);
 };
 
-ErrorController.init = function() {
-    return Promise.join(
+ErrorController.init = async function() {
+    const [
+        webView,
+        modalView
+    ] = await Promise.all([
         WebViewPlugin.init(),
-        ModalViewPlugin.init(),
-    (webView, modalView) => {
-        webView.getLoader().setColor(BaseConfig.loaderColor);
-        webView.disableScrollBounce();
-        modalView.setContentView(webView);
+        ModalViewPlugin.init()
+    ]);
 
-        return new ErrorController(modalView, webView);
-    });
+    webView.getLoader().setColor(BaseConfig.loaderColor);
+    webView.disableScrollBounce();
+    modalView.setContentView(webView);
+
+    return new ErrorController(modalView, webView);
 };
 
 ErrorController.prototype.handleHardwareBackButtonPress = function() {

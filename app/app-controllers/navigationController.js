@@ -1,4 +1,3 @@
-import Promise from 'bluebird';
 import Application from 'astro/application';
 import AnchoredLayoutPlugin from 'astro/plugins/anchoredLayoutPlugin';
 import NavigationPlugin from 'astro/plugins/navigationPlugin';
@@ -44,7 +43,7 @@ const NavigationController = function(id, url, layout, navigationView, navigatio
     bindEvents(this);
 };
 
-NavigationController.init = function(
+NavigationController.init = async function(
     id,
     url,
     counterBadgeController,
@@ -52,83 +51,83 @@ NavigationController.init = function(
     errorController,
     drawerEventHandler
 ) {
-    const layoutPromise = AnchoredLayoutPlugin.init();
-    const navigationPromise = NavigationPlugin.init();
-    const navigationContainerPromise = AnchoredLayoutPlugin.init();
+    const [
+        layout,
+        navigationView,
+        navigationViewContainer,
+        navigationHeaderController
+    ] = await Promise.all([
+        AnchoredLayoutPlugin.init(),
+        NavigationPlugin.init(),
+        AnchoredLayoutPlugin.init(),
+        NavigationHeaderController.init(counterBadgeController)
+    ]);
+    const searchBarController = await SearchBarController.init(layout, SearchConfig);
+    const segmentedController = await SegmentedController.init(navigationViewContainer, navigationView);
 
-    return Promise.join(
-        layoutPromise,
-        NavigationHeaderController.init(counterBadgeController),
-        navigationPromise,
-        navigationContainerPromise,
-        SearchBarController.init(layoutPromise, SearchConfig),
-        SegmentedController.init(navigationContainerPromise, navigationPromise),
-        (layout, navigationHeaderController, navigationView, navigationViewContainer, searchBarController, segmentedController) => {
-            navigationView.getLoader().setColor(BaseConfig.loaderColor);
+    navigationView.getLoader().setColor(BaseConfig.loaderColor);
 
-            // Set layout
-            navigationViewContainer.setContentView(navigationView);
-            layout.setContentView(navigationViewContainer);
-            layout.addTopView(navigationHeaderController.viewPlugin);
-            navigationView.setHeaderBar(navigationHeaderController.viewPlugin);
-            navigationHeaderController.registerBackEvents(() => {
-                navigationView.back();
-            });
+    // Set layout
+    navigationViewContainer.setContentView(navigationView);
+    layout.setContentView(navigationViewContainer);
+    layout.addTopView(navigationHeaderController.viewPlugin);
+    navigationView.setHeaderBar(navigationHeaderController.viewPlugin);
+    navigationHeaderController.registerBackEvents(() => {
+        navigationView.back();
+    });
 
-            navigationHeaderController.registerCartEvents(cartEventHandler);
+    navigationHeaderController.registerCartEvents(cartEventHandler);
 
-            const drawerIconEnabled = drawerEventHandler !== undefined;
-            if (drawerIconEnabled) {
-                navigationHeaderController.registerDrawerEvents(drawerEventHandler);
-            }
+    const drawerIconEnabled = drawerEventHandler !== undefined;
+    if (drawerIconEnabled) {
+        navigationHeaderController.registerDrawerEvents(drawerEventHandler);
+    }
 
-            searchBarController.addToLayout();
+    searchBarController.addToLayout();
 
-            const searchBarToggleCallback = searchBarController.toggle.bind(searchBarController);
-            navigationHeaderController.registerSearchBarEvents(searchBarToggleCallback);
+    const searchBarToggleCallback = searchBarController.toggle.bind(searchBarController);
+    navigationHeaderController.registerSearchBarEvents(searchBarToggleCallback);
 
-            const navigationController = new NavigationController(
-                id,
-                url,
-                layout,
-                navigationView,
-                navigationHeaderController,
-                searchBarController,
-                drawerIconEnabled,
-                segmentedController
-            );
-
-            const backHandler = function() {
-                navigationView.back();
-                navigationView.loaded = true;
-            };
-
-            const retryHandler = function(params) {
-                if (!params.url) {
-                    return;
-                }
-                const navigate = function(eventPlugin) {
-                    eventPlugin.navigate(params.url);
-                    navigationView.loaded = true;
-                };
-                navigationView.getEventPluginPromise(params).then(navigate);
-            };
-
-            errorController.bindToNavigator({
-                navigator: navigationView,
-                backHandler,
-                retryHandler,
-                isActiveItem: navigationController.isActiveItem.bind(navigationController),
-                canGoBack: navigationController.canGoBack.bind(navigationController)
-            });
-            return navigationController;
-        }
+    const navigationController = new NavigationController(
+        id,
+        url,
+        layout,
+        navigationView,
+        navigationHeaderController,
+        searchBarController,
+        drawerIconEnabled,
+        segmentedController
     );
+
+    const backHandler = function() {
+        navigationView.back();
+        navigationView.loaded = true;
+    };
+
+    const retryHandler = function(params) {
+        if (!params.url) {
+            return;
+        }
+        const navigate = function(eventPlugin) {
+            eventPlugin.navigate(params.url);
+            navigationView.loaded = true;
+        };
+        navigationView.getEventPluginPromise(params).then(navigate);
+    };
+
+    errorController.bindToNavigator({
+        navigator: navigationView,
+        backHandler,
+        retryHandler,
+        isActiveItem: navigationController.isActiveItem.bind(navigationController),
+        canGoBack: navigationController.canGoBack.bind(navigationController)
+    });
+    return navigationController;
 };
 
-NavigationController.prototype.navigate = function(url, includeDrawerIcon) {
+NavigationController.prototype.navigate = async function(url, includeDrawerIcon) {
     if (!url) {
-        return Promise.reject();
+        throw new Error('Url not provided');
     }
 
     const navigationHandler = (params) => {
@@ -143,46 +142,37 @@ NavigationController.prototype.navigate = function(url, includeDrawerIcon) {
         return null;
     };
 
-    return this.navigationHeaderController.generateContent(includeDrawerIcon)
-        .then((headerContent) => {
-            return this.navigationView.navigateToUrl(
-                url, headerContent, {navigationHandler});
-        })
-        .then(() => {
-            return this.navigationHeaderController.setTitle();
-        });
+    const headerContent = await this.navigationHeaderController.generateContent(includeDrawerIcon);
+    await this.navigationView.navigateToUrl(url, headerContent, {navigationHandler});
+    return await this.navigationHeaderController.setTitle();
 };
 
-NavigationController.prototype.navigateMainViewToNewRoot = function(url, title) {
-    this.popToRoot({animated: true})
-        .then(() => {
-            return this.navigationView.getTopPlugin();
-        })
-        .then((rootWebView) => {
-            this.navigationHeaderController.setTitle(title);
-            if (typeof rootWebView.navigate === 'function') {
-                return rootWebView.navigate(url);
-            } else {
-                // Note: this code branch is untested
-                // This would be used if the root plugin is not a WebViewPlugin.
-                // In that case, we want to tell the navigation plugin to navigate instead.
-                return this.navigate(url, true);
-            }
-        });
+NavigationController.prototype.navigateMainViewToNewRoot = async function(url, title) {
+    await this.popToRoot({animated: true});
+    const rootWebView = await this.navigationView.getTopPlugin();
+
+    this.navigationHeaderController.setTitle(title);
+    if (typeof rootWebView.navigate === 'function') {
+        return rootWebView.navigate(url);
+    } else {
+        // Note: this code branch is untested
+        // This would be used if the root plugin is not a WebViewPlugin.
+        // In that case, we want to tell the navigation plugin to navigate instead.
+        return this.navigate(url, true);
+    }
 };
 
 NavigationController.prototype.popToRoot = function(params) {
     return this.navigationView.popToRoot(params);
 };
 
-NavigationController.prototype.back = function() {
-    this.navigationView.canGoBack().then((canGoBack) => {
-        if (canGoBack) {
-            this.navigationView.back();
-        } else {
-            Application.closeApp();
-        }
-    });
+NavigationController.prototype.back = async function() {
+    const canGoBack = await this.navigationView.canGoBack();
+    if (canGoBack) {
+        this.navigationView.back();
+    } else {
+        Application.closeApp();
+    }
 };
 
 NavigationController.prototype.canGoBack = function() {

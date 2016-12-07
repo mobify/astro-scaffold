@@ -5,23 +5,23 @@ const CartHeaderController = function(headerBar) {
     this.viewPlugin = headerBar;
 };
 
-CartHeaderController.init = function() {
-    return HeaderBarPlugin.init().then((headerBar) => {
-        headerBar.setTextColor(CartConfig.colors.textColor);
-        headerBar.setBackgroundColor(CartConfig.colors.backgroundColor);
+CartHeaderController.init = async function() {
+    const headerBar = await HeaderBarPlugin.init();
 
-        headerBar.setCenterTitle(
-            CartConfig.headerContent.title,
-            CartConfig.headerContent.id
-        );
+    headerBar.setTextColor(CartConfig.colors.textColor);
+    headerBar.setBackgroundColor(CartConfig.colors.backgroundColor);
 
-        headerBar.setRightIcon(
-            CartConfig.closeIcon.imageUrl,
-            CartConfig.closeIcon.id
-        );
+    headerBar.setCenterTitle(
+        CartConfig.headerContent.title,
+        CartConfig.headerContent.id
+    );
 
-        return new CartHeaderController(headerBar);
-    });
+    headerBar.setRightIcon(
+        CartConfig.closeIcon.imageUrl,
+        CartConfig.closeIcon.id
+    );
+
+    return new CartHeaderController(headerBar);
 };
 
 CartHeaderController.prototype.registerCloseEventHandler = function(callback) {
