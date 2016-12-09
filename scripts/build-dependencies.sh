@@ -56,7 +56,7 @@ pushd $MYPATH/node_modules/astro-sdk
     echo "Installing dependencies for astro-sdk"
     npm install --no-progress --no-spin $EXTRA_NPM_ARGS
     echo "Building astro-client.js"
-    npm run pack:astro_client
+    npm run build:astro_client
 popd
 
 echo "Copying astro-client.js into app bundle"

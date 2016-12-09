@@ -3,7 +3,7 @@
   "version": "0.0.1",
   "author": "Mobify",
   "dependencies": {
-    "astro-sdk": "mobify/astro#tests-es6",
+    "astro-sdk": "mobify/astro#develop",
     "babel-runtime": "^6.18.0",
     "bluebird": "~2.9.24",
     "grunt-requirejs": "^0.4.2",
