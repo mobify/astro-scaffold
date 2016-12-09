@@ -1,4 +1,5 @@
 ## To be released
+- ES6 and Async/Await Compatible with Babel
 - [Android] Update to Gradle 2.14, update project to Android Studio 2.2
 - [Android] Scaffold app only support handsets
 - [iOS] Enable install of preview-enabled and app store versions of generated apps
