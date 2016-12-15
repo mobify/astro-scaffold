@@ -33,7 +33,7 @@ const tabItems = [
     {
         id: '5',
         title: 'About',
-        url: `${BaseConfig.base}/about`,
+        url: `${BaseConfig.baseURL}/about`,
         imageUrl: 'file:///icon__discover.png',
         selectedImageUrl: 'file:///icon__discover.png'
     }
