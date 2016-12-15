@@ -2,22 +2,21 @@ import Promise from 'bluebird';
 import HeaderBarPlugin from 'astro/plugins/headerBarPlugin';
 import WelcomeConfig from '../../app-config/welcomeConfig';
 
-var WelcomeHeaderController = function(headerBar) {
+const WelcomeHeaderController = function(headerBar) {
     this.viewPlugin = headerBar;
 };
 
-WelcomeHeaderController.init = function() {
-    return HeaderBarPlugin.init().then(function(headerBar) {
-        headerBar.setTextColor(WelcomeConfig.colors.textColor);
-        headerBar.setBackgroundColor(WelcomeConfig.colors.backgroundColor);
-        headerBar.hideBackButtonText();
+WelcomeHeaderController.init = async function() {
+    const headerBar = await HeaderBarPlugin.init();
+    headerBar.setTextColor(WelcomeConfig.colors.textColor);
+    headerBar.setBackgroundColor(WelcomeConfig.colors.backgroundColor);
+    headerBar.hideBackButtonText();
 
-        return new WelcomeHeaderController(headerBar);
-    });
+    return new WelcomeHeaderController(headerBar);
 };
 
 WelcomeHeaderController.prototype.generateContent = function() {
-    var headerContent = {
+    const headerContent = {
         header: {
             centerIcon: WelcomeConfig.headerContent,
             rightIcon: WelcomeConfig.closeIcon
@@ -32,7 +31,7 @@ WelcomeHeaderController.prototype.registerCloseEventHandler = function(callback)
         return;
     }
 
-    this.viewPlugin.on('click:' + WelcomeConfig.closeIcon.id, callback);
+    this.viewPlugin.on(`click:${WelcomeConfig.closeIcon.id}`, callback);
 };
 
 WelcomeHeaderController.prototype.registerBackEventHandler = function(callback) {
@@ -43,4 +42,4 @@ WelcomeHeaderController.prototype.registerBackEventHandler = function(callback) 
     this.viewPlugin.on('click:back', callback);
 };
 
-module.exports = WelcomeHeaderController;
+export default WelcomeHeaderController;

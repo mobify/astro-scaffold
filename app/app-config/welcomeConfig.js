@@ -1,28 +1,28 @@
 import BaseConfig from './baseConfig';
 
-var url = 'file:///app-www/html/welcome.html';
+const url = 'file:///app-www/html/welcome.html';
 
-var showHeader = false;
+const showHeader = false;
 
-var headerContent = {
-    id : 'welcomeTitle_id',
+const headerContent = {
+    id: 'welcomeTitle_id',
     title: 'Welcome'
 };
 
-var closeIcon = {
-    id : 'closeWelcome_id',
-    imageUrl : 'file:///icon__close.png'
+const closeIcon = {
+    id: 'closeWelcome_id',
+    imageUrl: 'file:///icon__close.png'
 };
 
-var colors = {
+const colors = {
     textColor: BaseConfig.colors.whiteColor,
     backgroundColor: BaseConfig.colors.primaryColor
 };
 
-module.exports = {
-    url : url,
-    showHeader: showHeader,
-    headerContent : headerContent,
-    closeIcon : closeIcon,
-    colors : colors
+export default {
+    url,
+    showHeader,
+    headerContent,
+    closeIcon,
+    colors
 };

@@ -1,3 +1,5 @@
+/* eslint-disable */
+
 var webpack = require('webpack');
 var path = require('path');
 var BundleAnalyzerPlugin = require('webpack-bundle-analyzer').BundleAnalyzerPlugin;
@@ -7,7 +9,7 @@ var entry = path.resolve(rootDir, 'app/app.js');
 var outDir = path.resolve(rootDir, 'app/build');
 
 var isProd = process.env.NODE_ENV === 'production';
-var analyzeBundle = process.env.NODE_ENV === 'Analyze';
+var analyzeBundle = process.env.ASTRO_ANALYZE === 'true';
 
 var config = {
     entry: entry,
@@ -18,7 +20,8 @@ var config = {
     resolve: {
         alias: {
             astro: path.resolve(rootDir, 'node_modules/astro-sdk/js/src/'),
-            vendor: path.resolve(rootDir, 'node_modules/astro-sdk/js/vendor/')
+            vendor: path.resolve(rootDir, 'node_modules/astro-sdk/js/vendor/'),
+            bluebird: path.resolve(rootDir, 'node_modules/astro-sdk/node_modules/bluebird')
         }
     },
     plugins: [
@@ -28,7 +31,8 @@ var config = {
         new webpack.LoaderOptionsPlugin({
             options: {
                 eslint: {
-                    configFile: path.resolve(rootDir, '.eslintrc.yml')
+                    configFile: path.resolve(__dirname, '.eslintrc.yml'),
+                    formatter: require('eslint/lib/formatters/unix')
                 }
             }
         })
@@ -39,6 +43,13 @@ var config = {
             enforce: 'pre',
             use: ['eslint-loader'],
             exclude: /node_modules/
+        }, {
+            test: /\.js$/,
+            use: ['babel-loader'],
+            include: [
+                path.resolve(rootDir, 'node_modules/astro-sdk/js'),
+                path.resolve(rootDir, 'app')
+            ]
         }]
     }
 };
@@ -48,7 +59,11 @@ if (isProd) {
         new webpack.optimize.UglifyJsPlugin(),
         new webpack.optimize.OccurrenceOrderPlugin()
     ]);
-} else if (analyzeBundle) {
+} else {
+    config.devtool = 'inline-source-maps';
+}
+
+if (analyzeBundle) {
     config.plugins = config.plugins.concat([
         new BundleAnalyzerPlugin({
             analyzerMode: 'static',

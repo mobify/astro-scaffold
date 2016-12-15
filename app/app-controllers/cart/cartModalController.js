@@ -5,7 +5,7 @@ import AppEvents from '../../global/app-events';
 import AppRpc from '../../global/app-rpc';
 import CartController from './cartController';
 
-var CartModalController = function(modalView, cartController) {
+const CartModalController = function(modalView, cartController) {
     this.isShowing = false;
     this.viewPlugin = modalView;
     this.cartController = cartController;
@@ -20,54 +20,56 @@ var CartModalController = function(modalView, cartController) {
     };
 };
 
-CartModalController.init = function(errorControllerPromise) {
-    return Promise.join(
+CartModalController.init = async function(errorController) {
+    const [
+        cartController,
+        modalView
+    ] = await Promise.all([
         CartController.init(),
-        ModalViewPlugin.init(),
-        errorControllerPromise,
-    function(cartController, modalView, errorController) {
-        modalView.setContentView(cartController.viewPlugin);
+        ModalViewPlugin.init()
+    ]);
 
-        var cartModalController = new CartModalController(modalView, cartController);
-        cartController.registerCloseEventHandler(function() {
-            cartModalController.hide();
-        });
+    modalView.setContentView(cartController.viewPlugin);
 
-        // Register RPC methods
-        Astro.registerRpcMethod(AppRpc.names.cartShow, [], function(res) {
-            cartModalController.show();
-        });
-        Astro.registerRpcMethod(AppRpc.names.cartHide, [], function(res) {
-            cartModalController.hide();
-        });
-
-        var backHandler = function() {
-            cartModalController.hide();
-        };
-
-        var retryHandler = function(params) {
-            if (!params.url) {
-                return;
-            }
-            cartController.navigate(params.url);
-        };
-
-        // Modals will always be able to go back. At it's root, the modal
-        // will dismiss.
-        var canGoBack = function() {
-            return Promise.resolve(true);
-        };
-
-        errorController.bindToNavigator({
-            navigator: cartController.webView,
-            backHandler: backHandler,
-            retryHandler: retryHandler,
-            isActiveItem: cartModalController.isActiveItem.bind(cartModalController),
-            canGoBack: canGoBack
-        });
-
-        return cartModalController;
+    const cartModalController = new CartModalController(modalView, cartController);
+    cartController.registerCloseEventHandler(() => {
+        cartModalController.hide();
     });
+
+    // Register RPC methods
+    Astro.registerRpcMethod(AppRpc.names.cartShow, [], () => {
+        cartModalController.show();
+    });
+    Astro.registerRpcMethod(AppRpc.names.cartHide, [], () => {
+        cartModalController.hide();
+    });
+
+    const backHandler = function() {
+        cartModalController.hide();
+    };
+
+    const retryHandler = function(params) {
+        if (!params.url) {
+            return;
+        }
+        cartController.navigate(params.url);
+    };
+
+    // Modals will always be able to go back. At it's root, the modal
+    // will dismiss.
+    const canGoBack = function() {
+        return Promise.resolve(true);
+    };
+
+    errorController.bindToNavigator({
+        navigator: cartController.webView,
+        backHandler,
+        retryHandler,
+        isActiveItem: cartModalController.isActiveItem.bind(cartModalController),
+        canGoBack
+    });
+
+    return cartModalController;
 };
 
 CartModalController.prototype.show = function() {
@@ -98,4 +100,4 @@ CartModalController.prototype.isActiveItem = function() {
     return this.isShowing;
 };
 
-module.exports = CartModalController;
+export default CartModalController;

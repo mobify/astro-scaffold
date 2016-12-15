@@ -1,6 +1,6 @@
 import Application from 'astro/application';
 
-var DeepLinkingServices = function(menuController) {
+const DeepLinkingServices = function(menuController) {
     this.menuController = menuController;
 
     this._bindStartUp();
@@ -8,23 +8,21 @@ var DeepLinkingServices = function(menuController) {
 };
 
 DeepLinkingServices.prototype._bindStartUp = function() {
-    var self = this;
-    Application.getStartUri().then(function(uri) {
+    Application.getStartUri().then((uri) => {
         if (uri !== null) {
-            self.menuController.navigateActiveItem(uri);
+            this.menuController.navigateActiveItem(uri);
         }
     });
 };
 
 DeepLinkingServices.prototype._bindRunning = function() {
-    var self = this;
     // Listen for deep link events once app is running
-    Application.on('receivedDeepLink', function(params) {
-        var uri = params.uri;
+    Application.on('receivedDeepLink', (params) => {
+        const uri = params.uri;
         if (uri !== null) {
-            self.menuController.navigateActiveItem(uri);
+            this.menuController.navigateActiveItem(uri);
         }
     });
 };
 
-module.exports = DeepLinkingServices;
+export default DeepLinkingServices;

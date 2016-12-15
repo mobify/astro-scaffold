@@ -1,10 +1,9 @@
 import Promise from 'bluebird';
-import AnchoredLayoutPlugin from 'astro/plugins/anchoredLayoutPlugin';
 import SegmentedPlugin from 'astro/plugins/segmentedPlugin';
 import BaseConfig from '../app-config/baseConfig';
 import SegmentsConfig from '../app-config/segmentsConfig';
 
-var SegmentedController = function(layout, navigationView, urlMap) {
+const SegmentedController = function(layout, navigationView, urlMap) {
     this.parentLayout = layout;
     this.navigationView = navigationView;
     this.urlMap = urlMap;
@@ -12,54 +11,45 @@ var SegmentedController = function(layout, navigationView, urlMap) {
     this._registerEvents();
 };
 
-SegmentedController.init = function(layoutPromise, navigationViewPromise) {
-    var urlMap = {};
-    return Promise.join(
-        layoutPromise,
-        navigationViewPromise,
-        function(layout, navigationView) {
-            return Promise.all(
-                SegmentsConfig.map(function(page, _) {
-                    return SegmentedPlugin.init().then(function(segmentedControl) {
-                        segmentedControl.setColor(BaseConfig.colors.primaryColor);
-                        segmentedControl.setItems(page.items);
-                        segmentedControl.on('itemSelect', function(params) {
-                            navigationView.trigger('segmented:' + params.key);
-                        });
-                        layout.addTopView(segmentedControl, {
-                            animated: false,
-                            visible: false
-                        });
-                        urlMap[page.url] = segmentedControl;
-                    });
-                })
-            ).then(function() {
-                return new SegmentedController(layout, navigationView, urlMap);
+SegmentedController.init = async function(layout, navigationView) {
+    const urlMap = {};
+
+    const segmentConfigPromises = SegmentsConfig.map((page) => {
+        return SegmentedPlugin.init().then((segmentedControl) => {
+            segmentedControl.setColor(BaseConfig.colors.primaryColor);
+            segmentedControl.setItems(page.items);
+            // eslint-disable-next-line
+            segmentedControl.on('itemSelect', (params) => navigationView.trigger(`segmented:${params.key}`));
+            layout.addTopView(segmentedControl, {
+                animated: false,
+                visible: false
             });
-        }
-    );
+            urlMap[page.url] = segmentedControl;
+        });
+    });
+
+    await Promise.all(segmentConfigPromises);
+    return new SegmentedController(layout, navigationView, urlMap);
 };
 
 SegmentedController.prototype.showSegmentsForUrl = function(url) {
-    var self = this;
-    if (self.currentSegments) {
-        self.parentLayout.hideView(this.currentSegments);
+    if (this.currentSegments) {
+        this.parentLayout.hideView(this.currentSegments);
     }
-    var urlObject = new URL(url);
-    var segments = self._getSegmentsByUrl(url);
+    const segments = this._getSegmentsByUrl(url);
     if (segments) {
-        self.parentLayout.showView(segments, {animated: false});
-        self.currentSegments = segments;
+        this.parentLayout.showView(segments, {animated: false});
+        this.currentSegments = segments;
         // Must re-trigger the currently selected segment for
         // client-side js to run again
-        self.currentSegments.getSelectedItem().then(function(key) {
-            self.navigationView.trigger('segmented:' + key);
+        this.currentSegments.getSelectedItem().then((key) => {
+            this.navigationView.trigger(`segmented:${key}`);
         });
     }
 };
 
 SegmentedController.prototype._getSegmentsByUrl = function(url) {
-    var urlObject = new URL(url);
+    const urlObject = new URL(url);
     if (urlObject.pathname in this.urlMap) {
         return this.urlMap[urlObject.pathname];
     } else if (urlObject.pathname.slice(0, -1) in this.urlMap) {
@@ -70,13 +60,8 @@ SegmentedController.prototype._getSegmentsByUrl = function(url) {
 };
 
 SegmentedController.prototype._registerEvents = function() {
-    var self = this;
-    this.navigationView.on('back', function(params) {
-        self.showSegmentsForUrl(params.url);
-    });
-    this.navigationView.on('segmented:reload', function(params) {
-        self.showSegmentsForUrl(params.url);
-    });
+    this.navigationView.on('back', (params) => this.showSegmentsForUrl(params.url));
+    this.navigationView.on('segmented:reload', (params) => this.showSegmentsForUrl(params.url));
 };
 
-module.exports = SegmentedController;
+export default SegmentedController;

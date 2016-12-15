@@ -4,55 +4,55 @@ import ImageViewPlugin from 'astro/plugins/imageViewPlugin';
 import HeaderConfig from '../app-config/headerConfig';
 import DoubleIconsController from './doubleIconsController';
 
-var NavigationHeaderController = function(headerBar, doubleIconsController) {
+const NavigationHeaderController = function(headerBar, doubleIconsController) {
     this.viewPlugin = headerBar;
     this.doubleIconsController = doubleIconsController;
 };
 
-var _createDrawerHeaderContent = function() {
+const _createDrawerHeaderContent = function() {
     return HeaderConfig.drawerHeaderContent;
 };
 
-NavigationHeaderController.init = function(counterBadgeController) {
-    var generateSearchIcon = function() {
-        return ImageViewPlugin.init().then(function(searchIcon) {
-            searchIcon.setImagePath(HeaderConfig.searchHeaderContent.imageUrl);
-            return searchIcon;
-        });
+NavigationHeaderController.init = async function(counterBadgeController) {
+    const generateSearchIcon = async function() {
+        const searchIcon = await ImageViewPlugin.init();
+        searchIcon.setImagePath(HeaderConfig.searchHeaderContent.imageUrl);
+        return searchIcon;
     };
+    const generateCartIcon = counterBadgeController.generatePlugin.bind(counterBadgeController);
 
-    var generateCartIcon =
-        counterBadgeController.generatePlugin.bind(counterBadgeController);
-
-    return Promise.join(
+    const [
+        headerBar,
+        doubleIconsController
+    ] = await Promise.all([
         HeaderBarPlugin.init(),
         DoubleIconsController.init(
             HeaderConfig.searchCartHeaderContent.id,
             generateSearchIcon,
-            generateCartIcon),
-    function(headerBar, doubleIconsController) {
-        headerBar.hideBackButtonText();
-        headerBar.setTextColor(HeaderConfig.colors.textColor);
-        headerBar.setBackgroundColor(HeaderConfig.colors.backgroundColor);
+            generateCartIcon
+        )
+    ]);
 
-        return new NavigationHeaderController(headerBar, doubleIconsController);
-    });
+    headerBar.hideBackButtonText();
+    headerBar.setTextColor(HeaderConfig.colors.textColor);
+    headerBar.setBackgroundColor(HeaderConfig.colors.backgroundColor);
+
+    return new NavigationHeaderController(headerBar, doubleIconsController);
 };
 
-NavigationHeaderController.prototype.generateContent = function(includeDrawer) {
-    return this.doubleIconsController.generateContent().then(function(doubleIconsHeaderContent) {
-        var headerContent = {
-            header: {
-                rightIcon: doubleIconsHeaderContent
-            }
-        };
-
-        if (includeDrawer !== undefined && includeDrawer) {
-            headerContent.header.leftIcon = _createDrawerHeaderContent();
+NavigationHeaderController.prototype.generateContent = async function(includeDrawer) {
+    const doubleIconsHeaderContent = await this.doubleIconsController.generateContent();
+    const headerContent = {
+        header: {
+            rightIcon: doubleIconsHeaderContent
         }
+    };
 
-        return headerContent;
-    });
+    if (includeDrawer !== undefined && includeDrawer) {
+        headerContent.header.leftIcon = _createDrawerHeaderContent();
+    }
+
+    return headerContent;
 };
 
 NavigationHeaderController.prototype.registerBackEvents = function(callback) {
@@ -68,7 +68,7 @@ NavigationHeaderController.prototype.registerDrawerEvents = function(callback) {
         return;
     }
 
-    this.viewPlugin.on('click:' + HeaderConfig.drawerHeaderContent.id, callback);
+    this.viewPlugin.on(`click:${HeaderConfig.drawerHeaderContent.id}`, callback);
 };
 
 NavigationHeaderController.prototype.registerSearchBarEvents = function(callback) {
@@ -88,8 +88,8 @@ NavigationHeaderController.prototype.registerCartEvents = function(callback) {
 };
 
 NavigationHeaderController.prototype.setTitle = function() {
-    var titleHeaderContent = HeaderConfig.titleHeaderContent;
+    const titleHeaderContent = HeaderConfig.titleHeaderContent;
     return this.viewPlugin.setCenterTitle(titleHeaderContent.title, titleHeaderContent.id);
 };
 
-module.exports = NavigationHeaderController;
+export default NavigationHeaderController;

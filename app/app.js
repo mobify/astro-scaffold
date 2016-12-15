@@ -1,4 +1,4 @@
-/*global AstroNative*/
+/* global AstroNative */
 window.AstroMessages = []; // For debugging messages
 
 // Astro
@@ -8,9 +8,6 @@ import AnchoredLayoutPlugin from 'astro/plugins/anchoredLayoutPlugin';
 import MobifyPreviewPlugin from 'astro/plugins/mobifyPreviewPlugin';
 import CounterBadgeController from 'astro/controllers/counterBadgeController';
 import PreviewController from 'astro/controllers/previewController';
-
-// Npm
-import Promise from 'bluebird';
 
 // Local
 import AppRpc from './global/app-rpc';
@@ -23,145 +20,117 @@ import CartModalController from './app-controllers/cart/cartModalController';
 import ErrorController from './app-controllers/error-screen/errorController';
 import WelcomeModalController from './app-controllers/welcome-screen/welcomeModalController';
 
-window.run = function() {
-    var deepLinkingServices = null;
-    var errorControllerPromise = ErrorController.init();
-    var cartModalControllerPromise = CartModalController.init(errorControllerPromise);
-    var cartEventHandlerPromise = cartModalControllerPromise.then(
-        function(cartModalController) {
-            return function() {
-                cartModalController.show();
-            };
-        });
+window.run = async function() {
+    // eslint-disable-next-line
+    let deepLinkingServices = null;
 
-    var counterBadgeControllerPromise = CounterBadgeController.init(
+    const errorController = await ErrorController.init();
+    const cartModalController = await CartModalController.init(errorController);
+    const cartEventHandler = () => cartModalController.show();
+
+    const counterBadgeController = await CounterBadgeController.init(
         HeaderConfig.cartHeaderContent.imageUrl,
         HeaderConfig.cartHeaderContent.id
-    ).then(function(counterBadgeController) {
-        counterBadgeController.updateCounterValue(3);
-        return counterBadgeController;
-    });
+    );
+    counterBadgeController.updateCounterValue(3);
 
     // Android hardware back
-    var setupHardwareBackButton = function(alternativeBackFunction) {
-        Application.on('backButtonPressed', function() {
-            Promise.join(
-                cartModalControllerPromise,
-                errorControllerPromise,
-            function(cartModalController, errorController) {
-                if (cartModalController.isShowing) {
-                    cartModalController.hide();
-                } else if (errorController.isShowing) {
-                    errorController.handleHardwareBackButtonPress();
-                } else {
-                    alternativeBackFunction();
-                }
-            });
+    const setupHardwareBackButton = async (alternativeBackFunction) => {
+        Application.on('backButtonPressed', () => {
+            if (cartModalController.isShowing) {
+                cartModalController.hide();
+            } else if (errorController.isShowing) {
+                errorController.handleHardwareBackButtonPress();
+            } else {
+                alternativeBackFunction();
+            }
         });
     };
 
-    var createTabBarLayout = function() {
-        var layoutPromise = AnchoredLayoutPlugin.init();
-        var tabBarControllerPromise = TabBarController.init(
-                layoutPromise,
-                cartEventHandlerPromise,
-                counterBadgeControllerPromise,
-                errorControllerPromise
-            );
+    const createTabBarLayout = async () => {
+        const layout = await AnchoredLayoutPlugin.init();
+        const tabBarController = await TabBarController.init(
+            layout,
+            cartEventHandler,
+            counterBadgeController,
+            errorController
+        );
 
-        var layoutSetupPromise = Promise.join(
-            layoutPromise,
-            tabBarControllerPromise,
-        function(layout, tabBarController) {
-            layout.addBottomView(tabBarController.tabBar);
-
-            return Application.setMainViewPlugin(layout);
-        });
+        layout.addBottomView(tabBarController.tabBar);
+        await Application.setMainViewPlugin(layout);
 
         // Tab layout must be added as the mainViewPlugin before
         // The first tab is selected or else the navigation does
         // not complete correctly
         // Note: The first tab will be pre-selected by tabBarPlugin by default
-        return Promise.join(
-            tabBarControllerPromise,
-            layoutSetupPromise,
-        function(tabBarController) {
-            setupHardwareBackButton(tabBarController.backActiveItem.bind(tabBarController));
-            return tabBarController;
-        });
+        setupHardwareBackButton(tabBarController.backActiveItem.bind(tabBarController));
+        return tabBarController;
     };
 
-    var createDrawerLayout = function() {
-        return DrawerController.init(
-            counterBadgeControllerPromise,
-            cartEventHandlerPromise,
-            errorControllerPromise
-        ).then(function(drawerController) {
-            Application.setMainViewPlugin(drawerController.drawer);
-            setupHardwareBackButton(drawerController.backActiveItem.bind(drawerController));
+    const createDrawerLayout = async () => {
+        const drawerController = await DrawerController.init(
+            counterBadgeController,
+            cartEventHandler,
+            errorController
+        );
 
-            Astro.registerRpcMethod(AppRpc.names.navigateToNewRootView, ['url', 'title'], function(res, url, title) {
-                drawerController.navigateToNewRootView(url, title);
-                res.send(null, 'success');
-            });
-            return drawerController;
+        Application.setMainViewPlugin(drawerController.drawer);
+        setupHardwareBackButton(drawerController.backActiveItem.bind(drawerController));
+
+        Astro.registerRpcMethod(AppRpc.names.navigateToNewRootView, ['url', 'title'], (res, url, title) => {
+            drawerController.navigateToNewRootView(url, title);
+            res.send(null, 'success');
         });
+
+        return drawerController;
     };
 
-    var createLayout = function() {
+    const createLayout = () => {
         return BaseConfig.useTabLayout
             ? createTabBarLayout()
             : createDrawerLayout();
     };
 
-    var initMainLayout = function() {
-        return createLayout().then(function(layoutController) {
-            Application.dismissLaunchImage();
+    const initMainLayout = async () => {
+        const layoutController = await createLayout();
+        Application.dismissLaunchImage();
 
-            // Deep linking services will enable deep linking on startup
-            // and while running it will open the deep link in the current
-            // active tab
-            deepLinkingServices = new DeepLinkingServices(layoutController);
+        // Deep linking services will enable deep linking on startup
+        // and while running it will open the deep link in the current
+        // active tab
+        // eslint-disable-no-unused-vars
+        deepLinkingServices = new DeepLinkingServices(layoutController);
+    };
+
+    const runApp = async () => {
+        const welcomeModalController = await WelcomeModalController.init(errorController);
+
+        // The welcome modal can be configured to show only once
+        // (on first launch) by setting `{forced: false}` as the
+        // parameter for welcomeModalController.show()
+        welcomeModalController.show({forced: true});
+        initMainLayout();
+    };
+
+    const runAppPreview = async () => {
+        const previewPlugin = await MobifyPreviewPlugin.init();
+        await previewPlugin.preview(BaseConfig.baseURL, BaseConfig.previewBundle);
+        runApp();
+    };
+
+    const initalizeAppWithAstroPreview = async () => {
+        const previewController = await PreviewController.init();
+
+        Application.on('previewToggled', () => {
+            previewController.presentPreviewAlert();
         });
-    };
 
-    var runApp = function(previewedUrl) {
-        // TODO: [HYB-884] As a Scaffold developer,
-        // I would like for the baseURL to be set to the previewed URL
-
-        WelcomeModalController.init(errorControllerPromise)
-            .then(function(welcomeModalController) {
-                // The welcome modal can be configured to show only once
-                // (on first launch) by setting `{forced: false}` as the
-                // parameter for welcomeModalController.show()
-                welcomeModalController.show({forced: true});
-                initMainLayout();
-            });
-    };
-
-    var runAppPreview = function() {
-        MobifyPreviewPlugin.init()
-            .then(function(previewPlugin) {
-                previewPlugin
-                    .preview(BaseConfig.baseURL, BaseConfig.previewBundle)
-                    .then(runApp);
-            });
-    };
-
-    var initalizeAppWithAstroPreview = function() {
-        PreviewController.init().then(function(previewController) {
-            Application.on('previewToggled', function() {
-                previewController.presentPreviewAlert();
-            });
-
-            return previewController.isPreviewEnabled();
-        }).then(function(previewEnabled) {
-            if (previewEnabled) {
-                runAppPreview();
-            } else {
-                runApp();
-            }
-        });
+        const previewEnabled = await previewController.isPreviewEnabled();
+        if (previewEnabled) {
+            runAppPreview();
+        } else {
+            runApp();
+        }
     };
 
     if (AstroNative.Configuration.ASTRO_PREVIEW) {
@@ -170,5 +139,6 @@ window.run = function() {
         runApp();
     }
 };
+
 // Comment out next line for JS debugging
 window.run();

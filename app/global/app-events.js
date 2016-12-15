@@ -1,7 +1,7 @@
 import Astro from 'astro/astro-full';
 import BackboneEvents from 'vendor/backbone-events';
 
-var AppEvents = Astro.Utils.extend({}, BackboneEvents);
+const AppEvents = Astro.Utils.extend({}, BackboneEvents);
 
 // Dictionary of events raised by the application
 AppEvents.names = {
@@ -18,4 +18,4 @@ AppEvents.names = {
     welcomeHidden: 'welcome:hidden'
 };
 
-module.exports = AppEvents;
+export default AppEvents;

@@ -4,63 +4,63 @@
 // ** Note: All leaf node items require an `href` key. The key value
 //          combined with the `baseURL` found in `baseConfig.js` will
 //          result in the complete URL used to navigate to the item.
-var menuItems = [
+const menuItems = [
     {
-        'title': 'Home',
-        'href': '/'
+        title: 'Home',
+        href: '/'
     },
     {
-        'title': 'Products',
-        'subItems': [
+        title: 'Products',
+        subItems: [
             {
-                'title': 'Bikes',
-                'subItems': [
+                title: 'Bikes',
+                subItems: [
                     {
-                        'title': 'Road Bike',
-                        'href':  '/bikes/road-bike'
+                        title: 'Road Bike',
+                        href: '/bikes/road-bike'
                     },
                     {
-                        'title': 'City Bike',
-                        'href': '/bikes/city-bike'
+                        title: 'City Bike',
+                        href: '/bikes/city-bike'
                     },
                     {
-                        'title': 'Commuter',
-                        'href': '/bikes/commuter'
+                        title: 'Commuter',
+                        href: '/bikes/commuter'
                     },
                     {
-                        'title': 'Fixie',
-                        'href': '/bikes/fixie'
+                        title: 'Fixie',
+                        href: '/bikes/fixie'
                     },
                     {
-                        'title': 'Hybrid',
-                        'href': '/bikes/hybrid'
+                        title: 'Hybrid',
+                        href: '/bikes/hybrid'
                     },
                     {
-                        'title': 'Mountain',
-                        'href': '/bikes/mountain'
+                        title: 'Mountain',
+                        href: '/bikes/mountain'
                     },
                 ]
             },
             {
-                'title': 'Accessories',
-                'href': '/accessories'
+                title: 'Accessories',
+                href: '/accessories'
             }
         ]
     },
     {
-        'title': 'Services',
-        'href': '/services'
+        title: 'Services',
+        href: '/services'
     },
     {
-        'title': 'Sales',
-        'href': '/sales'
+        title: 'Sales',
+        href: '/sales'
     },
     {
-        'title': 'About',
-        'href': '/about'
+        title: 'About',
+        href: '/about'
     },
 ];
 
-module.exports = {
-    menuItems: menuItems
+export default {
+    menuItems
 };
