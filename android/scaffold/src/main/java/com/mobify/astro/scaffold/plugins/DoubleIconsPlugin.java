@@ -5,12 +5,15 @@ import com.mobify.astro.AstroPlugin;
 import com.mobify.astro.PluginResolver;
 
 import android.content.Context;
+import android.support.annotation.NonNull;
 import android.util.TypedValue;
 import android.view.Gravity;
 import android.view.View;
 import android.widget.FrameLayout;
 import android.widget.LinearLayout;
 
+import com.mobify.astro.messaging.EventRegistrar;
+import com.mobify.astro.messaging.MessageSender;
 import com.mobify.astro.messaging.annotations.RpcMethod;
 import com.mobify.astro.plugins.headerbarplugin.HeaderContentItem;
 import com.mobify.astro.scaffold.R;
@@ -64,8 +67,9 @@ public class DoubleIconsPlugin extends AstroPlugin {
         }
     }
 
-    public DoubleIconsPlugin(AstroActivity activity, PluginResolver pluginResolver) {
-        super(activity, pluginResolver);
+    public DoubleIconsPlugin(@NonNull AstroActivity activity, @NonNull PluginResolver pluginResolver,
+                             @NonNull EventRegistrar eventRegistrar, @NonNull MessageSender messageSender) {
+        super(activity, pluginResolver, eventRegistrar, messageSender);
 
         final int minItemSize = activity.getResources().getDimensionPixelSize(R.dimen.header_bar_item_min_size);
 
