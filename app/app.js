@@ -47,7 +47,7 @@ window.run = async function() {
         });
     };
 
-    const createTabBarLayout = async () => {
+    const createLayout = async () => {
         const layout = await AnchoredLayoutPlugin.init();
         const tabBarController = await TabBarController.init(
             layout,
@@ -67,31 +67,14 @@ window.run = async function() {
         return tabBarController;
     };
 
-    const createDrawerLayout = async () => {
-        const drawerController = await DrawerController.init(
-            counterBadgeController,
-            cartEventHandler,
-            errorController
-        );
+    const runApp = async () => {
+        const welcomeModalController = await WelcomeModalController.init(errorController);
 
-        Application.setMainViewPlugin(drawerController.drawer);
-        setupHardwareBackButton(drawerController.backActiveItem.bind(drawerController));
+        // The welcome modal can be configured to show only once
+        // (on first launch) by setting `{forced: false}` as the
+        // parameter for welcomeModalController.show()
+        welcomeModalController.show({forced: true});
 
-        Astro.registerRpcMethod(AppRpc.names.navigateToNewRootView, ['url', 'title'], (res, url, title) => {
-            drawerController.navigateToNewRootView(url, title);
-            res.send(null, 'success');
-        });
-
-        return drawerController;
-    };
-
-    const createLayout = () => {
-        return BaseConfig.useTabLayout
-            ? createTabBarLayout()
-            : createDrawerLayout();
-    };
-
-    const initMainLayout = async () => {
         const layoutController = await createLayout();
         Application.dismissLaunchImage();
 
@@ -100,16 +83,6 @@ window.run = async function() {
         // active tab
         // eslint-disable-no-unused-vars
         deepLinkingServices = new DeepLinkingServices(layoutController);
-    };
-
-    const runApp = async () => {
-        const welcomeModalController = await WelcomeModalController.init(errorController);
-
-        // The welcome modal can be configured to show only once
-        // (on first launch) by setting `{forced: false}` as the
-        // parameter for welcomeModalController.show()
-        welcomeModalController.show({forced: true});
-        initMainLayout();
     };
 
     const runAppPreview = async () => {
