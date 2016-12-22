@@ -9,6 +9,7 @@
       ["transform-runtime", {
         "polyfill": true,
         "regenerator": true
-      }]
+      }],
+      "transform-es2015-block-scoping"
     ]
 }
