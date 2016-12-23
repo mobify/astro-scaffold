@@ -43,6 +43,13 @@
       <sourceFolder url="file://$MODULE_DIR$/src/previewDisabledDebug/jni" isTestSource="false" />
       <sourceFolder url="file://$MODULE_DIR$/src/previewDisabledDebug/rs" isTestSource="false" />
       <sourceFolder url="file://$MODULE_DIR$/src/previewDisabledDebug/shaders" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/build/generated/source/r/androidTest/previewDisabled/debug" isTestSource="true" generated="true" />
+      <sourceFolder url="file://$MODULE_DIR$/build/generated/source/aidl/androidTest/previewDisabled/debug" isTestSource="true" generated="true" />
+      <sourceFolder url="file://$MODULE_DIR$/build/generated/source/buildConfig/androidTest/previewDisabled/debug" isTestSource="true" generated="true" />
+      <sourceFolder url="file://$MODULE_DIR$/build/generated/source/rs/androidTest/previewDisabled/debug" isTestSource="true" generated="true" />
+      <sourceFolder url="file://$MODULE_DIR$/build/generated/source/apt/androidTest/previewDisabled/debug" isTestSource="true" generated="true" />
+      <sourceFolder url="file://$MODULE_DIR$/build/generated/res/rs/androidTest/previewDisabled/debug" type="java-test-resource" />
+      <sourceFolder url="file://$MODULE_DIR$/build/generated/res/resValues/androidTest/previewDisabled/debug" type="java-test-resource" />
       <sourceFolder url="file://$MODULE_DIR$/src/testPreviewDisabledDebug/res" type="java-test-resource" />
       <sourceFolder url="file://$MODULE_DIR$/src/testPreviewDisabledDebug/resources" type="java-test-resource" />
       <sourceFolder url="file://$MODULE_DIR$/src/testPreviewDisabledDebug/assets" type="java-test-resource" />
@@ -51,13 +58,6 @@
       <sourceFolder url="file://$MODULE_DIR$/src/testPreviewDisabledDebug/jni" isTestSource="true" />
       <sourceFolder url="file://$MODULE_DIR$/src/testPreviewDisabledDebug/rs" isTestSource="true" />
       <sourceFolder url="file://$MODULE_DIR$/src/testPreviewDisabledDebug/shaders" isTestSource="true" />
-      <sourceFolder url="file://$MODULE_DIR$/build/generated/source/r/androidTest/previewDisabled/debug" isTestSource="true" generated="true" />
-      <sourceFolder url="file://$MODULE_DIR$/build/generated/source/aidl/androidTest/previewDisabled/debug" isTestSource="true" generated="true" />
-      <sourceFolder url="file://$MODULE_DIR$/build/generated/source/buildConfig/androidTest/previewDisabled/debug" isTestSource="true" generated="true" />
-      <sourceFolder url="file://$MODULE_DIR$/build/generated/source/rs/androidTest/previewDisabled/debug" isTestSource="true" generated="true" />
-      <sourceFolder url="file://$MODULE_DIR$/build/generated/source/apt/androidTest/previewDisabled/debug" isTestSource="true" generated="true" />
-      <sourceFolder url="file://$MODULE_DIR$/build/generated/res/rs/androidTest/previewDisabled/debug" type="java-test-resource" />
-      <sourceFolder url="file://$MODULE_DIR$/build/generated/res/resValues/androidTest/previewDisabled/debug" type="java-test-resource" />
       <sourceFolder url="file://$MODULE_DIR$/src/previewDisabled/res" type="java-resource" />
       <sourceFolder url="file://$MODULE_DIR$/src/previewDisabled/resources" type="java-resource" />
       <sourceFolder url="file://$MODULE_DIR$/src/previewDisabled/assets" type="java-resource" />
