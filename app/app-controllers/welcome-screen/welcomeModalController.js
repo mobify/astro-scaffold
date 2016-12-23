@@ -2,27 +2,24 @@ import Promise from 'bluebird';
 import Astro from 'astro/astro-full';
 import Application from 'astro/application';
 import ModalViewPlugin from 'astro/plugins/modalViewPlugin';
-import SecureStorePlugin from 'astro/plugins/secureStorePlugin';
+import SettingsStore from 'astro/settings-store';
 import AppEvents from '../../global/app-events';
 import AppRpc from '../../global/app-rpc';
 import WelcomeController from './welcomeController';
 
-const WelcomeModalController = function(modalView, welcomeController, secureStore) {
+const WelcomeModalController = function(modalView, welcomeController) {
     this.isShowing = false;
     this.modalView = modalView;
-    this._secureStore = secureStore;
     this.welcomeController = welcomeController;
 };
 
 WelcomeModalController.init = async function(errorController) {
     const [
         modalView,
-        welcomeController,
-        secureStore
+        welcomeController
     ] = await Promise.all([
         ModalViewPlugin.init(),
-        WelcomeController.init(),
-        SecureStorePlugin.init()
+        WelcomeController.init()
     ]);
 
     modalView.setContentView(welcomeController.viewPlugin);
@@ -30,7 +27,7 @@ WelcomeModalController.init = async function(errorController) {
     // This registers a close handler on the header bar to dismiss
     // the modal. Without a header bar, the developer is responsible
     // for implementing a way to dismiss the modal.
-    const welcomeModalController = new WelcomeModalController(modalView, welcomeController, secureStore);
+    const welcomeModalController = new WelcomeModalController(modalView, welcomeController);
     welcomeController.registerCloseEventHandler(() => {
         welcomeModalController.hide();
     });
@@ -94,7 +91,7 @@ WelcomeModalController.prototype.show = async function(params) {
         previousInstallationID
     ] = await Promise.all([
         Application.getAppInformation(),
-        self._secureStore.get('installationID')
+        SettingsStore.get('installationID')
     ]);
 
     // Welcome modal should be triggered when installationID changes
@@ -106,7 +103,7 @@ WelcomeModalController.prototype.show = async function(params) {
 
         // Promise will be resolved when welcome modal is dismissed
         AppEvents.on(AppEvents.names.welcomeHidden, () => {
-            self._secureStore.set('installationID', appInfo.installationID);
+            SettingsStore.set('installationID', appInfo.installationID);
             return;
         });
         AppEvents.trigger(AppEvents.names.welcomeShown);
