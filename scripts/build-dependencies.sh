@@ -52,14 +52,14 @@ cp $MYPATH/node_modules/navitron/dist/navitron*.js $MYPATH/app-www/js/build
 cp $MYPATH/node_modules/jquery/dist/jquery.min.js $MYPATH/app-www/js/build
 cp $MYPATH/node_modules/bluebird/js/browser/bluebird*.js $MYPATH/app-www/js/build
 
-pushd $MYPATH/node_modules/astro-sdk
-    echo "Installing dependencies for astro-sdk"
+pushd $MYPATH/node_modules/mobify-progressive-app-sdk
+    echo "Installing dependencies for mobify-progressive-app-sdk"
     npm install --no-progress --no-spin $EXTRA_NPM_ARGS
     echo "Building astro-client.js"
     npm run build:astro_client
 popd
 
 echo "Copying astro-client.js into app bundle"
-cp $MYPATH/node_modules/astro-sdk/js/build/astro-client.js $MYPATH/app-www/js/build
+cp $MYPATH/node_modules/mobify-progressive-app-sdk/js/build/astro-client.js $MYPATH/app-www/js/build
 
 echo "SUCCESS: build dependencies"
