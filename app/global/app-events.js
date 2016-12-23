@@ -1,26 +1,21 @@
-define([
-    'astro-full',
-    'vendor/backbone-events'
-], function(
-    Astro,
-    BackboneEvents
-) {
-    var AppEvents = Astro.Utils.extend({}, BackboneEvents);
+import Astro from 'astro/astro-full';
+import BackboneEvents from 'vendor/backbone-events';
 
-    // Dictionary of events raised by the application
-    AppEvents.names = {
-        // raised when cart modal is displayed
-        cartShown: 'cart:shown',
+const AppEvents = Astro.Utils.extend({}, BackboneEvents);
 
-        // raised when cart modal is hidden
-        cartHidden: 'cart:hidden',
+// Dictionary of events raised by the application
+AppEvents.names = {
+    // raised when cart modal is displayed
+    cartShown: 'cart:shown',
 
-        // raised when welcome modal is displayed
-        welcomeShown: 'welcome:shown',
+    // raised when cart modal is hidden
+    cartHidden: 'cart:hidden',
 
-        // raised when welcome modal is hidden
-        welcomeHidden: 'welcome:hidden'
-    };
+    // raised when welcome modal is displayed
+    welcomeShown: 'welcome:shown',
 
-    return AppEvents;
-});
+    // raised when welcome modal is hidden
+    welcomeHidden: 'welcome:hidden'
+};
+
+export default AppEvents;

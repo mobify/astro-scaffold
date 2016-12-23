@@ -1,67 +1,55 @@
-define([
-    'bluebird',
-    'config/baseConfig',
-    'config/cartConfig',
-    'plugins/webViewPlugin',
-    'plugins/anchoredLayoutPlugin',
-    'plugins/loaders/defaultLoaderPlugin',
-    'app-controllers/cart/cartHeaderController'
-],
-/* eslint-disable */
-function(
-    Promise,
-    BaseConfig,
-    CartConfig,
-    WebViewPlugin,
-    AnchoredLayoutPlugin,
-    LoaderPlugin,
-    CartHeaderController
-) {
-/* eslint-enable */
+import Promise from 'bluebird';
+import WebViewPlugin from 'astro/plugins/webViewPlugin';
+import AnchoredLayoutPlugin from 'astro/plugins/anchoredLayoutPlugin';
+import BaseConfig from '../../app-config/baseConfig';
+import CartConfig from '../../app-config/cartConfig';
+import CartHeaderController from './cartHeaderController';
 
-    var CartController = function(headerController, layout, webView) {
-        this.viewPlugin = layout;
+const CartController = function(headerController, layout, webView) {
+    this.viewPlugin = layout;
 
-        this.webView = webView;
-        this.headerController = headerController;
-    };
+    this.webView = webView;
+    this.headerController = headerController;
+};
 
-    CartController.init = function() {
-        var webViewPromise = WebViewPlugin.init();
-        return Promise.join(
-            CartHeaderController.init(),
-            AnchoredLayoutPlugin.init(),
-            WebViewPlugin.init(),
-        function(headerController, layout, webView) {
-            var loader = webView.getLoader();
-            loader.setColor(BaseConfig.loaderColor);
-            webView.navigate(CartConfig.url);
+CartController.init = async function() {
+    const [
+        headerController,
+        layout,
+        webView
+    ] = await Promise.all([
+        CartHeaderController.init(),
+        AnchoredLayoutPlugin.init(),
+        WebViewPlugin.init()
+    ]);
 
-            layout.addTopView(headerController.viewPlugin);
-            layout.setContentView(webView);
+    const loader = webView.getLoader();
+    loader.setColor(BaseConfig.loaderColor);
+    webView.navigate(CartConfig.url);
 
-            return new CartController(headerController, layout, webView);
-        });
-    };
+    layout.addTopView(headerController.viewPlugin);
+    layout.setContentView(webView);
 
-    CartController.prototype.registerCloseEventHandler = function(callback) {
-        if (!callback) {
-            return;
-        }
-        this.headerController.registerCloseEventHandler(callback);
-    };
+    return new CartController(headerController, layout, webView);
+};
 
-    CartController.prototype.navigate = function(url) {
-        this.webView.navigate(url);
-    };
+CartController.prototype.registerCloseEventHandler = function(callback) {
+    if (!callback) {
+        return;
+    }
+    this.headerController.registerCloseEventHandler(callback);
+};
 
-    CartController.prototype.reload = function() {
-        this.webView.navigate(CartConfig.url);
-    };
+CartController.prototype.navigate = function(url) {
+    this.webView.navigate(url);
+};
 
-    CartController.prototype.back = function() {
-        return this.webView.back();
-    };
+CartController.prototype.reload = function() {
+    this.webView.navigate(CartConfig.url);
+};
 
-    return CartController;
-});
+CartController.prototype.back = function() {
+    return this.webView.back();
+};
+
+export default CartController;

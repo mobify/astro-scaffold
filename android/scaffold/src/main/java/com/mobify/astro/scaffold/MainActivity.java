@@ -13,6 +13,6 @@ public class MainActivity extends AstroActivity {
         super.onCreate(savedInstanceState);
 
         // Create the initial worker.
-        worker = new AstroWorker(this, pluginManager);
+        worker = new AstroWorker(this, pluginManager, eventManager, messageSender);
     }
 }

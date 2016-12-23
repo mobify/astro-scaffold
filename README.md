@@ -49,7 +49,7 @@ cd astro
 npm link
 ```
 
-Then navigate back to your project root directory and run: `npm link astro-sdk`
+Then navigate back to your project root directory and run: `npm link mobify-progressive-app-sdk`
 to use your locally developed version of Astro.
 
 # Switching between Debug and Release mode

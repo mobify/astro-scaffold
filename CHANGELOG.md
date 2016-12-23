@@ -1,3 +1,12 @@
+## v0.18.0
+- Point npm pacakge to new astro location: mobfiy-progressive-app-sdk
+- Welcome modal uses SettingsStore instead of SecureStore
+- ES6 and Async/Await Compatible with Babel
+- [Android] Update to Gradle 2.14, update project to Android Studio 2.2
+- [Android] Scaffold app only support handsets
+- [iOS] Enable install of preview-enabled and app store versions of generated apps
+- [Android] Update custom plugins to match new plugin constructors. Remove reference to CommonApplication as it no longer exists.
+
 ## v0.17.6
 - Add multiple build configurations to support enabling/disabling Mobify Preview
 
@@ -8,6 +17,7 @@
 - Fix up error controller and error modal text
 - [Android] setup hardware back button and fix for both tab layout and left-nav layout
 - Add previewController to enable preview by shaking
+- Update syntax to Swift 3
 
 ## v0.16.1
 - Integrate the Mobify preview plugin

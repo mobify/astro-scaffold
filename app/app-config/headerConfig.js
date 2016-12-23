@@ -1,45 +1,43 @@
-define(['config/baseConfig'], function(BaseConfig) {
-/* eslint-enable max-statements */
+import BaseConfig from './baseConfig';
 
-    var cartHeaderContent = {
-        id: 'cart_id',
-        imageUrl: 'file:///icon__cart.png'
-    };
+const cartHeaderContent = {
+    id: 'cart_id',
+    imageUrl: 'file:///icon__cart.png'
+};
 
-    var searchHeaderContent = {
-        id: 'search_id',
-        imageUrl: 'file:///icon__search.png'
-    };
+const searchHeaderContent = {
+    id: 'search_id',
+    imageUrl: 'file:///icon__search.png'
+};
 
-    var drawerHeaderContent = {
-        id: 'drawer_id',
-        imageUrl: 'file:///icon__drawer.png'
-    };
+const drawerHeaderContent = {
+    id: 'drawer_id',
+    imageUrl: 'file:///icon__drawer.png'
+};
 
-    var titleHeaderContent = {
-        id: 'header_id',
-        title: 'Velo'
-    };
+const titleHeaderContent = {
+    id: 'header_id',
+    title: 'Velo'
+};
 
-    var cartTitleHeaderContent = {
-        id: 'cartTitle_id',
-        title: 'Cart'
-    };
+const cartTitleHeaderContent = {
+    id: 'cartTitle_id',
+    title: 'Cart'
+};
 
-    var searchCartHeaderContent = {id: 'header__search_cart'};
+const searchCartHeaderContent = {id: 'header__search_cart'};
 
-    var colors = {
-        textColor: BaseConfig.colors.whiteColor,
-        backgroundColor: BaseConfig.colors.primaryColor
-    };
+const colors = {
+    textColor: BaseConfig.colors.whiteColor,
+    backgroundColor: BaseConfig.colors.primaryColor
+};
 
-    return {
-        cartHeaderContent: cartHeaderContent,
-        searchHeaderContent: searchHeaderContent,
-        drawerHeaderContent: drawerHeaderContent,
-        titleHeaderContent: titleHeaderContent,
-        cartTitleHeaderContent: cartTitleHeaderContent,
-        searchCartHeaderContent: searchCartHeaderContent,
-        colors: colors
-    };
-});
+export default {
+    cartHeaderContent,
+    searchHeaderContent,
+    drawerHeaderContent,
+    titleHeaderContent,
+    cartTitleHeaderContent,
+    searchCartHeaderContent,
+    colors
+};

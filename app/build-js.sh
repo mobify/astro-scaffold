@@ -4,8 +4,9 @@ set -e
 
 echo "Setting up path variables and finding node"
 MYPATH=$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )
+ROOT=$MYPATH/..
 EXTRA_NPM_ARGS=""
-EXTRA_GRUNT_ARGS=""
+EXTRA_WEBPACK_ARGS=""
 
 function findNode() {
     return $(which npm 1>/dev/null 2>&1)
@@ -13,7 +14,7 @@ function findNode() {
 
 if [ "$1" == "--no-color" ]; then
     EXTRA_NPM_ARGS="--no-color $EXTRA_NPM_ARGS"
-    EXTRA_GRUNT_ARGS="--no-color $EXTRA_GRUNT_ARGS"
+    EXTRA_WEBPACK_ARGS="--no-color $EXTRA_WEBPACK_ARGS"
 fi
 
 if ! findNode; then
@@ -43,8 +44,8 @@ if ! findNode; then
 fi
 
 echo "Building app.js"
-pushd $MYPATH
-    $MYPATH/node_modules/.bin/grunt $EXTRA_GRUNT_ARGS build
+pushd $ROOT
+    npm run build -- $EXTRA_WEBPACK_ARGS
 popd
 
 echo "SUCCESS: build app.js"

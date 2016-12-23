@@ -3,29 +3,42 @@
   "version": "0.0.1",
   "author": "Mobify",
   "dependencies": {
-    "astro-sdk": "~0.17.0",
+    "mobify-progressive-app-sdk": "~0.18.0",
+    "babel-runtime": "^6.18.0",
     "bluebird": "~2.9.24",
+    "grunt-requirejs": "^0.4.2",
     "jquery": "^2.2.2",
     "navitron": "^1.0.0",
-    "grunt-requirejs": "^0.4.2"
+    "webpack": "^2.1.0-beta.27"
   },
   "devDependencies": {
+    "babel-core": "^6.18.2",
+    "babel-eslint": "^7.1.1",
+    "babel-loader": "^6.2.8",
+    "babel-plugin-syntax-async-functions": "^6.13.0",
+    "babel-plugin-transform-async-to-module-method": "^6.16.0",
+    "babel-plugin-transform-runtime": "^6.15.0",
+    "babel-preset-es2015": "^6.18.0",
+    "eslint": "^3.10.2",
+    "eslint-loader": "^1.6.1",
+    "eslint-plugin-import": "^2.2.0",
     "grunt": "^0.4.5",
     "grunt-cli": "^1.1.0",
-    "grunt-contrib-watch": "^0.6.1",
-    "grunt-eslint": "^19.0.0",
     "mobify-code-style": "^2.2.1",
     "nightwatch": "0.9.6",
-    "nightwatch-commands": "1.7.0"
+    "nightwatch-commands": "1.7.0",
+    "webpack-bundle-analyzer": "^1.5.3"
   },
   "engineStrict": true,
   "engines": {
-      "node": "^4.0.0",
-      "npm": "^2.0.0"
+    "node": "^4.0.0",
+    "npm": "^2.0.0"
   },
   "scripts": {
     "deps": "./scripts/build-dependencies.sh ./app",
-    "test": "./scripts/ios-appium.sh"
+    "test": "./scripts/ios-appium.sh",
+    "build": "webpack --config webpack.app.config.js",
+    "build-analyze": "ASTRO_ANALYZE=true npm run build"
   },
   "license": "SEE LICENSE IN LICENSE"
 }

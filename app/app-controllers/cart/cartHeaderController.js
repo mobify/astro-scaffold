@@ -1,46 +1,35 @@
-define([
-    'bluebird',
-    'config/cartConfig',
-    'plugins/headerBarPlugin'
-],
-/* eslint-disable */
-function(
-    Promise,
-    CartConfig,
-    HeaderBarPlugin
-) {
-/* eslint-enable */
+import HeaderBarPlugin from 'astro/plugins/headerBarPlugin';
+import CartConfig from '../../app-config/cartConfig';
 
-    var CartHeaderController = function(headerBar) {
-        this.viewPlugin = headerBar;
-    };
+const CartHeaderController = function(headerBar) {
+    this.viewPlugin = headerBar;
+};
 
-    CartHeaderController.init = function() {
-        return HeaderBarPlugin.init().then(function(headerBar) {
-            headerBar.setTextColor(CartConfig.colors.textColor);
-            headerBar.setBackgroundColor(CartConfig.colors.backgroundColor);
+CartHeaderController.init = async function() {
+    const headerBar = await HeaderBarPlugin.init();
 
-            headerBar.setCenterTitle(
-                CartConfig.headerContent.title,
-                CartConfig.headerContent.id
-            );
+    headerBar.setTextColor(CartConfig.colors.textColor);
+    headerBar.setBackgroundColor(CartConfig.colors.backgroundColor);
 
-            headerBar.setRightIcon(
-                CartConfig.closeIcon.imageUrl,
-                CartConfig.closeIcon.id
-            );
+    headerBar.setCenterTitle(
+        CartConfig.headerContent.title,
+        CartConfig.headerContent.id
+    );
 
-            return new CartHeaderController(headerBar);
-        });
-    };
+    headerBar.setRightIcon(
+        CartConfig.closeIcon.imageUrl,
+        CartConfig.closeIcon.id
+    );
 
-    CartHeaderController.prototype.registerCloseEventHandler = function(callback) {
-        if (!callback) {
-            return;
-        }
+    return new CartHeaderController(headerBar);
+};
 
-        this.viewPlugin.on('click:' + CartConfig.closeIcon.id, callback);
-    };
+CartHeaderController.prototype.registerCloseEventHandler = function(callback) {
+    if (!callback) {
+        return;
+    }
 
-    return CartHeaderController;
-});
+    this.viewPlugin.on(`click:${CartConfig.closeIcon.id}`, callback);
+};
+
+export default CartHeaderController;

@@ -1,11 +1,7 @@
-define([], function() {
-/* eslint-enable max-statements */
+const uiSource = 'file:///app-www/html/search-bar.html';
+const queryUrl = 'http://www.google.com/search?q=<search_terms>';
 
-    var uiSource = 'file:///app-www/html/search-bar.html';
-    var queryUrl = 'http://www.google.com/search?q=<search_terms>';
-
-    return {
-        uiSource : uiSource,
-        queryUrl: queryUrl
-    };
-});
+export default {
+    uiSource,
+    queryUrl
+};

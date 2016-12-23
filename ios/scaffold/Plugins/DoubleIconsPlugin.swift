@@ -9,12 +9,12 @@
 import Foundation
 import Astro
 
-public class DoubleIconsPlugin: Plugin, ViewPlugin, HandlesUserInteraction {
-    public let viewController = UIViewController()
+open class DoubleIconsPlugin: Plugin, ViewPlugin, HandlesUserInteraction {
+    open let viewController = UIViewController()
     let leftButton: UIControl = UIControl()
     let rightButton: UIControl = UIControl()
 
-    public required init(address: MessageAddress, messageBus: MessageBus, pluginResolver: PluginResolver, options: JsonObject?) {
+    public required init(address: MessageAddress, messageBus: MessageBus, pluginResolver: PluginResolver, options: JSONObject?) {
         super.init(address: address, messageBus: messageBus, pluginResolver: pluginResolver, options: options)
 
         self.addRpcMethodShim("setLeftIcon") { params, respond in
@@ -36,7 +36,7 @@ public class DoubleIconsPlugin: Plugin, ViewPlugin, HandlesUserInteraction {
         leftButton.translatesAutoresizingMaskIntoConstraints = false
         rightButton.translatesAutoresizingMaskIntoConstraints = false
 
-        viewController.view.frame = CGRectMake(0, 0, 88, 44)
+        viewController.view.frame = CGRect(x: 0, y: 0, width: 88, height: 44)
         viewController.view.addSubview(leftButton)
         viewController.view.addSubview(rightButton)
 
@@ -58,45 +58,46 @@ public class DoubleIconsPlugin: Plugin, ViewPlugin, HandlesUserInteraction {
         //             ^
         //    self.viewController
 
-        viewController.view.addConstraints(NSLayoutConstraint.constraintsWithVisualFormat("H:|[leftButton(44)][rightButton(44)]|", options: [], metrics: nil, views: views ))
-        viewController.view.addConstraints(NSLayoutConstraint.constraintsWithVisualFormat("V:|[leftButton(44)]|", options: [], metrics: nil, views: views))
-        viewController.view.addConstraints(NSLayoutConstraint.constraintsWithVisualFormat("V:|[rightButton(44)]|", options: [], metrics: nil, views: views))
+        viewController.view.addConstraints(NSLayoutConstraint.constraints(withVisualFormat: "H:|[leftButton(44)][rightButton(44)]|", options: [], metrics: nil, views: views ))
+        viewController.view.addConstraints(NSLayoutConstraint.constraints(withVisualFormat: "V:|[leftButton(44)]|", options: [], metrics: nil, views: views))
+        viewController.view.addConstraints(NSLayoutConstraint.constraints(withVisualFormat: "V:|[rightButton(44)]|", options: [], metrics: nil, views: views))
 
-        leftButton.addTarget(self, action: #selector(tapLeftButton), forControlEvents: .TouchUpInside)
-        rightButton.addTarget(self, action: #selector(tapRightButton), forControlEvents: .TouchUpInside)
+        leftButton.addTarget(self, action: #selector(tapLeftButton), for: .touchUpInside)
+        rightButton.addTarget(self, action: #selector(tapRightButton), for: .touchUpInside)
     }
 
-    func tapLeftButton(sender: UIControl) {
+    func tapLeftButton(_ sender: UIControl) {
         trigger("click:doubleIcons_left")
     }
 
-    func tapRightButton(sender: UIControl) {
+    func tapRightButton(_ sender: UIControl) {
         trigger("click:doubleIcons_right")
     }
 
-    private func setPluginInContainer(plugin: ViewPlugin, buttonContainer: UIControl) {
-        let pluginView = plugin.viewController.view
-        pluginView.userInteractionEnabled = false
-        pluginView.translatesAutoresizingMaskIntoConstraints = false
+    fileprivate func setPluginInContainer(_ plugin: ViewPlugin, buttonContainer: UIControl) {
+        if let pluginView = plugin.viewController.view {
+            pluginView.isUserInteractionEnabled = false
+            pluginView.translatesAutoresizingMaskIntoConstraints = false
 
-        buttonContainer.subviews.forEach({ $0.removeFromSuperview() })
-        buttonContainer.addSubview(pluginView)
-        pluginView.pinToSuperviewEdges()
+            buttonContainer.subviews.forEach({ $0.removeFromSuperview() })
+            buttonContainer.addSubview(pluginView)
+            pluginView.pinToSuperviewEdges()
 
-        // these two methods must be called together
-        viewController.addChildViewController(plugin.viewController)
-        plugin.viewController.didMoveToParentViewController(self.viewController)
+            // these two methods must be called together
+            viewController.addChildViewController(plugin.viewController)
+            plugin.viewController.didMove(toParentViewController: self.viewController)
+        }
     }
 
     // @RpcMethod
-    func setLeftIcon(address: MessageAddress, respond: RpcMethodCallback) {
+    func setLeftIcon(_ address: MessageAddress, respond: RPCMethodCallback) {
         if let plugin: ViewPlugin = pluginResolver.pluginInstanceByAddress(address, respond: respond) {
             setPluginInContainer(plugin, buttonContainer: leftButton)
         }
     }
 
     // @RpcMethod
-    func setRightIcon(address: MessageAddress, respond: RpcMethodCallback) {
+    func setRightIcon(_ address: MessageAddress, respond: RPCMethodCallback) {
         if let plugin: ViewPlugin = pluginResolver.pluginInstanceByAddress(address, respond: respond) {
             setPluginInContainer(plugin, buttonContainer: rightButton)
         }

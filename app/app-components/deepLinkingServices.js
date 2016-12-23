@@ -1,35 +1,28 @@
-define([
-    'application'
-],
-function(
-    Application
-) {
-    var DeepLinkingServices = function(menuController) {
-        this.menuController = menuController;
+import Application from 'astro/application';
 
-        this._bindStartUp();
-        this._bindRunning();
-    };
+const DeepLinkingServices = function(menuController) {
+    this.menuController = menuController;
 
-    DeepLinkingServices.prototype._bindStartUp = function() {
-        var self = this;
-        Application.getStartUri().then(function(uri) {
-            if (uri != null) {
-                self.menuController.navigateActiveItem(uri);
-            }
-        });
-    };
+    this._bindStartUp();
+    this._bindRunning();
+};
 
-    DeepLinkingServices.prototype._bindRunning = function() {
-        var self = this;
-        // Listen for deep link events once app is running
-        Application.on('receivedDeepLink', function(params) {
-            var uri = params.uri;
-            if (uri != null) {
-                self.menuController.navigateActiveItem(uri);
-            }
-        });
-    };
+DeepLinkingServices.prototype._bindStartUp = function() {
+    Application.getStartUri().then((uri) => {
+        if (uri !== null) {
+            this.menuController.navigateActiveItem(uri);
+        }
+    });
+};
 
-    return DeepLinkingServices;
-});
+DeepLinkingServices.prototype._bindRunning = function() {
+    // Listen for deep link events once app is running
+    Application.on('receivedDeepLink', (params) => {
+        const uri = params.uri;
+        if (uri !== null) {
+            this.menuController.navigateActiveItem(uri);
+        }
+    });
+};
+
+export default DeepLinkingServices;
