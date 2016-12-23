@@ -19,9 +19,9 @@ var config = {
     },
     resolve: {
         alias: {
-            astro: path.resolve(rootDir, 'node_modules/astro-sdk/js/src/'),
-            vendor: path.resolve(rootDir, 'node_modules/astro-sdk/js/vendor/'),
-            bluebird: path.resolve(rootDir, 'node_modules/astro-sdk/node_modules/bluebird')
+            astro: path.resolve(rootDir, 'node_modules/mobify-progressive-app-sdk/js/src/'),
+            vendor: path.resolve(rootDir, 'node_modules/mobify-progressive-app-sdk/js/vendor/'),
+            bluebird: path.resolve(rootDir, 'node_modules/mobify-progressive-app-sdk/node_modules/bluebird')
         }
     },
     plugins: [
@@ -47,7 +47,7 @@ var config = {
             test: /\.js$/,
             use: ['babel-loader'],
             include: [
-                path.resolve(rootDir, 'node_modules/astro-sdk/js'),
+                path.resolve(rootDir, 'node_modules/mobify-progressive-app-sdk/js'),
                 path.resolve(rootDir, 'app')
             ]
         }]

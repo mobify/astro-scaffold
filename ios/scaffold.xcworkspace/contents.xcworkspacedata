@@ -5,13 +5,13 @@
       location = "container:"
       name = "Astro">
       <FileRef
-         location = "group:../node_modules/astro-sdk/ios/Astro.xcodeproj">
+         location = "group:../node_modules/mobify-progressive-app-sdk/ios/Astro.xcodeproj">
       </FileRef>
       <FileRef
-         location = "group:../node_modules/astro-sdk/ios/vendor/CordovaLib/CordovaLib.xcodeproj">
+         location = "group:../node_modules/mobify-progressive-app-sdk/ios/vendor/CordovaLib/CordovaLib.xcodeproj">
       </FileRef>
       <FileRef
-         location = "group:../node_modules/astro-sdk/node_modules/mobify-push-ios-client/PushClient/PushClient.xcodeproj">
+         location = "group:../node_modules/mobify-progressive-app-sdk/node_modules/mobify-push-ios-client/PushClient/PushClient.xcodeproj">
       </FileRef>
    </Group>
    <FileRef
