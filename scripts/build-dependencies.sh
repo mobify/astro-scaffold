@@ -60,6 +60,6 @@ pushd $MYPATH/node_modules/mobify-progressive-app-sdk
 popd
 
 echo "Copying astro-client.js into app bundle"
-cp $MYPATH/node_modules/mobify-progressive-app-sdk/js/build/astro-client.js $MYPATH/app/app-www/js/build
+cp $MYPATH/node_modules/mobify-progressive-app-sdk/js/build/astro-client.js $MYPATH/app-www/js/build
 
 echo "SUCCESS: build dependencies"
