@@ -3,7 +3,7 @@
   "version": "0.0.1",
   "author": "Mobify",
   "dependencies": {
-    "mobify-progressive-app-sdk": "mobify/astro#develop",
+    "mobify-progressive-app-sdk": "~0.18.0",
     "babel-runtime": "^6.18.0",
     "bluebird": "~2.9.24",
     "grunt-requirejs": "^0.4.2",

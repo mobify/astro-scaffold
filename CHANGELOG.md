@@ -1,4 +1,4 @@
-## To be released
+## v0.18.0
 - Point npm pacakge to new astro location: mobfiy-progressive-app-sdk
 - Welcome modal uses SettingsStore instead of SecureStore
 - ES6 and Async/Await Compatible with Babel
